@@ -1,4 +1,5 @@
-#include <assert.h>
+#include <cassert>
+#include <iostream>
 #include "Aminoacids.h"
 
 namespace aminoacid {
@@ -9,7 +10,8 @@ namespace aminoacid {
             }
         }
 
-        static_assert(true, "");
+        std::cerr << aminoacid_name << "\n";
+        assert(false);
     }
 
     aminoacid::Aminoacids::Aminoacid aminoacid::Aminoacids::get_aminoacid_from_formula(std::string fotmula) {
@@ -19,7 +21,7 @@ namespace aminoacid {
             }
         }
 
-        static_assert(true, "");
+        assert(false);
     }
 
     bool aminoacid::Aminoacids::same(aminoacid::Aminoacids::Aminoacid a, aminoacid::Aminoacids::Aminoacid b) {
@@ -77,7 +79,7 @@ namespace aminoacid {
                                                                                 "ala_d", "phe", "val", "cha", "dhpg",
                                                                                 "phg", "his", "aeo", "bmt", "hse",
                                                                                 "met", "ala", "tcl", "sal", "allothr",
-                                                                                "b_ala", "dhb", "ile", "end", "leu",
+                                                                                "b-ala", "dhb", "ile", "end", "leu",
                                                                                 "gua", "hty", "glu", "bht", "hpg",
                                                                                 "apa", "pro", "tyr", "hyv", "asn",
                                                                                 "cit", "vol", "cys", "asp", "dht",

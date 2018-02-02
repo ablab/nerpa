@@ -7,7 +7,7 @@
 
 namespace nrpsprediction {
     class AminoacidPrediction {
-    private:
+    public:
         struct AminoacidProb {
             aminoacid::Aminoacids::Aminoacid aminoacid;
             double prob;
@@ -15,6 +15,11 @@ namespace nrpsprediction {
             AminoacidProb(std::string aacid, double prob) {
                 this->prob = prob;
                 aminoacid = aminoacid::Aminoacids::get_aminoacid(aacid);
+            }
+
+            AminoacidProb(aminoacid::Aminoacids::Aminoacid aacid, double prob) {
+                this->prob = prob;
+                aminoacid = aacid;
             }
         };
         const double EPS = 1e-4;
@@ -25,6 +30,7 @@ namespace nrpsprediction {
         AminoacidPrediction(int pos, std::string predict_aminoacids);
         std::pair<std::string, double> parse_token(std::string token);
         bool contain(aminoacid::Aminoacids::Aminoacid aminoacid);
+        AminoacidProb getAminoacid(aminoacid::Aminoacids::Aminoacid aminoacid);
     };
 }
 

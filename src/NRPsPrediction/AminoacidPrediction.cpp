@@ -48,3 +48,14 @@ bool nrpsprediction::AminoacidPrediction::contain(aminoacid::Aminoacids::Aminoac
     }
     return false;
 }
+
+nrpsprediction::AminoacidPrediction::AminoacidProb
+nrpsprediction::AminoacidPrediction::getAminoacid(aminoacid::Aminoacids::Aminoacid aminoacid) {
+    for (int i = 0; i < (int)aminoacid_prediction.size(); ++i) {
+        if (aminoacid::Aminoacids::same(aminoacid_prediction[i].aminoacid, aminoacid)) {
+            return aminoacid_prediction[i];
+        }
+    }
+
+    return AminoacidProb(aminoacid::Aminoacids::AMINOACID_CNT, 0);
+}
