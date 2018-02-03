@@ -11,8 +11,15 @@ set(SOURCE_FILES main.cpp
         NRPsPrediction/NRPsPrediction.h
         NRP/NRP.cpp
         NRP/NRP.h
-        NRPsMatch/NRPsMatch.cpp
-        NRPsMatch/NRPsMatch.h)
+        NRP/NRPsMatch.cpp
+        NRP/NRPBuilder.cpp
+        NRP/NRPBuilder.h
+        NRP/NRPCycle.h
+        NRP/NRPCycle.cpp
+        NRP/NRPLine.h
+        NRP/NRPLine.cpp
+        NRP/NRPtail.h
+        NRP/NRPtail.cpp)
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})
 add_executable(NRPsMatcher ${SOURCE_FILES})

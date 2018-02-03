@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <NRP/NRPBuilder.h>
 #include "NRP/NRP.h"
 #include "NRPsPrediction/NRPsPrediction.h"
 
@@ -16,11 +17,10 @@ int main(int argc, char* argv[]) {
 
     std::string cur_nrp_file;
     while(getline(in_nrps_files, cur_nrp_file)) {
-        nrp::NRP nrp_from_fragment_graph;
-        nrp_from_fragment_graph.parse_fragment_graph(cur_nrp_file);
-
-        nrpsmatch::NRPsMatch nrPsMatch = nrPsPrediction.isCover(nrp_from_fragment_graph);
+        nrp::NRP* nrp_from_fragment_graph = nrp::NRPBuilder::build(cur_nrp_file);
+        nrp::NRP::Match nrPsMatch = nrp_from_fragment_graph->isCover(nrPsPrediction);
         nrPsMatch.print(out);
+        delete nrp_from_fragment_graph;
     }
 
     out.close();

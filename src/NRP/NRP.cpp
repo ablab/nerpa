@@ -1,39 +1,8 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 #include "NRP.h"
-
-void nrp::NRP::parse_fragment_graph(std::string fragment_graph) {
-    file_name = fragment_graph;
-    std::ifstream in(fragment_graph);
-    std::string s;
-    int line_cnt;
-    in >> s >> s >> s >> s >> line_cnt;
-
-    for (int i = 0; i < line_cnt; ++i) {
-        int id;
-        std::string formula;
-        double mass;
-
-        in >> id >> formula >> mass;
-
-        std::stringstream ss;
-        ss << id << " " << formula << " " << mass;
-
-        strformula.push_back(ss.str());
-
-        aminoacids.push_back(aminoacid::Aminoacids::get_aminoacid_from_formula(formula));
-    }
-
-    std::string tmp;
-    while(getline(in, tmp)) {
-        graph += tmp;
-        graph += "\n";
-    }
-
-    in.close();
-}
-
 
 std::string nrp::NRP::getFormula(int i) {
     return strformula[i];
@@ -55,7 +24,7 @@ std::vector<nrp::NRP::Segment> nrp::NRP::containNRPsPart(nrpsprediction::NRPsPar
             }
         }
         if (is_ok == true) {
-            res.push_back(Segment(i, i + aminoacid_predictions.size() - 1, 0));
+            res.push_back(Segment(i, i + aminoacid_predictions.size() - 1, -1, 0));
         }
     }
 
@@ -69,7 +38,7 @@ std::vector<nrp::NRP::Segment> nrp::NRP::containNRPsPart(nrpsprediction::NRPsPar
             }
         }
         if (is_ok == true) {
-            res.push_back(Segment(i, i + aminoacid_predictions.size() - 1, 1));
+            res.push_back(Segment(i, i + aminoacid_predictions.size() - 1, -1, 1));
         }
     }
 
@@ -82,7 +51,7 @@ int nrp::NRP::getLen() {
 }
 
 int nrp::NRP::getInd(int i) {
-    return i;
+    return position[i];
 }
 
 aminoacid::Aminoacids::Aminoacid nrp::NRP::getAminoacid(int i) {
@@ -99,4 +68,106 @@ void nrp::NRP::print() {
 
 std::string nrp::NRP::get_file_name() {
     return file_name;
+}
+
+nrp::NRP::Match
+nrp::NRP::isCoverLine(std::vector<nrp::NRP::Segment> &segments, nrpsprediction::NRPsPrediction nrPsPrediction,
+                      const std::vector<int> &toSmallId, const std::vector<int> &toBigId) {
+    int len = this->getLen();
+    std::sort(segments.begin(), segments.end());
+
+    std::vector<std::vector<int> > d(len + 1, std::vector<int>((1 << toBigId.size()), -1));
+    std::vector<std::vector<std::pair<int, int> > > p(len + 1,
+                                                      std::vector<std::pair<int, int> >((1 << toBigId.size()),
+                                                                                        std::make_pair(-1, -1)));
+    std::vector<std::vector<int> > pa(len + 1, std::vector<int>((1 << toBigId.size()), -1));
+    d[0][0] = 0;
+
+    int curseg = 0;
+
+    for (int pos = 0; pos < len; ++pos) {
+        int lstseg = curseg;
+        for (int msk = 0; msk < (1 << (toBigId.size())); ++msk) {
+            if (pos != 0 && (d[pos][msk] == -1 || d[pos][msk] > d[pos - 1][msk] + 1)) {
+                if (d[pos - 1][msk] != -1) {
+                    d[pos][msk] = d[pos - 1][msk] + 1;
+                    p[pos][msk].first = pos - 1;
+                    p[pos][msk].second = msk;
+                    pa[pos][msk] = -1;
+                }
+            }
+            if (d[pos][msk] == -1) {
+                continue;
+            }
+            curseg = lstseg;
+
+            while (curseg < segments.size() && segments[curseg].l == pos) {
+                if (segments[curseg].r >= len) {
+                    ++curseg;
+                    continue;
+                }
+                int nmsk = msk;
+
+                if (toSmallId[segments[curseg].part_id] != -1) {
+                    if (((msk >> (toSmallId[segments[curseg].part_id])) & 1) != 0) {
+                        ++curseg;
+                        continue;
+                    }
+
+                    nmsk = msk | (1 << (toSmallId[segments[curseg].part_id]));
+                }
+
+                if (d[segments[curseg].r + 1][nmsk] == -1) {
+                    d[segments[curseg].r + 1][nmsk] = d[pos][msk];
+                    p[segments[curseg].r + 1][nmsk].first = pos;
+                    p[segments[curseg].r + 1][nmsk].second = msk;
+                    pa[segments[curseg].r + 1][nmsk] = curseg;
+                } else if (d[segments[curseg].r + 1][nmsk] > d[pos][msk]) {
+                    d[segments[curseg].r + 1][nmsk] = d[pos][msk];
+                    p[segments[curseg].r + 1][nmsk].first = pos;
+                    p[segments[curseg].r + 1][nmsk].second = msk;
+                    pa[segments[curseg].r + 1][nmsk] = curseg;
+                }
+
+                ++curseg;
+            }
+
+        }
+    }
+
+    int mn = len;
+    int rmsk = 0;
+    for (int msk = 0; msk < (1 << (toBigId.size())); ++msk) {
+        mn = std::min(mn, d[len][msk]);
+        rmsk = msk;
+    }
+
+    Match nrPsMatch(this, nrPsPrediction.getNrpsParts());
+    int pos = len;
+    while (pos > 0) {
+        int nxtp = p[pos][rmsk].first;
+        int nxtmsk = p[pos][rmsk].second;
+        int seg = pa[pos][rmsk];
+        int j = segments[seg].r - segments[seg].l;
+        if (segments[seg].rev) {
+            j = 0;
+        }
+        if (seg != -1) {
+            int curp = pos - 1;
+            while (curp >= nxtp) {
+                nrPsMatch.match(curp, segments[seg].part_id, j);
+                if (segments[seg].rev) {
+                    ++j;
+                } else {
+                    --j;
+                }
+                --curp;
+            }
+        }
+
+        pos = nxtp;
+        rmsk = nxtmsk;
+    }
+
+    return nrPsMatch;
 }
