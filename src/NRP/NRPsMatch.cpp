@@ -34,14 +34,18 @@ void nrp::NRP::Match::print(std::ofstream &out) {
         out << "MATCH\n";
     }
 
+    std::vector<int> rp(parts_id.size());
+    for (int i = 0; i < rp.size(); ++i) {
+        rp[nrp->getInd(i)] = i;
+    }
+
     out << "number of components : " << nrp->getLen() << "\n";
     for (int i = 0; i < parts_id.size(); ++i) {
-        int ri = nrp->getInd(i);
+        int ri = rp[i];
         std::string formula = nrp->getFormula(i);
 
         out << formula << " -> ";
 
-        //TODO
         if (parts_id[ri] == -1) {
             out << "-\n";
         } else {

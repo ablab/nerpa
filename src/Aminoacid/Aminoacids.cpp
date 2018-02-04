@@ -14,13 +14,14 @@ namespace aminoacid {
         assert(false);
     }
 
-    aminoacid::Aminoacids::Aminoacid aminoacid::Aminoacids::get_aminoacid_from_formula(std::string fotmula) {
+    aminoacid::Aminoacids::Aminoacid aminoacid::Aminoacids::get_aminoacid_from_formula(std::string formula) {
         for (int i = 0; i < AMINOACID_CNT; ++i) {
-            if (FORMULS[i] == fotmula) {
+            if (FORMULS[i] == formula) {
                 return static_cast<Aminoacid>(i);
             }
         }
 
+        std::cerr << formula << "\n";
         assert(false);
     }
 
@@ -87,15 +88,15 @@ namespace aminoacid {
                                                                                 "pip", "dpg"};
 
 
-    const std::string Aminoacids::FORMULS[Aminoacids::AMINOACID_CNT] = {"C11H10N2O", "C3H5NO2", "C2H3NO", "C4H7N3O2", "C4H7NO2",
-                                                                        "C3H3NO", "C5H8N2O2", "C4H8N2O", "C6H12N4O", "C6H12N2O",
-                                                                        "C3H5NO", "C9H9NO", "C5H9NO", "C9N15NO", "C8H7NO2",
-                                                                        "C8H7NO", "C6H7N3O", "C10H15NO3", "C9H15NO2", "C4H7NO2",
-                                                                        "C5H9NOS", "C3H5NO", "C6H8Cl3NO", "C7H4O2", "C4H7NO2",
-                                                                        "C3H5NO", "--", "C6H11NO", "-", "C6H11NO",
-                                                                        "-", "--", "C5H7NO3", "C9H9NO3", "C8H7NO2",
-                                                                        "C4H7NO", "C5H7NO", "C9H9NO2", "--", "C4H6N2O2",
-                                                                        "C6H11N3O2", "C5N11N", "C3H5NOS", "C4H5NO3", "--",
-                                                                        "C5H8N2O", "C5H10N2O", "-", "C4H7NO", "C6H9NO3",
-                                                                        "C6H9NO", "C8H7NO3"};
+    const std::string Aminoacids::FORMULS[Aminoacids::AMINOACID_CNT] = {"C11H12N2O2", "C3H7NO3", "C2H5NO2", "C4H9N3O3", "C4H9NO3",
+                                                                        "C3H5NO2", "C5H10N2O3", "C4H10N2O2", "C6H14N4O2", "C6H14N2O2",
+                                                                        "C3H7NO2", "C9H11NO2", "C5H11NO2", "C9H17NO2", "C8H9NO3",
+                                                                        "C8H9NO2", "C6H9N3O2", "C10H17NO4", "C9H17NO3", "C4H9NO3",
+                                                                        "C5H11NO2S", "C3H7NO2", "C6H10Cl3NO2", "C7H6O3", "C4H9NO3",
+                                                                        "C3H7NO2", "--", "C6H13NO2", "-", "C6H13NO2",
+                                                                        "-", "--", "C5H9NO4", "C9H11NO4", "C8H9NO3",
+                                                                        "C4H9NO2", "C5H9NO2", "C9H11NO3", "--", "C4H8N2O3",
+                                                                        "C6H13N3O3", "C5H13NO", "C3H7NO2S", "C4H7NO4", "--",
+                                                                        "C5H10N2O2", "C5H12N2O2", "-", "C4H9NO2", "C6H11NO4",
+                                                                        "C6H11NO2", "C8H9NO4"};
 }
