@@ -21,8 +21,10 @@ namespace aminoacid {
             }
         }
 
-        std::cerr << formula << "\n";
-        assert(false);
+        //std::cerr << formula << "\n";
+        //assert(false);
+
+        return static_cast<Aminoacid>(AMINOACID_CNT - 1);
     }
 
     bool aminoacid::Aminoacids::same(aminoacid::Aminoacids::Aminoacid a, aminoacid::Aminoacids::Aminoacid b) {
@@ -86,7 +88,8 @@ namespace aminoacid {
                                                                                 "apa", "pro", "tyr", "hyv", "asn",
                                                                                 "cit", "vol", "cys", "asp", "dht",
                                                                                 "ahp", "orn", "apc", "abu", "aad",
-                                                                                "pip", "dpg", "3-me-glu", "OH-asn"};
+                                                                                "pip", "dpg", "3-me-glu", "OH-asn",
+                                                                                "none"};
 
 
     const std::string Aminoacids::FORMULS[Aminoacids::AMINOACID_CNT] = {"C11H12N2O2", "C3H7NO3", "C2H5NO2", "C4H9N3O3", "C4H9NO3",
@@ -99,5 +102,5 @@ namespace aminoacid {
                                                                         "C4H9NO2", "C5H9NO2", "C9H11NO3", "-", "C4H8N2O3",
                                                                         "C6H13N3O3", "C5H13NO", "C3H7NO2S", "C4H7NO4", "-",
                                                                         "C5H10N2O2", "C5H12N2O2", "-", "C4H9NO2", "C6H11NO4",
-                                                                        "C6H11NO2", "C8H9NO4", "C6H11NO4", "C4H8N2O4"};
+                                                                        "C6H11NO2", "C8H9NO4", "C6H11NO4", "C4H8N2O4", "*"};
 }

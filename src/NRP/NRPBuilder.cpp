@@ -78,7 +78,7 @@ nrp::NRP* nrp::NRPBuilder::build(std::string fragment_graph) {
             pos1.push_back(pos_cycle[i]);
         }
 
-        for (int i = pos_cycle.size() - 1; i >= 0; ++i) {
+        for (int i = pos_cycle.size() - 1; i >= 0; --i) {
             pos2.push_back(pos_cycle[i]);
         }
 
@@ -203,7 +203,7 @@ nrp::NRPBuilder::parseTail(std::vector<std::vector<int>> &g, std::vector<std::ve
     if (strp1 != -1) {
         tail.push_back(strp1);
         int cur = strp1;
-        while (gr[cur].size() == 1) {
+        while (g[cur].size() != 2) {
             cur = gr[cur][0];
             tail.push_back(cur);
         }
@@ -216,7 +216,7 @@ nrp::NRPBuilder::parseTail(std::vector<std::vector<int>> &g, std::vector<std::ve
     } else {
         tail.push_back(strp2);
         int cur = strp2;
-        while (g[cur].size() == 1) {
+        while (gr[cur].size() != 2) {
             cur = g[cur][0];
             tail.push_back(cur);
         }

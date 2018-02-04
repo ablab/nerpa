@@ -27,6 +27,9 @@ nrp::NRP::Match nrp::NRPCycle::isCover(nrpsprediction::NRPsPrediction nrPsPredic
         }
     }
 
+    int best_score = 0;
+    Match resMatchs(this, nrpparts);
+
     for (int bg = 0; bg < len; ++bg) {
         std::vector<Segment> tmpSeg;
         for (int i = 0; i < segments.size(); ++i) {
@@ -39,23 +42,17 @@ nrp::NRP::Match nrp::NRPCycle::isCover(nrpsprediction::NRPsPrediction nrPsPredic
 
         Match curMatch = isCoverLine(tmpSeg, nrPsPrediction, toSmallId, toBigId);
 
-        //TODO max score
-        if (curMatch.score() > len - 2) {
+        if (curMatch.score() > best_score) {
             std::vector<std::pair<int, int> > matchs = curMatch.getMatchs();
-            Match resMatchs(this, nrpparts);
-            for (int i = 0; i < matchs.size(); ++i) {
-                if (matchs[i].first != -1) {
-                    resMatchs.match((i + bg + len) % len, matchs[i].first, matchs[i].second);
-                }
-            }
 
-            return resMatchs;
+            for (int i = 0; i < matchs.size(); ++i) {
+                resMatchs.match((i + bg + len) % len, matchs[i].first, matchs[i].second);
+            }
         }
     }
 
 
-    Match resMatch(this, nrpparts);
-    return resMatch;
+    return resMatchs;
 }
 
 std::vector<nrp::NRP::Segment> nrp::NRPCycle::containNRPsPart(nrpsprediction::NRPsPart predict_part) {

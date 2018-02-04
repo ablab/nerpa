@@ -20,17 +20,15 @@ namespace nrpsprediction {
             if (!nrpparts.empty() && nrpparts[nrpparts.size() - 1].get_orf_name() == orf_name_num.first) {
                 nrpparts[nrpparts.size() - 1].add_prediction(orf_name_num.second, predict_aminoacids);
             } else {
-                if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 3) {
+                if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
                     nrpparts.pop_back();
                 }
                 nrpparts.push_back(NRPsPart(file_name, orf_name_num.first, orf_name_num.second, predict_aminoacids));
             }
         }
-        if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 3) {
+        if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
             nrpparts.pop_back();
         }
-
-
         in.close();
     }
 

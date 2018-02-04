@@ -23,16 +23,19 @@ nrp::NRP::Match nrp::NRPLine::isCover(nrpsprediction::NRPsPrediction nrPsPredict
         }
     }
 
+    int best_score = 0;
+    Match resMatch(this, nrpparts);
 
     Match curMatch = isCoverLine(segments, nrPsPrediction, toSmallId, toBigId);
 
+    if (curMatch.score() > best_score) {
+        std::vector<std::pair<int, int> > matchs = curMatch.getMatchs();
 
-    //TODO max score
-    if (curMatch.score() > len - 2) {
-        return curMatch;
+        for (int i = 0; i < matchs.size(); ++i) {
+            resMatch.match(i, matchs[i].first, matchs[i].second);
+        }
     }
 
-    Match resMatch(this, nrpparts);
     return resMatch;
 }
 
