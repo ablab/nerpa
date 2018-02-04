@@ -35,3 +35,36 @@ nrp::NRP::Match nrp::NRPLine::isCover(nrpsprediction::NRPsPrediction nrPsPredict
     Match resMatch(this, nrpparts);
     return resMatch;
 }
+
+std::vector<nrp::NRP::Segment> nrp::NRPLine::containNRPsPart(nrpsprediction::NRPsPart predict_part) {
+    std::vector<Segment> res;
+    std::vector<nrpsprediction::AminoacidPrediction> aminoacid_predictions = predict_part.getAminoacidsPrediction();
+    for (int i = 0; i < (int)aminoacids.size() - (int)aminoacid_predictions.size() + 1; ++i) {
+        bool is_ok = true;
+        for (int j = 0; j < (int)aminoacid_predictions.size() && is_ok; ++j) {
+            int curi = i + j;
+            if (!aminoacid_predictions[j].contain(aminoacids[curi])) {
+                is_ok = false;
+            }
+        }
+        if (is_ok == true) {
+            res.push_back(Segment(i, i + aminoacid_predictions.size() - 1, -1, 0));
+        }
+    }
+
+    for (int i = 0; i < (int)aminoacids.size() - (int)aminoacid_predictions.size() + 1; ++i) {
+        bool is_ok = true;
+        int g = 0;
+        for (int j = (int)aminoacid_predictions.size() - 1; j >= 0 && is_ok; --j, ++g) {
+            int curi = i + g;
+            if (!aminoacid_predictions[j].contain(aminoacids[curi])) {
+                is_ok = false;
+            }
+        }
+        if (is_ok == true) {
+            res.push_back(Segment(i, i + aminoacid_predictions.size() - 1, -1, 1));
+        }
+    }
+
+    return res;
+}

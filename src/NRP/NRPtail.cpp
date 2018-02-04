@@ -10,3 +10,10 @@ nrp::NRP::Match nrp::NRPtail::isCover(nrpsprediction::NRPsPrediction nrPsPredict
         return m2;
     }
 }
+
+std::vector<nrp::NRP::Segment> nrp::NRPtail::containNRPsPart(nrpsprediction::NRPsPart predict_part) {
+    std::vector<nrp::NRP::Segment> seg1 = v1.containNRPsPart(predict_part), seg2 = v2.containNRPsPart(predict_part);
+
+    seg1.insert(seg1.end(), seg2.begin(), seg2.end());
+    return seg1;
+}

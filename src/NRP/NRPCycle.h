@@ -12,6 +12,8 @@ namespace nrp {
                  const std::string &graph);
 
         Match isCover(nrpsprediction::NRPsPrediction nrPsPrediction) override;
+
+        std::vector<Segment> containNRPsPart(nrpsprediction::NRPsPart predict_part) override;
     };
 }
 

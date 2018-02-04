@@ -1,5 +1,8 @@
 #include "gtest/gtest.h"
 #include "../src/NRP/NRP.h"
+#include "../src/NRP/NRPCycle.h"
+#include "../src/NRP/NRPLine.h"
+#include "../src/NRP/NRPtail.h"
 #include <algorithm>
 
 namespace nrp {
@@ -7,13 +10,71 @@ namespace nrp {
     protected:
         std::vector<aminoacid::Aminoacids::Aminoacid> amnacid;
 
-        NRP genRandNRP(int len) {
+        void genRandNrpPart(int partlen, nrpsprediction::NRPsPart& nrps_part, std::vector<std::vector<aminoacid::Aminoacids::Aminoacid>>& predict) {
+            predict.resize(partlen);
+            for (int j = 0; j < partlen; ++j) {
+                std::vector<double> prob;
+                std::vector<std::string> names;
+                for (int g = 0; g < 3; ++g) {
+                    prob.push_back(rand()%10 * 10);
+                    predict[j].push_back(aminoacid::Aminoacids::Aminoacid(rand()%(int(aminoacid::Aminoacids::AMINOACID_CNT))));
+
+                    names.push_back(aminoacid::Aminoacids::AMINOACID_NAMES[predict[j][predict[j].size() - 1]]);
+                }
+
+                std::sort(prob.rbegin(), prob.rend());
+                std::stringstream ss;
+                for (int g = 0; g < 3; ++g) {
+                    ss << names[g] << "(" << prob[g] << ")";
+                    if (g < 2) {
+                        ss << ";";
+                    }
+                }
+
+                for (int g = 0; g < 3; ++g) {
+                    if (predict[j][g] == aminoacid::Aminoacids::Aminoacid::glu) {
+                        predict[j].push_back(aminoacid::Aminoacids::me3_glu);
+                    }
+
+                    if (predict[j][g] == aminoacid::Aminoacids::Aminoacid::asn) {
+                        predict[j].push_back(aminoacid::Aminoacids::OH_asn);
+                    }
+                }
+
+                nrps_part.add_prediction(j + 1, ss.str());
+            }
+        }
+
+        NRPCycle genRandCycleNRP(int len) {
+            std::vector<std::string> strformula(len);
+            std::vector<int> position(len);
+
             amnacid.resize(0);
             for (int i = 0; i < len; ++i) {
+                position[i] = i;
                 amnacid.push_back(aminoacid::Aminoacids::Aminoacid(rand() % aminoacid::Aminoacids::AMINOACID_CNT));
             }
 
-            NRP res;
+            std::random_shuffle(position.begin(), position.end());
+
+            NRPCycle res("", strformula, amnacid, position, "");
+            res.aminoacids = amnacid;
+            return res;
+        }
+
+        NRPLine genRandLineNRP(int len) {
+            std::vector<std::string> strformula(len);
+            std::vector<int> position(len);
+
+            amnacid.resize(0);
+            for (int i = 0; i < len; ++i) {
+                position[i] = i;
+                amnacid.push_back(aminoacid::Aminoacids::Aminoacid(rand() % aminoacid::Aminoacids::AMINOACID_CNT));
+            }
+
+            std::random_shuffle(position.begin(), position.end());
+
+            NRPLine res("", strformula, amnacid, position, "");
             res.aminoacids = amnacid;
             return res;
         }
@@ -36,11 +97,12 @@ namespace nrp {
     };
 
 
-    TEST_F(ContainNRPsTest, trueRandTest) {
+    //check if has segment in NRP then find it.
+    TEST_F(ContainNRPsTest, findSegRandCycleTest) {
         for (int tst = 0; tst < 1000; ++tst) {
-            int len = rand()%100 + 1;
-            NRP nrp = genRandNRP(len);
-            int bg = rand()%len, ed = rand()%len;
+            int len = rand()%100 + 2;
+            NRPCycle nrp = genRandCycleNRP(len);
+            int bg = rand()%len, sz = rand()%len + 1;
 
             nrpsprediction::NRPsPart nrps_part("filename", "orf");
 
@@ -49,8 +111,10 @@ namespace nrp {
                 delta = -1;
             }
 
+            int ed = (bg + (sz - 1) * delta + len)%len;
+
             int j = 0;
-            for (int i = bg; i != ed; i = (i + delta + len)%len, ++j) {
+            for (int i = bg; j < sz; i = (i + delta + len)%len, ++j) {
                 std::vector<double> prob;
                 std::vector<std::string> names;
                 for (int g = 0; g < 3; ++g) {
@@ -70,29 +134,90 @@ namespace nrp {
                 nrps_part.add_prediction(j + 1, ss.str());
             }
 
-            ASSERT_TRUE(nrp.containNRPsPart(nrps_part));
+            std::vector<NRP::Segment> segments = nrp.containNRPsPart(nrps_part);
+            int rbg = bg;
+            int red = ed;
+            int rrev = 0;
+            if (delta == 1) {
+                if (red < rbg) {
+                    red += len;
+                }
+            } else {
+                rrev = 1;
+                std::swap(rbg, red);
+                if (red < rbg) {
+                    red += len;
+                }
+            }
+
+
+            bool hasRightAns = false;
+            for (int i = 0; i < segments.size(); ++i) {
+                if (segments[i].l == rbg && segments[i].r == red && segments[i].rev == rrev) {
+                    hasRightAns = true;
+                }
+            }
+
+            ASSERT_TRUE(hasRightAns);
         }
     }
 
 
-    TEST_F(ContainNRPsTest, randTest) {
+    //check all find segment is right
+    TEST_F(ContainNRPsTest, foundSegIsCorrectRandCycleTest) {
         for (int tst = 0; tst < 1000; ++tst) {
             int len = rand()%20 + 1;
-            NRP nrp = genRandNRP(len);
-            int partlen = rand()%len;
+            NRPCycle nrp = genRandCycleNRP(len);
+            int partlen = rand()%len + 1;
 
             nrpsprediction::NRPsPart nrps_part("filename", "orf");
             std::vector<std::vector<aminoacid::Aminoacids::Aminoacid>> predict(partlen);
 
-            for (int j = 0; j < partlen; ++j) {
+            genRandNrpPart(partlen, nrps_part, predict);
+
+            std::vector<NRP::Segment> segments = nrp.containNRPsPart(nrps_part);
+            for (int i = 0; i < segments.size(); ++i) {
+                if (segments[i].rev == false) {
+                    ASSERT_TRUE(eqval(segments[i].l, 1, predict));
+                } else {
+                    int r = segments[i].r;
+                    if (segments[i].r >= len) {
+                        r -= len;
+                    }
+                    ASSERT_TRUE(eqval(r, -1, predict));
+                }
+            }
+        }
+    }
+
+    //check if has segment in NRP then find it.
+    TEST_F(ContainNRPsTest, findSegRandLineTest) {
+        for (int tst = 0; tst < 1000; ++tst) {
+            int len = rand()%100 + 2;
+            NRPLine nrp = genRandLineNRP(len);
+            nrpsprediction::NRPsPart nrps_part("filename", "orf");
+            int bg = rand()%len, ed = rand()%len;
+            if (ed < bg) {
+                std::swap(bg, ed);
+            }
+            int sz = ed - bg + 1;
+
+            int delta = 1;
+            if (rand() % 2 == 0) {
+                delta = -1;
+                std::swap(bg, ed);
+            }
+
+            int j = 0;
+            for (int i = bg; j < sz; i += delta, ++j) {
                 std::vector<double> prob;
                 std::vector<std::string> names;
                 for (int g = 0; g < 3; ++g) {
                     prob.push_back(rand()%10 * 10);
-                    predict[j].push_back(aminoacid::Aminoacids::Aminoacid(rand()%(int(aminoacid::Aminoacids::AMINOACID_CNT))));
-                    names.push_back(aminoacid::Aminoacids::AMINOACID_NAMES[predict[j][predict[j].size() - 1]]);
+                    names.push_back(aminoacid::Aminoacids::AMINOACID_NAMES[rand()%(int(aminoacid::Aminoacids::AMINOACID_CNT))]);
                 }
 
+                names[rand()%3] = aminoacid::Aminoacids::AMINOACID_NAMES[int(amnacid[i])];
                 std::sort(prob.rbegin(), prob.rend());
                 std::stringstream ss;
                 for (int g = 0; g < 3; ++g) {
@@ -101,37 +226,49 @@ namespace nrp {
                         ss << ";";
                     }
                 }
-
                 nrps_part.add_prediction(j + 1, ss.str());
             }
 
-            bool ans = false;
-            for (int l = 0; l < len; ++l) {
-                if (eqval(l, 1, predict) || eqval(l, -1, predict)) {
-                    ans = true;
+            std::vector<NRP::Segment> segments = nrp.containNRPsPart(nrps_part);
+            int rbg = std::min(bg, ed);
+            int red = std::max(bg, ed);
+            int rrev = (delta == -1);
+
+            bool hasRightAns = false;
+            for (int i = 0; i < segments.size(); ++i) {
+                if (segments[i].l == rbg && segments[i].r == red && segments[i].rev == rrev) {
+                    hasRightAns = true;
                 }
             }
 
-            ASSERT_EQ(nrp.containNRPsPart(nrps_part), ans);
+            ASSERT_TRUE(hasRightAns);
         }
     }
 
 
-    TEST_F(ContainNRPsTest, minTest) {
-        NRP nrp = genRandNRP(0);
-        NRP nrp1 = genRandNRP(1);
-        nrpsprediction::NRPsPart nrps_part("filename", "orf");
+    //check all find segment is right
+    TEST_F(ContainNRPsTest, foundSegIsCorrectRandLineTest) {
+        for (int tst = 0; tst < 1000; ++tst) {
+            int len = rand()%20 + 1;
+            NRPLine nrp = genRandLineNRP(len);
 
-        ASSERT_FALSE(nrp.containNRPsPart(nrps_part)); //not sure what behavior should be expect
-        ASSERT_TRUE(nrp1.containNRPsPart(nrps_part));
-        nrps_part.add_prediction(1, "asn(90.0);asp(90.0);cys(50.0);leu(50.0);glu(50.0);gln(50.0);val(50.0);pip(50.0);gly(50.0);phe(50.0);ile(50.0);ala(50.0);hty(50.0);met(50.0);cha(50.0);orn(50.0)");
+            int partlen = rand()%len + 1;
+            nrpsprediction::NRPsPart nrps_part ("filename", "orf");
+            std::vector<std::vector<aminoacid::Aminoacids::Aminoacid>> predict(partlen);
 
-        ASSERT_FALSE(nrp.containNRPsPart(nrps_part));
-    }
+            genRandNrpPart(partlen, nrps_part, predict);
 
-
-    TEST_F(ContainNRPsTest, maxTest) {
-        //TODO
+            std::vector<NRP::Segment> segments = nrp.containNRPsPart(nrps_part);
+            for (int i = 0; i < segments.size(); ++i) {
+                ASSERT_TRUE(segments[i].r < len);
+                ASSERT_TRUE(segments[i].l <= segments[i].r);
+                if (segments[i].rev == false) {
+                    ASSERT_TRUE(eqval(segments[i].l, 1, predict));
+                } else {
+                    ASSERT_TRUE(eqval(segments[i].r, -1, predict));
+                }
+            }
+        }
     }
 }
 
