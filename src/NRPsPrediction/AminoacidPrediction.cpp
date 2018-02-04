@@ -23,6 +23,14 @@ nrpsprediction::AminoacidPrediction::AminoacidPrediction(int pos, std::string pr
     for (int i = 0; i < aacids.size(); ++i) {
         if (aacids[i].second >= val - EPS) {
             aminoacid_prediction.push_back(AminoacidProb(aacids[i].first, aacids[i].second));
+            if (aminoacid_prediction[aminoacid_prediction.size() - 1].aminoacid == aminoacid::Aminoacids::Aminoacid::glu) {
+                aminoacid_prediction.push_back(AminoacidProb(aminoacid::Aminoacids::Aminoacid::me3_glu,
+                                                             aminoacid_prediction[aminoacid_prediction.size() - 1].prob));
+            }
+            if (aminoacid_prediction[aminoacid_prediction.size() - 1].aminoacid == aminoacid::Aminoacids::Aminoacid::asn) {
+                aminoacid_prediction.push_back(AminoacidProb(aminoacid::Aminoacids::Aminoacid::OH_asn,
+                                                             aminoacid_prediction[aminoacid_prediction.size() - 1].prob));
+            }
         }
     }
 }
