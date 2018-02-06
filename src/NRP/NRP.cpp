@@ -98,12 +98,11 @@ nrp::NRP::isCoverLine(std::vector<nrp::NRP::Segment> &segments, nrpsprediction::
     int mn = len;
     int rmsk = 0;
     for (int msk = 0; msk < (1 << (toBigId.size())); ++msk) {
-        if (mn >= d[len][msk]) {
+        if (mn >= d[len][msk] && d[len][msk] != -1) {
             mn = d[len][msk];
             rmsk = msk;
         }
     }
-
 
     Match nrPsMatch(this, nrPsPrediction.getNrpsParts());
     int pos = len;
@@ -111,11 +110,12 @@ nrp::NRP::isCoverLine(std::vector<nrp::NRP::Segment> &segments, nrpsprediction::
         int nxtp = p[pos][rmsk].first;
         int nxtmsk = p[pos][rmsk].second;
         int seg = pa[pos][rmsk];
-        int j = segments[seg].r - segments[seg].l;
-        if (segments[seg].rev) {
-            j = 0;
-        }
         if (seg != -1) {
+            int j = segments[seg].r - segments[seg].l;
+            if (segments[seg].rev) {
+                j = 0;
+            }
+
             int curp = pos - 1;
             while (curp >= nxtp) {
                 nrPsMatch.match(curp, segments[seg].part_id, j);

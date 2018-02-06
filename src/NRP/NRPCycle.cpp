@@ -48,6 +48,7 @@ nrp::NRP::Match nrp::NRPCycle::isCover(nrpsprediction::NRPsPrediction nrPsPredic
             for (int i = 0; i < matchs.size(); ++i) {
                 resMatchs.match((i + bg + len) % len, matchs[i].first, matchs[i].second);
             }
+            best_score = curMatch.score();
         }
     }
 

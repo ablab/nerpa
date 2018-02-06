@@ -14,6 +14,9 @@ namespace nrpsprediction {
         std::pair<std::string, int> get_orf_name_and_order(std::string orf);
 
     public:
+        NRPsPrediction() = default;
+        NRPsPrediction(std::vector<NRPsPart> nrpparts): nrpparts(nrpparts) {}
+
         //parse ctg1_nrpspredictor2_codes.txt file
         //expected groupded by orfs and sorted by num in one group
         void read_file(std::string file_name);
