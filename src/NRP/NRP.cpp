@@ -42,7 +42,7 @@ nrp::NRP::isCoverLine(std::vector<nrp::NRP::Segment> &segments, nrpsprediction::
     int len = this->getLen();
     std::sort(segments.begin(), segments.end());
 
-    std::vector<std::vector<int> > d(len + 1, std::vector<int>((1 << toBigId.size()), -1));
+    std::vector<std::vector<int> > d(len + 1, std::vector<int>((1 << toBigId.size()), -len - 1));
     std::vector<std::vector<std::pair<int, int> > > p(len + 1,
                                                       std::vector<std::pair<int, int> >((1 << toBigId.size()),
                                                                                         std::make_pair(-1, -1)));
@@ -54,14 +54,11 @@ nrp::NRP::isCoverLine(std::vector<nrp::NRP::Segment> &segments, nrpsprediction::
     for (int pos = 0; pos <= len; ++pos) {
         int lstseg = curseg;
         for (int msk = 0; msk < (1 << (toBigId.size())); ++msk) {
-            if (pos != 0 && d[pos - 1][msk] != -1 && d[pos][msk] < d[pos - 1][msk] - 1) {
-                d[pos][msk] = d[pos - 1][msk] - 1;
+            if (pos != 0 && d[pos][msk] < d[pos - 1][msk] - 2) {
+                d[pos][msk] = d[pos - 1][msk] - 2;
                 p[pos][msk].first = pos - 1;
                 p[pos][msk].second = msk;
                 pa[pos][msk] = -1;
-            }
-            if (d[pos][msk] == -1) {
-                continue;
             }
             curseg = lstseg;
 
@@ -81,7 +78,7 @@ nrp::NRP::isCoverLine(std::vector<nrp::NRP::Segment> &segments, nrpsprediction::
                     nmsk = msk | (1 << (toSmallId[segments[curseg].part_id]));
                 }
 
-                if (d[segments[curseg].r + 1][nmsk] == -1 || d[segments[curseg].r + 1][nmsk] < d[pos][msk] - 1) {
+                if (d[segments[curseg].r + 1][nmsk] < d[pos][msk] - 1) {
                     d[segments[curseg].r + 1][nmsk] = d[pos][msk] - 1;
                     p[segments[curseg].r + 1][nmsk].first = pos;
                     p[segments[curseg].r + 1][nmsk].second = msk;
@@ -93,10 +90,10 @@ nrp::NRP::isCoverLine(std::vector<nrp::NRP::Segment> &segments, nrpsprediction::
         }
     }
 
-    int mn = 0;
+    int mn = -len - 1;
     int rmsk = 0;
     for (int msk = 0; msk < (1 << (toBigId.size())); ++msk) {
-        if (mn <= d[len][msk] && d[len][msk] != -1) {
+        if (mn <= d[len][msk]) {
             mn = d[len][msk];
             rmsk = msk;
         }

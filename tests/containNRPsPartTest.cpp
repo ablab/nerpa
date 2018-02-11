@@ -102,7 +102,7 @@ namespace nrp {
             std::set<int> difseg;
             for (int i = 0 ; i < matchs.size(); ++i) {
                 if (matchs[i].first == -1) {
-                    --cnt;
+                    cnt -= 2;
                 } else {
                     difseg.insert(matchs[i].first);
                 }
@@ -371,7 +371,7 @@ namespace nrp {
             }
 
             bps.push_back(0);
-            bps.push_back(len - 1);
+            bps.push_back(len);
 
             std::sort(bps.begin(), bps.end());
 
@@ -386,10 +386,11 @@ namespace nrp {
                         } else {
                             nrpParts.push_back(getSubPart(bps[i] - 1, (bps[i] - bps[i - 1]), -1));
                         }
+                    } else {
+                        res_score -= (bps[i] - bps[i - 1]);
                     }
                 }
             }
-
             for (int i = 0; i < 10; ++i) {
                 int partlen = rand()%10 + 1;
                 nrpsprediction::NRPsPart nrps_part ("filename", "orf");
@@ -425,12 +426,12 @@ namespace nrp {
             std::sort(bps.begin(), bps.end());
 
             std::vector<nrpsprediction::NRPsPart> nrpParts;
-            int res_score = 0;
+            int res_score = -len;
             for (int i = 0; i < bps.size(); ++i) {
                 int pi = (i - 1 + bps.size()) % bps.size();
                 if (bps[i] != bps[pi]) {
                     if (rand() % 2 == 0) {
-                        res_score += (bps[i] - bps[pi] + len) % len - 1;
+                        res_score += 2*(bps[i] - bps[pi] + len) % len - 1;
                         if (rand() % 2 == 0) {
                             nrpParts.push_back(getSubPart(bps[pi], (bps[i] - bps[pi] + len) % len, 1));
                         } else {

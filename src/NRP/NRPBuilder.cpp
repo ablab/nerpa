@@ -92,6 +92,7 @@ nrp::NRP* nrp::NRPBuilder::build(std::string fragment_graph) {
 
         return new NRPtail(ver1, ver2);
     }
+    std::cerr << "Nothing\n";
 
     return nullptr;
     assert(false);

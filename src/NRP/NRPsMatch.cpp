@@ -13,7 +13,7 @@ int nrp::NRP::Match::score() {
     std::vector<int> difparts;
     for (int i = 0; i < parts_id.size(); ++i) {
         if (parts_id[i] < 0) {
-            --cnt;
+            cnt -= 2;
         } else {
             difparts.push_back(parts_id[i]);
         }
@@ -36,11 +36,7 @@ std::vector<std::pair<int, int> > nrp::NRP::Match::getMatchs() {
 void nrp::NRP::Match::print(std::ofstream &out) {
     out << nrp->get_file_name() << "\n";
     int scr = score();
-    if (scr < nrp->getLen() - 1) {
-        out << "FAIL\n";
-    } else {
-        out << "MATCH\n";
-    }
+    out << "SCORE: " << scr << "("<< nrp->getLen() << ")\n";
 
     std::vector<int> rp(parts_id.size());
     for (int i = 0; i < rp.size(); ++i) {
@@ -66,4 +62,8 @@ void nrp::NRP::Match::print(std::ofstream &out) {
 
     out << nrp->getGraphInString();
     out << "\n\n\n";
+}
+
+bool nrp::NRP::Match::operator<(nrp::NRP::Match b) {
+    return this->score() > b.score();
 }

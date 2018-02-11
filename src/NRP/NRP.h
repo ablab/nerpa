@@ -30,6 +30,8 @@ namespace nrp {
             void print(std::ofstream& out);
             int score();
             std::vector<std::pair<int, int> > getMatchs();
+
+            bool operator < (Match b);
         };
 
         struct Segment {

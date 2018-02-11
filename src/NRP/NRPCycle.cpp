@@ -27,7 +27,7 @@ nrp::NRP::Match nrp::NRPCycle::isCover(nrpsprediction::NRPsPrediction nrPsPredic
         }
     }
 
-    int best_score = 0;
+    int best_score = -len - 1;
     Match resMatchs(this, nrpparts);
 
     for (int bg = 0; bg < len; ++bg) {

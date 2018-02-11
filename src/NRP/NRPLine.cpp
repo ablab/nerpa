@@ -23,7 +23,7 @@ nrp::NRP::Match nrp::NRPLine::isCover(nrpsprediction::NRPsPrediction nrPsPredict
         }
     }
 
-    int best_score = 0;
+    int best_score = -len-1;
     Match resMatch(this, nrpparts);
 
     Match curMatch = isCoverLine(segments, nrPsPrediction, toSmallId, toBigId);
