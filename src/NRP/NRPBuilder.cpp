@@ -60,16 +60,19 @@ nrp::NRP* nrp::NRPBuilder::build(std::string fragment_graph) {
     in.close();
 
     if (isCycle(g, gr)) {
+        std::cerr << "isCycle\n";
         std::vector<int> pos = parseCycle(g, gr);
         std::vector<aminoacid::Aminoacids::Aminoacid> resaacid = aminoacids_by_pos(aminoacids, pos);
 
         return new nrp::NRPCycle(fragment_graph, strformula, resaacid, pos, graph);
     } else if (isLine(g, gr)) {
+        std::cerr << "isLine\n";
         std::vector<int> pos = parseLine(g, gr);
         std::vector<aminoacid::Aminoacids::Aminoacid> resaacid = aminoacids_by_pos(aminoacids, pos);
 
         return new NRPLine(fragment_graph, strformula, resaacid, pos, graph);
     } else if (isTail(g, gr)) {
+        std::cerr << "isTail\n";
         std::vector<int> pos_tail, pos_cycle;
         parseTail(g, gr, pos_tail, pos_cycle);
 
@@ -90,6 +93,7 @@ nrp::NRP* nrp::NRPBuilder::build(std::string fragment_graph) {
         return new NRPtail(ver1, ver2);
     }
 
+    return nullptr;
     assert(false);
 }
 
@@ -122,14 +126,26 @@ bool nrp::NRPBuilder::isCycle(std::vector<std::vector<int>> &g, std::vector<std:
 bool nrp::NRPBuilder::isLine(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr) {
     int cnt01 = 0, cnt02 = 0;
     for (int i = 0; i < (int)g.size(); ++i) {
-        if (g[i].size() == 0) {
+        if (g[i].size() == 0 && gr[i].size() != 1) {
+            return false;
+        }
+        if (g[i].size() == 0 && gr[i].size() == 1) {
             cnt01++;
+        }
+        if (g[i].size() > 1) {
+            return false;
         }
     }
 
     for (int i = 0; i < (int)gr.size(); ++i) {
-        if (gr[i].size() == 0) {
+        if (gr[i].size() == 0 && g[i].size() != 1) {
+            return false;
+        }
+        if (gr[i].size() == 0 && g[i].size() == 1) {
             cnt02++;
+        }
+        if (gr[i].size() > 1) {
+            return false;
         }
     }
 
@@ -138,9 +154,16 @@ bool nrp::NRPBuilder::isLine(std::vector<std::vector<int>> &g, std::vector<std::
 
 bool nrp::NRPBuilder::isTail(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr) {
     int cnt01 = 0, cnt02 = 0;
+    int cnt2 = 0;
     for (int i = 0; i < (int)g.size(); ++i) {
         if (g[i].size() == 0) {
             cnt01++;
+        }
+        if (g[i].size() > 2) {
+            return false;
+        }
+        if (g[i].size() == 2) {
+            cnt2 += 1;
         }
     }
 
@@ -148,9 +171,15 @@ bool nrp::NRPBuilder::isTail(std::vector<std::vector<int>> &g, std::vector<std::
         if (gr[i].size() == 0) {
             cnt02++;
         }
+        if (gr[i].size() > 2) {
+            return false;
+        }
+        if (gr[i].size() == 2) {
+            cnt2 += 1;
+        }
     }
 
-    return (cnt01 + cnt02 == 1);
+    return (cnt01 + cnt02 == 1 && cnt2 == 1);
 }
 
 std::vector<int> nrp::NRPBuilder::parseCycle(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr) {
@@ -236,6 +265,7 @@ int nrp::NRPBuilder::get_elem_id(std::string c) {
         }
     }
 
+    return ELEM_CNT;
     assert(false);
 }
 
@@ -271,6 +301,10 @@ std::vector<int> nrp::NRPBuilder::parse_formula(std::string formula) {
                 ++i;
             }
             curelem = Elem(get_elem_id(nm));
+            if (curelem == ELEM_CNT) {
+                res[0] = 179;
+                return res;
+            }
         } else {
             res[curelem] = res[curelem] * 10 + (formula[i] - '0');
         }

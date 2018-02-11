@@ -98,12 +98,16 @@ namespace nrp {
         void check_correct_score(NRP::Match match) {
             std::vector<std::pair<int, int> > matchs = match.getMatchs();
             ASSERT_EQ(matchs.size(), amnacid.size());
-            int cnt = 0;
+            int cnt = matchs.size();
+            std::set<int> difseg;
             for (int i = 0 ; i < matchs.size(); ++i) {
-                if (matchs[i].first != -1) {
-                    ++cnt;
+                if (matchs[i].first == -1) {
+                    --cnt;
+                } else {
+                    difseg.insert(matchs[i].first);
                 }
             }
+            cnt -= difseg.size();
             ASSERT_EQ(cnt, match.score());
         }
 
@@ -376,7 +380,7 @@ namespace nrp {
             for (int i = 1; i < bps.size(); ++i) {
                 if (bps[i] != bps[i - 1]) {
                     if (rand() % 2 == 0) {
-                        res_score += (bps[i] - bps[i - 1]);
+                        res_score += (bps[i] - bps[i - 1]) - 1;
                         if (rand() % 2 == 0) {
                             nrpParts.push_back(getSubPart(bps[i - 1], (bps[i] - bps[i - 1]), 1));
                         } else {
@@ -426,7 +430,7 @@ namespace nrp {
                 int pi = (i - 1 + bps.size()) % bps.size();
                 if (bps[i] != bps[pi]) {
                     if (rand() % 2 == 0) {
-                        res_score += (bps[i] - bps[pi] + len) % len;
+                        res_score += (bps[i] - bps[pi] + len) % len - 1;
                         if (rand() % 2 == 0) {
                             nrpParts.push_back(getSubPart(bps[pi], (bps[i] - bps[pi] + len) % len, 1));
                         } else {

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 #include "NRP.h"
 
 void nrp::NRP::Match::match(int pos, int part_id, int part_pos) {
@@ -8,12 +9,19 @@ void nrp::NRP::Match::match(int pos, int part_id, int part_pos) {
 }
 
 int nrp::NRP::Match::score() {
-    int cnt = 0;
+    int cnt = parts_id.size();
+    std::vector<int> difparts;
     for (int i = 0; i < parts_id.size(); ++i) {
-        if (parts_id[i] >= 0) {
-            ++cnt;
+        if (parts_id[i] < 0) {
+            --cnt;
+        } else {
+            difparts.push_back(parts_id[i]);
         }
     }
+
+    std::sort(difparts.begin(), difparts.end());
+    difparts.resize(std::unique(difparts.begin(), difparts.end()) - difparts.begin());
+    cnt -= difparts.size();
     return cnt;
 }
 
