@@ -73,3 +73,9 @@ void nrp::NRP::Match::print_short(std::ofstream &out) {
     int scr = score();
     out << scr << "("<< nrp->getLen() << "); ";
 }
+
+void nrp::NRP::Match::print_short_prediction(std::ofstream &out) {
+    out << nrpParts[0].get_file_name() << " ";
+    int scr = score();
+    out << scr << "("<< nrp->getLen() << "); ";
+}

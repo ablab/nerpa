@@ -29,6 +29,7 @@ namespace nrp {
             void match(int pos, int part_id, int part_pos);
             void print(std::ofstream& out);
             void print_short(std::ofstream& out);
+            void print_short_prediction(std::ofstream& out);
             int score();
             std::vector<std::pair<int, int> > getMatchs();
 

@@ -63,6 +63,7 @@ def gen_graphs_by_mol(args, main_out_dir):
         os.makedirs(os.path.dirname(main_out_dir + 'graphs/'))
 
     path_file = main_out_dir + "/path_to_graphs"
+    files_list = []
 
     f = open(path_file, 'w')
     with open(args.lib_info[0]) as fr:
@@ -83,9 +84,10 @@ def gen_graphs_by_mol(args, main_out_dir):
 
             os.system("print_structure " + file + " --print_rule_fragmented_graph -C "+ config_folder + " > " + main_out_dir + "graphs/" + nfname)
             f.write(("graphs/"+nfname+ " " + info))
+            files_list.append(main_out_dir + "graphs/" + nfname)
 
     f.close()
-    return path_file
+    return path_file, files_list
 
 
 def gen_abs_paths_to_prediction(args):
@@ -106,7 +108,7 @@ def run(args):
     if args.local_output_dir != None:
         main_out_dir = os.path.abspath(args.local_output_dir[0]) + "/"
 
-    path_to_graphs = gen_graphs_by_mol(args, main_out_dir)
+    path_to_graphs, files_list = gen_graphs_by_mol(args, main_out_dir)
     predictions = gen_abs_paths_to_prediction(args)
 
     directory = os.path.dirname(main_out_dir)
@@ -114,15 +116,21 @@ def run(args):
         os.makedirs(directory)
     os.chdir(directory)
 
-    if not os.path.exists(os.path.dirname('details/')):
-        os.makedirs(os.path.dirname('details/'))
+    if not os.path.exists(os.path.dirname('details_predictions/')):
+        os.makedirs(os.path.dirname('details_predictions/'))
+
+    if not os.path.exists(os.path.dirname('details_mols/')):
+        os.makedirs(os.path.dirname('details_mols/'))
 
     for prediction in predictions:
-        print(path_to_exec_dir + "/NRPsMatcher " +  prediction + " " + path_to_graphs)
-        os.system(path_to_exec_dir + "/NRPsMatcher " +  prediction + " " + path_to_graphs)
+        os.system(path_to_exec_dir + "/NRPsMatcher prediction_mols " +  prediction + " " + path_to_graphs)
         last_prediction_name=prediction.split('/')[-1]
-        os.rename("nrpsMatch", "details/" + last_prediction_name)
+        os.rename("nrpsMatch", "details_predictions/" + last_prediction_name)
 
+    for cur_nrp in files_list:
+        os.system(path_to_exec_dir + "/NRPsMatcher mol_predictions " +  args.predictions[0] + " " + cur_nrp)
+        last_name=cur_nrp.split('/')[-1]
+        os.rename("nrpsMatch", "details_mols/" + last_name)
     return
 
 args = parse_args()
