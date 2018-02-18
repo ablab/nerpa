@@ -11,6 +11,9 @@ int main(int argc, char* argv[]) {
     std::string path_to_nrps_file(argv[2]);
 
     std::ofstream out("nrpsMatch");
+    std::ofstream out_short("report", std::ofstream::out | std::ofstream::app);
+
+    out_short << prediction_file << ":  ";
 
     nrpsprediction::NRPsPrediction nrPsPrediction;
     nrPsPrediction.read_file(prediction_file);
@@ -40,12 +43,17 @@ int main(int argc, char* argv[]) {
     std::sort(nrpsMatchs.begin(), nrpsMatchs.end());
     for (int i = 0; i < nrpsMatchs.size(); ++i) {
         nrpsMatchs[i].print(out);
+        if (i < 3) {
+            nrpsMatchs[i].print_short(out_short);
+        }
     }
+    out_short << "\n";
 
     for (int i = 0; i < nrpptr.size(); ++i) {
         delete nrpptr[i];
     }
 
+    out_short.close();
     out.close();
     return 0;
 }

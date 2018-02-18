@@ -67,3 +67,9 @@ void nrp::NRP::Match::print(std::ofstream &out) {
 bool nrp::NRP::Match::operator<(nrp::NRP::Match b) {
     return this->score() > b.score();
 }
+
+void nrp::NRP::Match::print_short(std::ofstream &out) {
+    out << nrp->get_file_name() << " ";
+    int scr = score();
+    out << scr << "("<< nrp->getLen() << "); ";
+}
