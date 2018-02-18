@@ -23,3 +23,7 @@ set(SOURCE_FILES main.cpp
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})
 add_executable(NRPsMatcher ${SOURCE_FILES})
+
+install(TARGETS NRPsMatcher
+        DESTINATION bin
+        COMPONENT runtime)

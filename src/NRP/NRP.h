@@ -55,6 +55,7 @@ namespace nrp {
         std::vector <std::string> strformula;
         std::string graph;
         std::string file_name;
+        std::string extra_info;
 
         virtual Match isCoverLine(std::vector<Segment>& segments, nrpsprediction::NRPsPrediction nrPsPrediction,
                                          const std::vector<int>& toSmallId, const std::vector<int>& toBigId);
@@ -62,7 +63,9 @@ namespace nrp {
         NRP() = default;
         NRP(std::string file_name, std::vector<std::string> strformula,
             std::vector <aminoacid::Aminoacids::Aminoacid> aminoacids, std::vector<int> position,
-            std::string graph): file_name(file_name), strformula(strformula), aminoacids(aminoacids), position(position), graph(graph) {}
+            std::string graph, std::string extra_info):
+                file_name(file_name), strformula(strformula), aminoacids(aminoacids), position(position),
+                graph(graph), extra_info(extra_info) {}
 
         virtual std::vector<Segment> containNRPsPart(nrpsprediction::NRPsPart predict_part) = 0;
 
@@ -74,6 +77,7 @@ namespace nrp {
 
         std::string getGraphInString();
         std::string get_file_name();
+        std::string get_extra_info();
 
         virtual Match isCover(nrpsprediction::NRPsPrediction nrPsPrediction) = 0;
     };

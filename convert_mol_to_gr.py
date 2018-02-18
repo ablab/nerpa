@@ -22,6 +22,6 @@ with open(lib_info_file) as fr:
         print(nfname)
         print(info)
         os.system(path_to_soft + " " + path_to_db_dir + "/" + file + " --print_rule_fragmented_graph > graphs/" + nfname)
-        f.write(("graphs/"+nfname+ " " + info +"\n"))
+        f.write(("graphs/"+nfname+ " " + info))
 
 f.close()

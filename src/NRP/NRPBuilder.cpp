@@ -9,7 +9,7 @@
 
 const std::string nrp::NRPBuilder::ELEM_NAME[ELEM_CNT] = {"C", "H", "Cl", "N", "O", "S"};
 
-nrp::NRP* nrp::NRPBuilder::build(std::string fragment_graph) {
+nrp::NRP* nrp::NRPBuilder::build(std::string fragment_graph, std::string extra_info) {
     std::ifstream in(fragment_graph);
     std::string s;
     std::vector<std::string> strformula;
@@ -64,13 +64,13 @@ nrp::NRP* nrp::NRPBuilder::build(std::string fragment_graph) {
         std::vector<int> pos = parseCycle(g, gr);
         std::vector<aminoacid::Aminoacids::Aminoacid> resaacid = aminoacids_by_pos(aminoacids, pos);
 
-        return new nrp::NRPCycle(fragment_graph, strformula, resaacid, pos, graph);
+        return new nrp::NRPCycle(fragment_graph, strformula, resaacid, pos, graph, extra_info);
     } else if (isLine(g, gr)) {
         std::cerr << "isLine\n";
         std::vector<int> pos = parseLine(g, gr);
         std::vector<aminoacid::Aminoacids::Aminoacid> resaacid = aminoacids_by_pos(aminoacids, pos);
 
-        return new NRPLine(fragment_graph, strformula, resaacid, pos, graph);
+        return new NRPLine(fragment_graph, strformula, resaacid, pos, graph, extra_info);
     } else if (isTail(g, gr)) {
         std::cerr << "isTail\n";
         std::vector<int> pos_tail, pos_cycle;
@@ -88,7 +88,7 @@ nrp::NRP* nrp::NRPBuilder::build(std::string fragment_graph) {
         std::vector<aminoacid::Aminoacids::Aminoacid> resaacid1 = aminoacids_by_pos(aminoacids, pos1);
         std::vector<aminoacid::Aminoacids::Aminoacid> resaacid2 = aminoacids_by_pos(aminoacids, pos2);
 
-        NRPLine ver1(fragment_graph, strformula, resaacid1, pos1, graph), ver2(fragment_graph, strformula, resaacid2, pos2, graph);
+        NRPLine ver1(fragment_graph, strformula, resaacid1, pos1, graph, extra_info), ver2(fragment_graph, strformula, resaacid2, pos2, graph, extra_info);
 
         return new NRPtail(ver1, ver2);
     }

@@ -17,9 +17,6 @@ namespace nrp {
         static std::vector<int> parse_formula(std::string formula);
         static std::string to_string(std::vector<int> formula);
 
-    public:
-        static NRP* build(std::string fragment_graph);
-
         static bool isCycle(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr);
 
         static bool isLine(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr);
@@ -32,6 +29,9 @@ namespace nrp {
 
         static void parseTail(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr, std::vector<int> &tail,
                               std::vector<int> &cycle);
+
+    public:
+        static NRP* build(std::string fragment_graph, std::string extra_info);
     };
 }
 

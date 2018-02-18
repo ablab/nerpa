@@ -34,7 +34,7 @@ std::vector<std::pair<int, int> > nrp::NRP::Match::getMatchs() {
 }
 
 void nrp::NRP::Match::print(std::ofstream &out) {
-    out << nrp->get_file_name() << "\n";
+    out << nrp->get_file_name() << " " << nrp->get_extra_info() << "\n";
     int scr = score();
     out << "SCORE: " << scr << "("<< nrp->getLen() << ")\n";
 

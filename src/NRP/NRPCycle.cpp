@@ -3,9 +3,9 @@
 
 nrp::NRPCycle::NRPCycle(const std::string &file_name, const std::vector<std::string> &strformula,
                         const std::vector<aminoacid::Aminoacids::Aminoacid> &aminoacids,
-                        const std::vector<int> &position, const std::string &graph) : NRP(file_name, strformula,
+                        const std::vector<int> &position, const std::string &graph, const std::string& extra_info) : NRP(file_name, strformula,
                                                                                           aminoacids, position,
-                                                                                          graph) {
+                                                                                          graph, extra_info) {
 }
 
 nrp::NRP::Match nrp::NRPCycle::isCover(nrpsprediction::NRPsPrediction nrPsPrediction) {

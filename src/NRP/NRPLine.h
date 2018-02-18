@@ -8,7 +8,7 @@ namespace nrp {
     public:
         NRPLine(const std::string &file_name, const std::vector<std::string> &strformula,
                 const std::vector<aminoacid::Aminoacids::Aminoacid> &aminoacids, const std::vector<int> &position,
-                const std::string &graph);
+                const std::string &graph, const std::string& extra_info);
 
         Match isCover(nrpsprediction::NRPsPrediction nrPsPrediction) override;
 

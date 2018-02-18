@@ -129,3 +129,7 @@ nrp::NRP::isCoverLine(std::vector<nrp::NRP::Segment> &segments, nrpsprediction::
 
     return nrPsMatch;
 }
+
+std::string nrp::NRP::get_extra_info() {
+    return extra_info;
+}
