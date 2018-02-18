@@ -57,7 +57,7 @@ namespace nrp {
 
             std::random_shuffle(position.begin(), position.end());
 
-            NRPCycle res("", strformula, amnacid, position, "");
+            NRPCycle res("", strformula, amnacid, position, "", "");
             res.aminoacids = amnacid;
             return res;
         }
@@ -74,7 +74,7 @@ namespace nrp {
 
             std::random_shuffle(position.begin(), position.end());
 
-            NRPLine res("", strformula, amnacid, position, "");
+            NRPLine res("", strformula, amnacid, position, "", "");
             res.aminoacids = amnacid;
             return res;
         }

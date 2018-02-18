@@ -59,12 +59,12 @@ def which(program):
     return None
 
 def gen_graphs_by_mol(args, main_out_dir):
-    if not os.path.exists(os.path.dirname(main_out_dir + 'graphs')):
-        os.makedirs(os.path.dirname(main_out_dir + 'graphs'))
+    if not os.path.exists(os.path.dirname(main_out_dir + 'graphs/')):
+        os.makedirs(os.path.dirname(main_out_dir + 'graphs/'))
 
     path_file = main_out_dir + "/path_to_graphs"
 
-    f = open(path_file)
+    f = open(path_file, 'w')
     with open(args.lib_info[0]) as fr:
         for line in fr:
             line_parts = line.split(' ')
@@ -75,14 +75,13 @@ def gen_graphs_by_mol(args, main_out_dir):
             prfix_to_search = ["./", "../", "../../", "../share/", "../share/npdtools/" ]
             config_folder = "configs"
             fragmintation_rule_folder = "Fragmentation_rule"
-            path_to_program = which("print_structure")
+            path_to_program = which("print_structure")[:-15]
 
             for prefix in prfix_to_search:
-                if (os.path.exists(path_to_program + prfix_to_search + fragmintation_rule_folder)):
-                    config_folder = path_to_program + prfix_to_search + config_folder
-                    fragmintation_rule_folder = path_to_program + prfix_to_search + fragmintation_rule_folder
+                if (os.path.exists(path_to_program + prefix + fragmintation_rule_folder)):
+                    config_folder = path_to_program + prefix
 
-            os.system("print_structure " + file + " --print_rule_fragmented_graph -C "+ config_folder + " -f " + fragmintation_rule_folder + " > " + main_out_dir + "graphs/" + nfname)
+            os.system("print_structure " + file + " --print_rule_fragmented_graph -C "+ config_folder + " > " + main_out_dir + "graphs/" + nfname)
             f.write(("graphs/"+nfname+ " " + info))
 
     f.close()
@@ -93,6 +92,8 @@ def gen_abs_paths_to_prediction(args):
     predictions = []
     with open(args.predictions[0]) as f:
         for line in f:
+            if (line[-1] == '\n'):
+                line = line[:-1]
             if line[0] == '/':
                 predictions.append(line)
             else:
@@ -113,10 +114,11 @@ def run(args):
         os.makedirs(directory)
     os.chdir(directory)
 
-    if not os.path.exists(os.path.dirname('details')):
-        os.makedirs(os.path.dirname('details'))
+    if not os.path.exists(os.path.dirname('details/')):
+        os.makedirs(os.path.dirname('details/'))
 
     for prediction in predictions:
+        print(path_to_exec_dir + "/NRPsMatcher " +  prediction + " " + path_to_graphs)
         os.system(path_to_exec_dir + "/NRPsMatcher " +  prediction + " " + path_to_graphs)
         last_prediction_name=prediction.split('/')[-1]
         os.rename("nrpsMatch", "details/" + last_prediction_name)
