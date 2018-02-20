@@ -80,7 +80,7 @@ namespace aminoacid {
     //TODO finish formuls, sure have mis
     const std::string Aminoacids::AMINOACID_NAMES[Aminoacids::AMINOACID_CNT] = {"trp", "ser", "gly", "uda", "thr",
                                                                                 "dhp", "gln", "dab", "arg", "lys",
-                                                                                "ala_d", "phe", "val", "cha", "dhpg",
+                                                                                "ala-d", "phe", "val", "cha", "dhpg",
                                                                                 "phg", "his", "aeo", "bmt", "hse",
                                                                                 "met", "ala", "tcl", "sal", "allothr",
                                                                                 "b-ala", "dhb", "ile", "end", "leu",

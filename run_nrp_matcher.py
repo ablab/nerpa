@@ -82,6 +82,7 @@ def gen_graphs_by_mol(args, main_out_dir):
                 if (os.path.exists(path_to_program + prefix + fragmintation_rule_folder)):
                     config_folder = path_to_program + prefix
 
+            print("print_structure " + file + " --print_rule_fragmented_graph -C "+ config_folder + " > " + main_out_dir + "graphs/" + nfname)
             os.system("print_structure " + file + " --print_rule_fragmented_graph -C "+ config_folder + " > " + main_out_dir + "graphs/" + nfname)
             f.write(("graphs/"+nfname+ " " + info))
             files_list.append(main_out_dir + "graphs/" + nfname)
@@ -123,14 +124,17 @@ def run(args):
         os.makedirs(os.path.dirname('details_mols/'))
 
     for prediction in predictions:
+        print(path_to_exec_dir + "/NRPsMatcher prediction_mols " +  prediction + " " + path_to_graphs + "\n")
         os.system(path_to_exec_dir + "/NRPsMatcher prediction_mols " +  prediction + " " + path_to_graphs)
         last_prediction_name=prediction.split('/')[-1]
         os.rename("nrpsMatch", "details_predictions/" + last_prediction_name)
 
     for cur_nrp in files_list:
+        print(path_to_exec_dir + "/NRPsMatcher mol_predictions " +  args.predictions[0] + " " + cur_nrp + "\n")
         os.system(path_to_exec_dir + "/NRPsMatcher mol_predictions " +  args.predictions[0] + " " + cur_nrp)
         last_name=cur_nrp.split('/')[-1]
         os.rename("nrpsMatch", "details_mols/" + last_name)
+
     return
 
 args = parse_args()

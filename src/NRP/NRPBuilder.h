@@ -32,6 +32,10 @@ namespace nrp {
 
     public:
         static NRP* build(std::string fragment_graph, std::string extra_info);
+
+        static bool isConnected(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr);
+
+        static void dfs(int v, std::vector<int> &used, std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr);
     };
 }
 

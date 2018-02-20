@@ -49,7 +49,6 @@ void run_prediction_mols_mode(char* argv[]) {
         }
     }
     out_short << "\n";
-
     for (int i = 0; i < nrpptr.size(); ++i) {
         delete nrpptr[i];
     }

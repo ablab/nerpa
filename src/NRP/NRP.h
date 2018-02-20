@@ -6,6 +6,7 @@
 #include "../Aminoacid/Aminoacids.h"
 #include "../NRPsPrediction/NRPsPart.h"
 #include <iostream>
+#include "assert.h"
 
 namespace nrp {
     class NRP;
@@ -67,7 +68,9 @@ namespace nrp {
             std::vector <aminoacid::Aminoacids::Aminoacid> aminoacids, std::vector<int> position,
             std::string graph, std::string extra_info):
                 file_name(file_name), strformula(strformula), aminoacids(aminoacids), position(position),
-                graph(graph), extra_info(extra_info) {}
+                graph(graph), extra_info(extra_info) {
+            assert(position.size() == aminoacids.size());
+        }
 
         virtual std::vector<Segment> containNRPsPart(nrpsprediction::NRPsPart predict_part) = 0;
 

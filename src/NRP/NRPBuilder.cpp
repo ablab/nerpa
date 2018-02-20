@@ -59,20 +59,21 @@ nrp::NRP* nrp::NRPBuilder::build(std::string fragment_graph, std::string extra_i
 
     in.close();
 
+    if (!isConnected(g, gr)) {
+        return nullptr;
+    }
+
     if (isCycle(g, gr)) {
-        std::cerr << "isCycle\n";
         std::vector<int> pos = parseCycle(g, gr);
         std::vector<aminoacid::Aminoacids::Aminoacid> resaacid = aminoacids_by_pos(aminoacids, pos);
 
         return new nrp::NRPCycle(fragment_graph, strformula, resaacid, pos, graph, extra_info);
     } else if (isLine(g, gr)) {
-        std::cerr << "isLine\n";
         std::vector<int> pos = parseLine(g, gr);
         std::vector<aminoacid::Aminoacids::Aminoacid> resaacid = aminoacids_by_pos(aminoacids, pos);
 
         return new NRPLine(fragment_graph, strformula, resaacid, pos, graph, extra_info);
     } else if (isTail(g, gr)) {
-        std::cerr << "isTail\n";
         std::vector<int> pos_tail, pos_cycle;
         parseTail(g, gr, pos_tail, pos_cycle);
 
@@ -92,7 +93,6 @@ nrp::NRP* nrp::NRPBuilder::build(std::string fragment_graph, std::string extra_i
 
         return new NRPtail(ver1, ver2);
     }
-    std::cerr << "Nothing\n";
 
     return nullptr;
     assert(false);
@@ -318,4 +318,33 @@ std::vector<int> nrp::NRPBuilder::parse_formula(std::string formula) {
     }
 
     return res;
+}
+
+bool nrp::NRPBuilder::isConnected(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr) {
+    std::vector<int> used(g.size(), 0);
+    dfs(0, used, g, gr);
+    for (int i = 0; i < g.size(); ++i) {
+        if (used[i] == 0) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void nrp::NRPBuilder::dfs(int v, std::vector<int> &used, std::vector<std::vector<int>> &g,
+                          std::vector<std::vector<int>> &gr) {
+    used[v] = 1;
+    for (int i = 0; i < g[v].size(); ++i) {
+        if (used[g[v][i]] == 0) {
+            dfs(g[v][i], used, g, gr);
+        }
+    }
+
+
+    for (int i = 0; i < gr[v].size(); ++i) {
+        if (used[gr[v][i]] == 0) {
+            dfs(gr[v][i], used, g, gr);
+        }
+    }
 }
