@@ -69,7 +69,6 @@ void run_mol_predictions_mode(char* argv[]) {
         return;
     }
 
-    out_short << nrp_file << ":  ";
 
     std::ifstream in_predictions_files(path_to_predictions_file);
 
@@ -87,6 +86,11 @@ void run_mol_predictions_mode(char* argv[]) {
     }
 
     std::sort(nrpsMatchs.begin(), nrpsMatchs.end());
+
+    if (nrpsMatchs.size() > 0 && nrpsMatchs[0].score() > 2) {
+        out_short << nrp_file << ":  ";
+    }
+
     for (int i = 0; i < nrpsMatchs.size(); ++i) {
         nrpsMatchs[i].print(out);
         if (i < 3) {
@@ -94,7 +98,9 @@ void run_mol_predictions_mode(char* argv[]) {
         }
     }
 
-    out_short << "\n";
+    if (nrpsMatchs.size() > 0 && nrpsMatchs[0].score() > 2) {
+        out_short << "\n";
+    }
     delete nrp_from_fragment_graph;
 
     out_short.close();

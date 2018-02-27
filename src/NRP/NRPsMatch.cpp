@@ -12,8 +12,11 @@ int nrp::NRP::Match::score() {
     int cnt = parts_id.size();
     std::vector<int> difparts;
     for (int i = 0; i < parts_id.size(); ++i) {
+        if (parts_id[i] < 0 && (i == 0 || parts_id[i - 1] >= 0)) {
+            cnt -= 1;
+        }
         if (parts_id[i] < 0) {
-            cnt -= 2;
+            cnt -= 1;
         } else {
             difparts.push_back(parts_id[i]);
         }
@@ -76,6 +79,8 @@ void nrp::NRP::Match::print_short(std::ofstream &out) {
 
 void nrp::NRP::Match::print_short_prediction(std::ofstream &out) {
     if (nrpParts.size() == 0) return;
+    if (score() < 3) return;
+
     out << nrpParts[0].get_file_name() << " ";
     int scr = score();
     out << scr << "("<< nrp->getLen() << "); ";
