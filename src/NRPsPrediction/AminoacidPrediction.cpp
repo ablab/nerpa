@@ -67,3 +67,26 @@ nrpsprediction::AminoacidPrediction::getAminoacid(aminoacid::Aminoacids::Aminoac
 
     return AminoacidProb(aminoacid::Aminoacids::AMINOACID_CNT, 0);
 }
+
+std::pair<int, int> nrpsprediction::AminoacidPrediction::getAmnAcidPos(aminoacid::Aminoacids::Aminoacid aminoacid) {
+    double  prb = 0;
+    for (int i = 0; i < (int)aminoacid_prediction.size(); ++i) {
+        if (aminoacid::Aminoacids::same(aminoacid_prediction[i].aminoacid, aminoacid)) {
+            prb = aminoacid_prediction[i].prob;
+            break;
+        }
+    }
+    int bg = -1;
+    int ed = -1;
+
+    for (int i = 0; i < (int)aminoacid_prediction.size(); ++i) {
+        if ((prb - aminoacid_prediction[i].prob) < EPS) {
+            if (bg == -1) {
+                bg = i;
+            }
+            ed = i;
+        }
+    }
+
+    return std::make_pair(bg, ed);
+}

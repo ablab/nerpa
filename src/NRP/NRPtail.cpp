@@ -17,3 +17,7 @@ std::vector<nrp::NRP::Segment> nrp::NRPtail::containNRPsPart(nrpsprediction::NRP
     seg1.insert(seg1.end(), seg2.begin(), seg2.end());
     return seg1;
 }
+
+nrp::NRP::NRPType nrp::NRPtail::getType() {
+    return NRP::branch_cycle;
+}

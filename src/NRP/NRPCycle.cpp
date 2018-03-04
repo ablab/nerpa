@@ -88,3 +88,7 @@ std::vector<nrp::NRP::Segment> nrp::NRPCycle::containNRPsPart(nrpsprediction::NR
 
     return res;
 }
+
+nrp::NRP::NRPType nrp::NRPCycle::getType() {
+    return NRP::cycle;
+}

@@ -28,9 +28,9 @@ namespace nrp {
             }
 
             void match(int pos, int part_id, int part_pos);
-            void print(std::ofstream& out);
-            void print_short(std::ofstream& out);
-            void print_short_prediction(std::ofstream& out);
+            void print(std::ofstream& out, double normScore);
+            void print_short(std::ofstream& out, double normScore);
+            void print_short_prediction(std::ofstream& out, double normScore);
             int score();
             std::vector<std::pair<int, int> > getMatchs();
 
@@ -63,6 +63,7 @@ namespace nrp {
         virtual Match isCoverLine(std::vector<Segment>& segments, nrpsprediction::NRPsPrediction nrPsPrediction,
                                          const std::vector<int>& toSmallId, const std::vector<int>& toBigId);
     public:
+        enum NRPType {cycle, line, branch_cycle};
         NRP() = default;
         NRP(std::string file_name, std::vector<std::string> strformula,
             std::vector <aminoacid::Aminoacids::Aminoacid> aminoacids, std::vector<int> position,
@@ -85,6 +86,7 @@ namespace nrp {
         std::string get_extra_info();
 
         virtual Match isCover(nrpsprediction::NRPsPrediction nrPsPrediction) = 0;
+        virtual NRPType getType() = 0;
     };
 
 }

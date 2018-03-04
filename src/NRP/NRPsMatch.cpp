@@ -36,10 +36,14 @@ std::vector<std::pair<int, int> > nrp::NRP::Match::getMatchs() {
     return res;
 }
 
-void nrp::NRP::Match::print(std::ofstream &out) {
+void nrp::NRP::Match::print(std::ofstream &out, double normScore) {
     out << nrp->get_file_name() << " " << nrp->get_extra_info() << "\n";
+    if (nrpParts.size() > 0) {
+        out << nrpParts[0].get_file_name() << "\n";
+    }
     int scr = score();
     out << "SCORE: " << scr << "("<< nrp->getLen() << ")\n";
+    out << "NORMALIZE SCORE: " << normScore << "\n";
 
     std::vector<int> rp(parts_id.size());
     for (int i = 0; i < rp.size(); ++i) {
@@ -58,7 +62,9 @@ void nrp::NRP::Match::print(std::ofstream &out) {
         } else {
             nrpsprediction::AminoacidPrediction amn_pred = nrpParts[parts_id[ri]].getAminoacidsPrediction()[parts_pos[ri]];
             nrpsprediction::AminoacidPrediction::AminoacidProb amprob = amn_pred.getAminoacid(nrp->getAminoacid(ri));
-            out << aminoacid::Aminoacids::AMINOACID_NAMES[amprob.aminoacid] << " "
+            std::pair<int, int> pos = amn_pred.getAmnAcidPos((nrp->getAminoacid(ri)));
+            out << aminoacid::Aminoacids::AMINOACID_NAMES[amprob.aminoacid] << "("  << amprob.prob <<"; "
+                << pos.first << "-" << pos.second << ") "
                 << nrpParts[parts_id[ri]].get_orf_name() << " " << parts_pos[ri] << "\n";
         }
     }
@@ -71,17 +77,14 @@ bool nrp::NRP::Match::operator<(nrp::NRP::Match b) {
     return this->score() > b.score();
 }
 
-void nrp::NRP::Match::print_short(std::ofstream &out) {
+void nrp::NRP::Match::print_short(std::ofstream &out, double normScore) {
     out << nrp->get_file_name() << " ";
-    int scr = score();
-    out << scr << "("<< nrp->getLen() << "); ";
+    out << normScore << "; ";
 }
 
-void nrp::NRP::Match::print_short_prediction(std::ofstream &out) {
+void nrp::NRP::Match::print_short_prediction(std::ofstream &out, double normScore) {
     if (nrpParts.size() == 0) return;
-    if (score() < 3) return;
 
     out << nrpParts[0].get_file_name() << " ";
-    int scr = score();
-    out << scr << "("<< nrp->getLen() << "); ";
+    out << normScore << "; ";
 }

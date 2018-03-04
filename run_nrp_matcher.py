@@ -123,18 +123,8 @@ def run(args):
     if not os.path.exists(os.path.dirname('details_mols/')):
         os.makedirs(os.path.dirname('details_mols/'))
 
-    for prediction in predictions:
-        print(path_to_exec_dir + "/NRPsMatcher prediction_mols " +  prediction + " " + path_to_graphs + "\n")
-        os.system(path_to_exec_dir + "/NRPsMatcher prediction_mols " +  prediction + " " + path_to_graphs)
-        last_prediction_name=prediction.split('/')[-1]
-        os.rename("nrpsMatch", "details_predictions/" + last_prediction_name)
-
-    for cur_nrp in files_list:
-        print(path_to_exec_dir + "/NRPsMatcher mol_predictions " +  args.predictions[0] + " " + cur_nrp + "\n")
-        os.system(path_to_exec_dir + "/NRPsMatcher mol_predictions " +  args.predictions[0] + " " + cur_nrp)
-        last_name=cur_nrp.split('/')[-1]
-        os.rename("nrpsMatch", "details_mols/" + last_name)
-
+    print(path_to_exec_dir + "/NRPsMatcher " +  args.predictions[0] + " " + path_to_graphs + "\n")
+    os.system(path_to_exec_dir + "/NRPsMatcher " +  args.predictions[0] + " " + path_to_graphs + "\n")
     return
 
 args = parse_args()

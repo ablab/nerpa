@@ -71,3 +71,7 @@ std::vector<nrp::NRP::Segment> nrp::NRPLine::containNRPsPart(nrpsprediction::NRP
 
     return res;
 }
+
+nrp::NRP::NRPType nrp::NRPLine::getType() {
+    return NRP::line;
+}

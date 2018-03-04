@@ -31,6 +31,7 @@ namespace nrpsprediction {
         std::pair<std::string, double> parse_token(std::string token);
         bool contain(aminoacid::Aminoacids::Aminoacid aminoacid);
         AminoacidProb getAminoacid(aminoacid::Aminoacids::Aminoacid aminoacid);
+        std::pair<int, int> getAmnAcidPos(aminoacid::Aminoacids::Aminoacid aminoacid);
     };
 }
 

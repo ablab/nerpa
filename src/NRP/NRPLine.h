@@ -13,6 +13,8 @@ namespace nrp {
         Match isCover(nrpsprediction::NRPsPrediction nrPsPrediction) override;
 
         std::vector<Segment> containNRPsPart(nrpsprediction::NRPsPart predict_part) override;
+
+        NRPType getType() override;
     };
 }
 

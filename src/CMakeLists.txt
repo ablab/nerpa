@@ -19,7 +19,12 @@ set(SOURCE_FILES main.cpp
         NRP/NRPLine.h
         NRP/NRPLine.cpp
         NRP/NRPtail.h
-        NRP/NRPtail.cpp)
+        NRP/NRPtail.cpp
+        NRP/NRPGenerator.h
+        NRP/NRPGenerator.cpp
+        NormalizedMatch/NormalizedMatch.h
+        NormalizedMatch/NormalizedMatch.cpp)
+
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})
 add_executable(NRPsMatcher ${SOURCE_FILES})
