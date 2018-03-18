@@ -42,7 +42,7 @@ nrp::NRP::isCoverLine(std::vector<nrp::NRP::Segment> &segments, nrpsprediction::
     int len = this->getLen();
     std::sort(segments.begin(), segments.end());
 
-    std::vector<std::vector<std::vector<int> > > d(len + 1, std::vector<std::vector<int> >((1 << toBigId.size()), std::vector<int>(2, -len - 1)));
+    std::vector<std::vector<std::vector<double> > > d(len + 1, std::vector<std::vector<double> >((1 << toBigId.size()), std::vector<double>(2, -len - 1)));
     std::vector<std::vector<std::pair<int, int> > > p(len + 1,
                                                       std::vector<std::pair<int, int> >((1 << toBigId.size()),
                                                                                         std::make_pair(-1, -1)));
@@ -82,8 +82,8 @@ nrp::NRP::isCoverLine(std::vector<nrp::NRP::Segment> &segments, nrpsprediction::
                 }
 
                 for (int gp = 0; gp < 2; ++gp) {
-                    if (d[segments[curseg].r + 1][nmsk][1] < d[pos][msk][gp] - 1) {
-                        d[segments[curseg].r + 1][nmsk][1] = d[pos][msk][gp] - 1;
+                    if (d[segments[curseg].r + 1][nmsk][1] < d[pos][msk][gp] - 1 - (segments[curseg].r + 1 - pos) + segments[curseg].scor) {
+                        d[segments[curseg].r + 1][nmsk][1] = d[pos][msk][gp] - 1 - (segments[curseg].r + 1 - pos) + segments[curseg].scor;
                         p[segments[curseg].r + 1][nmsk].first = pos;
                         p[segments[curseg].r + 1][nmsk].second = msk;
                         pa[segments[curseg].r + 1][nmsk] = curseg;

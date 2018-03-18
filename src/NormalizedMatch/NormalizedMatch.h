@@ -8,21 +8,24 @@ namespace normalized_match {
     using namespace nrp;
     class NormalizedMatch {
     private:
-        const int CNT_GEN = 100;
+        static const int CNT_GEN;
+        static const double EPS;
         double score = 0;
 
         NRP::Match match;
     public:
+        NormalizedMatch() = default;
         NormalizedMatch(NRP::Match match, NRPGenerator generator, nrpsprediction::NRPsPrediction prediction, NRP* mol);
         void print(std::ofstream& out);
         void print_short(std::ofstream& out);
         void print_short_prediction(std::ofstream& out);
+        void print_csv(std::ofstream& out);
 
-        double calcMean(std::vector<int> score);
+        double calcMean(std::vector<double> score);
 
-        double calcSD(std::vector<int> score, double mean);
+        double calcSD(std::vector<double> score, double mean);
 
-        bool operator < (NormalizedMatch b);
+        bool operator < (const NormalizedMatch &b) const;
     };
 }
 

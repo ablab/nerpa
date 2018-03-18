@@ -1,5 +1,9 @@
 #include <sstream>
+#include <cmath>
 #include "AminoacidPrediction.h"
+
+
+const double nrpsprediction::AminoacidPrediction::EPS = 1e-4;
 
 nrpsprediction::AminoacidPrediction::AminoacidPrediction(int pos, std::string predict_aminoacids) {
     std::stringstream ss(predict_aminoacids);
@@ -18,7 +22,7 @@ nrpsprediction::AminoacidPrediction::AminoacidPrediction(int pos, std::string pr
         aacids.push_back(parse_token(tokens[i]));
     }
 
-    double val = aacids[2].second;
+    double val = std::max(aacids[2].second, 60.);
 
     for (int i = 0; i < aacids.size(); ++i) {
         if (aacids[i].second >= val - EPS) {
@@ -80,7 +84,7 @@ std::pair<int, int> nrpsprediction::AminoacidPrediction::getAmnAcidPos(aminoacid
     int ed = -1;
 
     for (int i = 0; i < (int)aminoacid_prediction.size(); ++i) {
-        if ((prb - aminoacid_prediction[i].prob) < EPS) {
+        if (fabs(prb - aminoacid_prediction[i].prob) < EPS) {
             if (bg == -1) {
                 bg = i;
             }
@@ -89,4 +93,25 @@ std::pair<int, int> nrpsprediction::AminoacidPrediction::getAmnAcidPos(aminoacid
     }
 
     return std::make_pair(bg, ed);
+}
+
+double nrpsprediction::AminoacidPrediction::getScore(aminoacid::Aminoacids::Aminoacid aminoacid) {
+    double posscore[100];
+    double curscore = 1;
+    for (int i = 0; i < 100; ++i) {
+        posscore[i] = curscore;
+        curscore /= 1.25;
+    }
+    std::pair<int, int> position = getAmnAcidPos(aminoacid);
+    nrpsprediction::AminoacidPrediction::AminoacidProb prob = getAminoacid(aminoacid);
+
+    if (position.first == -1) {
+        return 0;
+    } else {
+        int mdpos = (position.first + position.second)/2;
+        if (mdpos >= 10) {
+            return 0;
+        }
+        return prob.prob/100. * posscore[mdpos];
+    }
 }

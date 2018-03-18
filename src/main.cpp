@@ -18,11 +18,11 @@ std::vector<nrpsprediction::NRPsPrediction>  save_predictions(char* file_name) {
     std::string cur_line;
 
     while(getline(in_predictions_files, cur_line)) {
-        std::stringstream ss(cur_line);
-        ss >> cur_prediction_file;
+        //std::stringstream ss(cur_line);
+        //ss >> cur_prediction_file;
 
         nrpsprediction::NRPsPrediction nrPsPrediction;
-        nrPsPrediction.read_file(cur_prediction_file);
+        nrPsPrediction.read_file(cur_line);
 
         preds.push_back(nrPsPrediction);
     }
@@ -46,7 +46,6 @@ std::vector<nrp::NRP*> save_mols(char* file_name) {
         if (nrp_from_fragment_graph == nullptr) {
             continue;
         }
-
         mols.push_back(nrp_from_fragment_graph);
     }
 
@@ -58,7 +57,6 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::N
     if (pred.getNrpsParts().size() == 0) return;
     std::ofstream out(output_filename);
     std::ofstream out_short("report_predictions", std::ofstream::out | std::ofstream::app);
-
 
     std::vector<normalized_match::NormalizedMatch> nrpsMatchs;
     for (int i = 0; i < mols.size(); ++i) {
@@ -88,7 +86,6 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::N
 
 void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp::NRP* mol,
                          nrp::NRPGenerator nrpGenerator, std::string output_filename) {
-    std::ofstream out(output_filename);
     std::ofstream out_short("report_mols", std::ofstream::out | std::ofstream::app);
 
     std::vector<normalized_match::NormalizedMatch> nrpsMatchs;
@@ -100,22 +97,24 @@ void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp:
     }
 
     std::sort(nrpsMatchs.begin(), nrpsMatchs.end());
-    if (nrpsMatchs.size() > 0) {
-        out_short << mol->get_file_name() << ":  ";
+    if (nrpsMatchs.size() == 0) {
+        return;
     }
+    std::ofstream out(output_filename);
+    out_short << mol->get_file_name() << ":  ";
 
+    std::ofstream out_csv("report.csv", std::ofstream::out | std::ofstream::app);
     for (int i = 0; i < nrpsMatchs.size(); ++i) {
         nrpsMatchs[i].print(out);
+        nrpsMatchs[i].print_csv(out_csv);
         if (i < 3) {
             nrpsMatchs[i].print_short_prediction(out_short);
         }
     }
-
-    if (nrpsMatchs.size() > 0) {
-        out_short << "\n";
-    }
+    out_short << "\n";
 
     out_short.close();
+    out_csv.close();
     out.close();
 }
 
@@ -140,12 +139,18 @@ int main(int argc, char* argv[]) {
     std::vector<nrp::NRP*> mols = save_mols(argv[2]);
     nrp::NRPGenerator nrpGenerator(mols);
     for (int i = 0; i < preds.size(); ++i) {
+        std::cerr << "pred " << i << "\n";
         if (preds[i].getNrpsParts().size() == 0) continue;
-        std::string output_filename = gen_filename(preds[i].getNrpsParts()[0].get_file_name(), "details_pred/");
+        std::string output_filename = gen_filename(preds[i].getNrpsParts()[0].get_file_name(), "details_predictions/");
         run_prediction_mols(preds[i], mols, nrpGenerator, output_filename);
     }
+    std::ofstream out_csv("report.csv");
+    out_csv << "score,normalize score,peptide,nrp len,match cnt,all matched,mol id,prediction id\n";
+    out_csv.close();
+
     for (int i = 0; i < mols.size(); ++i) {
-        std::string output_filename = gen_filename(mols[i]->get_file_name(), "details_mol/");
+        std::cerr << "mol " << i << "\n";
+        std::string output_filename = gen_filename(mols[i]->get_file_name(), "details_mols/");
         run_mol_predictions(preds, mols[i], nrpGenerator, output_filename);
     }
 

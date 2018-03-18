@@ -22,7 +22,7 @@ namespace nrpsprediction {
                 aminoacid = aacid;
             }
         };
-        const double EPS = 1e-4;
+        static const double EPS;
     private:
         int pos;
         std::vector<AminoacidProb> aminoacid_prediction;
@@ -30,6 +30,7 @@ namespace nrpsprediction {
         AminoacidPrediction(int pos, std::string predict_aminoacids);
         std::pair<std::string, double> parse_token(std::string token);
         bool contain(aminoacid::Aminoacids::Aminoacid aminoacid);
+        double getScore(aminoacid::Aminoacids::Aminoacid aminoacid);
         AminoacidProb getAminoacid(aminoacid::Aminoacids::Aminoacid aminoacid);
         std::pair<int, int> getAmnAcidPos(aminoacid::Aminoacids::Aminoacid aminoacid);
     };

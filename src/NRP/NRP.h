@@ -31,7 +31,8 @@ namespace nrp {
             void print(std::ofstream& out, double normScore);
             void print_short(std::ofstream& out, double normScore);
             void print_short_prediction(std::ofstream& out, double normScore);
-            int score();
+            void print_csv(std::ofstream& out, double normScore);
+            double score();
             std::vector<std::pair<int, int> > getMatchs();
 
             bool operator < (Match b);
@@ -42,9 +43,10 @@ namespace nrp {
             int r;
             int part_id;
             bool rev;
+            double scor;
 
             Segment(){}
-            Segment(int l, int r, int id, bool rev): l(l), r(r), part_id(id), rev(rev) {}
+            Segment(int l, int r, int id, bool rev, double scor): l(l), r(r), part_id(id), rev(rev), scor(scor) {}
 
             bool operator < (Segment b) {
                 return l < b.l;
@@ -75,15 +77,21 @@ namespace nrp {
 
         virtual std::vector<Segment> containNRPsPart(nrpsprediction::NRPsPart predict_part) = 0;
 
-        int getLen();
-        int getInd(int i);
-        std::string getFormula(int i);
-        aminoacid::Aminoacids::Aminoacid getAminoacid(int i);
-        void print();
+        virtual int getLen();
 
-        std::string getGraphInString();
-        std::string get_file_name();
-        std::string get_extra_info();
+        virtual int getInd(int i);
+
+        virtual std::string getFormula(int i);
+
+        virtual aminoacid::Aminoacids::Aminoacid getAminoacid(int i);
+
+        virtual void print();
+
+        virtual std::string getGraphInString();
+
+        virtual std::string get_file_name();
+
+        virtual std::string get_extra_info();
 
         virtual Match isCover(nrpsprediction::NRPsPrediction nrPsPrediction) = 0;
         virtual NRPType getType() = 0;

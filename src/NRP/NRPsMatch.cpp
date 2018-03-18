@@ -8,16 +8,15 @@ void nrp::NRP::Match::match(int pos, int part_id, int part_pos) {
     parts_pos[pos] = part_pos;
 }
 
-int nrp::NRP::Match::score() {
-    int cnt = parts_id.size();
+double nrp::NRP::Match::score() {
+    double cnt = 0;
     std::vector<int> difparts;
     for (int i = 0; i < parts_id.size(); ++i) {
         if (parts_id[i] < 0 && (i == 0 || parts_id[i - 1] >= 0)) {
             cnt -= 1;
-        }
-        if (parts_id[i] < 0) {
-            cnt -= 1;
-        } else {
+        } else if (parts_id[i] >= 0) {
+            nrpsprediction::AminoacidPrediction amn_pred = nrpParts[parts_id[i]].getAminoacidsPrediction()[parts_pos[i]];
+            cnt += amn_pred.getScore(nrp->getAminoacid(i));
             difparts.push_back(parts_id[i]);
         }
     }
@@ -41,7 +40,7 @@ void nrp::NRP::Match::print(std::ofstream &out, double normScore) {
     if (nrpParts.size() > 0) {
         out << nrpParts[0].get_file_name() << "\n";
     }
-    int scr = score();
+    double scr = score();
     out << "SCORE: " << scr << "("<< nrp->getLen() << ")\n";
     out << "NORMALIZE SCORE: " << normScore << "\n";
 
@@ -87,4 +86,37 @@ void nrp::NRP::Match::print_short_prediction(std::ofstream &out, double normScor
 
     out << nrpParts[0].get_file_name() << " ";
     out << normScore << "; ";
+}
+
+void nrp::NRP::Match::print_csv(std::ofstream &out, double normScore) {
+    if (nrpParts.size() == 0) {
+        return;
+    }
+
+    double scr = score();
+    out << scr << "," << normScore << ",";
+    out << nrp->get_extra_info().substr(0, nrp->get_extra_info().find(' ', 1)) << ",";
+    int len = nrp->getLen();
+    int cntMatch = 0;
+    for (int i = 0; i < parts_id.size(); ++i) {
+        std::string formula = nrp->getFormula(i);
+        int wasN = 0;
+        for (int j = 0; j < formula.size(); ++j) {
+            if (formula[j] == 'N') {
+                wasN = 1;
+            }
+        }
+        if (wasN == 0) {
+            --len;
+        }
+        if (parts_id[i] != -1) {
+            ++cntMatch;
+        }
+    }
+
+    out << len << ",";
+    out << cntMatch << ",";
+    out << (len==cntMatch) << ",";
+    out << nrp->get_file_name() << ",";
+    out << nrpParts[0].get_file_name() << "\n";
 }
