@@ -145,7 +145,7 @@ int main(int argc, char* argv[]) {
         run_prediction_mols(preds[i], mols, nrpGenerator, output_filename);
     }
     std::ofstream out_csv("report.csv");
-    out_csv << "score,normalize score,peptide,nrp len,match cnt,all matched,mol id,prediction id\n";
+    out_csv << "score,normalize score,peptide,nrp len,match cnt,all matched,mol id,prediction id, p-value\n";
     out_csv.close();
 
     for (int i = 0; i < mols.size(); ++i) {

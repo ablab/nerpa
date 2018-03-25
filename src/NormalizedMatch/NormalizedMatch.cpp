@@ -11,19 +11,24 @@ normalized_match::NormalizedMatch::NormalizedMatch(nrp::NRP::Match match, nrp::N
 
     double mean = -1;
     double SD = 0;
+    int cnt_big_score = 0;
 
-    while (SD < EPS && scores.size() < 2000) {
-        for (int i = 0; i < CNT_GEN; ++i) {
-            nrp::NRP *genNRP = generator.generate(mol->getType(), mol->getLen());
-            scores.push_back(genNRP->isCover(prediction).score());
-            delete genNRP;
+    for (int i = 0; i < CNT_GEN; ++i) {
+        nrp::NRP *genNRP = generator.generate(mol->getType(), mol->getLen());
+        scores.push_back(genNRP->isCover(prediction).score());
+        delete genNRP;
+    }
+
+    mean = calcMean(scores);
+    SD = calcSD(scores, mean);
+    for (int i = 0; i < CNT_GEN; ++i) {
+        if (match.score() <= scores[i]) {
+            ++cnt_big_score;
         }
-
-        mean = calcMean(scores);
-        SD = calcSD(scores, mean);
     }
 
     score = (match.score() - mean)/std::sqrt(SD);
+    p_value = (double)cnt_big_score/scores.size();
 }
 
 double normalized_match::NormalizedMatch::calcMean(std::vector<double> score) {
@@ -48,7 +53,7 @@ bool normalized_match::NormalizedMatch::operator<(const normalized_match::Normal
 }
 
 void normalized_match::NormalizedMatch::print(std::ofstream &out) {
-    match.print(out, score);
+    match.print(out, score, p_value);
 }
 
 void normalized_match::NormalizedMatch::print_short(std::ofstream &out) {
@@ -60,5 +65,5 @@ void normalized_match::NormalizedMatch::print_short_prediction(std::ofstream &ou
 }
 
 void normalized_match::NormalizedMatch::print_csv(std::ofstream &out) {
-    match.print_csv(out, score);
+    match.print_csv(out, score, p_value);
 }

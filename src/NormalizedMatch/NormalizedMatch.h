@@ -11,6 +11,7 @@ namespace normalized_match {
         static const int CNT_GEN;
         static const double EPS;
         double score = 0;
+        double p_value = 0;
 
         NRP::Match match;
     public:

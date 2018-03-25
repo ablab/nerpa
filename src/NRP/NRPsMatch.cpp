@@ -35,7 +35,7 @@ std::vector<std::pair<int, int> > nrp::NRP::Match::getMatchs() {
     return res;
 }
 
-void nrp::NRP::Match::print(std::ofstream &out, double normScore) {
+void nrp::NRP::Match::print(std::ofstream &out, double normScore,  double p_value) {
     out << nrp->get_file_name() << " " << nrp->get_extra_info() << "\n";
     if (nrpParts.size() > 0) {
         out << nrpParts[0].get_file_name() << "\n";
@@ -43,6 +43,7 @@ void nrp::NRP::Match::print(std::ofstream &out, double normScore) {
     double scr = score();
     out << "SCORE: " << scr << "("<< nrp->getLen() << ")\n";
     out << "NORMALIZE SCORE: " << normScore << "\n";
+    out << "P-VALUE: " << p_value << "\n";
 
     std::vector<int> rp(parts_id.size());
     for (int i = 0; i < rp.size(); ++i) {
@@ -88,14 +89,20 @@ void nrp::NRP::Match::print_short_prediction(std::ofstream &out, double normScor
     out << normScore << "; ";
 }
 
-void nrp::NRP::Match::print_csv(std::ofstream &out, double normScore) {
+void nrp::NRP::Match::print_csv(std::ofstream &out, double normScore, double p_value) {
     if (nrpParts.size() == 0) {
         return;
     }
 
     double scr = score();
     out << scr << "," << normScore << ",";
-    out << nrp->get_extra_info().substr(0, nrp->get_extra_info().find(' ', 1)) << ",";
+    std::string org = nrp->get_extra_info().substr(0, nrp->get_extra_info().find(' ', 1));
+    for (char &j : org) {
+        if (j == ',') {
+            j = ' ';
+        }
+    }
+    out << org << ",";
     int len = nrp->getLen();
     int cntMatch = 0;
     for (int i = 0; i < parts_id.size(); ++i) {
@@ -118,5 +125,6 @@ void nrp::NRP::Match::print_csv(std::ofstream &out, double normScore) {
     out << cntMatch << ",";
     out << (len==cntMatch) << ",";
     out << nrp->get_file_name() << ",";
-    out << nrpParts[0].get_file_name() << "\n";
+    out << nrpParts[0].get_file_name() << ",";
+    out << p_value << "\n";
 }

@@ -28,10 +28,10 @@ namespace nrp {
             }
 
             void match(int pos, int part_id, int part_pos);
-            void print(std::ofstream& out, double normScore);
+            void print(std::ofstream& out, double normScore,  double p_value);
             void print_short(std::ofstream& out, double normScore);
             void print_short_prediction(std::ofstream& out, double normScore);
-            void print_csv(std::ofstream& out, double normScore);
+            void print_csv(std::ofstream& out, double normScore, double p_value);
             double score();
             std::vector<std::pair<int, int> > getMatchs();
 
