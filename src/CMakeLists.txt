@@ -20,8 +20,10 @@ set(SOURCE_FILES main.cpp
         NRP/NRPLine.cpp
         NRP/NRPtail.h
         NRP/NRPtail.cpp
-        NRP/NRPGenerator.h
-        NRP/NRPGenerator.cpp
+        NRPGenerator/NRPGenerator.h
+        NRPGenerator/NRPGenerator.cpp
+        NRPGenerator/NRPGeneratorTriplet.h
+        NRPGenerator/NRPGeneratorTriplet.cpp
         NormalizedMatch/NormalizedMatch.h
         NormalizedMatch/NormalizedMatch.cpp)
 

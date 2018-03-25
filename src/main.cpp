@@ -3,8 +3,9 @@
 #include <NRP/NRPBuilder.h>
 #include <algorithm>
 #include <sstream>
-#include <NRP/NRPGenerator.h>
+#include <NRPGenerator/NRPGenerator.h>
 #include <NormalizedMatch/NormalizedMatch.h>
+#include <NRPGenerator/NRPGeneratorTriplet.h>
 #include "NRP/NRP.h"
 #include "NRPsPrediction/NRPsPrediction.h"
 
@@ -53,7 +54,7 @@ std::vector<nrp::NRP*> save_mols(char* file_name) {
 }
 
 void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::NRP*> mols,
-                         nrp::NRPGenerator nrpGenerator, std::string output_filename) {
+                         nrp_generator::NRPGenerator* nrpGenerator, std::string output_filename) {
     if (pred.getNrpsParts().size() == 0) return;
     std::ofstream out(output_filename);
     std::ofstream out_short("report_predictions", std::ofstream::out | std::ofstream::app);
@@ -85,7 +86,7 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::N
 }
 
 void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp::NRP* mol,
-                         nrp::NRPGenerator nrpGenerator, std::string output_filename) {
+                         nrp_generator::NRPGenerator* nrpGenerator, std::string output_filename) {
     std::ofstream out_short("report_mols", std::ofstream::out | std::ofstream::app);
 
     std::vector<normalized_match::NormalizedMatch> nrpsMatchs;
@@ -133,11 +134,10 @@ std::string gen_filename(std::string ifile, std::string prefix) {
     return (prefix + ifile.substr(pos_sl + 1,  pos_pt - pos_sl - 1));
 }
 
-
 int main(int argc, char* argv[]) {
     std::vector<nrpsprediction::NRPsPrediction> preds = save_predictions(argv[1]);
     std::vector<nrp::NRP*> mols = save_mols(argv[2]);
-    nrp::NRPGenerator nrpGenerator(mols);
+    nrp_generator::NRPGenerator* nrpGenerator = new nrp_generator::NRPGeneratorTriplet(mols);
     for (int i = 0; i < preds.size(); ++i) {
         std::cerr << "pred " << i << "\n";
         if (preds[i].getNrpsParts().size() == 0) continue;
@@ -154,5 +154,6 @@ int main(int argc, char* argv[]) {
         run_mol_predictions(preds, mols[i], nrpGenerator, output_filename);
     }
 
+    delete nrpGenerator;
     return 0;
 }

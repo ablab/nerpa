@@ -1,10 +1,9 @@
 #ifndef NRPSMATCHER_NRPGENERATOR_H
 #define NRPSMATCHER_NRPGENERATOR_H
 
+#include "NRP/NRP.h"
 
-#include "NRP.h"
-
-namespace nrp {
+namespace nrp_generator {
     class NRPGenerator {
     private:
         int sumAA = 0;
@@ -14,9 +13,9 @@ namespace nrp {
         nrp::NRP* generateNRPBranchCycle(int len);
         nrp::NRP* generateNRPLine(int len);
     public:
-        NRPGenerator(std::vector<nrp::NRP *> mols);
+        explicit NRPGenerator(std::vector<nrp::NRP *> mols);
 
-        nrp::NRP* generate(nrp::NRP::NRPType type, int len);
+        virtual nrp::NRP* generate(nrp::NRP::NRPType type, int len);
 
         aminoacid::Aminoacids::Aminoacid genAA();
     };

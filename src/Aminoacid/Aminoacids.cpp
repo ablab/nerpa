@@ -76,6 +76,8 @@ namespace aminoacid {
 
     //b_ala= beta-alanine
     //allothr=D-Allothreonine
+    //hty=Homotyrosine
+    //dhb=Threonine
 
     //TODO finish formuls, sure have mis
     const std::string Aminoacids::AMINOACID_NAMES[Aminoacids::AMINOACID_CNT] = {"trp", "ser", "gly", "uda", "thr",
@@ -97,10 +99,11 @@ namespace aminoacid {
                                                                         "C3H7NO2", "C9H11NO2", "C5H11NO2", "C9H17NO2", "C8H9NO3",
                                                                         "C8H9NO2", "C6H9N3O2", "C10H17NO4", "C9H17NO3", "C4H9NO3",
                                                                         "C5H11NO2S", "C3H7NO2", "C6H10Cl3NO2", "C7H6O3", "C4H9NO3",
-                                                                        "C3H7NO2", "-", "C6H13NO2", "-", "C6H13NO2",
-                                                                        "-", "-", "C5H9NO4", "C9H11NO4", "C8H9NO3",
+                                                                        "C3H7NO2", "C5H9NO3", "C6H13NO2", "C6H12N4O2", "C6H13NO2",
+                                                                        "-", "C10H13NO3", "C5H9NO4", "C9H11NO4", "C8H9NO3",
                                                                         "C4H9NO2", "C5H9NO2", "C9H11NO3", "-", "C4H8N2O3",
                                                                         "C6H13N3O3", "C5H13NO", "C3H7NO2S", "C4H7NO4", "-",
                                                                         "C5H10N2O2", "C5H12N2O2", "-", "C4H9NO2", "C6H11NO4",
-                                                                        "C6H11NO2", "C8H9NO4", "C6H11NO4", "C4H8N2O4", "*"};
+                                                                        "C6H11NO2", "C8H9NO4", "C6H11NO4", "C4H8N2O4",
+                                                                        "*"};
 }
