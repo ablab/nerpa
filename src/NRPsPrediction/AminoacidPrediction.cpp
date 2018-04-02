@@ -1,5 +1,6 @@
 #include <sstream>
 #include <cmath>
+#include <iostream>
 #include "AminoacidPrediction.h"
 
 
@@ -14,6 +15,10 @@ nrpsprediction::AminoacidPrediction::AminoacidPrediction(int pos, std::string pr
         std::string token;
         getline(ss, token, ';');
         tokens.push_back(token);
+    }
+
+    if (tokens[tokens.size() - 1] == "") {
+        tokens.pop_back();
     }
 
     std::vector<std::pair<std::string, double> > aacids;

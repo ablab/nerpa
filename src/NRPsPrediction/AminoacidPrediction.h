@@ -33,6 +33,9 @@ namespace nrpsprediction {
         double getScore(aminoacid::Aminoacids::Aminoacid aminoacid);
         AminoacidProb getAminoacid(aminoacid::Aminoacids::Aminoacid aminoacid);
         std::pair<int, int> getAmnAcidPos(aminoacid::Aminoacids::Aminoacid aminoacid);
+        std::vector<AminoacidProb> getAAPrediction() {
+            return aminoacid_prediction;
+        }
     };
 }
 

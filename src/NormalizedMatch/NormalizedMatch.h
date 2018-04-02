@@ -3,6 +3,7 @@
 
 #include <NRP/NRP.h>
 #include <NRPGenerator/NRPGenerator.h>
+#include <NRPGenerator/NRPsPredictionGenerator.h>
 
 namespace normalized_match {
     using namespace nrp;
@@ -17,6 +18,9 @@ namespace normalized_match {
     public:
         NormalizedMatch() = default;
         NormalizedMatch(NRP::Match match, nrp_generator::NRPGenerator* generator,
+                        nrpsprediction::NRPsPrediction prediction, NRP* mol);
+
+        NormalizedMatch(NRP::Match match, nrp_generator::NRPsPredictionGenerator* generator,
                         nrpsprediction::NRPsPrediction prediction, NRP* mol);
         void print(std::ofstream& out);
         void print_short(std::ofstream& out);

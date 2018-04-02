@@ -1,7 +1,7 @@
 #include <cmath>
 #include "NormalizedMatch.h"
 
-const int normalized_match::NormalizedMatch::CNT_GEN = 10000;
+const int normalized_match::NormalizedMatch::CNT_GEN = 1000;
 const double normalized_match::NormalizedMatch::EPS = 1e-9;
 
 normalized_match::NormalizedMatch::NormalizedMatch(nrp::NRP::Match match, nrp_generator::NRPGenerator* generator,
@@ -66,4 +66,34 @@ void normalized_match::NormalizedMatch::print_short_prediction(std::ofstream &ou
 
 void normalized_match::NormalizedMatch::print_csv(std::ofstream &out) {
     match.print_csv(out, score, p_value);
+}
+
+normalized_match::NormalizedMatch::NormalizedMatch(nrp::NRP::Match match,
+                                                   nrp_generator::NRPsPredictionGenerator *generator,
+                                                   nrpsprediction::NRPsPrediction prediction, nrp::NRP *mol) {
+    std::cerr << "norm score\n";
+    this->match = match;
+    std::vector<double> scores;
+
+    double mean = -1;
+    double SD = 0;
+    int cnt_big_score = 0;
+
+    for (int i = 0; i < CNT_GEN; ++i) {
+        std::cerr << i << "\n";
+        nrpsprediction::NRPsPrediction predict = generator->genPrediction(prediction);
+        std::cerr << "predict\n";
+        scores.push_back(mol->isCover(predict).score());
+    }
+
+    mean = calcMean(scores);
+    SD = calcSD(scores, mean);
+    for (int i = 0; i < CNT_GEN; ++i) {
+        if (match.score() <= scores[i]) {
+            ++cnt_big_score;
+        }
+    }
+
+    score = (match.score() - mean)/std::sqrt(SD);
+    p_value = (double)cnt_big_score/scores.size();
 }

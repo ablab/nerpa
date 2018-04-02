@@ -24,6 +24,8 @@ set(SOURCE_FILES main.cpp
         NRPGenerator/NRPGenerator.cpp
         NRPGenerator/NRPGeneratorTriplet.h
         NRPGenerator/NRPGeneratorTriplet.cpp
+        NRPGenerator/NRPsPredictionGenerator.h
+        NRPGenerator/NRPsPredictionGenerator.cpp
         NormalizedMatch/NormalizedMatch.h
         NormalizedMatch/NormalizedMatch.cpp)
 
