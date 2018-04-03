@@ -1,7 +1,8 @@
 #include <cmath>
 #include "NormalizedMatch.h"
 
-const int normalized_match::NormalizedMatch::CNT_GEN = 1000;
+//TODO CNT_GEN
+const int normalized_match::NormalizedMatch::CNT_GEN = 10;
 const double normalized_match::NormalizedMatch::EPS = 1e-9;
 
 normalized_match::NormalizedMatch::NormalizedMatch(nrp::NRP::Match match, nrp_generator::NRPGenerator* generator,
@@ -80,9 +81,7 @@ normalized_match::NormalizedMatch::NormalizedMatch(nrp::NRP::Match match,
     int cnt_big_score = 0;
 
     for (int i = 0; i < CNT_GEN; ++i) {
-        std::cerr << i << "\n";
         nrpsprediction::NRPsPrediction predict = generator->genPrediction(prediction);
-        std::cerr << "predict\n";
         scores.push_back(mol->isCover(predict).score());
     }
 

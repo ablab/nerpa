@@ -144,13 +144,20 @@ int main(int argc, char* argv[]) {
         std::string output_filename = gen_filename(preds[i].getNrpsParts()[0].get_file_name(), "details_predictions/");
         run_prediction_mols(preds[i], mols, nrpGenerator, output_filename);
     }*/
+
     std::ofstream out_csv("report.csv");
-    out_csv << "score,normalize score,peptide,nrp len,match cnt,all matched,mol id,prediction id, p-value\n";
+    out_csv << "score,normalize score,peptide,nrp len,match cnt,all matched,mol id,prediction id,p-value\n";
     out_csv.close();
+
+    for (int i = 0; i < preds.size(); ++i) {
+        //TODO delete nrp generator
+        preds[i] = nrpGenerator->genPrediction(preds[i]);
+    }
 
     for (int i = 0; i < mols.size(); ++i) {
         std::cerr << "mol " << i << "\n";
         std::string output_filename = gen_filename(mols[i]->get_file_name(), "details_mols/");
+
         run_mol_predictions(preds, mols[i], nrpGenerator, output_filename);
     }
 

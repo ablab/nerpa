@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iostream>
 #include <cassert>
+#include <algorithm>
 #include "NRPBuilder.h"
 #include "NRPCycle.h"
 #include "NRPLine.h"
