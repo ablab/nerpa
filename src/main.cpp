@@ -92,9 +92,9 @@ void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp:
     std::vector<normalized_match::NormalizedMatch> nrpsMatchs;
     for (int i = 0; i < preds.size(); ++i) {
         nrp::NRP::Match match = mol->isCover(preds[i]);
-        if (match.score() >= MIN_SCROE) {
+        //if (match.score() >= MIN_SCROE) {
             nrpsMatchs.push_back(normalized_match::NormalizedMatch(match, nrpGenerator, preds[i], mol));
-        }
+        //}
     }
 
     std::sort(nrpsMatchs.begin(), nrpsMatchs.end());
@@ -149,10 +149,10 @@ int main(int argc, char* argv[]) {
     out_csv << "score,normalize score,peptide,nrp len,match cnt,all matched,mol id,prediction id,p-value\n";
     out_csv.close();
 
-    for (int i = 0; i < preds.size(); ++i) {
+    /*for (int i = 0; i < preds.size(); ++i) {
         //TODO delete nrp generator
         preds[i] = nrpGenerator->genPrediction(preds[i]);
-    }
+    }*/
 
     for (int i = 0; i < mols.size(); ++i) {
         std::cerr << "mol " << i << "\n";
