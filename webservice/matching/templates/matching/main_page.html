@@ -4,42 +4,47 @@
     <head>
         <title>NRPs Matcher</title>
          <link rel="stylesheet" href="{% static 'css/nrpMatcher.css' %}">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     </head>
     <body>
         <h1>NRPs Matcher</h1>
-        <div class="center-form">
+        <form method="POST" class="center-form" enctype="multipart/form-data" > {% csrf_token %}
             <div class="oneline2">
                 <p>Search type:</p>
                 <div class="dropdown">
-                <button class="dropbtn">Dropdown</button>
+                <button class="dropbtn">Genome against NRPs</button>
                 <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
+                    <a href="#">Genome against NRPs</a>
                 </div>
                 </div>
             </div>
-            <div class="oneline">
+            <div class="oneline2">
                 <p>Upload Genome:</p>
-                <div class="UploadInput"></div>
-                <button id="uploadGraph">
-                    Upload
-                </button>
+                <div class="file_upload" id="file_upload">
+                    <button id="uploadButton">
+                        Upload
+                    </button>
+                    <div class="UploadInput" id="UploadInput">
+                    No file chosen
+                    </div>
+                    {{ form.as_p }}
+                    <!-input type="file" id="inputFile"->
+                </div>
             </div>
             <div class="oneline2">
                 <p>NRPs Data Base:</p>
                 <div class="dropdown">
-                <button class="dropbtn">Dropdown</button>
+                <button class="dropbtn">Streptome</button>
                 <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
+                    <a href="#">Streptome</a>
                 </div>
                 </div>
             </div>
             <button id="mainsearch" class="search">
                 SEARCH
             </button>
-        </div>
+        </form>
+    <script src="{%  static 'JS/uploadFile.js' %}"></script>
     </body>
 </html>

@@ -41,18 +41,45 @@ button {
 .UploadInput {
     height: 25px;
     background: #DDDDDD;
+    padding-left: 5px;
 }
 
 .oneline {
     padding-bottom: 5px;
     display: grid;
-    grid-template-columns: 150px 500px 100px;
+    grid-template-columns: 170px 500px 100px;
+}
+
+.file_upload {
+    position: relative;
+    overflow: hidden;
+    font-size: 1em;        /* example */
+    height: 25px;           /* example */
+    line-height: 25px       /* the same as height */
+}
+
+.file_upload > button{
+    float: right;
+    width: 8em;            /* example */
+}
+
+.file_upload input[type=file]{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transform: scale(20);
+    letter-spacing: 10em;     /* IE 9 fix */
+    -ms-transform: scale(20); /* IE 9 fix */
+    opacity: 0;
+    cursor: pointer
 }
 
 .oneline2 {
     padding-bottom: 5px;
     display: grid;
-    grid-template-columns: 150px 600px;
+    grid-template-columns: 170px 600px;
 }
 
 .dropbtn {
@@ -95,3 +122,5 @@ button {
 .dropdown:hover .dropbtn {
     background-color: #C4C4C4;
 }
+
+.show {display:block;}

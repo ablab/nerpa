@@ -25,3 +25,6 @@ class MatchingResult(models.Model):
 
     def save_matching(self):
         self.save()
+
+class SearchRequast(models.Model):
+    inputFile = models.FileField()
