@@ -21,7 +21,7 @@ std::vector<nrpsprediction::NRPsPrediction>  save_predictions(char* file_name) {
     while(getline(in_predictions_files, cur_line)) {
         //std::stringstream ss(cur_line);
         //ss >> cur_prediction_file;
-
+        std::cerr << cur_line << "\n";
         nrpsprediction::NRPsPrediction nrPsPrediction;
         nrPsPrediction.read_file(cur_line);
 
@@ -39,6 +39,7 @@ std::vector<nrp::NRP*> save_mols(char* file_name) {
     std::string cur_line;
 
     while(getline(in_nrps_files, cur_line)) {
+        std::cerr << cur_line << "\n";
         std::stringstream ss(cur_line);
         ss >> cur_nrp_file;
         std::string extra_info;
@@ -135,8 +136,11 @@ std::string gen_filename(std::string ifile, std::string prefix) {
 }
 
 int main(int argc, char* argv[]) {
+    std::cerr << "start\n";
     std::vector<nrpsprediction::NRPsPrediction> preds = save_predictions(argv[1]);
+    std::cerr << "save_pred\n";
     std::vector<nrp::NRP*> mols = save_mols(argv[2]);
+    std::cerr << "save_mols\n";
     nrp_generator::NRPsPredictionGenerator* nrpGenerator = new nrp_generator::NRPsPredictionGenerator(preds);
     /*for (int i = 0; i < preds.size(); ++i) {
         std::cerr << "pred " << i << "\n";

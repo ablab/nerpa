@@ -1,0 +1,45 @@
+{% load staticfiles %}
+
+<html>
+    <head>
+        <title>NRPs Matcher</title>
+         <link rel="stylesheet" href="{% static 'css/nrpMatcher.css' %}">
+    </head>
+    <body>
+        <h1>NRPs Matcher</h1>
+        <div class="center-form">
+            <div class="oneline2">
+                <p>Search type:</p>
+                <div class="dropdown">
+                <button class="dropbtn">Dropdown</button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+                </div>
+            </div>
+            <div class="oneline">
+                <p>Upload Genome:</p>
+                <div class="UploadInput"></div>
+                <button id="uploadGraph">
+                    Upload
+                </button>
+            </div>
+            <div class="oneline2">
+                <p>NRPs Data Base:</p>
+                <div class="dropdown">
+                <button class="dropbtn">Dropdown</button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+                </div>
+            </div>
+            <button id="mainsearch" class="search">
+                SEARCH
+            </button>
+        </div>
+    </body>
+</html>

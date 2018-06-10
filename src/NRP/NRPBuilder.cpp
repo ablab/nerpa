@@ -19,6 +19,9 @@ nrp::NRP* nrp::NRPBuilder::build(std::string fragment_graph, std::string extra_i
 
     int line_cnt;
     in >> s >> s >> s >> s >> line_cnt;
+    if (line_cnt == 0) {
+        return nullptr;
+    }
 
     for (int i = 0; i < line_cnt; ++i) {
         int id;

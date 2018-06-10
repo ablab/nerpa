@@ -1,0 +1,97 @@
+p {
+    margin: 0px;
+    font-size: 18px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 50px;
+}
+
+.center-form {
+    margin: 0;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+button {
+    height: 25px;
+    border: 0;
+    font-size: 17px;
+
+    background: #C4C4C4;
+}
+
+.center-form .search {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.search {
+    margin: auto;
+    width: 50%;
+    margin-top: 60px;
+    text-align: center;
+}
+
+.UploadInput {
+    height: 25px;
+    background: #DDDDDD;
+}
+
+.oneline {
+    padding-bottom: 5px;
+    display: grid;
+    grid-template-columns: 150px 500px 100px;
+}
+
+.oneline2 {
+    padding-bottom: 5px;
+    display: grid;
+    grid-template-columns: 150px 600px;
+}
+
+.dropbtn {
+    background-color: #DDDDDD;
+    height: 25px;
+    width: 600px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 600px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #C4C4C4;
+}
