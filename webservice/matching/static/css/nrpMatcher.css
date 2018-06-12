@@ -153,6 +153,11 @@ button {
     padding-right: 10px;
 }
 
+
+.top-wrapper {
+    height: 60px;
+}
+
 .result_container {
     position: fixed;
     top: 280px;
@@ -179,7 +184,7 @@ button {
 th, td {
     border-bottom: 1px solid #ddd;
     text-align: left;
-
+}
 
 .matchInfo {
     position: fixed;

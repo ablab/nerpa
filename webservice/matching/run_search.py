@@ -1,4 +1,5 @@
 import os
+from .vis_prediction import visualize_prediction
 
 path = "/home/olga/bio/NRP/data/serverRuns/"
 genome_file = path + "genome.fna"
@@ -19,7 +20,8 @@ def run_nrpsMatcher():
     os.system("python3 " + NRPsMatcher + " -p " + predictionInfo + " --lib_info " + DBinfo + " -o " + path)
 
 def save_results():
-    pass
+    for filename in os.listdir(path + "/details_mols"):
+        visualize_prediction(path + "/details_mols/" + filename, predictionPath, filename, "ctg1_nrpspredictor2_codes")
 
 def handle_genome(f):
     with open(genome_file, "wb") as fw:

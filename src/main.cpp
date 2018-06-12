@@ -93,9 +93,9 @@ void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp:
     std::vector<normalized_match::NormalizedMatch> nrpsMatchs;
     for (int i = 0; i < preds.size(); ++i) {
         nrp::NRP::Match match = mol->isCover(preds[i]);
-        //if (match.score() >= MIN_SCROE) {
+        if (match.score() >= MIN_SCROE) {
             nrpsMatchs.push_back(normalized_match::NormalizedMatch(match, nrpGenerator, preds[i], mol));
-        //}
+        }
     }
 
     std::sort(nrpsMatchs.begin(), nrpsMatchs.end());

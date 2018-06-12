@@ -4,7 +4,7 @@ class MatchingResult(models.Model):
     request_id = models.IntegerField()
 
     img = models.ImageField()
-    path_to_html = models.TextField()
+    innerTableHTML = models.TextField()
 
     mol_id = models.TextField()
     extra_info = models.TextField()
