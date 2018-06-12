@@ -1,0 +1,87 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NRPs Matcher</title>
+    <link rel="stylesheet" href="{% static 'css/nrpMatcher.css' %}">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+        <div class="top-wrapper">
+        <div class="top">
+        <span style="font-family: Roboto;font-style: normal;font-weight: bold;line-height: normal;font-size: 48px;color: #000000;">NRPmatcher</span>
+        </div>
+        </div>
+
+        <div class="clearfix">
+        <form method="POST" enctype="multipart/form-data" > {% csrf_token %}
+            <div class="oneline2">
+                <p>Search type:</p>
+                <div class="dropdown">
+                <button class="dropbtn">Genome against NRPs</button>
+                <div class="dropdown-content">
+                    <a href="#">Genome against NRPs</a>
+                </div>
+                </div>
+            </div>
+            <div class="oneline2">
+                <p>Upload Genome:</p>
+                <div class="file_upload" id="file_upload">
+                    <button id="uploadButton">
+                        Upload
+                    </button>
+                    <div class="UploadInput" id="UploadInput">
+                    No file chosen
+                    </div>
+                    {{ form.as_p }}
+                    <!-input type="file" id="inputFile"->
+                </div>
+            </div>
+            <div class="oneline2">
+                <p>NRPs Data Base:</p>
+                <div class="dropdown">
+                <button class="dropbtn">Streptome</button>
+                <div class="dropdown-content">
+                    <a href="#">Streptome</a>
+                </div>
+                </div>
+            </div>
+            <div>
+            <button id="mainsearch" class="result_search">
+                SEARCH
+            </button>
+            </div>
+        </form>
+        </div>
+
+        <div class="result">
+        <h2>Result:</h2>
+            <div class="result_container">
+                <div class="overflowdiva">
+                {% for result in results %}
+                    <div class="block">
+                    <a href="{% url 'vis_page' pk=result.pk %}">
+                        <div class="clearfix">
+                        <img src="{{result.img.url }}" height="200" style="float: left; margin-right: 15px">
+                        <div >
+                        <p> <b>Score:</b> {{ result.score }}</br>
+                            <b>ID:</b> {{ result.mol_id }}</br>
+                            {{ result.extra_info}} </br>
+                            <b>Num AA:</b> {{ result.AA_number }}</br>
+                            <b>Num Matched AA:</b> {{  result.AA_matching_number }} </br>
+                        </p>
+                        </div>
+                    </div>
+                    </a>
+                    </div>
+                {% endfor %}
+            </div>
+            </div>
+        </div>
+
+    <script src="{%  static 'JS/uploadFile.js' %}"></script>
+</body>
+</html>
