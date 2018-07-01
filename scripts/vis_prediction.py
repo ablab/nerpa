@@ -623,10 +623,10 @@ colors = [
 "#4C2F27",
 "#F2F3F4"];
 
-fileName = "/home/olga/bio/NRP/data/bacteria_complete/details_mols/streptomedb.84"
+fileName = "/home/olga/bio/NRP/data/Test/bacteria_complete/details_mols/streptomedb.84"
 name1 = "streptomedb.84"
 name2 = "GCF_000203835.1_ASM20383v1_genomic"
-predictionFileName = "/home/olga/bio/NRP/data/bacteria_complete/predictions/" + name2
+predictionFileName = "/home/olga/bio/NRP/data/Test/mibig2016/predictions/" + name2
 
 
 G = nx.Graph()
@@ -756,6 +756,7 @@ def parseGraph():
             pos[line[i]] = (cur, 0)
             cur += step
 
+        mxy = 0
         if (len(circ) != 0):
             anglStep = 2*pi/len(circ)
             curA = 0
@@ -763,12 +764,18 @@ def parseGraph():
             for i in range(len(circ)):
                 x = R * cos(curA) - R
                 y = R * sin(curA)
+                mxy = max(mxy, y)
                 pos[circ[i]] = (x, y)
                 curA += anglStep
                 
-        
-        nx.draw(G, pos=pos, node_color = nodecolor, labels=labels, node_size=600)
-        plt.savefig('pic.png')
+        G.add_node(n)
+        pos[n] = (0, mxy + 50)
+        labels[n] = ""
+        node_size = [600]*n
+        node_size.append(0)
+        plt.figure(figsize=(10, 6))
+        nx.draw(G, pos=pos, node_color = nodecolor, with_labels=True, labels=labels, node_size=node_size)
+        plt.savefig('pic.png', bbox_inches="tight")
         print(lines)
 
 predictionInfo = dict()
@@ -820,7 +827,7 @@ def drawPrediction():
 
 parsePrediction()
 parseGraph()
-drawPrediction()
+#drawPrediction()
 
 
 #ax.text(3, 8, 'boxed italics text in data coords', style='italic',

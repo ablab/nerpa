@@ -9,7 +9,10 @@
     </head>
     <body>
         <h1>NRPs Matcher</h1>
-        <form method="POST" class="center-form" enctype="multipart/form-data" > {% csrf_token %}
+
+        <div class="center-form">
+        <div class="clearfix">
+        <form method="POST" enctype="multipart/form-data" > {% csrf_token %}
             <div class="oneline2">
                 <p>Search type:</p>
                 <div class="dropdown">
@@ -41,10 +44,24 @@
                 </div>
                 </div>
             </div>
+            <div style="padding-top:20px">
             <button id="mainsearch" class="search">
                 SEARCH
             </button>
+            </div>
         </form>
+        </div>
+
+            <div class="result">
+                <p><b>Previous requests:</b></p>
+                <div style="padding-left: 150px">
+                {% for request in requests %}
+                    <a href="{% url 'res_page' pk=request.request_id %}">{{ request.request_id }}</br></a>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+
     <script src="{%  static 'JS/uploadFile.js' %}"></script>
     </body>
 </html>

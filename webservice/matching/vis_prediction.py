@@ -760,6 +760,7 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
             pos[line[i]] = (cur, 0)
             cur += step
 
+        mxy = 0
         if (len(circ) != 0):
             anglStep = 2 * pi / len(circ)
             curA = 0
@@ -767,10 +768,20 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
             for i in range(len(circ)):
                 x = R * cos(curA) - R
                 y = R * sin(curA)
+                mxy = max(mxy, y)
                 pos[circ[i]] = (x, y)
                 curA += anglStep
 
-        nx.draw(G, pos=pos, node_color=nodecolor, labels=labels, node_size=600)
+        G.add_node(n)
+        pos[n] = (cur - step + 10, mxy + 50)
+        labels[n] = ""
+        G.add_node(n + 1)
+        pos[n + 1] = (-2* len(circ) * 10 - 10, -mxy)
+        labels[n + 1] = ""
+        node_size = [600] * n
+        node_size.append(0)
+        node_size.append(0)
+        nx.draw(G, pos=pos, node_color=nodecolor, labels=labels, node_size=node_size)
         plt.savefig('tmp.png')
         plt.close()
 
@@ -853,7 +864,7 @@ def createTableInnerHTML(predictionList, usedOrfs, predictionInfo, choosePred, c
 #predictionFileName = "/home/olga/bio/NRP/data/bacteria_complete/predictions/" + name2
 
 
-def visualize_prediction(detailMolFN, predictionFN, molName, genomeName):
+def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request_id):
     print("start viz " + molName)
     G = nx.Graph()
     g = []
@@ -867,7 +878,7 @@ def visualize_prediction(detailMolFN, predictionFN, molName, genomeName):
     info, score = parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs, G, g)
     innerHTML = createTableInnerHTML(predictionList, usedOrfs, predictionInfo, choosePred, color)
 
-    model_object = MatchingResult(request_id=0, innerTableHTML=innerHTML,
+    model_object = MatchingResult(request_id=request_id, innerTableHTML=innerHTML,
                                   mol_id=molName, extra_info=info,
                                   genome_id=genomeName, score=int(score.split('(')[0]),
                                   AA_number=0, AA_matching_number=0)

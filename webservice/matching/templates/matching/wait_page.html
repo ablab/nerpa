@@ -1,0 +1,33 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NRPs Matcher</title>
+    <link rel="stylesheet" href="{% static 'css/nrpMatcher.css' %}">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+    $(function() {
+        if ($('.state_pending').length > 0) {
+            setTimeout(function(){
+                window.location.reload(1);
+            }, 5000);
+        }
+    });
+    </script>
+</head>
+
+<body>
+        <div class="top-wrapper">
+        <div class="top">
+        <span style="font-family: Roboto;font-style: normal;font-weight: bold;line-height: normal;font-size: 48px;color: #000000;">NRPmatcher</span>
+        </div>
+        </div>
+        <p>
+            <span class="state_pending">Task is being evaluated.</span>
+        </p>
+</body>
+</html>

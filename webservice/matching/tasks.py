@@ -1,5 +1,6 @@
 import os
 from .vis_prediction import visualize_prediction
+from celery import shared_task
 
 path = "/home/olga/bio/NRP/data/serverRuns/"
 genome_file = path + "genome.fna"
@@ -23,11 +24,9 @@ def save_results(request_id):
     for filename in os.listdir(path + "/details_mols"):
         visualize_prediction(path + "/details_mols/" + filename, predictionPath, filename, "ctg1_nrpspredictor2_codes", request_id)
 
-def handle_genome(f, request_id):
-    with open(genome_file, "wb") as fw:
-        for chunk in f.chunks():
-            fw.write(chunk)
-
+@shared_task
+def handle_genome(request_id):
+    print("START HANDLE GENOME")
     run_antismash()
     run_nrpsMatcher()
     save_results(request_id)
