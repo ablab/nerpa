@@ -62,6 +62,17 @@ def SMILE_to_MOL():
     print("molconvert mol:V3+H --smiles \"" + smile_file + "\" -o " + nrp_file)
     os.system("molconvert mol:V3+H --smiles \"" + smile_file + "\" -o " + nrp_file)
 
+def clear():
+    os.system("rm -r " + path + "/details_mols/")
+    os.system("rm -r " + path + "/details_predictions/")
+    os.system("rm -r " + path + "/graphs/")
+    os.system("rm -r " + path + "/antismashRes/nrpspks_predictions_txt/")
+    os.system("rm " + path + "/genome.fna")
+    os.system("rm " + path + "/nrp.mol")
+    os.system("rm " + path + "/nrp.sml")
+    os.system("rm " + path + "/path_to_graphs")
+    os.system("rm " + path + "/report.csv")
+    os.system("rm " + path + "/report_mols")
 
 @shared_task
 def handle_genome(request_id, nrpDB):
@@ -69,6 +80,7 @@ def handle_genome(request_id, nrpDB):
     run_antismash()
     run_nrpsMatcher(predictionInfo, dbNRPinfo[nrpDB])
     save_results(request_id)
+    clear()
 
 
 @shared_task
@@ -78,6 +90,7 @@ def handle_nrp(request_id, predictDB, is_smile=False):
         SMILE_to_MOL()
     run_nrpsMatcher(dbPredictionInfo[predictDB], molInfo)
     save_results_prediction(request_id)
+    clear()
 
 @shared_task
 def handle_one(request_id, is_smile=False):
@@ -87,3 +100,4 @@ def handle_one(request_id, is_smile=False):
     run_antismash()
     run_nrpsMatcher(predictionInfo, molInfo)
     save_results(request_id)
+    clear()
