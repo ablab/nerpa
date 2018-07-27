@@ -17,17 +17,18 @@
         </div>
 
         <div class="clearfix">
-        <form method="POST" enctype="multipart/form-data" > {% csrf_token %}
+            <form method="POST" enctype="multipart/form-data" > {% csrf_token %}
             <div class="oneline2">
                 <p>Search type:</p>
-                <div class="dropdown">
-                <button class="dropbtn">Genome against NRPs</button>
-                <div class="dropdown-content">
-                    <a href="#">Genome against NRPs</a>
-                </div>
+                <div class="custom-select" style="width:600px;">
+                <select id="id_search_type" name="search_type">
+                    <option value="genome">Genome against NRPs</option>
+                    <option value="nrp">NRP against genomes</option>
+                    <option value="one">NRP against genome</option>
+                </select>
                 </div>
             </div>
-            <div class="oneline2">
+            <div class="oneline2" id="upload_block">
                 <p>Upload Genome:</p>
                 <div class="file_upload" id="file_upload">
                     <button id="uploadButton">
@@ -36,17 +37,15 @@
                     <div class="UploadInput" id="UploadInput">
                     No file chosen
                     </div>
-                    {{ form.as_p }}
-                    <!-input type="file" id="inputFile"->
+                    <input type="file" name="inputFileGenome" required="" id="id_inputFileGenome">
                 </div>
             </div>
-            <div class="oneline2">
+            <div class="oneline2" id="choose_db">
                 <p>NRPs Data Base:</p>
-                <div class="dropdown">
-                <button class="dropbtn">Streptome</button>
-                <div class="dropdown-content">
-                    <a href="#">Streptome</a>
-                </div>
+                <div class="custom-select" style="width:600px;">
+                <select id="id_nrp_db" name="nrp_db">
+                    <option value="streptome">Streptome</option>
+                </select>
                 </div>
             </div>
             <div>
@@ -83,5 +82,6 @@
         </div>
 
     <script src="{%  static 'JS/uploadFile.js' %}"></script>
+    <script src="{%  static 'JS/dropDown.js' %}"></script>
 </body>
 </html>

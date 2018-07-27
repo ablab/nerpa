@@ -701,6 +701,10 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
     with open(detailMolFN) as f:
         lines = f.readlines()
         cur = 0
+        print(molName)
+        print(lines[cur])
+        print(genomeName)
+        print(lines[cur + 1])
         while (molName not in lines[cur]) or (genomeName not in lines[cur + 1]):
             while (cur < len(lines) and lines[cur] != "\n"):
                 cur += 1
@@ -880,7 +884,7 @@ def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request
 
     model_object = MatchingResult(request_id=request_id, innerTableHTML=innerHTML,
                                   mol_id=molName, extra_info=info,
-                                  genome_id=genomeName, score=int(score.split('(')[0]),
+                                  genome_id=genomeName, score=float(score.split('(')[0]),
                                   AA_number=0, AA_matching_number=0)
     model_object.img.save('pic.png', File(open('tmp.png', 'rb')))
     model_object.save()

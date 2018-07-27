@@ -68,7 +68,7 @@ def gen_graphs_by_mol(args, main_out_dir):
     f = open(path_file, 'w')
     with open(args.lib_info[0]) as fr:
         for line in fr:
-            line_parts = line.split(' ')
+            line_parts = line.split()
             file = line_parts[0]
             nfname = file.split('/')[-1][:-3] + "gr"
             info = ' '.join(line_parts[1:])
@@ -84,7 +84,7 @@ def gen_graphs_by_mol(args, main_out_dir):
 
             print("print_structure " + file + " --print_rule_fragmented_graph -C "+ config_folder + " > " + main_out_dir + "graphs/" + nfname)
             os.system("print_structure " + file + " --print_rule_fragmented_graph -C "+ config_folder + " > " + main_out_dir + "graphs/" + nfname)
-            f.write(("graphs/"+nfname+ " " + info))
+            f.write((main_out_dir + "graphs/" + nfname + " " + info + "\n"))
             files_list.append(main_out_dir + "graphs/" + nfname)
 
     f.close()
