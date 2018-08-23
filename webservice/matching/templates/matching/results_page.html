@@ -12,52 +12,35 @@
 <body>
         <div class="top-wrapper">
         <div class="top">
-        <span style="font-family: Roboto;font-style: normal;font-weight: bold;line-height: normal;font-size: 48px;color: #000000;">NRPmatcher</span>
+            <img src="{%  static 'img/icon.png' %}" alt="icon" hspace="10" width="60px">
+            <span style="vertical-align:top;font-family: Roboto;font-style: normal;font-weight: bold;line-height: normal;font-size: 40px;color: #CD4B2D;">NRP Matcher</span>
         </div>
         </div>
 
         <div class="clearfix">
-            <form method="POST" enctype="multipart/form-data" > {% csrf_token %}
-            <div class="oneline2">
-                <p>Search type:</p>
-                <div class="custom-select" style="width:600px;">
-                <select id="id_search_type" name="search_type">
-                    <option value="genome">Genome against NRPs</option>
-                    <option value="nrp">NRP against genomes</option>
-                    <option value="one">NRP against genome</option>
-                </select>
-                </div>
-            </div>
-            <div class="oneline2" id="upload_block">
-                <p>Upload Genome:</p>
-                <div class="file_upload" id="file_upload">
-                    <button id="uploadButton">
-                        Upload
-                    </button>
-                    <div class="UploadInput" id="UploadInput">
-                    No file chosen
-                    </div>
-                    <input type="file" name="inputFileGenome" required="" id="id_inputFileGenome">
-                </div>
-            </div>
-            <div class="oneline2" id="choose_db">
-                <p>NRPs Data Base:</p>
-                <div class="custom-select" style="width:600px;">
-                <select id="id_nrp_db" name="nrp_db">
-                    <option value="streptome">Streptome</option>
-                </select>
-                </div>
-            </div>
-            <div>
-            <button id="mainsearch" class="result_search">
-                SEARCH
-            </button>
-            </div>
-        </form>
+            <p><b>{{request.search_mode}}</b></p>
+            {% if request.search_mode == "A genome against NRP database" %}
+                <p><b>Genome file name:</b> {{ request.genome_file }}<p>
+                <p><b>NRP database:</b> {{ request.nrp_file }}</p>
+            {% endif %}
+            {% if request.search_mode == "A NRP against genome database" %}
+                <p><b>Genome database:</b> {{ request.genome_file }}<p>
+                <p><b>NRP structure file name:</b> {{ request.nrp_file }}</p>
+            {% endif %}
+
+            {% if request.search_mode == "A genome against a NRP" %}
+                <p><b>Genome file name:</b> {{ request.genome_file }}<p>
+                <p><b>NRP structure file name:</b> {{ request.nrp_file }}</p>
+            {% endif %}
+
+
+            <p><b>Time:</b> {{ request.date }}</p>
+            <p><b>Number of found matches:</b> {{ request.matchCnt }} </p>
+
         </div>
 
         <div class="result">
-        <h2>Result:</h2>
+        <h2>Results:</h2>
             <div class="result_container">
                 <div class="overflowdiva">
                 {% for result in results %}

@@ -15,26 +15,6 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
-  <component name="DockManager">
-    <window id="1">
-      <content type="file-editors">
-        <state>
-          <leaf>
-            <file leaf-file-name="nrpMatcher.css" pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/matching/static/css/nrpMatcher.css">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="567">
-                    <caret line="56" column="5" selection-start-line="56" selection-start-column="1" selection-end-line="56" selection-end-column="5" />
-                    <folding />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-          </leaf>
-        </state>
-      </content>
-    </window>
-  </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="webservice" />
@@ -45,7 +25,7 @@
         <entry file="file://$PROJECT_DIR$/matching/views.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="366">
-              <caret line="105" column="40" selection-start-line="105" selection-start-column="40" selection-end-line="105" selection-end-column="40" />
+              <caret line="123" column="33" selection-start-line="123" selection-start-column="33" selection-end-line="123" selection-end-column="33" />
               <folding>
                 <element signature="e#0#54#0" expanded="true" />
               </folding>
@@ -53,31 +33,33 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main_page.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/matching/templates/matching/main_page.html">
+      <file leaf-file-name="nrpMatcher.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/matching/static/css/nrpMatcher.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="20" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
+            <state relative-caret-position="349">
+              <caret line="232" column="23" selection-start-line="232" selection-start-column="23" selection-end-line="232" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dropDown.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="vis_prediction.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/matching/vis_prediction.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="570">
+              <caret line="809" column="19" selection-start-line="809" selection-start-column="19" selection-end-line="809" selection-end-column="19" />
+              <folding>
+                <element signature="e#0#21#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dropDown.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/matching/static/JS/dropDown.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="427">
-              <caret line="119" column="41" selection-start-line="119" selection-start-column="41" selection-end-line="119" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="forms.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/matching/forms.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="3" column="118" selection-start-line="3" selection-start-column="89" selection-end-line="3" selection-end-column="118" />
+            <state relative-caret-position="645">
+              <caret line="133" column="65" selection-start-line="133" selection-start-column="65" selection-end-line="133" selection-end-column="65" />
               <folding />
             </state>
           </provider>
@@ -86,9 +68,33 @@
       <file leaf-file-name="results_page.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/matching/templates/matching/results_page.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="41" column="18" selection-start-line="41" selection-start-column="18" selection-end-line="41" selection-end-column="18" />
+            <state relative-caret-position="255">
+              <caret line="23" column="66" selection-start-line="23" selection-start-column="66" selection-end-line="23" selection-end-column="66" />
+              <folding>
+                <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="forms.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/matching/forms.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="138" selection-start-line="3" selection-start-column="118" selection-end-line="3" selection-end-column="138" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="visualization_page.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/matching/templates/matching/visualization_page.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="15" column="14" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
+              <folding>
+                <element signature="n#style#0;n#span#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -103,32 +109,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="visualization_page.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/matching/templates/matching/visualization_page.html">
+      <file leaf-file-name="wait_page.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/matching/templates/matching/wait_page.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="29" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="29" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tasks.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/matching/tasks.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="487">
-              <caret line="79" column="10" selection-start-line="79" selection-start-column="10" selection-end-line="79" selection-end-column="10" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="uploadFile.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/matching/static/JS/uploadFile.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="16" selection-end-column="3" />
-              <folding />
+            <state relative-caret-position="405">
+              <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+              <folding>
+                <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -151,7 +139,6 @@
         <option value="$PROJECT_DIR$/matching/static/JS/uploadFile.js" />
         <option value="$PROJECT_DIR$/matching/admin.py" />
         <option value="$PROJECT_DIR$/nrpsmatche/urls.py" />
-        <option value="$PROJECT_DIR$/matching/templates/matching/visualization_page.html" />
         <option value="$PROJECT_DIR$/vis_prediction.py" />
         <option value="$PROJECT_DIR$/matching/urls.py" />
         <option value="$PROJECT_DIR$/matching/run_search.py" />
@@ -159,17 +146,18 @@
         <option value="$PROJECT_DIR$/matching/__init__.py" />
         <option value="$PROJECT_DIR$/nrpsmatche/celery.py" />
         <option value="$PROJECT_DIR$/nrpsmatche/__init__.py" />
-        <option value="$PROJECT_DIR$/matching/templates/matching/wait_page.html" />
-        <option value="$PROJECT_DIR$/matching/models.py" />
         <option value="$PROJECT_DIR$/nrpsmatche/settings.py" />
-        <option value="$PROJECT_DIR$/matching/vis_prediction.py" />
+        <option value="$PROJECT_DIR$/matching/models.py" />
+        <option value="$PROJECT_DIR$/matching/tasks.py" />
         <option value="$PROJECT_DIR$/matching/forms.py" />
-        <option value="$PROJECT_DIR$/matching/static/css/nrpMatcher.css" />
+        <option value="$PROJECT_DIR$/matching/static/JS/dropDown.js" />
         <option value="$PROJECT_DIR$/matching/templates/matching/main_page.html" />
+        <option value="$PROJECT_DIR$/matching/static/css/nrpMatcher.css" />
+        <option value="$PROJECT_DIR$/matching/templates/matching/visualization_page.html" />
+        <option value="$PROJECT_DIR$/matching/templates/matching/wait_page.html" />
         <option value="$PROJECT_DIR$/matching/templates/matching/results_page.html" />
         <option value="$PROJECT_DIR$/matching/views.py" />
-        <option value="$PROJECT_DIR$/matching/tasks.py" />
-        <option value="$PROJECT_DIR$/matching/static/JS/dropDown.js" />
+        <option value="$PROJECT_DIR$/matching/vis_prediction.py" />
       </list>
     </option>
   </component>
@@ -213,8 +201,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -280,6 +268,28 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="matching" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webservice" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webservice" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="matching" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="img" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -634,7 +644,7 @@
     <frame x="67" y="25" width="927" height="1055" extended-state="4" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39158577" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3570658" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -855,13 +865,6 @@
     <entry file="file://$PROJECT_DIR$/matching/static/JS.js" />
     <entry file="file://$PROJECT_DIR$/media/pic_afOUq4W.png" />
     <entry file="file://$PROJECT_DIR$/tasks.py" />
-    <entry file="file://$PROJECT_DIR$/matching/templates/matching/wait_page.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="32" column="7" selection-start-line="32" selection-start-column="7" selection-end-line="32" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/matching/apps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -934,18 +937,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/matching/models.py">
+    <entry file="file://$PROJECT_DIR$/matching/static/JS/uploadFile.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="410">
-          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/matching/vis_prediction.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="714" column="27" selection-start-line="714" selection-start-column="27" selection-end-line="714" selection-end-column="27" />
+        <state relative-caret-position="30">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="16" selection-end-column="3" />
           <folding />
         </state>
       </provider>
@@ -958,18 +953,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/matching/templates/matching/visualization_page.html">
+    <entry file="file://$PROJECT_DIR$/matching/tasks.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="29" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/matching/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="118" selection-start-line="3" selection-start-column="89" selection-end-line="3" selection-end-column="118" />
+        <state relative-caret-position="562">
+          <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -982,61 +969,93 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/matching/templates/matching/results_page.html">
+    <entry file="file://$PROJECT_DIR$/matching/forms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="41" column="18" selection-start-line="41" selection-start-column="18" selection-end-line="41" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/matching/tasks.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="487">
-          <caret line="79" column="10" selection-start-line="79" selection-start-column="10" selection-end-line="79" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/matching/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="105" column="40" selection-start-line="105" selection-start-column="40" selection-end-line="105" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#54#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/matching/templates/matching/main_page.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="20" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/matching/static/JS/uploadFile.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="16" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/matching/static/css/nrpMatcher.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="567">
-          <caret line="56" column="5" selection-start-line="56" selection-start-column="1" selection-end-line="56" selection-end-column="5" />
+        <state relative-caret-position="45">
+          <caret line="3" column="138" selection-start-line="3" selection-start-column="118" selection-end-line="3" selection-end-column="138" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/matching/static/JS/dropDown.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="427">
-          <caret line="119" column="41" selection-start-line="119" selection-start-column="41" selection-end-line="119" selection-end-column="41" />
+        <state relative-caret-position="645">
+          <caret line="133" column="65" selection-start-line="133" selection-start-column="65" selection-end-line="133" selection-end-column="65" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/matching/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="682">
+          <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/matching/static/css/nrpMatcher.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="349">
+          <caret line="232" column="23" selection-start-line="232" selection-start-column="23" selection-end-line="232" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/matching/templates/matching/wait_page.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/matching/templates/matching/visualization_page.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="14" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/matching/templates/matching/main_page.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="389">
+          <caret line="26" column="57" selection-start-line="26" selection-start-column="57" selection-end-line="26" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/matching/templates/matching/results_page.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="23" column="66" selection-start-line="23" selection-start-column="66" selection-end-line="23" selection-end-column="66" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/matching/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="366">
+          <caret line="123" column="33" selection-start-line="123" selection-start-column="33" selection-end-line="123" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/matching/vis_prediction.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="809" column="19" selection-start-line="809" selection-start-column="19" selection-end-line="809" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

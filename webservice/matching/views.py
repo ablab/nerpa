@@ -15,6 +15,11 @@ from django.shortcuts import redirect
 from django.utils import timezone
 import datetime
 
+STATUS_PROGRESS = "in progress..."
+STATUS_COMPLETE = "compete"
+SEARCH_MODE_G = "A genome against NRP database"
+SEARCH_MODE_N = "A NRP against genome database"
+SEARCH_MODE_GN = "A NRP against genome"
 
 def get_or_create_session(request, page):
     session_key = request.session.session_key
@@ -62,7 +67,8 @@ def handle_form(request, user_session):
             readGenome(request)
             task = handle_genome.delay(request_id, form.cleaned_data['nrp_db'])
 
-            req = Request(task_id=task.id, user_session=user_session, request_id=request_id)
+            req = Request(task_id=task.id, user_session=user_session, request_id=request_id, status=STATUS_PROGRESS,
+                          search_mode=SEARCH_MODE_G, genome_file=request.FILES['inputFileGenome'].name, nrp_file=form.cleaned_data['nrp_db'])
             req.save()
 
         if (form.cleaned_data['search_type'] == 'nrp'):
@@ -78,7 +84,8 @@ def handle_form(request, user_session):
 
             task = handle_nrp.delay(request_id, form.cleaned_data['genome_db'], is_smile)
 
-            req = Request(task_id=task.id, user_session=user_session, request_id=request_id)
+            req = Request(task_id=task.id, user_session=user_session, request_id=request_id, status=STATUS_PROGRESS,
+                          search_mode=SEARCH_MODE_N, genome_file=form.cleaned_data['genome_db'], nrp_file=nrpfilename)
             req.save()
 
         if (form.cleaned_data['search_type'] == 'one'):
@@ -95,7 +102,8 @@ def handle_form(request, user_session):
 
             task = handle_one.delay(request_id, is_smile)
 
-            req = Request(task_id=task.id, user_session=user_session, request_id=request_id)
+            req = Request(task_id=task.id, user_session=user_session, request_id=request_id, status=STATUS_PROGRESS,
+                          search_mode=SEARCH_MODE_GN, genome_file=request.FILES['inputFileGenome'].name, nrp_file=nrpfilename)
             req.save()
 
         return redirect('/res/' + str(request_id))
@@ -109,6 +117,18 @@ def main_page(request):
         return handle_form(request, user_session)
 
     requests = Request.objects.filter(user_session=user_session)
+    for i in range(len(requests)):
+        if (requests[i].status == STATUS_PROGRESS):
+            future = handle_genome.AsyncResult(requests[i].task_id)
+            state = future.state
+            if (state == 'SUCCESS'):
+                requests[i].status = STATUS_COMPLETE
+                requests[i].save()
+        if (requests[i].status == STATUS_COMPLETE):
+            requests[i].matchCnt = len(MatchingResult.objects.filter(request_id=requests[i].request_id))
+        else:
+            requests[i].matchCnt = ""
+
     return render(request, 'matching/main_page.html', {'form': form, 'requests': requests})
 
 
@@ -125,11 +145,9 @@ def res_page(request, pk):
     state = future.state
 
     if (state == 'SUCCESS'):
-        form = SearchForm()
-        if request.method == "POST":
-            return handle_form(request, user_session)
-
-        results = MatchingResult.objects.filter(request_id=pk)
-        return render(request, 'matching/results_page.html', {'form': form, 'results': results})
+        req =  get_object_or_404(Request, request_id=pk)
+        results = MatchingResult.objects.filter(request_id=pk).order_by('-score')
+        req.matchCnt = len(results)
+        return render(request, 'matching/results_page.html', {'results': results, 'request': req})
     else:
         return render(request, 'matching/wait_page.html')

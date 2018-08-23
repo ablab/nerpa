@@ -697,7 +697,14 @@ def ParseScore(s):
     return (s.split(' ')[-1])
 
 
+def isAA(s):
+    if ('N' in s):
+        return True
+    return False
+
 def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G, g):
+    cntAA = 0
+    cntMatchAA = 0
     with open(detailMolFN) as f:
         lines = f.readlines()
         cur = 0
@@ -718,6 +725,8 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
         cur += 1
         vertInfo = []
         nodecolor = [0] * n
+        node_size = [600] * n
+        alphas = [1.0] * n
         labels = dict()
         for i in range(n):
             g.append([])
@@ -732,11 +741,19 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
             if (vertInfo[-1][4] != "-\n"):
                 labels[i] = vertInfo[-1][4].split('(')[0] + "\n" + "(" + vertInfo[-1][4].split('(')[1] + " " + \
                             vertInfo[-1][5] + "\n"
+            else:
+                alphas[i] = 0.5
+
             if (vertInfo[-1][1] != "-"):
                 labels[i] += vertInfo[-1][1] + "\n"
+                if (isAA(vertInfo[-1][1])):
+                    cntAA += 1
+                else:
+                    node_size[i] = 60
             if (vertInfo[-1][-2] != "-"):
                 labels[i] += vertInfo[-1][-2] + " " + vertInfo[-1][-1] + "\n"
                 usedOrfs.add(vertInfo[-1][-2])
+                cntMatchAA += 1
             labels[i] += "\n\n\n\n"
             if (vertInfo[-1][4] != "-\n"):
                 if (vertInfo[-1][-2] not in choosePred):
@@ -782,14 +799,17 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
         G.add_node(n + 1)
         pos[n + 1] = (-2* len(circ) * 10 - 10, -mxy)
         labels[n + 1] = ""
-        node_size = [600] * n
         node_size.append(0)
         node_size.append(0)
+        alphas.append(1)
+        alphas.append(1)
+        nodecolor.append("#000000")
+        nodecolor.append("#000000")
         nx.draw(G, pos=pos, node_color=nodecolor, labels=labels, node_size=node_size)
         plt.savefig('tmp.png')
         plt.close()
 
-        return info, score
+        return info, score, cntAA, cntMatchAA
 
 
 def parsePrediction(predictionFN, predictionInfo, predictionList, color):
@@ -879,13 +899,13 @@ def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request
     predictionList = []
 
     parsePrediction(predictionFN, predictionInfo, predictionList, color)
-    info, score = parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs, G, g)
+    info, score, cntAA, cntMatchAA = parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs, G, g)
     innerHTML = createTableInnerHTML(predictionList, usedOrfs, predictionInfo, choosePred, color)
 
     model_object = MatchingResult(request_id=request_id, innerTableHTML=innerHTML,
                                   mol_id=molName, extra_info=info,
                                   genome_id=genomeName, score=float(score.split('(')[0]),
-                                  AA_number=0, AA_matching_number=0)
+                                  AA_number=cntAA, AA_matching_number=cntMatchAA)
     model_object.img.save('pic.png', File(open('tmp.png', 'rb')))
     model_object.save()
     print("save")

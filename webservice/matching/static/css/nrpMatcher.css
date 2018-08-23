@@ -4,8 +4,53 @@ p {
 }
 
 h1 {
+    color: #CD4B2D;
     text-align: center;
-    font-size: 50px;
+    font-size: 64px;
+}
+
+
+.table-reports {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.th-reports, .td-reports {
+    text-align: left;
+    padding: 8px;
+}
+
+.tr-reports:nth-child(odd){background-color: #FEFFE7}
+
+.th-reports {
+    background-color: #E7E8CA;
+    color: black;
+}
+
+
+.center {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+.header .cab{
+    float: right;
+    width: 150px;
+    height: 150px;
+}
+
+
+.header .logo {
+    float: left;
+    width: 150px;
+    height: 150px;
+}
+
+.header h1 {
+  position: relative;
+  top: 18px;
 }
 
 .center-form {
@@ -21,9 +66,13 @@ button {
     height: 25px;
     border: 0;
     font-size: 17px;
+    color: #FCFCFC;
+    font-weight: bold;
 
-    background: #C4C4C4;
+    background: #2B3368;
 }
+
+
 
 .center-form .search {
     position: absolute;
@@ -44,7 +93,7 @@ button {
 
 .UploadInput {
     height: 25px;
-    background: #DDDDDD;
+    background: #E7E8CA;
     padding-left: 5px;
 }
 
@@ -87,7 +136,7 @@ button {
 }
 
 .dropbtn {
-    background-color: #DDDDDD;
+    background-color: #E7E8CA;
     height: 25px;
     width: 600px;
     font-size: 16px;
@@ -150,7 +199,7 @@ button {
     left: 0px;
     right: 0px;
     top:0px;
-    background: #E4E4E4;
+    background: #E7E8CA;
     border: 1px solid #BDBDBD;
     box-sizing: border-box;
     padding-left: 10px;
@@ -181,7 +230,7 @@ button {
 }
 
 .block {
-    background: #E4E4E4;
+    background: #FEFFE7;
     margin-bottom: 20px;
 }
 
@@ -218,7 +267,7 @@ th, td {
 }
 
 .select-selected {
-    background-color: #DDDDDD;
+    background-color: #E7E8CA;
     height: 20px;
     width: 590px;
     font-size: 16px;
@@ -253,7 +302,7 @@ th, td {
 
 .select-items {
   position: absolute;
-  background-color: #DDDDDD;
+  background-color: #E7E8CA;
   top: 100%;
   left: 0;
   right: 0;

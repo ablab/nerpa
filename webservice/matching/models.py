@@ -83,3 +83,8 @@ class Request(models.Model):
     task_id = models.CharField(max_length=1024, blank=True, null=True)
     user_session = models.ForeignKey(UserSession, blank=True, null=True, on_delete=models.CASCADE)
     request_id = models.IntegerField()
+    status = models.CharField(max_length=1024, blank=True, null=True)
+    date = models.DateTimeField(default=timezone.now)
+    search_mode = models.CharField(max_length=1024, blank=True, null=True)
+    genome_file = models.CharField(max_length=1024, blank=True, null=True)
+    nrp_file = models.CharField(max_length=1024, blank=True, null=True)

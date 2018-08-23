@@ -8,23 +8,28 @@
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     </head>
     <body>
-        <h1>NRPs Matcher</h1>
+
+    <div class="header">
+        <img class="logo" src="{%  static 'img/icon.png' %}" alt="logo">
+        <img class="cab" src="{%  static 'img/cab.png' %}" alt="cab">
+        <h1>NRP Matcher</h1>
+    </div>
 
         <div class="center-form">
         <div class="clearfix">
         <form method="POST" enctype="multipart/form-data" > {% csrf_token %}
             <div class="oneline2">
-                <p>Search type:</p>
+                <p><b>Search mode:</b></p>
                 <div class="custom-select" style="width:600px;">
                 <select id="id_search_type" name="search_type">
-                    <option value="genome">Genome against NRPs</option>
-                    <option value="nrp">NRP against genomes</option>
-                    <option value="one">NRP against genome</option>
+                    <option value="genome">A genome against NRP database</option>
+                    <option value="nrp">A NRP against genome database</option>
+                    <option value="one">A genome against a NRP</option>
                 </select>
                 </div>
             </div>
             <div class="oneline2" id="upload_block">
-                <p>Upload Genome:</p>
+                <p><b>Genome sequence:</b></p>
                 <div class="file_upload" id="file_upload">
                     <button id="uploadButton">
                         Upload
@@ -36,7 +41,7 @@
                 </div>
             </div>
             <div class="oneline2" id="choose_db">
-                <p>NRPs Data Base:</p>
+                <p><b>NRP database:</b></p>
                 <div class="custom-select" style="width:600px;">
                 <select id="id_nrp_db" name="nrp_db">
                     <option value="streptome">Streptome</option>
@@ -53,12 +58,29 @@
         </div>
 
         <div class="main_result">
-                <p><b>Previous requests:</b></p>
-                <div style="padding-left: 150px">
+                <p><b>Reports:</b></p>
+                <!-div style="padding-left: 150px"->
+                <table class="table-reports">
+                <tr>
+                    <th class="th-reports">Time</th>
+                    <th class="th-reports">Search mode</th>
+                    <th class="th-reports">Genome filename/database</th>
+                    <th class="th-reports">NRP filename/database</th>
+                    <th class="th-reports">Number of found matches</th>
+                    <th class="th-reports">Status</th>
+                </tr>
+
                 {% for request in requests %}
-                    <a href="{% url 'res_page' pk=request.request_id %}">{{ request.request_id }}</br></a>
+                    <tr class="tr-reports" onclick="document.location = {% url 'res_page' pk=request.request_id %};">
+                        <td class="td-reports"><a href="{% url 'res_page' pk=request.request_id %}"> {{request.date}}</a></td>
+                        <td class="td-reports"><a href="{% url 'res_page' pk=request.request_id %}">{{request.search_mode}}</a></td>
+                        <td class="td-reports"><a href="{% url 'res_page' pk=request.request_id %}">{{request.genome_file}}</a></td>
+                        <td class="td-reports"><a href="{% url 'res_page' pk=request.request_id %}">{{request.nrp_file}}</a></td>
+                        <td class="td-reports"><a href="{% url 'res_page' pk=request.request_id %}">{{request.matchCnt}}</a></td>
+                        <td class="td-reports"><a href="{% url 'res_page' pk=request.request_id %}">{{request.status}}</a></td>
+                    </tr>
                 {% endfor %}
-                </div>
+                <!-/div->
         </div>
 
 

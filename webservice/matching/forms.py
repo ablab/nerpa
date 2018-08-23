@@ -1,7 +1,7 @@
 from django import forms
 
 class SearchForm(forms.Form):
-    CHOICES_SEARCH = [('genome', 'Genome against NRPs'), ('nrp', 'NRP against genomes'), ('one', 'NRP against genome')]
+    CHOICES_SEARCH = [('genome', 'A genome against NRP database'), ('nrp', 'A NRP against genome database'), ('one', 'A NRP against genome')]
     search_type = forms.ChoiceField(widget=forms.Select, choices=CHOICES_SEARCH)
     inputFileGenome = forms.FileField(required=False)
     inputFileNRP = forms.FileField(required=False)
