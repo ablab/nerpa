@@ -726,7 +726,6 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
         vertInfo = []
         nodecolor = [0] * n
         node_size = [600] * n
-        alphas = [1.0] * n
         labels = dict()
         for i in range(n):
             g.append([])
@@ -742,7 +741,7 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
                 labels[i] = vertInfo[-1][4].split('(')[0] + "\n" + "(" + vertInfo[-1][4].split('(')[1] + " " + \
                             vertInfo[-1][5] + "\n"
             else:
-                alphas[i] = 0.5
+                node_size[i] = 400
 
             if (vertInfo[-1][1] != "-"):
                 labels[i] += vertInfo[-1][1] + "\n"
@@ -801,8 +800,6 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
         labels[n + 1] = ""
         node_size.append(0)
         node_size.append(0)
-        alphas.append(1)
-        alphas.append(1)
         nodecolor.append("#000000")
         nodecolor.append("#000000")
         nx.draw(G, pos=pos, node_color=nodecolor, labels=labels, node_size=node_size)
