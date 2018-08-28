@@ -840,11 +840,12 @@ def createTableInnerHTML(predictionList, usedOrfs, predictionInfo, choosePred, c
 
     mxlen = 0
     cntOrfs = [0] * 30
+    matchOrfs = [0] * 30
     for orf in predictionList:
-        if orf not in usedOrfs:
-            cntOrfs[len(predictionInfo[orf])] += 1
-            continue
-        mxlen = max(mxlen, len(predictionInfo[orf]))
+        cntOrfs[len(predictionInfo[orf])] += 1
+        if orf in usedOrfs:
+            matchOrfs[len(predictionInfo[orf])] += 1
+            mxlen = max(mxlen, len(predictionInfo[orf]))
 
     for orf in predictionList:
         if orf not in usedOrfs:
@@ -879,13 +880,28 @@ def createTableInnerHTML(predictionList, usedOrfs, predictionInfo, choosePred, c
                 innerHTML += "        <tr>\n"
 
     innerHTML += "        </table>\n"
-    orfsInfo = ""
+    orfsInfo = "<div class=\"orfcntTb\">\n<b>Number of prediction orfs:</b>\n<table>\n"
+    orfsInfo += "<tr>\n"
+    orfsInfo += "<th>Length(in AA)</th>\n"
+    orfsInfo += "<th># orfs with this length</th>\n"
+    orfsInfo += "<th># matched orfs</th>\n"
+    orfsInfo += "</tr>\n"
     for i in range(29, 0, -1):
         if cntOrfs[i] != 0:
-            orfsInfo += str(i) + " AA: " + str(cntOrfs[i]) + ";    "
+            orfsInfo += "<tr>\n"
+            orfsInfo += "<td>" + str(i) + "</td>\n"
+            orfsInfo += "<td>" + str(cntOrfs[i]) + "</td>\n"
+            orfsInfo += "<td>" + str(matchOrfs[i]) + "</td>\n"
+            orfsInfo += "</tr>\n"
 
-    innerHTML += "        <pre> " + str(sum(cntOrfs)) + " more orfs:    " + orfsInfo + "</pre>"
-    return innerHTML
+    orfsInfo += "<tr>\n"
+    orfsInfo += "<td><b>Total:</b></td>\n"
+    orfsInfo += "<td>" + str(sum(cntOrfs)) + "</td>\n"
+    orfsInfo += "<td>" + str(sum(matchOrfs)) + "</td>\n"
+    orfsInfo += "<tr>\n"
+    orfsInfo += "</table></div>\n"
+
+    return innerHTML, orfsInfo
 
 #fileName = "/home/olga/bio/NRP/data/bacteria_complete/details_mols/streptomedb.84"
 #name1 = "streptomedb.84"
@@ -907,11 +923,11 @@ def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request
     subName, mass, ref, dbs, score, cntAA, cntMatchAA = parseGraph(detailMolFN, molName,
                                                                    genomeName, color, choosePred,
                                                                    usedOrfs, G, g, nrpDB)
-    innerHTML = createTableInnerHTML(predictionList, usedOrfs, predictionInfo, choosePred, color)
+    innerHTML, orfsInfo = createTableInnerHTML(predictionList, usedOrfs, predictionInfo, choosePred, color)
 
     print(score.split('(')[0])
 
-    model_object = MatchingResult(request_id=request_id, innerTableHTML=innerHTML,
+    model_object = MatchingResult(request_id=request_id, innerTableHTML=innerHTML, orfsInfo=orfsInfo,
                                   mol_id=molName, product_name=subName, mass=mass, ref=ref,
                                   databases=dbs, genome_id=genomeName, score=float(score.split('(')[0]),
                                   AA_number=cntAA, AA_matching_number=cntMatchAA)

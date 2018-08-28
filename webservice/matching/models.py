@@ -12,7 +12,7 @@ class MatchingResult(models.Model):
 
     img = models.ImageField()
     innerTableHTML = models.TextField()
-    #orfsInfo = models.TextField()
+    orfsInfo = models.TextField()
 
     mol_id = models.TextField()
     extra_info = models.TextField()

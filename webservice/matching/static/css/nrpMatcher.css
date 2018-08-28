@@ -316,3 +316,21 @@ th, td {
 .select-items div:hover, .same-as-selected {
   background-color: rgba(0, 0, 0, 0.2);
 }
+
+
+.orfcntTb  {
+    margin-top: 10px;
+}
+
+.orfcntTb table {
+    margin-left: 10px;
+    margin-right: 10px;
+    
+    border-collapse: collapse;
+}
+
+.orfcntTb th, .orfcntTb td {
+    border: 1px solid #ddd;
+    text-align: center;
+}
+

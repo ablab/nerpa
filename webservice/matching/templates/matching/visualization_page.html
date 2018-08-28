@@ -24,6 +24,9 @@
                     <b>Link:</b>  <a href={{ result.ref }}> {{ result.ref }} </a> </br>
                     <b>Num AA:</b> {{ result.AA_number }}</br>
                     <b>Num Matched AA:</b> {{  result.AA_matching_number }} </br>
+                    {% autoescape off %}
+                        {{ result.orfsInfo}}
+                    {% endautoescape %}
                 </p>
             </div>
         </div>
