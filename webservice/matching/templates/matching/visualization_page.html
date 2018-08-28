@@ -18,7 +18,10 @@
             <div style="margin-left: 10px;">
                 <p> <b>Score:</b> {{ result.score }}</br>
                     <b>ID:</b> {{ result.mol_id }}</br>
-                    {{ result.extra_info}} </br>
+                    <b>Product name:</b> {{ result.product_name }} </br>
+                    <b>Mass:</b> {{ result.mass }} </br>
+                    <b>NRP database(s):</b> {{ result.databases }}</br>
+                    <b>Link:</b>  <a href={{ result.ref }}> {{ result.ref }} </a> </br>
                     <b>Num AA:</b> {{ result.AA_number }}</br>
                     <b>Num Matched AA:</b> {{  result.AA_matching_number }} </br>
                 </p>

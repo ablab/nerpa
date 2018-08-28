@@ -4,6 +4,9 @@ from math import *
 from .models import MatchingResult
 from django.core.files import File
 
+DB_STREPTOME = 'streptome'
+DB_NONE = 'none'
+
 colors = [
     "#FF7E00",
     "#C9FFE5",
@@ -689,8 +692,13 @@ def SplitGraph(g):
     return (circ, [])
 
 
-def ParseExtraInfo(s):
-    return (' '.join(s.split(' ')[1:]))
+# sub_name, mass, dbs, ref
+def ParseExtraInfo(s, nrpDB):
+    ss = s.split(' ')[1:]
+    if (nrpDB == DB_STREPTOME):
+        return ss[1], float(ss[2]), nrpDB, ss[-1]
+    else:
+        return "-", -1, "-", "-"
 
 
 def ParseScore(s):
@@ -702,7 +710,7 @@ def isAA(s):
         return True
     return False
 
-def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G, g):
+def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G, g, nrpDB):
     cntAA = 0
     cntMatchAA = 0
     with open(detailMolFN) as f:
@@ -718,7 +726,7 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
             while (cur < len(lines) and lines[cur] == "\n"):
                 cur += 1
 
-        info = ParseExtraInfo(lines[cur])
+        sub_name, mass, dbs, ref = ParseExtraInfo(lines[cur], nrpDB)
         score = ParseScore(lines[cur + 2])
         cur += 5  # cnt prefix line
         n = int(lines[cur].split(' ')[-1])
@@ -806,7 +814,7 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
         plt.savefig('tmp.png')
         plt.close()
 
-        return info, score, cntAA, cntMatchAA
+        return sub_name, mass, ref, dbs, score, cntAA, cntMatchAA
 
 
 def parsePrediction(predictionFN, predictionInfo, predictionList, color):
@@ -885,7 +893,7 @@ def createTableInnerHTML(predictionList, usedOrfs, predictionInfo, choosePred, c
 #predictionFileName = "/home/olga/bio/NRP/data/bacteria_complete/predictions/" + name2
 
 
-def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request_id):
+def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request_id, nrpDB):
     print("start viz " + molName)
     G = nx.Graph()
     g = []
@@ -896,12 +904,16 @@ def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request
     predictionList = []
 
     parsePrediction(predictionFN, predictionInfo, predictionList, color)
-    info, score, cntAA, cntMatchAA = parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs, G, g)
+    subName, mass, ref, dbs, score, cntAA, cntMatchAA = parseGraph(detailMolFN, molName,
+                                                                   genomeName, color, choosePred,
+                                                                   usedOrfs, G, g, nrpDB)
     innerHTML = createTableInnerHTML(predictionList, usedOrfs, predictionInfo, choosePred, color)
 
+    print(score.split('(')[0])
+
     model_object = MatchingResult(request_id=request_id, innerTableHTML=innerHTML,
-                                  mol_id=molName, extra_info=info,
-                                  genome_id=genomeName, score=float(score.split('(')[0]),
+                                  mol_id=molName, product_name=subName, mass=mass, ref=ref,
+                                  databases=dbs, genome_id=genomeName, score=float(score.split('(')[0]),
                                   AA_number=cntAA, AA_matching_number=cntMatchAA)
     model_object.img.save('pic.png', File(open('tmp.png', 'rb')))
     model_object.save()

@@ -12,12 +12,17 @@ class MatchingResult(models.Model):
 
     img = models.ImageField()
     innerTableHTML = models.TextField()
+    #orfsInfo = models.TextField()
 
     mol_id = models.TextField()
     extra_info = models.TextField()
+    product_name = models.TextField()
+    mass = models.DecimalField(max_digits=10, decimal_places=3)
+    ref = models.TextField()
+    databases = models.TextField()
     genome_id = models.TextField()
 
-    score = models.IntegerField()
+    score = models.DecimalField(max_digits=10, decimal_places=3)
     AA_number = models.IntegerField()
     AA_matching_number = models.IntegerField()
 

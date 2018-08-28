@@ -45,20 +45,24 @@
                 <div class="overflowdiva">
                 {% for result in results %}
                     <div class="block">
-                    <a href="{% url 'vis_page' pk=result.pk %}">
                         <div class="clearfix">
-                        <img src="{{result.img.url }}" height="200" style="float: left; margin-right: 15px">
-                        <div >
-                        <p> <b>Score:</b> {{ result.score }}</br>
-                            <b>ID:</b> {{ result.mol_id }}</br>
-                            {{ result.extra_info}} </br>
-                            <b>Num AA:</b> {{ result.AA_number }}</br>
-                            <b>Num Matched AA:</b> {{  result.AA_matching_number }} </br>
-                        </p>
+                         <a href="{% url 'vis_page' pk=result.pk %}">
+                            <img src="{{result.img.url }}" height="270" style="float: left; margin-right: 15px">
+                        </a>
+                             <div >
+                            <p> <b>Score:</b> {{ result.score }}</br>
+                                <b>ID:</b> {{ result.mol_id }}</br>
+                                <b>Product name:</b> {{ result.product_name }} </br>
+                                <b>Mass:</b> {{ result.mass }} </br>
+                                <b>NRP database(s):</b> {{ result.databases }}</br>
+                                <b>Link:</b> <a href={{ result.ref }}> {{ result.ref }} </a> </br>
+                                <b>Num AA:</b> {{ result.AA_number }}</br>
+                                <b>Num Matched AA:</b> {{  result.AA_matching_number }} </br>
+                            </p>
                         </div>
                     </div>
-                    </a>
                     </div>
+
                 {% endfor %}
             </div>
             </div>

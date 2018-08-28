@@ -241,7 +241,7 @@ th, td {
 
 .matchInfo {
     position: fixed;
-    width: 350px;
+    width: 400px;
     bottom: 0px;
     right: 0px;
     top:59px;
@@ -254,7 +254,7 @@ th, td {
     left:0px;
     bottom:0px;
     top:60px;
-    right: 351px;
+    right: 401px;
 }
 
 .custom-select {

@@ -21,6 +21,7 @@ SEARCH_MODE_G = "A genome against NRP database"
 SEARCH_MODE_N = "A NRP against genome database"
 SEARCH_MODE_GN = "A NRP against genome"
 
+
 def get_or_create_session(request, page):
     session_key = request.session.session_key
     if not session_key or not request.session.exists(session_key):

@@ -1,6 +1,8 @@
 import os
 from .vis_prediction import visualize_prediction
 from celery import shared_task
+from .vis_prediction import DB_NONE
+from .vis_prediction import DB_STREPTOME
 
 path = "/home/olga/bio/NRP/data/serverRuns/"
 genome_file = path + "genome.fna"
@@ -15,9 +17,8 @@ predictionPath = antismashRes + "nrpspks_predictions_txt/ctg1_nrpspredictor2_cod
 
 NRPsMatcher = "/home/olga/tmp/NRP/bin/run_nrp_matcher.py"
 
-dbNRPinfo = {'streptome': "/home/olga/bio/NRP/data/DataBase/library.info.streptomedb"}
+dbNRPinfo = {DB_STREPTOME: "/home/olga/bio/NRP/data/DataBase/library.info.streptomedb"}
 dbPredictionInfo = {'bc': "/home/olga/bio/NRP/data/DataBase/mibigNF.info"}
-
 
 def run_antismash():
     os.system("python2 " + pathToAntismash + " " + genome_file + " --outputfolder " + antismashRes)
@@ -30,9 +31,9 @@ def run_nrpsMatcher(prinfo, molinfo):
     os.system("python3 " + NRPsMatcher + " -p " + prinfo + " --lib_info " + molinfo + " -o " + path)
 
 
-def save_results(request_id):
+def save_results(request_id, nrpDB = DB_NONE):
     for filename in os.listdir(path + "/details_mols"):
-        visualize_prediction(path + "/details_mols/" + filename, predictionPath, filename, "ctg1_nrpspredictor2_codes", request_id)
+        visualize_prediction(path + "/details_mols/" + filename, predictionPath, filename, "ctg1_nrpspredictor2_codes", request_id, nrpDB)
 
 
 def getAllPath(filename):
@@ -55,7 +56,7 @@ def save_results_prediction(request_id):
         for predpath in predpaths:
             if (predpath[-1] == '\n'):
                 predpath = predpath[:-1]
-            visualize_prediction(path + "/details_mols/" + filename, predpath, "nrp", predpath, request_id)
+            visualize_prediction(path + "/details_mols/" + filename, predpath, "nrp", predpath, request_id, DB_NONE)
 
 
 def SMILE_to_MOL():
@@ -79,7 +80,7 @@ def handle_genome(request_id, nrpDB):
     print("START HANDLE GENOME")
     run_antismash()
     run_nrpsMatcher(predictionInfo, dbNRPinfo[nrpDB])
-    save_results(request_id)
+    save_results(request_id, nrpDB)
     clear()
 
 
@@ -99,5 +100,5 @@ def handle_one(request_id, is_smile=False):
         SMILE_to_MOL()
     run_antismash()
     run_nrpsMatcher(predictionInfo, molInfo)
-    save_results(request_id)
+    save_results(request_id, DB_NONE)
     clear()
