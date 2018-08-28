@@ -694,11 +694,11 @@ def SplitGraph(g):
 
 # sub_name, mass, dbs, ref
 def ParseExtraInfo(s, nrpDB):
-    ss = s.split(' ')[1:]
+    ss = s.split()[1:]
     if (nrpDB == DB_STREPTOME):
-        return ss[1], float(ss[2]), nrpDB, ss[-1]
+        return ss[0], float(ss[1]), nrpDB, ss[-1]
     else:
-        return "-", -1, "-", "-"
+        return "", float(ss[0]), "", ""
 
 
 def ParseScore(s):

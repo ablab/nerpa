@@ -66,6 +66,29 @@ def SMILE_to_MOL():
     os.system("molconvert mol:V3+H " + smile_file + " -o " + nrp_file)
 
 
+MASS = {' C ': 12.011, ' N ': 14.007, ' O ': 16, ' Cl ': 35.453, ' P ': 30.974, ' S ': 32.065, ' H ': 1.008}
+
+def get_mass(mol_file):
+    mass = 0
+    with open(mol_file) as f:
+        for line in f:
+            for key in MASS:
+                if (key in line):
+                    mass += MASS[key]
+    return mass
+
+def update_mol_info(mol_info):
+    os.system("mv " + mol_info + " mol_tmp.info")
+    with open(mol_info, 'w') as fw:
+        with open("mol_tmp.info") as f:
+            for line in f:
+                fname = line.split()[0]
+                ms = get_mass(fname)
+                fw.write(fname + " " + str(ms) + '\n')
+
+    os.system("rm mol_tmp.info")
+
+
 def clear():
     os.system("rm -r " + path + "/details_mols/")
     os.system("rm -r " + path + "/details_predictions/")
@@ -92,6 +115,7 @@ def handle_nrp(request_id, predictDB, is_smile=False):
     print("START HANDLE NRP")
     if (is_smile):
         SMILE_to_MOL()
+    update_mol_info(molInfo)
     run_nrpsMatcher(dbPredictionInfo[predictDB], molInfo)
     save_results_prediction(request_id)
     clear()
@@ -101,7 +125,8 @@ def handle_one(request_id, is_smile=False):
     print("START HANDLE ONE")
     if (is_smile):
         SMILE_to_MOL()
+    update_mol_info(molInfo)
     run_antismash()
     run_nrpsMatcher(predictionInfo, molInfo)
     save_results(request_id, DB_NONE)
-    #clear()
+    clear()
