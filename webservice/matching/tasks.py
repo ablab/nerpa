@@ -60,8 +60,11 @@ def save_results_prediction(request_id):
 
 
 def SMILE_to_MOL():
-    print("molconvert mol:V3+H --smiles \"" + smile_file + "\" -o " + nrp_file)
-    os.system("molconvert mol:V3+H --smiles \"" + smile_file + "\" -o " + nrp_file)
+    #print("molconvert mol:V3+H --smiles \"" + smile_file + "\" -o " + nrp_file)
+    #os.system("molconvert mol:V3+H --smiles \"" + smile_file + "\" -o " + nrp_file)
+    print("molconvert mol:V3+H " + smile_file + " -o " + nrp_file)
+    os.system("molconvert mol:V3+H " + smile_file + " -o " + nrp_file)
+
 
 def clear():
     os.system("rm -r " + path + "/details_mols/")
@@ -101,4 +104,4 @@ def handle_one(request_id, is_smile=False):
     run_antismash()
     run_nrpsMatcher(predictionInfo, molInfo)
     save_results(request_id, DB_NONE)
-    clear()
+    #clear()

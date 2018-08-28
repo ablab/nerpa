@@ -122,6 +122,7 @@ def main_page(request):
         if (requests[i].status == STATUS_PROGRESS):
             future = handle_genome.AsyncResult(requests[i].task_id)
             state = future.state
+            print(state)
             if (state == 'SUCCESS'):
                 requests[i].status = STATUS_COMPLETE
                 requests[i].save()
