@@ -13,6 +13,7 @@ $(":file:first").change(function(){
     if( ! file_name.length )
         return;
 
+    //lbl.innerHTML = "<p>" + file_name + "</p>"
     lbl.text( file_name );
 });
 

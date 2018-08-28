@@ -41,6 +41,12 @@ h1 {
     height: 150px;
 }
 
+.header .cmu{
+    float: right;
+    width: 150px;
+    height: 150px;
+}
+
 
 .header .logo {
     float: left;
@@ -53,13 +59,23 @@ h1 {
   top: 18px;
 }
 
+.center-line {
+    position: relative;
+    width: 900px;
+    left: 50%;
+
+    -ms-transform: translate(-50%, 0%);
+    transform: translate(-50%, 0%);
+}
+
 .center-form {
     margin: 0;
     position: absolute;
-    top: 30%;
+    top: 200px;
+    width: 800px;
     left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, 0%);
+    transform: translate(-50%, 0%);
 }
 
 button {
@@ -94,7 +110,9 @@ button {
 .UploadInput {
     height: 25px;
     background: #E7E8CA;
-    padding-left: 5px;
+    padding-left: 8px;
+    cursor: pointer;
+    font-family: Arial;
 }
 
 .oneline {
@@ -325,7 +343,7 @@ th, td {
 .orfcntTb table {
     margin-left: 10px;
     margin-right: 10px;
-    
+
     border-collapse: collapse;
 }
 

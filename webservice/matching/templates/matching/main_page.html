@@ -9,13 +9,16 @@
     </head>
     <body>
 
+    <div class="center-line">
+
     <div class="header">
         <img class="logo" src="{%  static 'img/icon.png' %}" alt="logo">
         <img class="cab" src="{%  static 'img/cab.png' %}" alt="cab">
+        <img class="cmu" src="{%  static 'img/cmu.png' %}" alt="cmu">
         <h1>NRP Matcher</h1>
     </div>
 
-        <div class="center-form">
+    <div class="center-form">
         <div class="clearfix">
         <form method="POST" enctype="multipart/form-data" > {% csrf_token %}
             <div class="oneline2">
@@ -55,10 +58,11 @@
             </div>
         </form>
         </div>
-        </div>
+    </div>
+
 
         <div class="main_result">
-                <p><b>Reports:</b></p>
+                <p style="position: absolute;left:0px;padding-top: 5px;"><b>Reports:</b></p>
                 <!-div style="padding-left: 150px"->
                 <table class="table-reports">
                 <tr>
@@ -81,8 +85,9 @@
                     </tr>
                 {% endfor %}
                 <!-/div->
+                </table>
         </div>
-
+    </div>
 
     <script src="{%  static 'JS/uploadFile.js' %}"></script>
     <script src="{%  static 'JS/dropDown.js' %}"></script>
