@@ -15,17 +15,37 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
+  <component name="DockManager">
+    <window id="3">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/matching/models.py">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="781">
+                    <caret line="89" column="38" selection-start-line="89" selection-start-column="4" selection-end-line="89" selection-end-column="38" />
+                    <folding />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+  </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="webservice" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/matching/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="126" column="35" selection-start-line="126" selection-start-column="35" selection-end-line="126" selection-end-column="35" />
+            <state relative-caret-position="742">
+              <caret line="159" column="0" selection-start-line="159" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
               <folding>
                 <element signature="e#0#54#0" expanded="true" />
               </folding>
@@ -45,17 +65,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tests.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/matching/tests.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tasks.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="tasks.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/matching/tasks.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="801">
@@ -70,8 +80,8 @@
       <file leaf-file-name="results_page.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/matching/templates/matching/results_page.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="463">
-              <caret line="49" column="69" selection-start-line="49" selection-start-column="69" selection-end-line="49" selection-end-column="69" />
+            <state relative-caret-position="508">
+              <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="61" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -120,8 +130,8 @@
       <file leaf-file-name="visualization_page.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/matching/templates/matching/visualization_page.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="27" column="42" selection-start-line="27" selection-start-column="42" selection-end-line="27" selection-end-column="42" />
+            <state relative-caret-position="435">
+              <caret line="29" column="20" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -155,15 +165,15 @@
         <option value="$PROJECT_DIR$/matching/forms.py" />
         <option value="$PROJECT_DIR$/matching/static/JS/dropDown.js" />
         <option value="$PROJECT_DIR$/matching/templates/matching/wait_page.html" />
-        <option value="$PROJECT_DIR$/matching/templates/matching/results_page.html" />
         <option value="$PROJECT_DIR$/matching/models.py" />
-        <option value="$PROJECT_DIR$/matching/templates/matching/visualization_page.html" />
         <option value="$PROJECT_DIR$/matching/static/JS/uploadFile.js" />
         <option value="$PROJECT_DIR$/matching/static/css/nrpMatcher.css" />
         <option value="$PROJECT_DIR$/matching/templates/matching/main_page.html" />
-        <option value="$PROJECT_DIR$/matching/views.py" />
         <option value="$PROJECT_DIR$/matching/vis_prediction.py" />
         <option value="$PROJECT_DIR$/matching/tasks.py" />
+        <option value="$PROJECT_DIR$/matching/templates/matching/results_page.html" />
+        <option value="$PROJECT_DIR$/matching/templates/matching/visualization_page.html" />
+        <option value="$PROJECT_DIR$/matching/views.py" />
       </list>
     </option>
   </component>
@@ -179,7 +189,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="67" />
     <option name="y" value="25" />
-    <option name="width" value="1853" />
+    <option name="width" value="927" />
     <option name="height" value="1055" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -647,10 +657,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
+    <frame x="67" y="25" width="927" height="1055" extended-state="4" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17431192" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34843582" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -983,30 +993,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/matching/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="33" column="20" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/matching/templates/matching/visualization_page.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="42" selection-start-line="27" selection-start-column="42" selection-end-line="27" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/matching/templates/matching/results_page.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="463">
-          <caret line="49" column="69" selection-start-line="49" selection-start-column="69" selection-end-line="49" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/matching/static/JS/uploadFile.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -1020,24 +1006,6 @@
         <state relative-caret-position="364">
           <caret line="203" column="0" selection-start-line="203" selection-start-column="0" selection-end-line="203" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/matching/templates/matching/main_page.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="523">
-          <caret line="64" column="54" selection-start-line="64" selection-start-column="54" selection-end-line="64" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/matching/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="126" column="35" selection-start-line="126" selection-start-column="35" selection-end-line="126" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#54#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1057,6 +1025,48 @@
           <caret line="131" column="4" selection-start-line="131" selection-start-column="4" selection-end-line="131" selection-end-column="4" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/matching/templates/matching/results_page.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="508">
+          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="61" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/matching/templates/matching/main_page.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="523">
+          <caret line="64" column="54" selection-start-line="64" selection-start-column="54" selection-end-line="64" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/matching/templates/matching/visualization_page.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="29" column="20" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/matching/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="781">
+          <caret line="89" column="38" selection-start-line="89" selection-start-column="4" selection-end-line="89" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/matching/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="742">
+          <caret line="159" column="0" selection-start-line="159" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#54#0" expanded="true" />
           </folding>
         </state>
       </provider>

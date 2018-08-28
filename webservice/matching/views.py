@@ -136,6 +136,9 @@ def main_page(request):
 
 def vis_page(request, pk):
     result = get_object_or_404(MatchingResult, pk=pk)
+    result.genome_id = result.genome_id.split('/')[-1]
+    if (result.genome_id == "ctg1_nrpspredictor2_codes"):
+        result.genome_id = get_object_or_404(Request, request_id=result.request_id).genome_file
     return render(request, 'matching/visualization_page.html', {'result': result})
 
 
@@ -150,6 +153,11 @@ def res_page(request, pk):
         req =  get_object_or_404(Request, request_id=pk)
         results = MatchingResult.objects.filter(request_id=pk).order_by('-score')
         req.matchCnt = len(results)
+        for result in results:
+            result.genome_id = result.genome_id.split('/')[-1]
+            if (result.genome_id == "ctg1_nrpspredictor2_codes"):
+                result.genome_id = get_object_or_404(Request, request_id=result.request_id).genome_file
+
         return render(request, 'matching/results_page.html', {'results': results, 'request': req})
     else:
         return render(request, 'matching/wait_page.html')
