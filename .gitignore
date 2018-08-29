@@ -1,0 +1,4 @@
+*.idea
+*__pycharm__*
+cmake-build-debug
+build
