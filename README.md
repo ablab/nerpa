@@ -85,6 +85,31 @@ Example of info and mols file you can find in
     <installing_dir>/share/streptomedb/
 
 ### Command line options
-./run_nrp_matcher.py --predictions \<path to file with paths to ctg1_nrpspredictor2_codes.txt files\> --lib_info \<path to file with paths to mol files\>
+
+To run NRP Matcher from the command line type
+
+    python3 run_nrp_matcher.py [options]
+
+#### Options
+
+<p>
+<code>-h</code> (or <code>--help</code>)    Print help
+</p>
+
+<p>
+    <code>-p</code> (or <code>--predictions</code>) <code>&lt;file_name></code>  File with paths to prediction files. Required option.
+</p>
+
+<p>
+    <code>--lib_info &lt;file_name></code>  File with paths to nrp structure description files in MOL format. Required option.
+</p>
+
+<p>
+    <code>-o</code> (or <code>--local_output_dir</code>) <code>&lt;output_dir></code> Specify the output directory.
+</p>
+
 ### Output
+
+
+
 ### Example
