@@ -35,6 +35,7 @@ log = Log()
 path_to_exec_dir = os.path.dirname(os.path.abspath(__file__)) + "/"
 
 def parse_args():
+    global parser
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--predictions", "-p", nargs=1, dest="predictions", help="path to file with paths to prediction files", type=str)
     parser.add_argument("--lib_info", dest="lib_info", nargs=1, help="path to file with paths to mol files", type=str)
@@ -109,6 +110,21 @@ def gen_abs_paths_to_prediction(args):
     return predictions
 
 def run(args):
+    if (len(sys.argv) == 1):
+        parser.print_help()
+        sys.exit()
+
+    if (args.predictions == None):
+        log.err("None prediction info file provide")
+        parser.print_help()
+        sys.exit()
+
+    if (args.lib_info == None):
+        log.err("None NRP structure info file provide")
+        parser.print_help()
+        sys.exit()
+
+
     main_out_dir = os.path.abspath(".") + "/"
     if args.local_output_dir != None:
         main_out_dir = os.path.abspath(args.local_output_dir[0]) + "/"
