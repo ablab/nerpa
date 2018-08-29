@@ -11,11 +11,11 @@ pre-installed on it.
 Also https://github.com/ablab/dereplicator/ must be
 added to PATH. Folders "Fragmentation_rule" and "configs" must be
 located in one of the paths:
-* \<DEREPLICATOR INSTALL DIR\>/
-* \<DEREPLICATOR INSTALL DIR\>/../
-* \<DEREPLICATOR INSTALL DIR\>/../../
-* \<DEREPLICATOR INSTALL DIR\>/../share/
-* \<DEREPLICATOR INSTALL DIR\>/../share/npdtools/
+- \<DEREPLICATOR INSTALL DIR\>/
+- \<DEREPLICATOR INSTALL DIR\>/../
+- \<DEREPLICATOR INSTALL DIR\>/../../
+- \<DEREPLICATOR INSTALL DIR\>/../share/
+- \<DEREPLICATOR INSTALL DIR\>/../share/npdtools/
 
 
 ## Installation
@@ -51,6 +51,39 @@ We also suggest adding NRP Matcher installation directory to PATH variable.
 
 ## Running
 ### Input
+NRP Matcher takes as input file with list of paths to gene cluster prediction files
+and file with paths to files with NRP structure in MOL format.
+
+#### Predictions
+
+**TODO:**  нужен скрипт и бинарник antismash что бы получить нужное предсказание.
+Или... долго описывать как нужный файлик получать. Или вообще передавать список геномов
+и самостоятельно запускать antismash...
+
+#### NRPs structures
+
+By using command line interface you need specify info file,
+where each line described one NRP in following format:
+
+    <path to file with NRP structure in MOL format> <any extra information about NRP>
+
+for example:
+
+    streptomedb/streptomedb.1.mol geranylphenazinediol 348.184 1
+
+You can read about MOL format [here](https://en.wikipedia.org/wiki/Chemical_table_file#Molfile).
+
+If you have NRP structure in some other format we recommend use [molconvert](https://docs.chemaxon.com/display/docs/Molecule+file+conversion+with+Molconverter).
+To convert smile string to required MOL file you can run:
+
+    molconvert mol:V3+H --smiles <smile string> -o <nrp file>
+
+
+Example of info and mols file you can find in
+
+    <installing_dir>/share/library.info.streptomedb
+    <installing_dir>/share/streptomedb/
+
 ### Command line options
 ./run_nrp_matcher.py --predictions \<path to file with paths to ctg1_nrpspredictor2_codes.txt files\> --lib_info \<path to file with paths to mol files\>
 ### Output
