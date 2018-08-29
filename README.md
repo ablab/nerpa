@@ -20,11 +20,34 @@ located in one of the paths:
 
 ## Installation
 
-To install into CWD: ./install.sh
+To compile NRP Matcher you can download the NRP Matcher source code:
 
-To install into specific dir: PREFIX=<destination_dir> ./install.sh
+    git clone https://github.com/olga24912/NRPsMatcher.git
+    cd NRPsMatcher
 
-Note: you should use absolute path for <destination_dir>! Main executables will be placed under <destination_dir>/bin/
+and build it with the following script:
+
+    ./install.sh
+
+NRP Matcher will be built in the directory ./bin. If you wish to install
+NRP Matcher into another directory, you can specify full path of destination folder
+by running the following command in bash or sh:
+
+    PREFIX=<destination_dir> ./install.sh
+
+for example:
+
+    PREFIX=/usr/local ./install.sh
+
+which will install NRP Matcher into /usr/local/bin.
+
+Note: you should use absolute path for <destination_dir>.
+
+After installation you will get NRPsMatcher and run_nrp_matcher.py
+files in ./bin (or <destination_dir>/bin if you specified PREFIX)
+directory.
+
+We also suggest adding NRP Matcher installation directory to PATH variable.
 
 ## Running
 ### Input
