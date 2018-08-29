@@ -11,3 +11,19 @@ add_subdirectory(tests)
 install(PROGRAMS "${CMAKE_CURRENT_SOURCE_DIR}/run_nrp_matcher.py"
         DESTINATION bin
         COMPONENT runtime)
+
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/library.info.streptomedb"
+        DESTINATION share
+        COMPONENT runtime)
+
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/prediction.info"
+        DESTINATION share
+        COMPONENT runtime)
+
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/predictions"
+        DESTINATION share
+        COMPONENT runtime)
+
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/streptomedb"
+        DESTINATION share
+        COMPONENT runtime)

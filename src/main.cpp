@@ -6,22 +6,60 @@
 #include <NRPGenerator/NRPGenerator.h>
 #include <NormalizedMatch/NormalizedMatch.h>
 #include <NRPGenerator/NRPGeneratorTriplet.h>
+#include <cstring>
 #include "NRP/NRP.h"
 #include "NRPsPrediction/NRPsPrediction.h"
 
 const int MIN_SCROE = 2;
 
+std::string getAbsoluteDir(const char* filename) {
+    char *real_path = realpath(filename, NULL);
+    int lst_slash = 0;
+    int len = strlen(real_path);
+    for (int i = 0; i < len; ++i) {
+        if (real_path[i] == '/') {
+            lst_slash = i;
+        }
+    }
+    std::string fn = "";
+    for (int i = 0; i < lst_slash; ++i) {
+        fn += real_path[i];
+    }
+    free(real_path);
+    return fn;
+}
+
+std::string getDir(const std::string& filename) {
+    int lst_slash = 0;
+    for (int i = 0; i < filename.size(); ++i) {
+        if (filename[i] == '/') {
+            lst_slash = i;
+        }
+    }
+    std::string fn = "";
+    for (int i = 0; i < lst_slash; ++i) {
+        fn += filename[i];
+    }
+    return fn;
+}
+
 std::vector<nrpsprediction::NRPsPrediction>  save_predictions(char* file_name) {
     std::vector<nrpsprediction::NRPsPrediction> preds;
     std::ifstream in_predictions_files(file_name);
 
+    std::cerr << file_name << "\n";
     std::string cur_prediction_file;
     std::string cur_line;
 
     while(getline(in_predictions_files, cur_line)) {
+        std::cerr << "line" << "\n";
         //std::stringstream ss(cur_line);
         //ss >> cur_prediction_file;
+        if (cur_line[0] != '/') {
+            cur_line = getDir(file_name) + "/" + cur_line;
+        }
         std::cerr << cur_line << "\n";
+
         nrpsprediction::NRPsPrediction nrPsPrediction;
         nrPsPrediction.read_file(cur_line);
 

@@ -70,6 +70,9 @@ def gen_graphs_by_mol(args, main_out_dir):
         for line in fr:
             line_parts = line.split()
             file = line_parts[0]
+            if (file[0] != '/'):
+                file = '/'.join(os.path.abspath(args.lib_info[0]).split('/')[:-1]) + "/" + file
+
             nfname = file.split('/')[-1][:-3] + "gr"
             info = ' '.join(line_parts[1:])
 
@@ -100,7 +103,8 @@ def gen_abs_paths_to_prediction(args):
             if line[0] == '/':
                 predictions.append(line)
             else:
-                predictions.append(os.path.abspath(".") + "/" + line)
+                line = '/'.join(os.path.abspath(args.predictions[0]).split('/')[:-1]) + "/" + line
+                predictions.append(line)
 
     return predictions
 
@@ -112,6 +116,7 @@ def run(args):
     path_to_graphs, files_list = gen_graphs_by_mol(args, main_out_dir)
     predictions = gen_abs_paths_to_prediction(args)
 
+    path_to_pred = os.path.abspath(args.predictions[0])
     directory = os.path.dirname(main_out_dir)
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -123,8 +128,8 @@ def run(args):
     if not os.path.exists(os.path.dirname('details_mols/')):
         os.makedirs(os.path.dirname('details_mols/'))
 
-    print(path_to_exec_dir + "/NRPsMatcher " +  args.predictions[0] + " " + path_to_graphs + "\n")
-    os.system(path_to_exec_dir + "/NRPsMatcher " +  args.predictions[0] + " " + path_to_graphs + "\n")
+    print(path_to_exec_dir + "/NRPsMatcher " +  path_to_pred + " " + path_to_graphs + "\n")
+    os.system(path_to_exec_dir + "/NRPsMatcher " +  path_to_pred + " " + path_to_graphs + "\n")
     return
 
 args = parse_args()
