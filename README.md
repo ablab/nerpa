@@ -110,6 +110,11 @@ To run NRP Matcher from the command line type
 
 ### Output
 
+NRP Matcher stores all output files in current directory or in <code>&lt;output_dir</code> if it set by the user.
 
+Output files:
+* <code>&lt;output_dir>/reports.csv</code> description of matched pairs(nrp structure - gene cluster prediction). Each line describes one matched pair.
+* <code>&lt;output_dir>/details_mol</code> folder which contains files with detail description of matched predictions for each NRP structure file.
+* <code>&lt;output_dir>/details_prediction</code> folder which contains files with detail description of matched NRP structure for each prediction file.
 
 ### Example
