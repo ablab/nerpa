@@ -118,3 +118,7 @@ Output files:
 * <code>&lt;output_dir>/details_prediction</code> folder which contains files with detail description of matched NRP structure for each prediction file.
 
 ### Example
+
+To test NRP Matcher you can run the following command from NRP Matcher <code>bin</code> directory:
+
+    python3 run_nrp_matcher.py -p ../share/prediction.info --lib_info ../share/library.info.streptomedb -o test
