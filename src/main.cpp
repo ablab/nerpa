@@ -92,17 +92,16 @@ std::vector<nrp::NRP*> save_mols(char* file_name) {
     return mols;
 }
 
-void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::NRP*> mols,
-                         nrp_generator::NRPGenerator* nrpGenerator, std::string output_filename) {
+void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::NRP*> mols, std::string output_filename) {
     if (pred.getNrpsParts().size() == 0) return;
     std::ofstream out(output_filename);
     std::ofstream out_short("report_predictions", std::ofstream::out | std::ofstream::app);
 
-    std::vector<normalized_match::NormalizedMatch> nrpsMatchs;
+    std::vector<nrp::NRP::Match> nrpsMatchs;
     for (int i = 0; i < mols.size(); ++i) {
         nrp::NRP::Match match = mols[i]->isCover(pred);
         if (match.score() >= MIN_SCROE) {
-            nrpsMatchs.push_back(normalized_match::NormalizedMatch(match, nrpGenerator, pred, mols[i]));
+            nrpsMatchs.push_back(match);
         }
     }
 
@@ -124,15 +123,14 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::N
     out.close();
 }
 
-void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp::NRP* mol,
-                         nrp_generator::NRPsPredictionGenerator* nrpGenerator, std::string output_filename) {
+void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp::NRP* mol, std::string output_filename) {
     std::ofstream out_short("report_mols", std::ofstream::out | std::ofstream::app);
 
-    std::vector<normalized_match::NormalizedMatch> nrpsMatchs;
+    std::vector<nrp::NRP::Match> nrpsMatchs;
     for (int i = 0; i < preds.size(); ++i) {
         nrp::NRP::Match match = mol->isCover(preds[i]);
         if (match.score() >= MIN_SCROE) {
-            nrpsMatchs.push_back(normalized_match::NormalizedMatch(match, nrpGenerator, preds[i], mol));
+            nrpsMatchs.push_back(match);
         }
     }
 
@@ -179,30 +177,22 @@ int main(int argc, char* argv[]) {
     std::cerr << "save_pred\n";
     std::vector<nrp::NRP*> mols = save_mols(argv[2]);
     std::cerr << "save_mols\n";
-    nrp_generator::NRPsPredictionGenerator* nrpGenerator = new nrp_generator::NRPsPredictionGenerator(preds);
-    /*for (int i = 0; i < preds.size(); ++i) {
+    for (int i = 0; i < preds.size(); ++i) {
         std::cerr << "pred " << i << "\n";
         if (preds[i].getNrpsParts().size() == 0) continue;
         std::string output_filename = gen_filename(preds[i].getNrpsParts()[0].get_file_name(), "details_predictions/");
-        run_prediction_mols(preds[i], mols, nrpGenerator, output_filename);
-    }*/
+        run_prediction_mols(preds[i], mols, output_filename);
+    }
 
     std::ofstream out_csv("report.csv");
-    out_csv << "score,normalize score,peptide,nrp len,match cnt,all matched,mol id,prediction id,p-value\n";
+    out_csv << "score,peptide,nrp len,match cnt,all matched,mol id,prediction id\n";
     out_csv.close();
-
-    /*for (int i = 0; i < preds.size(); ++i) {
-        //TODO delete nrp generator
-        preds[i] = nrpGenerator->genPrediction(preds[i]);
-    }*/
 
     for (int i = 0; i < mols.size(); ++i) {
         std::cerr << "mol " << i << "\n";
         std::string output_filename = gen_filename(mols[i]->get_file_name(), "details_mols/");
 
-        run_mol_predictions(preds, mols[i], nrpGenerator, output_filename);
+        run_mol_predictions(preds, mols[i], output_filename);
     }
-
-    delete nrpGenerator;
     return 0;
 }
