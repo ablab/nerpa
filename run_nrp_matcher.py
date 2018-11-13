@@ -82,6 +82,7 @@ def gen_graphs_by_mol(args, main_out_dir):
             fragmintation_rule_folder = "Fragmentation_rule"
             path_to_program = which("print_structure")[:-15]
 
+
             for prefix in prfix_to_search:
                 if (os.path.exists(path_to_program + prefix + fragmintation_rule_folder)):
                     config_folder = path_to_program + prefix
@@ -123,6 +124,9 @@ def run(args):
         log.err("None NRP structure info file provide")
         parser.print_help()
         sys.exit()
+    if (which("print_structure") == None):
+        log.err("dereplicator not found. Please install dereplicator and add it to PATH.")
+        sys.exit()
 
 
     main_out_dir = os.path.abspath(".") + "/"
@@ -144,8 +148,8 @@ def run(args):
     if not os.path.exists(os.path.dirname('details_mols/')):
         os.makedirs(os.path.dirname('details_mols/'))
 
-    print(path_to_exec_dir + "/NRPsMatcher " +  path_to_pred + " " + path_to_graphs + "\n")
-    os.system(path_to_exec_dir + "/NRPsMatcher " +  path_to_pred + " " + path_to_graphs + "\n")
+    print(path_to_exec_dir + "/NRPsMatcher \"" +  path_to_pred + "\" \"" + path_to_graphs + "\"\n")
+    os.system(path_to_exec_dir + "/NRPsMatcher \"" +  path_to_pred + "\" \"" + path_to_graphs + "\"\n")
     return
 
 args = parse_args()
