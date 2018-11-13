@@ -42,11 +42,15 @@ nrp::NRP::isCoverLine(std::vector<nrp::NRP::Segment> &segments, nrpsprediction::
     int len = this->getLen();
     std::sort(segments.begin(), segments.end());
 
-    std::vector<std::vector<std::vector<double> > > d(len + 1, std::vector<std::vector<double> >((1 << toBigId.size()), std::vector<double>(2, -len - 1)));
+    std::vector<std::vector<std::vector<double> > > d(len + 1,
+                                                      std::vector<std::vector<double> >((1 << toBigId.size()),
+                                                                                        std::vector<double>(2, -len - 1)));
     std::vector<std::vector<std::pair<int, int> > > p(len + 1,
                                                       std::vector<std::pair<int, int> >((1 << toBigId.size()),
                                                                                         std::make_pair(-1, -1)));
-    std::vector<std::vector<std::vector<int> > > pgp(len + 1, std::vector<std::vector<int> >((1 << toBigId.size()), std::vector<int>(2, 0)));
+
+    std::vector<std::vector<std::vector<int> > > pgp(len + 1, std::vector<std::vector<int> >((1 << toBigId.size()),
+                                                                                             std::vector<int>(2, 0)));
     std::vector<std::vector<int> > pa(len + 1, std::vector<int>((1 << toBigId.size()), -1));
     d[0][0][1] = len;
 
@@ -82,8 +86,10 @@ nrp::NRP::isCoverLine(std::vector<nrp::NRP::Segment> &segments, nrpsprediction::
                 }
 
                 for (int gp = 0; gp < 2; ++gp) {
-                    if (d[segments[curseg].r + 1][nmsk][1] < d[pos][msk][gp] - 1 - (segments[curseg].r + 1 - pos) + segments[curseg].scor) {
-                        d[segments[curseg].r + 1][nmsk][1] = d[pos][msk][gp] - 1 - (segments[curseg].r + 1 - pos) + segments[curseg].scor;
+                    if (d[segments[curseg].r + 1][nmsk][1] < d[pos][msk][gp] - 1 -
+                                                             (segments[curseg].r + 1 - pos) + segments[curseg].scor) {
+                        d[segments[curseg].r + 1][nmsk][1] = d[pos][msk][gp] - 1 -
+                                (segments[curseg].r + 1 - pos) + segments[curseg].scor;
                         p[segments[curseg].r + 1][nmsk].first = pos;
                         p[segments[curseg].r + 1][nmsk].second = msk;
                         pa[segments[curseg].r + 1][nmsk] = curseg;
@@ -96,7 +102,7 @@ nrp::NRP::isCoverLine(std::vector<nrp::NRP::Segment> &segments, nrpsprediction::
         }
     }
 
-    int mn = -len - 1;
+    double mn = -len - 1;
     int rmsk = 0;
     int gp = 0;
     for (int msk = 0; msk < (1 << (toBigId.size())); ++msk) {

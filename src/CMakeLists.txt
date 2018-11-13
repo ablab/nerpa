@@ -25,9 +25,7 @@ set(SOURCE_FILES main.cpp
         NRPGenerator/NRPGeneratorTriplet.h
         NRPGenerator/NRPGeneratorTriplet.cpp
         NRPGenerator/NRPsPredictionGenerator.h
-        NRPGenerator/NRPsPredictionGenerator.cpp
-        NormalizedMatch/NormalizedMatch.h
-        NormalizedMatch/NormalizedMatch.cpp)
+        NRPGenerator/NRPsPredictionGenerator.cpp)
 
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})

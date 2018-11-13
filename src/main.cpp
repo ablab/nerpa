@@ -63,6 +63,7 @@ std::vector<nrpsprediction::NRPsPrediction>  save_predictions(char* file_name) {
         nrpsprediction::NRPsPrediction nrPsPrediction;
         nrPsPrediction.read_file(cur_line);
 
+        std::cerr << "Parts in prediction: " << nrPsPrediction.getNrpsParts().size() << "\n";
         preds.push_back(nrPsPrediction);
     }
 
@@ -105,6 +106,7 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::N
         }
     }
 
+    std::cerr << "Found: " << nrpsMatchs.size() << " predictions\n";
     if (nrpsMatchs.size() > 0) {
         out_short << pred.getNrpsParts()[0].get_file_name() << ":  ";
     }
@@ -133,6 +135,8 @@ void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp:
             nrpsMatchs.push_back(match);
         }
     }
+
+    std::cerr << "Found: " << nrpsMatchs.size() << " predictions\n";
 
     std::sort(nrpsMatchs.begin(), nrpsMatchs.end());
     if (nrpsMatchs.size() == 0) {

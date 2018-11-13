@@ -40,14 +40,10 @@ nrp::NRP::Match nrp::NRPCycle::isCover(nrpsprediction::NRPsPrediction nrPsPredic
             }
         }
 
-        Match curMatch = isCoverLine(tmpSeg, nrPsPrediction, toSmallId, toBigId);
-
+        Match curMatch = updateMatch(nrPsPrediction, isCoverLine(tmpSeg, nrPsPrediction, toSmallId, toBigId), bg);
+        //std::cerr << curMatch.score() << "\n";
         if (curMatch.score() > best_score) {
-            std::vector<std::pair<int, int> > matchs = curMatch.getMatchs();
-
-            for (int i = 0; i < matchs.size(); ++i) {
-                resMatchs.match((i + bg + len) % len, matchs[i].first, matchs[i].second);
-            }
+            resMatchs = curMatch;
             best_score = curMatch.score();
         }
     }
@@ -97,4 +93,13 @@ std::vector<nrp::NRP::Segment> nrp::NRPCycle::containNRPsPart(nrpsprediction::NR
 
 nrp::NRP::NRPType nrp::NRPCycle::getType() {
     return NRP::cycle;
+}
+
+nrp::NRP::Match nrp::NRPCycle::updateMatch(nrpsprediction::NRPsPrediction& nrPsPrediction, nrp::NRP::Match match, int bg) {
+    nrp::NRP::Match nmatch(this, nrPsPrediction.getNrpsParts());
+    std::vector<std::pair<int, int> > part_id_pos = match.getMatchs();
+    for (int i = 0; i < part_id_pos.size(); ++i) {
+        nmatch.match((i + bg)%this->getLen(), part_id_pos[i].first, part_id_pos[i].second);
+    }
+    return nmatch;
 }

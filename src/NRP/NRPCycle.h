@@ -16,6 +16,9 @@ namespace nrp {
         std::vector<Segment> containNRPsPart(nrpsprediction::NRPsPart predict_part) override;
 
         NRPType getType() override;
+
+    private:
+        Match updateMatch(nrpsprediction::NRPsPrediction& nrPsPrediction, Match match, int bg);
     };
 }
 

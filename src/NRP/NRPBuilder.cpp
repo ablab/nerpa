@@ -58,6 +58,7 @@ nrp::NRP* nrp::NRPBuilder::build(std::string fragment_graph, std::string extra_i
     }
 
     for (int i = 0; i < formuls.size(); ++i) {
+        //std::cerr << "Parse AA num " << i << " " << aminoacid::Aminoacids::AMINOACID_NAMES[aminoacid::Aminoacids::get_aminoacid_from_formula(to_string(formuls[i]))];
         aminoacids.push_back(aminoacid::Aminoacids::get_aminoacid_from_formula(to_string(formuls[i])));
     }
 
