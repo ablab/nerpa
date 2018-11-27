@@ -1,5 +1,6 @@
 include_directories(.)
 
+add_subdirectory(Logger)
 set(SOURCE_FILES main.cpp
         Aminoacid/Aminoacids.cpp
         Aminoacid/Aminoacids.h
@@ -27,9 +28,10 @@ set(SOURCE_FILES main.cpp
         NRPGenerator/NRPsPredictionGenerator.h
         NRPGenerator/NRPsPredictionGenerator.cpp)
 
-
 add_library(nrps_matcher_lib ${SOURCE_FILES})
-add_executable(NRPsMatcher ${SOURCE_FILES})
+add_executable(NRPsMatcher main.cpp)
+
+target_link_libraries(NRPsMatcher logger_lib nrps_matcher_lib)
 
 install(TARGETS NRPsMatcher
         DESTINATION bin

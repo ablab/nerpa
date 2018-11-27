@@ -9,6 +9,7 @@
 #include <cstring>
 #include "NRP/NRP.h"
 #include "NRPsPrediction/NRPsPrediction.h"
+#include <Logger/log_writers.hpp>
 
 const int MIN_SCROE = 2;
 
@@ -47,23 +48,22 @@ std::vector<nrpsprediction::NRPsPrediction>  save_predictions(char* file_name) {
     std::vector<nrpsprediction::NRPsPrediction> preds;
     std::ifstream in_predictions_files(file_name);
 
-    std::cerr << file_name << "\n";
+    INFO(file_name);
     std::string cur_prediction_file;
     std::string cur_line;
 
     while(getline(in_predictions_files, cur_line)) {
-        std::cerr << "line" << "\n";
         //std::stringstream ss(cur_line);
         //ss >> cur_prediction_file;
         if (cur_line[0] != '/') {
             cur_line = getDir(file_name) + "/" + cur_line;
         }
-        std::cerr << cur_line << "\n";
+        INFO(cur_line);
 
         nrpsprediction::NRPsPrediction nrPsPrediction;
         nrPsPrediction.read_file(cur_line);
 
-        std::cerr << "Parts in prediction: " << nrPsPrediction.getNrpsParts().size() << "\n";
+        INFO("Parts in prediction: " << nrPsPrediction.getNrpsParts().size());
         preds.push_back(nrPsPrediction);
     }
 
@@ -78,13 +78,12 @@ std::vector<nrp::NRP*> save_mols(char* file_name) {
     std::string cur_line;
 
     while(getline(in_nrps_files, cur_line)) {
-        std::cerr << cur_line << "\n";
+        INFO(cur_line);
         std::stringstream ss(cur_line);
         ss >> cur_nrp_file;
         std::string extra_info;
         getline(ss, extra_info);
         nrp::NRP* nrp_from_fragment_graph = nrp::NRPBuilder::build(cur_nrp_file, extra_info);
-        nrp_from_fragment_graph->print();
         if (nrp_from_fragment_graph == nullptr) {
             continue;
         }
@@ -107,7 +106,7 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::N
         }
     }
 
-    std::cerr << "Found: " << nrpsMatchs.size() << " predictions\n";
+    INFO("Found: " << nrpsMatchs.size() << " predictions");
     if (nrpsMatchs.size() > 0) {
         out_short << pred.getNrpsParts()[0].get_file_name() << ":  ";
     }
@@ -137,7 +136,7 @@ void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp:
         }
     }
 
-    std::cerr << "Found: " << nrpsMatchs.size() << " predictions\n";
+    INFO("Found: " << nrpsMatchs.size() << " predictions");
 
     std::sort(nrpsMatchs.begin(), nrpsMatchs.end());
     if (nrpsMatchs.size() == 0) {
@@ -177,13 +176,18 @@ std::string gen_filename(std::string ifile, std::string prefix) {
 }
 
 int main(int argc, char* argv[]) {
-    std::cerr << "start\n";
+    logging::create_console_logger("");
+
+    INFO("NRPs Matcher START");
+    INFO("Saving predictions");
     std::vector<nrpsprediction::NRPsPrediction> preds = save_predictions(argv[1]);
-    std::cerr << "save_pred\n";
+    INFO("Saving NRPs structures");
     std::vector<nrp::NRP*> mols = save_mols(argv[2]);
-    std::cerr << "save_mols\n";
+
+
+    INFO("Processing matching for prediction");
     for (int i = 0; i < preds.size(); ++i) {
-        std::cerr << "pred " << i << "\n";
+        INFO("Prediction #" << i);
         if (preds[i].getNrpsParts().size() == 0) continue;
         std::string output_filename = gen_filename(preds[i].getNrpsParts()[0].get_file_name(), "details_predictions/");
         run_prediction_mols(preds[i], mols, output_filename);
@@ -193,8 +197,9 @@ int main(int argc, char* argv[]) {
     out_csv << "score,peptide,nrp len,match cnt,all matched,mol id,prediction id\n";
     out_csv.close();
 
+    INFO("Processing matching for NRPs structurs")
     for (int i = 0; i < mols.size(); ++i) {
-        std::cerr << "mol " << i << "\n";
+        INFO("NRP structure #" << i)
         std::string output_filename = gen_filename(mols[i]->get_file_name(), "details_mols/");
 
         run_mol_predictions(preds, mols[i], output_filename);
