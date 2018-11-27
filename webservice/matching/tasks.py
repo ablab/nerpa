@@ -4,21 +4,21 @@ from celery import shared_task
 from .vis_prediction import DB_NONE
 from .vis_prediction import DB_STREPTOME
 
-path = "/home/olga/bio/NRP/data/serverRuns/"
+path = "/home/olga/CAB/NRP/data/serverRuns/"
 genome_file = path + "genome.fna"
 nrp_file = path + "nrp.mol"
 smile_file = path + "nrp.sml"
 predictionInfo = path + "predictions.info"
 molInfo = path + "mol.info"
 
-pathToAntismash = "/home/olga/bio/NRP/soft/antismash-3.0.5.1_CUT/run_antismash.py"
+pathToAntismash = "/home/olga/CAB/NRP/soft/antismash-3.0.5.1_CUT/run_antismash.py"
 antismashRes = path + "antismashRes/"
 predictionPath = antismashRes + "nrpspks_predictions_txt/ctg1_nrpspredictor2_codes.txt"
 
 NRPsMatcher = "/home/olga/tmp/NRP/bin/run_nrp_matcher.py"
 
-dbNRPinfo = {DB_STREPTOME: "/home/olga/bio/NRP/data/DataBase/library.info.streptomedb"}
-dbPredictionInfo = {'bc': "/home/olga/bio/NRP/data/DataBase/mibigNF.info"}
+dbNRPinfo = {DB_STREPTOME: "/home/olga/CAB/NRP/data/DataBase/library.info.streptomedb"}
+dbPredictionInfo = {'bc': "/home/olga/CAB/NRP/data/DataBase/mibigNF.info"}
 
 def run_antismash():
     os.system("python2 " + pathToAntismash + " " + genome_file + " --outputfolder " + antismashRes)

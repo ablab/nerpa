@@ -100,7 +100,7 @@ std::pair<int, int> nrpsprediction::AminoacidPrediction::getAmnAcidPos(aminoacid
     return std::make_pair(bg, ed);
 }
 
-double nrpsprediction::AminoacidPrediction:getScore(aminoacid::Aminoacids::Aminoacid aminoacid) {
+double nrpsprediction::AminoacidPrediction::getScore(aminoacid::Aminoacids::Aminoacid aminoacid) {
     double posscore[100];
     double curscore = 1;
     for (int i = 0; i < 100; ++i) {

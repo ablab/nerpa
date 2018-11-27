@@ -84,6 +84,7 @@ std::vector<nrp::NRP*> save_mols(char* file_name) {
         std::string extra_info;
         getline(ss, extra_info);
         nrp::NRP* nrp_from_fragment_graph = nrp::NRPBuilder::build(cur_nrp_file, extra_info);
+        nrp_from_fragment_graph->print();
         if (nrp_from_fragment_graph == nullptr) {
             continue;
         }
