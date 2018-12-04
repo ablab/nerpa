@@ -56,34 +56,34 @@ std::vector<nrp::NRP::Segment> nrp::NRPCycle::containNRPsPart(nrpsprediction::NR
     std::vector<Segment> res;
     std::vector<nrpsprediction::AminoacidPrediction> aminoacid_predictions = predict_part.getAminoacidsPrediction();
     for (int i = 0; i < (int)aminoacids.size(); ++i) {
-        bool is_ok = true;
+        int cnt_mismatch = 0;
         double segscor = 0;
-        for (int j = 0; j < (int)aminoacid_predictions.size() && is_ok; ++j) {
+        for (int j = 0; j < (int)aminoacid_predictions.size() && cnt_mismatch < 2; ++j) {
             int curi = (i + j) % aminoacids.size();
             if (!aminoacid_predictions[j].contain(aminoacids[curi])) {
-                is_ok = false;
-            } else {
-                segscor += aminoacid_predictions[j].getScore(aminoacids[curi]);
+                cnt_mismatch += 1;
             }
+            segscor += aminoacid_predictions[j].getScore(aminoacids[curi]);
         }
-        if (is_ok == true) {
+
+        if (cnt_mismatch == 0 || (cnt_mismatch == 1 && aminoacid_predictions.size() > 4)) {
             res.push_back(Segment(i, i + aminoacid_predictions.size() - 1, -1, 0, segscor));
         }
     }
 
     for (int i = 0; i < (int)aminoacids.size(); ++i) {
-        bool is_ok = true;
+        int cnt_mismatch = 0;
         int g = 0;
         double segscor = 0;
-        for (int j = (int)aminoacid_predictions.size() - 1; j >= 0 && is_ok; --j, ++g) {
+        for (int j = (int)aminoacid_predictions.size() - 1; j >= 0 && cnt_mismatch < 2; --j, ++g) {
             int curi = (i + g) % aminoacids.size();
             if (!aminoacid_predictions[j].contain(aminoacids[curi])) {
-                is_ok = false;
-            } else {
-                segscor += aminoacid_predictions[j].getScore(aminoacids[curi]);
+                cnt_mismatch += 1;
             }
+            segscor += aminoacid_predictions[j].getScore(aminoacids[curi]);
         }
-        if (is_ok == true) {
+
+        if (cnt_mismatch == 0 || (cnt_mismatch == 1 && aminoacid_predictions.size() > 4)) {
             res.push_back(Segment(i, i + aminoacid_predictions.size() - 1, -1, 1, segscor));
         }
     }

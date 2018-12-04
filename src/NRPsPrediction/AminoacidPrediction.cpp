@@ -78,7 +78,7 @@ nrpsprediction::AminoacidPrediction::getAminoacid(aminoacid::Aminoacids::Aminoac
 }
 
 std::pair<int, int> nrpsprediction::AminoacidPrediction::getAmnAcidPos(aminoacid::Aminoacids::Aminoacid aminoacid) {
-    double  prb = 0;
+    double  prb = -1;
     for (int i = 0; i < (int)aminoacid_prediction.size(); ++i) {
         if (aminoacid::Aminoacids::same(aminoacid_prediction[i].aminoacid, aminoacid)) {
             prb = aminoacid_prediction[i].prob;
@@ -111,7 +111,7 @@ double nrpsprediction::AminoacidPrediction::getScore(aminoacid::Aminoacids::Amin
     nrpsprediction::AminoacidPrediction::AminoacidProb prob = getAminoacid(aminoacid);
 
     if (position.first == -1) {
-        return 0;
+        return -1;
     } else {
         int mdpos = (position.first + position.second)/2;
         if (mdpos >= 10) {

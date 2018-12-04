@@ -55,9 +55,9 @@ std::vector<nrpsprediction::NRPsPrediction>  save_predictions(char* file_name) {
     while(getline(in_predictions_files, cur_line)) {
         //std::stringstream ss(cur_line);
         //ss >> cur_prediction_file;
-        if (cur_line[0] != '/') {
-            cur_line = getDir(file_name) + "/" + cur_line;
-        }
+        //if (cur_line[0] != '/') {
+        //    cur_line = getDir(file_name) + "/" + cur_line;
+        //}
         INFO(cur_line);
 
         nrpsprediction::NRPsPrediction nrPsPrediction;
@@ -87,6 +87,7 @@ std::vector<nrp::NRP*> save_mols(char* file_name) {
         if (nrp_from_fragment_graph == nullptr) {
             continue;
         }
+        nrp_from_fragment_graph->print();
         mols.push_back(nrp_from_fragment_graph);
     }
 

@@ -36,6 +36,16 @@ std::vector<std::pair<int, int> > nrp::NRP::Match::getMatchs() {
 }
 
 
+bool nrp::NRP::Match::isMatched(int i) {
+    if (parts_id[i] == -1) {
+        return false;
+    }
+    nrpsprediction::AminoacidPrediction amn_pred = nrpParts[parts_id[i]].getAminoacidsPrediction()[parts_pos[i]];
+    std::pair<int, int> pos = amn_pred.getAmnAcidPos((nrp->getAminoacid(i)));
+    return pos.first != -1;
+}
+
+
 void nrp::NRP::Match::print(std::ofstream &out) {
     out << nrp->get_file_name() << " " << nrp->get_extra_info() << "\n";
     if (nrpParts.size() > 0) {
@@ -56,7 +66,7 @@ void nrp::NRP::Match::print(std::ofstream &out) {
 
         out << formula << " -> ";
 
-        if (parts_id[ri] == -1) {
+        if (!isMatched(ri)) {
             out << "-\n";
         } else {
             nrpsprediction::AminoacidPrediction amn_pred = nrpParts[parts_id[ri]].getAminoacidsPrediction()[parts_pos[ri]];
@@ -113,7 +123,7 @@ void nrp::NRP::Match::print_csv(std::ofstream &out) {
         if (wasN == 0) {
             --len;
         }
-        if (parts_id[i] != -1) {
+        if (isMatched(i)) {
             ++cntMatch;
         }
     }

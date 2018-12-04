@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iostream>
 #include <algorithm>
+#include <Logger/logger.hpp>
 #include "NRPsPrediction.h"
 
 namespace nrpsprediction {

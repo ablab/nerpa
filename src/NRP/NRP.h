@@ -33,6 +33,7 @@ namespace nrp {
             void print_short_prediction(std::ofstream& out);
             void print_csv(std::ofstream& out);
             double score();
+            bool isMatched(int i);
             std::vector<std::pair<int, int> > getMatchs();
 
             bool operator < (Match b);

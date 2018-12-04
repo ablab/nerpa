@@ -199,7 +199,7 @@ namespace nrp {
             }
         }
 
-        nrpsprediction::NRPsPart getSubPart(int bg, int sz, int delta) {
+        nrpsprediction::NRPsPart getSubPart(int bg, int sz, int delta, double &score) {
             nrpsprediction::NRPsPart nrps_part("filename", "orf");
             int len = amnacid.size();
             int j = 0;
@@ -211,7 +211,8 @@ namespace nrp {
                     names.push_back(aminoacid::Aminoacids::AMINOACID_NAMES[rand()%(int(aminoacid::Aminoacids::AMINOACID_CNT))]);
                 }
 
-                names[rand()%3] = aminoacid::Aminoacids::AMINOACID_NAMES[int(amnacid[i])];
+                int right_AA_pos = rand()%3;
+                names[right_AA_pos] = aminoacid::Aminoacids::AMINOACID_NAMES[int(amnacid[i])];
                 std::sort(prob.rbegin(), prob.rend());
                 std::stringstream ss;
                 for (int g = 0; g < 3; ++g) {
@@ -383,15 +384,14 @@ namespace nrp {
             for (int i = 1; i < bps.size(); ++i) {
                 if (bps[i] != bps[i - 1]) {
                     if (rand() % 2 == 0) {
-                        res_score += (bps[i] - bps[i - 1]) - 1;
+                        res_score += (bps[i] - bps[i - 1]);
                         if (rand() % 2 == 0) {
                             nrpParts.push_back(getSubPart(bps[i - 1], (bps[i] - bps[i - 1]), 1));
                         } else {
                             nrpParts.push_back(getSubPart(bps[i] - 1, (bps[i] - bps[i - 1]), -1));
                         }
-                    } else {
-                        res_score -= 1;
                     }
+                    res_score -= 1;
                 }
             }
 
