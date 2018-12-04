@@ -12,7 +12,8 @@ double nrp::NRP::Match::score() {
     double cnt = 0;
     std::vector<int> difparts;
     for (int i = 0; i < parts_id.size(); ++i) {
-        if (parts_id[i] < 0 && (i == 0 || parts_id[i - 1] >= 0)) {
+        if (parts_id[i] < 0 && ((i == 0 && nrp->getType() != cycle) ||
+                parts_id[(i - 1 + parts_id.size())%parts_id.size()] >= 0)) {
             cnt -= 1;
         } else if (parts_id[i] >= 0) {
             nrpsprediction::AminoacidPrediction amn_pred = nrpParts[parts_id[i]].getAminoacidsPrediction()[parts_pos[i]];

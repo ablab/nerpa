@@ -27,7 +27,7 @@ nrp::NRP::Match nrp::NRPCycle::isCover(nrpsprediction::NRPsPrediction nrPsPredic
         }
     }
 
-    int best_score = -len - 1;
+    double best_score = -len - 1;
     Match resMatchs(this, nrpparts);
 
     for (int bg = 0; bg < len; ++bg) {
@@ -41,7 +41,6 @@ nrp::NRP::Match nrp::NRPCycle::isCover(nrpsprediction::NRPsPrediction nrPsPredic
         }
 
         Match curMatch = updateMatch(nrPsPrediction, isCoverLine(tmpSeg, nrPsPrediction, toSmallId, toBigId), bg);
-        //std::cerr << curMatch.score() << "\n";
         if (curMatch.score() > best_score) {
             resMatchs = curMatch;
             best_score = curMatch.score();

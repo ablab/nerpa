@@ -4,8 +4,11 @@
 #include "../src/NRP/NRPLine.h"
 #include "../src/NRP/NRPtail.h"
 #include <algorithm>
+#include <cmath>
 
 namespace nrp {
+    const double EPS = 1e-4;
+
     class ContainNRPsTest : public ::testing::Test {
     protected:
         std::vector<aminoacid::Aminoacids::Aminoacid> amnacid;
@@ -95,23 +98,25 @@ namespace nrp {
             return true;
         }
 
-        void check_correct_score(NRP::Match match) {
+        void check_correct_score(NRP::Match match, std::vector< nrpsprediction::NRPsPart> nrpParts, NRP::NRPType type) {
             std::vector<std::pair<int, int> > matchs = match.getMatchs();
             ASSERT_EQ(matchs.size(), amnacid.size());
-            int cnt = matchs.size();
+            double score = 0;
             std::set<int> difseg;
             for (int i = 0 ; i < matchs.size(); ++i) {
-                if (matchs[i].first == -1 && (i == 0 || matchs[i-1].first != -1)) {
-                    cnt -= 1;
+                if (matchs[i].first == -1 && ((i == 0 && type != NRP::cycle) ||
+                        (matchs[(i-1 + matchs.size())%matchs.size()].first != -1))) {
+                    score -= 1;
                 }
-                if (matchs[i].first == -1) {
-                    cnt -= 1;
-                } else {
+
+                if (matchs[i].first != -1) {
+                    nrpsprediction::AminoacidPrediction amn_pred = nrpParts[matchs[i].first].getAminoacidsPrediction()[matchs[i].second];
+                    score += amn_pred.getScore(amnacid[i]);
                     difseg.insert(matchs[i].first);
                 }
             }
-            cnt -= difseg.size();
-            ASSERT_EQ(cnt, match.score());
+            score -= difseg.size();
+            ASSERT_LE(abs(score - match.score()), EPS);
         }
 
         void check_correct_seq(NRP::Match match, std::vector< nrpsprediction::NRPsPart> nrpParts) {
@@ -207,7 +212,7 @@ namespace nrp {
                 std::vector<double> prob;
                 std::vector<std::string> names;
                 for (int g = 0; g < 3; ++g) {
-                    prob.push_back(rand()%10 * 10);
+                    prob.push_back(60 + rand()%4 * 10);
                     names.push_back(aminoacid::Aminoacids::AMINOACID_NAMES[rand()%(int(aminoacid::Aminoacids::AMINOACID_CNT))]);
                 }
 
@@ -222,6 +227,8 @@ namespace nrp {
                     }
                 }
                 nrps_part.add_prediction(j + 1, ss.str());
+                auto predictions = nrps_part.getAminoacidsPrediction();
+                score += predictions.back().getScore(amnacid[i]);
             }
 
             return nrps_part;
@@ -231,6 +238,7 @@ namespace nrp {
 
     //check if has segment in NRP then find it.
     TEST_F(ContainNRPsTest, containTrueRandCycleTest) {
+        double scr = 0;
         for (int tst = 0; tst < 1000; ++tst) {
             int len = rand()%100 + 2;
             NRPCycle nrp = genRandCycleNRP(len);
@@ -243,7 +251,7 @@ namespace nrp {
 
             int ed = (bg + (sz - 1) * delta + len)%len;
 
-            nrpsprediction::NRPsPart nrps_part = getSubPart(bg, sz, delta);
+            nrpsprediction::NRPsPart nrps_part = getSubPart(bg, sz, delta, scr);
 
             std::vector<NRP::Segment> segments = nrp.containNRPsPart(nrps_part);
             int rbg = bg;
@@ -303,6 +311,7 @@ namespace nrp {
 
     //check if has segment in NRP then find it.
     TEST_F(ContainNRPsTest, containTrueRandLineTest) {
+        double scr = 0;
         for (int tst = 0; tst < 1000; ++tst) {
             int len = rand()%100 + 2;
             NRPLine nrp = genRandLineNRP(len);
@@ -319,12 +328,13 @@ namespace nrp {
                 std::swap(bg, ed);
             }
 
-            nrpsprediction::NRPsPart nrps_part = getSubPart(bg, sz, delta);
+            nrpsprediction::NRPsPart nrps_part = getSubPart(bg, sz, delta, scr);
 
             std::vector<NRP::Segment> segments = nrp.containNRPsPart(nrps_part);
             int rbg = std::min(bg, ed);
             int red = std::max(bg, ed);
             int rrev = (delta == -1);
+
 
             bool hasRightAns = false;
             for (int i = 0; i < segments.size(); ++i) {
@@ -380,15 +390,14 @@ namespace nrp {
             std::sort(bps.begin(), bps.end());
 
             std::vector<nrpsprediction::NRPsPart> nrpParts;
-            int res_score = 0;
+            double res_score = 0;
             for (int i = 1; i < bps.size(); ++i) {
                 if (bps[i] != bps[i - 1]) {
                     if (rand() % 2 == 0) {
-                        res_score += (bps[i] - bps[i - 1]);
                         if (rand() % 2 == 0) {
-                            nrpParts.push_back(getSubPart(bps[i - 1], (bps[i] - bps[i - 1]), 1));
+                            nrpParts.push_back(getSubPart(bps[i - 1], (bps[i] - bps[i - 1]), 1, res_score));
                         } else {
-                            nrpParts.push_back(getSubPart(bps[i] - 1, (bps[i] - bps[i - 1]), -1));
+                            nrpParts.push_back(getSubPart(bps[i] - 1, (bps[i] - bps[i - 1]), -1, res_score));
                         }
                     }
                     res_score -= 1;
@@ -409,8 +418,8 @@ namespace nrp {
 
             NRP::Match match = nrp.isCover(nrpsPrediction);
 
-            ASSERT_GE(match.score(), res_score);
-            check_correct_score(match);
+            ASSERT_GE(match.score() - res_score, -EPS);
+            check_correct_score(match, nrpParts, NRP::line);
             check_correct_seq(match, nrpParts);
             check_seq_match_with_nrp(match, nrpParts);
         }
@@ -430,19 +439,17 @@ namespace nrp {
             std::sort(bps.begin(), bps.end());
 
             std::vector<nrpsprediction::NRPsPart> nrpParts;
-            int res_score = -len;
+            double res_score = 0;
             for (int i = 0; i < bps.size(); ++i) {
                 int pi = (i - 1 + bps.size()) % bps.size();
-                if (bps[i] != bps[pi]) {
+                if (bps[i] != bps[pi] || (bps[i] == bps[pi] && i == 0)) {
+                    res_score -= 1;
                     if (rand() % 2 == 0) {
-                        res_score += 2*(bps[i] - bps[pi] + len) % len - 1;
                         if (rand() % 2 == 0) {
-                            nrpParts.push_back(getSubPart(bps[pi], (bps[i] - bps[pi] + len) % len, 1));
+                            nrpParts.push_back(getSubPart(bps[pi], (bps[i] - bps[pi] + len) % len, 1, res_score));
                         } else {
-                            nrpParts.push_back(getSubPart((bps[i] - 1 + len) % len, (bps[i] - bps[pi] + len)%len, -1));
+                            nrpParts.push_back(getSubPart((bps[i] - 1 + len) % len, (bps[i] - bps[pi] + len)%len, -1, res_score));
                         }
-                    } else {
-                        res_score += (bps[i] - bps[pi] + len) % len - 2;
                     }
                 }
             }
@@ -461,8 +468,8 @@ namespace nrp {
 
             NRP::Match match = nrp.isCover(nrpsPrediction);
 
-            ASSERT_GE(match.score(), res_score);
-            check_correct_score(match);
+            ASSERT_GE(match.score() - res_score, -EPS);
+            check_correct_score(match, nrpParts, NRP::cycle);
             check_correct_cycle_seq(match, nrpParts);
             check_seq_match_with_nrp(match, nrpParts);
         }

@@ -53,6 +53,7 @@ std::vector<nrp::NRP::Segment> nrp::NRPLine::containNRPsPart(nrpsprediction::NRP
             }
             segscor += aminoacid_predictions[j].getScore(aminoacids[curi]);
         }
+
         if (cnt_mismatch == 0 || (cnt_mismatch == 1 && aminoacid_predictions.size() > 4)) {
             res.push_back(Segment(i, i + aminoacid_predictions.size() - 1, -1, 0, segscor));
         }
