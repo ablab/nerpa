@@ -25,7 +25,7 @@ SECRET_KEY = '&1k=+t6qnf*@i+_2okgnhd=fs9pe4wpc#ay=80u03wh#a)s$!0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['hosein.andrew.cmu.edu']
 
 
 # Application definition
