@@ -1,15 +1,15 @@
 import os
 from .vis_prediction import visualize_prediction
 
-path = "/home/olga/CAB/NRP/data/serverRuns/"
+path = "/home/dereplicator/kolga/web-serv/data/"
 genome_file = path + "genome.fna"
-pathToAntismash = "/home/olga/CAB/NRP/soft/antismash-3.0.5.1_CUT/run_antismash.py"
+pathToAntismash = "/home/dereplicator/kolga/soft/antismash-3.0.5.1/run_antismash.py"
 antismashRes = path + "antismashRes/"
 predictionPath = antismashRes + "nrpspks_predictions_txt/ctg1_nrpspredictor2_codes.txt"
 predictionInfo = path + "predictions.info"
 
-DBinfo = "/home/olga/CAB/NRP/data/DataBase/library.info.streptomedb"
-NRPsMatcher = "/home/olga/tmp/NRP/bin/run_nrp_matcher.py"
+DBinfo = "/home/dereplicator/kolga/data/DB/PNP/library.info"
+NRPsMatcher = "/home/dereplicator/kolga/soft/NRPsMatcher/bin/run_nrp_matcher.py"
 
 def run_antismash():
     os.system("python2 " + pathToAntismash + " " + genome_file + " --outputfolder " + antismashRes)

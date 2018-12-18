@@ -1,4 +1,8 @@
 import networkx as nx
+import matplotlib
+
+matplotlib.use('Agg')
+
 import matplotlib.pyplot as plt
 from math import *
 from .models import MatchingResult
@@ -728,7 +732,7 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
 
         sub_name, mass, dbs, ref = ParseExtraInfo(lines[cur], nrpDB)
         score = ParseScore(lines[cur + 2])
-        cur += 5  # cnt prefix line
+        cur += 3  # cnt prefix line
         n = int(lines[cur].split(' ')[-1])
         cur += 1
         vertInfo = []
