@@ -18,6 +18,13 @@ namespace matcher {
                 nrp(nrp), prediction(prediction) {}
 
         nrp::NRP::Match getMatch() const;
+    private:
+        nrp::NRP::Match getLineMatch() const;
+        nrp::NRP::Match getCycleMatch() const;
+        nrp::NRP::Match getBranchMatch() const;
+
+
+        nrp::NRP::Match updateMatch(const nrpsprediction::NRPsPrediction& nrPsPrediction, nrp::NRP::Match match, int bg) const;
     };
 }
 

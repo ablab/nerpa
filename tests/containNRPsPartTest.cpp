@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cmath>
 #include <Matcher/Matcher.h>
+#include <Logger/log_writers.hpp>
 
 namespace nrp {
     const double EPS = 1e-4;
@@ -481,5 +482,6 @@ namespace nrp {
 
 int main(int argc, char *argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
+    logging::create_logger("");
     return RUN_ALL_TESTS();
 }

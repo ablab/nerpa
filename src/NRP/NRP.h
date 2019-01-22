@@ -10,6 +10,7 @@
 
 namespace nrp {
     class NRP;
+    class NRPLine;
 
     class NRP {
     public:
@@ -62,10 +63,10 @@ namespace nrp {
         std::string graph;
         std::string file_name;
         std::string extra_info;
-
-        virtual Match isCoverLine(std::vector<Segment>& segments, const nrpsprediction::NRPsPrediction& nrPsPrediction,
-                                         const std::vector<int>& toSmallId, const std::vector<int>& toBigId) const;
     public:
+        virtual Match isCoverLine(std::vector<Segment>& segments, const nrpsprediction::NRPsPrediction& nrPsPrediction,
+                                  const std::vector<int>& toSmallId, const std::vector<int>& toBigId) const;
+
         enum NRPType {cycle, line, branch_cycle};
         NRP() = default;
         NRP(std::string file_name, std::vector<std::string> strformula,
@@ -94,8 +95,9 @@ namespace nrp {
 
         virtual std::string get_extra_info() const;
 
-        virtual Match isCover(const nrpsprediction::NRPsPrediction& nrPsPrediction) const = 0;
         virtual NRPType getType() const = 0;
+
+        virtual std::vector<NRPLine> getLines() const = 0;
     };
 
 }

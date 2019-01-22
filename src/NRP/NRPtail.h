@@ -14,8 +14,6 @@ namespace nrp {
         NRPtail(NRPLine v1, NRPLine v2): v1(v1), v2(v2) {
         }
 
-        Match isCover(const nrpsprediction::NRPsPrediction& nrPsPrediction) const override;
-
         NRPType getType() const override;
 
         std::vector<Segment> containNRPsPart(nrpsprediction::NRPsPart predict_part) const override;
@@ -35,6 +33,8 @@ namespace nrp {
         std::string get_file_name() const override;
 
         std::string get_extra_info() const override;
+
+        std::vector<NRPLine> getLines() const override;
     };
 }
 

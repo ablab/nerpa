@@ -5,41 +5,6 @@ nrp::NRPLine::NRPLine(const std::string &file_name, const std::vector<std::strin
                       const std::vector<aminoacid::Aminoacids::Aminoacid> &aminoacids, const std::vector<int> &position,
                       const std::string &graph, const std::string& extra_info) : NRP(file_name, strformula, aminoacids, position, graph, extra_info) {}
 
-nrp::NRP::Match nrp::NRPLine::isCover(const nrpsprediction::NRPsPrediction& nrPsPrediction) const {
-    std::vector<Segment> segments;
-    auto nrpparts = nrPsPrediction.getNrpsParts();
-    std::vector<int> toSmallId(nrpparts.size(), -1);
-    std::vector<int> toBigId;
-    int len = this->getLen();
-
-    for (int i = 0; i < nrpparts.size(); ++i) {
-        std::vector<nrp::NRP::Segment> part_seg = containNRPsPart(nrpparts[i]);
-        for (int j = 0; j < part_seg.size(); ++j) {
-            segments.push_back(Segment(part_seg[j].l, part_seg[j].r, i, part_seg[j].rev, part_seg[j].scor));
-        }
-
-        if (part_seg.size() >= 2) {
-            toSmallId[i] = toBigId.size();
-            toBigId.push_back(i);
-        }
-    }
-
-    double best_score = -len-1;
-    Match resMatch(this, nrpparts);
-
-    Match curMatch = isCoverLine(segments, nrPsPrediction, toSmallId, toBigId);
-
-    if (curMatch.score() > best_score) {
-        std::vector<std::pair<int, int> > matchs = curMatch.getMatchs();
-
-        for (int i = 0; i < matchs.size(); ++i) {
-            resMatch.match(i, matchs[i].first, matchs[i].second);
-        }
-    }
-
-    return resMatch;
-}
-
 std::vector<nrp::NRP::Segment> nrp::NRPLine::containNRPsPart(nrpsprediction::NRPsPart predict_part) const {
     std::vector<Segment> res;
     std::vector<nrpsprediction::AminoacidPrediction> aminoacid_predictions = predict_part.getAminoacidsPrediction();
@@ -79,4 +44,10 @@ std::vector<nrp::NRP::Segment> nrp::NRPLine::containNRPsPart(nrpsprediction::NRP
 
 nrp::NRP::NRPType nrp::NRPLine::getType() const {
     return NRP::line;
+}
+
+//TODO
+std::vector<nrp::NRPLine> nrp::NRPLine::getLines() const {
+    ERROR("Get lines for NRP line. NOT implemented");
+    return std::vector<nrp::NRPLine>();
 }

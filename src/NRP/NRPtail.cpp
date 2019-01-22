@@ -1,16 +1,6 @@
 #include <iostream>
 #include "NRPtail.h"
 
-nrp::NRP::Match nrp::NRPtail::isCover(const nrpsprediction::NRPsPrediction& nrPsPrediction) const {
-    Match m1 = v1.isCover(nrPsPrediction);
-    Match m2 = v2.isCover(nrPsPrediction);
-    if (m1.score() > m2.score()) {
-        return m1;
-    } else {
-        return m2;
-    }
-}
-
 std::vector<nrp::NRP::Segment> nrp::NRPtail::containNRPsPart(nrpsprediction::NRPsPart predict_part) const {
     std::vector<nrp::NRP::Segment> seg1 = v1.containNRPsPart(predict_part), seg2 = v2.containNRPsPart(predict_part);
 
@@ -52,4 +42,11 @@ std::string nrp::NRPtail::get_file_name() const {
 
 std::string nrp::NRPtail::get_extra_info() const {
     return v1.get_extra_info();
+}
+
+std::vector<nrp::NRPLine> nrp::NRPtail::getLines() const {
+    std::vector<nrp::NRPLine> lines;
+    lines.push_back(v1);
+    lines.push_back(v2);
+    return lines;
 }
