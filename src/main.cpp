@@ -102,7 +102,8 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::N
 
     std::vector<nrp::NRP::Match> nrpsMatchs;
     for (int i = 0; i < mols.size(); ++i) {
-        nrp::NRP::Match match = mols[i]->isCover(pred);
+        matcher::Matcher matcher(*mols[i], pred);
+        nrp::NRP::Match match = matcher.getMatch();
         if (match.score() >= MIN_SCROE) {
             nrpsMatchs.push_back(match);
         }
@@ -132,7 +133,8 @@ void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp:
 
     std::vector<nrp::NRP::Match> nrpsMatchs;
     for (int i = 0; i < preds.size(); ++i) {
-        nrp::NRP::Match match = mol->isCover(preds[i]);
+        matcher::Matcher matcher(*mol, preds[i]);
+        nrp::NRP::Match match = matcher.getMatch();
         if (match.score() >= MIN_SCROE) {
             nrpsMatchs.push_back(match);
         }

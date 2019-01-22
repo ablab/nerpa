@@ -5,6 +5,7 @@
 #include "../src/NRP/NRPtail.h"
 #include <algorithm>
 #include <cmath>
+#include <Matcher/Matcher.h>
 
 namespace nrp {
     const double EPS = 1e-4;
@@ -416,7 +417,8 @@ namespace nrp {
             std::random_shuffle(nrpParts.begin(), nrpParts.end());
             nrpsprediction::NRPsPrediction nrpsPrediction(nrpParts);
 
-            NRP::Match match = nrp.isCover(nrpsPrediction);
+            matcher::Matcher matcher(nrp, nrpsPrediction);
+            NRP::Match match = matcher.getMatch();
 
             ASSERT_GE(match.score() - res_score, -EPS);
             check_correct_score(match, nrpParts, NRP::line);
@@ -466,7 +468,8 @@ namespace nrp {
             std::random_shuffle(nrpParts.begin(), nrpParts.end());
             nrpsprediction::NRPsPrediction nrpsPrediction(nrpParts);
 
-            NRP::Match match = nrp.isCover(nrpsPrediction);
+            matcher::Matcher matcher(nrp, nrpsPrediction);
+            NRP::Match match = matcher.getMatch();
 
             ASSERT_GE(match.score() - res_score, -EPS);
             check_correct_score(match, nrpParts, NRP::cycle);
