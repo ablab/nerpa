@@ -49,7 +49,7 @@ namespace nrpsprediction {
         return std::make_pair(orfname, pos);
     }
 
-    std::vector<NRPsPart> NRPsPrediction::getNrpsParts() {
+    std::vector<NRPsPart> NRPsPrediction::getNrpsParts() const {
         return nrpparts;
     }
 }

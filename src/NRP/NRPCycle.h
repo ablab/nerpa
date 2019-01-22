@@ -11,14 +11,14 @@ namespace nrp {
                  const std::vector<aminoacid::Aminoacids::Aminoacid> &aminoacids, const std::vector<int> &position,
                  const std::string &graph, const std::string& extra_info);
 
-        Match isCover(nrpsprediction::NRPsPrediction nrPsPrediction) override;
+        Match isCover(const nrpsprediction::NRPsPrediction& nrPsPrediction) const override;
 
-        std::vector<Segment> containNRPsPart(nrpsprediction::NRPsPart predict_part) override;
+        std::vector<Segment> containNRPsPart(nrpsprediction::NRPsPart predict_part) const override;
 
-        NRPType getType() override;
+        NRPType getType() const override;
 
     private:
-        Match updateMatch(nrpsprediction::NRPsPrediction& nrPsPrediction, Match match, int bg);
+        Match updateMatch(const nrpsprediction::NRPsPrediction& nrPsPrediction, Match match, int bg) const;
     };
 }
 

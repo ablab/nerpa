@@ -14,27 +14,27 @@ namespace nrp {
         NRPtail(NRPLine v1, NRPLine v2): v1(v1), v2(v2) {
         }
 
-        Match isCover(nrpsprediction::NRPsPrediction nrPsPrediction) override;
+        Match isCover(const nrpsprediction::NRPsPrediction& nrPsPrediction) const override;
 
-        NRPType getType() override;
+        NRPType getType() const override;
 
-        std::vector<Segment> containNRPsPart(nrpsprediction::NRPsPart predict_part) override;
+        std::vector<Segment> containNRPsPart(nrpsprediction::NRPsPart predict_part) const override;
 
-        int getLen() override;
+        int getLen() const override;
 
-        int getInd(int i) override;
+        int getInd(int i) const override;
 
-        std::string getFormula(int i) override;
+        std::string getFormula(int i) const override;
 
-        aminoacid::Aminoacids::Aminoacid getAminoacid(int i) override;
+        aminoacid::Aminoacids::Aminoacid getAminoacid(int i) const override;
 
-        void print() override;
+        void print() const override;
 
-        std::string getGraphInString() override;
+        std::string getGraphInString() const override;
 
-        std::string get_file_name() override;
+        std::string get_file_name() const override;
 
-        std::string get_extra_info() override;
+        std::string get_extra_info() const override;
     };
 }
 

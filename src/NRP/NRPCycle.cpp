@@ -8,7 +8,7 @@ nrp::NRPCycle::NRPCycle(const std::string &file_name, const std::vector<std::str
                                                                                           graph, extra_info) {
 }
 
-nrp::NRP::Match nrp::NRPCycle::isCover(nrpsprediction::NRPsPrediction nrPsPrediction) {
+nrp::NRP::Match nrp::NRPCycle::isCover(const nrpsprediction::NRPsPrediction& nrPsPrediction) const {
     std::vector<Segment> segments;
     auto nrpparts = nrPsPrediction.getNrpsParts();
     std::vector<int> toSmallId(nrpparts.size(), -1);
@@ -51,7 +51,7 @@ nrp::NRP::Match nrp::NRPCycle::isCover(nrpsprediction::NRPsPrediction nrPsPredic
     return resMatchs;
 }
 
-std::vector<nrp::NRP::Segment> nrp::NRPCycle::containNRPsPart(nrpsprediction::NRPsPart predict_part) {
+std::vector<nrp::NRP::Segment> nrp::NRPCycle::containNRPsPart(nrpsprediction::NRPsPart predict_part) const {
     std::vector<Segment> res;
     std::vector<nrpsprediction::AminoacidPrediction> aminoacid_predictions = predict_part.getAminoacidsPrediction();
     for (int i = 0; i < (int)aminoacids.size(); ++i) {
@@ -90,11 +90,11 @@ std::vector<nrp::NRP::Segment> nrp::NRPCycle::containNRPsPart(nrpsprediction::NR
     return res;
 }
 
-nrp::NRP::NRPType nrp::NRPCycle::getType() {
+nrp::NRP::NRPType nrp::NRPCycle::getType() const {
     return NRP::cycle;
 }
 
-nrp::NRP::Match nrp::NRPCycle::updateMatch(nrpsprediction::NRPsPrediction& nrPsPrediction, nrp::NRP::Match match, int bg) {
+nrp::NRP::Match nrp::NRPCycle::updateMatch(const nrpsprediction::NRPsPrediction& nrPsPrediction, nrp::NRP::Match match, int bg) const {
     nrp::NRP::Match nmatch(this, nrPsPrediction.getNrpsParts());
     std::vector<std::pair<int, int> > part_id_pos = match.getMatchs();
     for (int i = 0; i < part_id_pos.size(); ++i) {

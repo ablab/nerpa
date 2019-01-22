@@ -5,7 +5,7 @@ nrp::NRPLine::NRPLine(const std::string &file_name, const std::vector<std::strin
                       const std::vector<aminoacid::Aminoacids::Aminoacid> &aminoacids, const std::vector<int> &position,
                       const std::string &graph, const std::string& extra_info) : NRP(file_name, strformula, aminoacids, position, graph, extra_info) {}
 
-nrp::NRP::Match nrp::NRPLine::isCover(nrpsprediction::NRPsPrediction nrPsPrediction) {
+nrp::NRP::Match nrp::NRPLine::isCover(const nrpsprediction::NRPsPrediction& nrPsPrediction) const {
     std::vector<Segment> segments;
     auto nrpparts = nrPsPrediction.getNrpsParts();
     std::vector<int> toSmallId(nrpparts.size(), -1);
@@ -40,7 +40,7 @@ nrp::NRP::Match nrp::NRPLine::isCover(nrpsprediction::NRPsPrediction nrPsPredict
     return resMatch;
 }
 
-std::vector<nrp::NRP::Segment> nrp::NRPLine::containNRPsPart(nrpsprediction::NRPsPart predict_part) {
+std::vector<nrp::NRP::Segment> nrp::NRPLine::containNRPsPart(nrpsprediction::NRPsPart predict_part) const {
     std::vector<Segment> res;
     std::vector<nrpsprediction::AminoacidPrediction> aminoacid_predictions = predict_part.getAminoacidsPrediction();
     for (int i = 0; i < (int)aminoacids.size() - (int)aminoacid_predictions.size() + 1; ++i) {
@@ -77,6 +77,6 @@ std::vector<nrp::NRP::Segment> nrp::NRPLine::containNRPsPart(nrpsprediction::NRP
     return res;
 }
 
-nrp::NRP::NRPType nrp::NRPLine::getType() {
+nrp::NRP::NRPType nrp::NRPLine::getType() const {
     return NRP::line;
 }

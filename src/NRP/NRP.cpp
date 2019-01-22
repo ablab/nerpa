@@ -4,27 +4,27 @@
 #include <algorithm>
 #include "NRP.h"
 
-std::string nrp::NRP::getFormula(int i) {
+std::string nrp::NRP::getFormula(int i) const {
     return strformula[i];
 }
 
-std::string nrp::NRP::getGraphInString() {
+std::string nrp::NRP::getGraphInString() const {
     return graph;
 }
 
-int nrp::NRP::getLen() {
+int nrp::NRP::getLen() const {
     return aminoacids.size();
 }
 
-int nrp::NRP::getInd(int i) {
+int nrp::NRP::getInd(int i) const {
     return position[i];
 }
 
-aminoacid::Aminoacids::Aminoacid nrp::NRP::getAminoacid(int i) {
+aminoacid::Aminoacids::Aminoacid nrp::NRP::getAminoacid(int i) const {
     return aminoacids[i];
 }
 
-void nrp::NRP::print() {
+void nrp::NRP::print() const {
     for (int i = 0; i < (int)aminoacids.size(); ++i) {
         std::cerr << aminoacid::Aminoacids::AMINOACID_NAMES[aminoacids[i]] << "(" << position[i] << ") ";
     }
@@ -32,13 +32,13 @@ void nrp::NRP::print() {
 }
 
 
-std::string nrp::NRP::get_file_name() {
+std::string nrp::NRP::get_file_name() const {
     return file_name;
 }
 
 nrp::NRP::Match
-nrp::NRP::isCoverLine(std::vector<nrp::NRP::Segment> &segments, nrpsprediction::NRPsPrediction nrPsPrediction,
-                      const std::vector<int> &toSmallId, const std::vector<int> &toBigId) {
+nrp::NRP::isCoverLine(std::vector<nrp::NRP::Segment> &segments, const nrpsprediction::NRPsPrediction& nrPsPrediction,
+                      const std::vector<int> &toSmallId, const std::vector<int> &toBigId) const {
     int len = this->getLen();
     std::sort(segments.begin(), segments.end());
 
@@ -157,6 +157,6 @@ nrp::NRP::isCoverLine(std::vector<nrp::NRP::Segment> &segments, nrpsprediction::
     return nrPsMatch;
 }
 
-std::string nrp::NRP::get_extra_info() {
+std::string nrp::NRP::get_extra_info() const {
     return extra_info;
 }

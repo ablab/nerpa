@@ -10,6 +10,14 @@
 
 namespace matcher {
     class Matcher {
+    private:
+        const nrp::NRP& nrp;
+        const nrpsprediction::NRPsPrediction& prediction;
+    public:
+        Matcher(const nrp::NRP &nrp, const nrpsprediction::NRPsPrediction& prediction):
+                nrp(nrp), prediction(prediction) {}
+
+        nrp::NRP::Match getMatch() const;
     };
 }
 

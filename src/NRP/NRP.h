@@ -15,14 +15,14 @@ namespace nrp {
     public:
         class Match {
         private:
-            nrp::NRP* nrp;
+            const nrp::NRP* nrp;
             std::vector<nrpsprediction::NRPsPart> nrpParts;
             std::vector<int> parts_id;
             std::vector<int> parts_pos;
         public:
             Match() = default;
 
-            Match(nrp::NRP* nrp, std::vector<nrpsprediction::NRPsPart> nrpParts): nrp(nrp), nrpParts(nrpParts) {
+            Match(const nrp::NRP* nrp, std::vector<nrpsprediction::NRPsPart> nrpParts): nrp(nrp), nrpParts(nrpParts) {
                 parts_id.resize(nrp->getLen(), -1);
                 parts_pos.resize(nrp->getLen(), -1);
             }
@@ -63,8 +63,8 @@ namespace nrp {
         std::string file_name;
         std::string extra_info;
 
-        virtual Match isCoverLine(std::vector<Segment>& segments, nrpsprediction::NRPsPrediction nrPsPrediction,
-                                         const std::vector<int>& toSmallId, const std::vector<int>& toBigId);
+        virtual Match isCoverLine(std::vector<Segment>& segments, const nrpsprediction::NRPsPrediction& nrPsPrediction,
+                                         const std::vector<int>& toSmallId, const std::vector<int>& toBigId) const;
     public:
         enum NRPType {cycle, line, branch_cycle};
         NRP() = default;
@@ -76,26 +76,26 @@ namespace nrp {
             assert(position.size() == aminoacids.size());
         }
 
-        virtual std::vector<Segment> containNRPsPart(nrpsprediction::NRPsPart predict_part) = 0;
+        virtual std::vector<Segment> containNRPsPart(nrpsprediction::NRPsPart predict_part) const = 0;
 
-        virtual int getLen();
+        virtual int getLen() const;
 
-        virtual int getInd(int i);
+        virtual int getInd(int i) const;
 
-        virtual std::string getFormula(int i);
+        virtual std::string getFormula(int i) const;
 
-        virtual aminoacid::Aminoacids::Aminoacid getAminoacid(int i);
+        virtual aminoacid::Aminoacids::Aminoacid getAminoacid(int i) const;
 
-        virtual void print();
+        virtual void print() const;
 
-        virtual std::string getGraphInString();
+        virtual std::string getGraphInString() const;
 
-        virtual std::string get_file_name();
+        virtual std::string get_file_name() const;
 
-        virtual std::string get_extra_info();
+        virtual std::string get_extra_info() const;
 
-        virtual Match isCover(nrpsprediction::NRPsPrediction nrPsPrediction) = 0;
-        virtual NRPType getType() = 0;
+        virtual Match isCover(const nrpsprediction::NRPsPrediction& nrPsPrediction) const = 0;
+        virtual NRPType getType() const = 0;
     };
 
 }

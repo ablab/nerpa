@@ -10,6 +10,7 @@
 #include "NRP/NRP.h"
 #include "NRPsPrediction/NRPsPrediction.h"
 #include <Logger/log_writers.hpp>
+#include "Matcher/Matcher.h"
 
 const int MIN_SCROE = 2;
 
