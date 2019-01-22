@@ -25,7 +25,7 @@ SECRET_KEY = '&1k=+t6qnf*@i+_2okgnhd=fs9pe4wpc#ay=80u03wh#a)s$!0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['hosein.andrew.cmu.edu']
+ALLOWED_HOSTS = ['hosein.andrew.cmu.edu', '127.0.0.1']
 
 
 # Application definition
@@ -121,6 +121,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+print(BASE_DIR)
+print(STATIC_ROOT)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
