@@ -64,8 +64,6 @@ namespace nrp {
         std::string file_name;
         std::string extra_info;
     public:
-        virtual Match isCoverLine(std::vector<Segment>& segments, const nrpsprediction::NRPsPrediction& nrPsPrediction,
-                                  const std::vector<int>& toSmallId, const std::vector<int>& toBigId) const;
 
         enum NRPType {cycle, line, branch_cycle};
         NRP() = default;

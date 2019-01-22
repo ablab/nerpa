@@ -25,6 +25,8 @@ namespace matcher {
 
 
         nrp::NRP::Match updateMatch(const nrpsprediction::NRPsPrediction& nrPsPrediction, nrp::NRP::Match match, int bg) const;
+        virtual nrp::NRP::Match isCoverLine(std::vector<nrp::NRP::Segment>& segments,
+                                  const std::vector<int>& toSmallId, const std::vector<int>& toBigId) const;
     };
 }
 
