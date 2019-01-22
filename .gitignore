@@ -1,5 +1,7 @@
-*.idea
-*__pycharm__*
+*.idea*
+*__pycache__*
 cmake-build-debug
 build
 *migrations
+*db.sqlite3
+*.deb
