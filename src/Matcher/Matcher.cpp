@@ -130,7 +130,7 @@ matcher::Matcher::isCoverLine(std::vector<nrp::NRP::Segment> &segments,
 
     std::vector<std::vector<std::vector<double> > > d(len + 1,
                                                       std::vector<std::vector<double> >((1 << toBigId.size()),
-                                                                                        std::vector<double>(2, -len - 1)));
+                                                                                        std::vector<double>(2, score.minScore(nrp))));
     std::vector<std::vector<std::pair<int, int> > > p(len + 1,
                                                       std::vector<std::pair<int, int> >((1 << toBigId.size()),
                                                                                         std::make_pair(-1, -1)));
@@ -138,19 +138,19 @@ matcher::Matcher::isCoverLine(std::vector<nrp::NRP::Segment> &segments,
     std::vector<std::vector<std::vector<int> > > pgp(len + 1, std::vector<std::vector<int> >((1 << toBigId.size()),
                                                                                              std::vector<int>(2, 0)));
     std::vector<std::vector<int> > pa(len + 1, std::vector<int>((1 << toBigId.size()), -1));
-    d[0][0][1] = len;
+    d[0][0][1] = 0;
 
     int curseg = 0;
 
     for (int pos = 0; pos <= len; ++pos) {
         int lstseg = curseg;
         for (int msk = 0; msk < (1 << (toBigId.size())); ++msk) {
-            if (pos != 0 && d[pos][msk][0] < d[pos - 1][msk][1] - 2) {
-                d[pos][msk][0] = d[pos - 1][msk][1] - 2;
+            if (pos != 0 && d[pos][msk][0] < d[pos - 1][msk][1] + score.openGap()) {
+                d[pos][msk][0] = d[pos - 1][msk][1] + score.openGap();
                 pgp[pos][msk][0] = 1;
             }
-            if (pos != 0 && d[pos][msk][0] < d[pos - 1][msk][0] - 1) {
-                d[pos][msk][0] = d[pos - 1][msk][0] - 1;
+            if (pos != 0 && d[pos][msk][0] < d[pos - 1][msk][0] + score.continueGap()) {
+                d[pos][msk][0] = d[pos - 1][msk][0] + score.continueGap();
                 pgp[pos][msk][0] = 0;
             }
             curseg = lstseg;
@@ -172,10 +172,8 @@ matcher::Matcher::isCoverLine(std::vector<nrp::NRP::Segment> &segments,
                 }
 
                 for (int gp = 0; gp < 2; ++gp) {
-                    if (d[segments[curseg].r + 1][nmsk][1] < d[pos][msk][gp] - 1 -
-                                                             (segments[curseg].r + 1 - pos) + segments[curseg].scor) {
-                        d[segments[curseg].r + 1][nmsk][1] = d[pos][msk][gp] - 1 -
-                                                             (segments[curseg].r + 1 - pos) + segments[curseg].scor;
+                    if (d[segments[curseg].r + 1][nmsk][1] < d[pos][msk][gp] + score.addSegment(segments[curseg])) {
+                        d[segments[curseg].r + 1][nmsk][1] = d[pos][msk][gp] + score.addSegment(segments[curseg]);
                         p[segments[curseg].r + 1][nmsk].first = pos;
                         p[segments[curseg].r + 1][nmsk].second = msk;
                         pa[segments[curseg].r + 1][nmsk] = curseg;
@@ -188,7 +186,7 @@ matcher::Matcher::isCoverLine(std::vector<nrp::NRP::Segment> &segments,
         }
     }
 
-    double mn = -len - 1;
+    double mn = score.minScore(nrp);
     int rmsk = 0;
     int gp = 0;
     for (int msk = 0; msk < (1 << (toBigId.size())); ++msk) {

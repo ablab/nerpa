@@ -7,12 +7,14 @@
 
 #include <NRPsPrediction/AminoacidPrediction.h>
 #include <NRP/NRP.h>
+#include <Matcher/Score/Score.h>
 
 namespace matcher {
     class Matcher {
     private:
         const nrp::NRP& nrp;
         const nrpsprediction::NRPsPrediction& prediction;
+        const Score score = Score();
     public:
         class Match {
         private:

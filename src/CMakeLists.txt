@@ -28,7 +28,9 @@ set(SOURCE_FILES main.cpp
         NRPGenerator/NRPsPredictionGenerator.h
         NRPGenerator/NRPsPredictionGenerator.cpp
         Matcher/Matcher.h
-        Matcher/Matcher.cpp)
+        Matcher/Matcher.cpp
+        Matcher/Score/Score.cpp
+        Matcher/Score/Score.h)
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})
 add_executable(NRPsMatcher main.cpp)
