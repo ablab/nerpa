@@ -1,18 +1,19 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include "NRP.h"
+#include "NRP/NRP.h"
+#include "Matcher.h"
 
-void nrp::NRP::Match::match(int pos, int part_id, int part_pos) {
+void matcher::Matcher::Match::match(int pos, int part_id, int part_pos) {
     parts_id[pos] = part_id;
     parts_pos[pos] = part_pos;
 }
 
-double nrp::NRP::Match::score() {
+double matcher::Matcher::Match::score() {
     double cnt = 0;
     std::vector<int> difparts;
     for (int i = 0; i < parts_id.size(); ++i) {
-        if (parts_id[i] < 0 && ((i == 0 && nrp->getType() != cycle) ||
+        if (parts_id[i] < 0 && ((i == 0 && nrp->getType() != nrp::NRP::cycle) ||
                 parts_id[(i - 1 + parts_id.size())%parts_id.size()] >= 0)) {
             cnt -= 1;
         } else if (parts_id[i] >= 0) {
@@ -28,7 +29,7 @@ double nrp::NRP::Match::score() {
     return cnt;
 }
 
-std::vector<std::pair<int, int> > nrp::NRP::Match::getMatchs() {
+std::vector<std::pair<int, int> > matcher::Matcher::Match::getMatchs() {
     std::vector<std::pair<int, int> > res;
     for (int i = 0; i < parts_id.size(); ++i) {
         res.push_back(std::make_pair(parts_id[i], parts_pos[i]));
@@ -37,7 +38,7 @@ std::vector<std::pair<int, int> > nrp::NRP::Match::getMatchs() {
 }
 
 
-bool nrp::NRP::Match::isMatched(int i) {
+bool matcher::Matcher::Match::isMatched(int i) {
     if (parts_id[i] == -1) {
         return false;
     }
@@ -47,7 +48,7 @@ bool nrp::NRP::Match::isMatched(int i) {
 }
 
 
-void nrp::NRP::Match::print(std::ofstream &out) {
+void matcher::Matcher::Match::print(std::ofstream &out) {
     out << nrp->get_file_name() << " " << nrp->get_extra_info() << "\n";
     if (nrpParts.size() > 0) {
         out << nrpParts[0].get_file_name() << "\n";
@@ -83,21 +84,21 @@ void nrp::NRP::Match::print(std::ofstream &out) {
     out << "\n\n\n";
 }
 
-bool nrp::NRP::Match::operator<(nrp::NRP::Match b) {
+bool matcher::Matcher::Match::operator<(matcher::Matcher::Match b) {
     return this->score() > b.score();
 }
 
-void nrp::NRP::Match::print_short(std::ofstream &out) {
+void matcher::Matcher::Match::print_short(std::ofstream &out) {
     out << nrp->get_file_name() << " " << score() << "; ";
 }
 
-void nrp::NRP::Match::print_short_prediction(std::ofstream &out) {
+void matcher::Matcher::Match::print_short_prediction(std::ofstream &out) {
     if (nrpParts.size() == 0) return;
 
     out << nrpParts[0].get_file_name() << " " << score() << "; ";
 }
 
-void nrp::NRP::Match::print_csv(std::ofstream &out) {
+void matcher::Matcher::Match::print_csv(std::ofstream &out) {
     if (nrpParts.size() == 0) {
         return;
     }

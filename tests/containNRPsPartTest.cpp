@@ -100,7 +100,7 @@ namespace nrp {
             return true;
         }
 
-        void check_correct_score(NRP::Match match, std::vector< nrpsprediction::NRPsPart> nrpParts, NRP::NRPType type) {
+        void check_correct_score(matcher::Matcher::Match match, std::vector< nrpsprediction::NRPsPart> nrpParts, NRP::NRPType type) {
             std::vector<std::pair<int, int> > matchs = match.getMatchs();
             ASSERT_EQ(matchs.size(), amnacid.size());
             double score = 0;
@@ -121,7 +121,7 @@ namespace nrp {
             ASSERT_LE(abs(score - match.score()), EPS);
         }
 
-        void check_correct_seq(NRP::Match match, std::vector< nrpsprediction::NRPsPart> nrpParts) {
+        void check_correct_seq(matcher::Matcher::Match match, std::vector< nrpsprediction::NRPsPart> nrpParts) {
             std::vector<std::vector<int> > post(nrpParts.size());
             for (int i = 0; i < post.size(); ++i) {
                 post[i].resize(nrpParts[i].getAminoacidsPrediction().size(), -1);
@@ -158,7 +158,7 @@ namespace nrp {
             }
         }
 
-        void check_correct_cycle_seq(NRP::Match match, std::vector< nrpsprediction::NRPsPart> nrpParts) {
+        void check_correct_cycle_seq(matcher::Matcher::Match match, std::vector< nrpsprediction::NRPsPart> nrpParts) {
             std::vector<std::vector<int> > post(nrpParts.size());
             for (int i = 0; i < post.size(); ++i) {
                 post[i].resize(nrpParts[i].getAminoacidsPrediction().size(), -1);
@@ -196,7 +196,7 @@ namespace nrp {
         }
 
 
-        void check_seq_match_with_nrp(NRP::Match match, std::vector< nrpsprediction::NRPsPart> nrpParts) {
+        void check_seq_match_with_nrp(matcher::Matcher::Match match, std::vector< nrpsprediction::NRPsPart> nrpParts) {
             std::vector<std::pair <int, int> > matchs = match.getMatchs();
             for (int i = 0; i < matchs.size(); ++i) {
                 if (matchs[i].first != -1) {
@@ -419,7 +419,7 @@ namespace nrp {
             nrpsprediction::NRPsPrediction nrpsPrediction(nrpParts);
 
             matcher::Matcher matcher(nrp, nrpsPrediction);
-            NRP::Match match = matcher.getMatch();
+            matcher::Matcher::Match match = matcher.getMatch();
 
             ASSERT_GE(match.score() - res_score, -EPS);
             check_correct_score(match, nrpParts, NRP::line);
@@ -470,7 +470,7 @@ namespace nrp {
             nrpsprediction::NRPsPrediction nrpsPrediction(nrpParts);
 
             matcher::Matcher matcher(nrp, nrpsPrediction);
-            NRP::Match match = matcher.getMatch();
+            matcher::Matcher::Match match = matcher.getMatch();
 
             ASSERT_GE(match.score() - res_score, -EPS);
             check_correct_score(match, nrpParts, NRP::cycle);

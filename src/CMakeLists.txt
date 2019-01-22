@@ -12,7 +12,7 @@ set(SOURCE_FILES main.cpp
         NRPsPrediction/NRPsPrediction.h
         NRP/NRP.cpp
         NRP/NRP.h
-        NRP/NRPsMatch.cpp
+        Matcher/NRPsMatch.cpp
         NRP/NRPBuilder.cpp
         NRP/NRPBuilder.h
         NRP/NRPCycle.h

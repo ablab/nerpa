@@ -14,32 +14,6 @@ namespace nrp {
 
     class NRP {
     public:
-        class Match {
-        private:
-            const nrp::NRP* nrp;
-            std::vector<nrpsprediction::NRPsPart> nrpParts;
-            std::vector<int> parts_id;
-            std::vector<int> parts_pos;
-        public:
-            Match() = default;
-
-            Match(const nrp::NRP* nrp, std::vector<nrpsprediction::NRPsPart> nrpParts): nrp(nrp), nrpParts(nrpParts) {
-                parts_id.resize(nrp->getLen(), -1);
-                parts_pos.resize(nrp->getLen(), -1);
-            }
-
-            void match(int pos, int part_id, int part_pos);
-            void print(std::ofstream& out);
-            void print_short(std::ofstream& out);
-            void print_short_prediction(std::ofstream& out);
-            void print_csv(std::ofstream& out);
-            double score();
-            bool isMatched(int i);
-            std::vector<std::pair<int, int> > getMatchs();
-
-            bool operator < (Match b);
-        };
-
         struct Segment {
             int l;
             int r;

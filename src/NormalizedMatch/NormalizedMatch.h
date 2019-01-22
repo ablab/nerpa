@@ -4,6 +4,7 @@
 #include <NRP/NRP.h>
 #include <NRPGenerator/NRPGenerator.h>
 #include <NRPGenerator/NRPsPredictionGenerator.h>
+#include <Matcher/Matcher.h>
 
 namespace normalized_match {
     using namespace nrp;
@@ -14,13 +15,13 @@ namespace normalized_match {
         double score = 0;
         double p_value = 0;
 
-        NRP::Match match;
+        matcher::Matcher::Match match;
     public:
         NormalizedMatch() = default;
-        NormalizedMatch(NRP::Match match, nrp_generator::NRPGenerator* generator,
+        NormalizedMatch(matcher::Matcher::Match match, nrp_generator::NRPGenerator* generator,
                         nrpsprediction::NRPsPrediction prediction, NRP* mol);
 
-        NormalizedMatch(NRP::Match match, nrp_generator::NRPsPredictionGenerator* generator,
+        NormalizedMatch(matcher::Matcher::Match match, nrp_generator::NRPsPredictionGenerator* generator,
                         nrpsprediction::NRPsPrediction prediction, NRP* mol);
         void print(std::ofstream& out);
         void print_short(std::ofstream& out);
