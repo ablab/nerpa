@@ -24,7 +24,8 @@ matcher::Matcher::Match matcher::Matcher::getLineMatch() const {
     int len = nrp.getLen();
 
     for (int i = 0; i < nrpparts.size(); ++i) {
-        std::vector<nrp::NRP::Segment> part_seg = nrp.containNRPsPart(nrpparts[i]);
+        std::vector<nrp::NRP::Segment> part_seg = matche_seg(nrpparts[i]);
+
         for (int j = 0; j < part_seg.size(); ++j) {
             segments.push_back(nrp::NRP::Segment(part_seg[j].l, part_seg[j].r, i, part_seg[j].rev, part_seg[j].scor));
         }
@@ -59,7 +60,8 @@ matcher::Matcher::Match matcher::Matcher::getCycleMatch() const {
     int len = nrp.getLen();
 
     for (int i = 0; i < nrpparts.size(); ++i) {
-        std::vector<nrp::NRP::Segment> part_seg = nrp.containNRPsPart(nrpparts[i]);
+        std::vector<nrp::NRP::Segment> part_seg = matche_seg(nrpparts[i]);
+
         for (int j = 0; j < part_seg.size(); ++j) {
             segments.push_back(nrp::NRP::Segment(part_seg[j].l, part_seg[j].r, i, part_seg[j].rev, part_seg[j].scor));
         }
@@ -239,6 +241,48 @@ matcher::Matcher::isCoverLine(std::vector<nrp::NRP::Segment> &segments,
     }
 
     return nrPsMatch;
+}
+
+
+std::vector<nrp::NRP::Segment> matcher::Matcher::matche_seg(const nrpsprediction::NRPsPart &predict_part) const {
+    std::vector<nrp::NRP::Segment> segs;
+    std::vector<aacid> amns = nrp.getAminoacids();
+    int part_len = predict_part.getAminoacidsPrediction().size();
+
+    if (part_len > amns.size() || part_len == 0) {
+        return segs;
+    }
+
+    for (int l = 0; l < amns.size(); ++l) {
+        for (int stp = -1; stp < 2; stp += 2) {
+            int r =  (l + stp*(part_len - 1) + amns.size()) % amns.size();
+            if (nrp.is_valid_seg(l, r, stp)) {
+                auto subamn = getSubset(amns, l, r, stp);
+                assert(subamn.size() == part_len);
+                double scr;
+                if (score.getScoreForSegment(subamn, predict_part, scr)) {
+                    int bg = l;
+                    if (stp == -1) {
+                        bg = r;
+                    }
+
+                    segs.push_back(nrp::NRP::Segment(bg, bg + part_len - 1, -1, (stp==-1), scr));
+                }
+            }
+        }
+    }
+
+    return segs;
+}
+
+std::vector<matcher::aacid>
+matcher::Matcher::getSubset(std::vector<matcher::aacid> amns, int l, int r, int stp) const {
+    std::vector<matcher::aacid> subamn;
+    for (int i = l; i != r; i = (i + stp + amns.size())%amns.size()) {
+        subamn.push_back(amns[i]);
+    }
+    subamn.push_back(amns[r]);
+    return subamn;
 }
 
 

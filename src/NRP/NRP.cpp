@@ -39,3 +39,7 @@ std::string nrp::NRP::get_file_name() const {
 std::string nrp::NRP::get_extra_info() const {
     return extra_info;
 }
+
+std::vector<aminoacid::Aminoacids::Aminoacid> nrp::NRP::getAminoacids() const {
+    return aminoacids;
+}

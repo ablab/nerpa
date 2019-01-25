@@ -10,6 +10,7 @@
 #include <Matcher/Score/Score.h>
 
 namespace matcher {
+    typedef aminoacid::Aminoacids::Aminoacid aacid;
     class Matcher {
     private:
         const nrp::NRP& nrp;
@@ -56,6 +57,11 @@ namespace matcher {
         matcher::Matcher::Match updateMatch(const nrpsprediction::NRPsPrediction& nrPsPrediction, matcher::Matcher::Match match, int bg) const;
         virtual matcher::Matcher::Match isCoverLine(std::vector<nrp::NRP::Segment>& segments,
                                   const std::vector<int>& toSmallId, const std::vector<int>& toBigId) const;
+
+
+        std::vector<nrp::NRP::Segment> matche_seg(const nrpsprediction::NRPsPart& predict_part) const;
+
+        std::vector<aacid> getSubset(std::vector<aacid> vector, int l, int r, int stp) const;
     };
 }
 

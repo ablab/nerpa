@@ -59,6 +59,8 @@ namespace nrp {
 
         virtual aminoacid::Aminoacids::Aminoacid getAminoacid(int i) const;
 
+        virtual std::vector<aminoacid::Aminoacids::Aminoacid> getAminoacids() const;
+
         virtual void print() const;
 
         virtual std::string getGraphInString() const;
@@ -70,6 +72,8 @@ namespace nrp {
         virtual NRPType getType() const = 0;
 
         virtual std::vector<NRPLine> getLines() const = 0;
+
+        virtual bool is_valid_seg(int l, int r, int stp) const = 0;
     };
 
 }

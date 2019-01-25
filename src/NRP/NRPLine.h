@@ -14,6 +14,8 @@ namespace nrp {
 
         NRPType getType() const override;
         std::vector<NRPLine> getLines() const override;
+
+        bool is_valid_seg(int l, int r, int stp) const override;
     };
 }
 

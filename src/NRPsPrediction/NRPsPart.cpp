@@ -13,7 +13,7 @@ void nrpsprediction::NRPsPart::add_prediction(int num, std::string predict_amino
 
 }
 
-std::vector<nrpsprediction::AminoacidPrediction> nrpsprediction::NRPsPart::getAminoacidsPrediction() {
+std::vector<nrpsprediction::AminoacidPrediction> nrpsprediction::NRPsPart::getAminoacidsPrediction() const {
     return aminoacids;
 }
 

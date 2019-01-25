@@ -16,7 +16,7 @@ namespace nrpsprediction {
         std::string get_orf_name();
         std::string get_file_name();
         void add_prediction(int num, std::string predict_aminoacids);
-        std::vector<AminoacidPrediction> getAminoacidsPrediction();
+        std::vector<AminoacidPrediction> getAminoacidsPrediction() const;
     };
 }
 

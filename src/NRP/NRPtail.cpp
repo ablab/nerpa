@@ -50,3 +50,7 @@ std::vector<nrp::NRPLine> nrp::NRPtail::getLines() const {
     lines.push_back(v2);
     return lines;
 }
+
+bool nrp::NRPtail::is_valid_seg(int l, int r, int stp) const {
+    return v1.is_valid_seg(l, r, stp);
+}

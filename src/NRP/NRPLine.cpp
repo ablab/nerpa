@@ -51,3 +51,7 @@ std::vector<nrp::NRPLine> nrp::NRPLine::getLines() const {
     ERROR("Get lines for NRP line. NOT implemented");
     return std::vector<nrp::NRPLine>();
 }
+
+bool nrp::NRPLine::is_valid_seg(int l, int r, int stp) const {
+    return (l <= r && stp > 0) || (r <= l && stp < 0);
+}
