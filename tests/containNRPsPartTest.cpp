@@ -105,23 +105,68 @@ namespace nrp {
             std::vector<std::pair<int, int> > matchs = match.getMatchs();
             ASSERT_EQ(matchs.size(), amnacid.size());
             double score = 0;
-            std::set<int> difseg;
-            for (int i = 0 ; i < matchs.size(); ++i) {
-                if (matchs[i].first == -1 && ((i == 0 && type != NRP::cycle) ||
-                        (matchs[(i-1 + matchs.size())%matchs.size()].first != -1))) {
-                    score -= 1;
+            matcher::Score scoring;
+            std::vector<aminoacid::Aminoacids::Aminoacid> amns;
+            int cur_part_id = -1;
+            int rev = 0;
+
+            int start = 0;
+            if (type == NRP::cycle) {
+                for (int i = 0; i < matchs.size(); ++i) {
+                    if (matchs[i].first != -1) {
+                        start = i;
+                        break;
+                    }
+                }
+            }
+
+            for (int i = 0; i < matchs.size(); ++i) {
+                int pos = (start + i) % matchs.size();
+                if (matchs[pos].first == -1 &&
+                    (i == 0 || matchs[(pos - 1 + matchs.size()) % matchs.size()].first != -1)) {
+                    score += scoring.openGap();
+                } else if (matchs[pos].first == -1) {
+                    score += scoring.continueGap();
                 }
 
-                if (matchs[i].first != -1) {
-                    nrpsprediction::AminoacidPrediction amn_pred = nrpParts[matchs[i].first].getAminoacidsPrediction()[matchs[i].second];
-                    score += amn_pred.getScore(amnacid[i]);
-                    difseg.insert(matchs[i].first);
+                if (cur_part_id != -1 && (matchs[pos].first == -1 || matchs[pos].first != cur_part_id)) {
+                    double segscore = 0;
+                    if (rev) {
+                        std::reverse(amns.begin(), amns.end());
+                    }
+                    scoring.getScoreForSegment(amns, nrpParts[cur_part_id], segscore);
+                    Segment curseg((pos - amns.size() + matchs.size()) % matchs.size(),
+                                   (pos - 1 + matchs.size()) % matchs.size(), 0, 0, segscore);
+                    score += scoring.addSegment(curseg);
+                    cur_part_id = -1;
+                    amns.resize(0);
+                    rev = 0;
+                }
+
+                if (matchs[pos].first != -1) {
+                    nrpsprediction::AminoacidPrediction amn_pred = nrpParts[matchs[pos].first].getAminoacidsPrediction()[matchs[pos].second];
+                    amns.push_back(amnacid[pos]);
+                    cur_part_id = matchs[pos].first;
+                    if (matchs[pos].second == 0) {
+                        rev = 1;
+                    } else {
+                        rev = 0;
+                    }
                 }
             }
-            score -= difseg.size();
-            if (difseg.size() == 0 && type == NRP::cycle) {
-                score -= 1;
+
+            int pos = start;
+            if (cur_part_id != -1) {
+                double segscore = 0;
+                if (rev) {
+                    std::reverse(amns.begin(), amns.end());
+                }
+                scoring.getScoreForSegment(amns, nrpParts[cur_part_id], segscore);
+                Segment curseg((pos - amns.size() + matchs.size()) % matchs.size(),
+                               (pos - 1 + matchs.size()) % matchs.size(), 0, 0, segscore);
+                score += scoring.addSegment(curseg);
             }
+
             ASSERT_LE(abs(score - match.score()), EPS);
         }
 
