@@ -16,8 +16,6 @@ namespace nrp {
 
         NRPType getType() const override;
 
-        std::vector<Segment> containNRPsPart(nrpsprediction::NRPsPart predict_part) const override;
-
         int getLen() const override;
 
         int getInd(int i) const override;

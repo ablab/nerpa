@@ -49,8 +49,6 @@ namespace nrp {
             assert(position.size() == aminoacids.size());
         }
 
-        virtual std::vector<Segment> containNRPsPart(nrpsprediction::NRPsPart predict_part) const = 0;
-
         virtual int getLen() const;
 
         virtual int getInd(int i) const;

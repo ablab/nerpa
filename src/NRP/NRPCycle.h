@@ -12,8 +12,6 @@ namespace nrp {
                  const std::vector<aminoacid::Aminoacids::Aminoacid> &aminoacids, const std::vector<int> &position,
                  const std::string &graph, const std::string& extra_info);
 
-        std::vector<Segment> containNRPsPart(nrpsprediction::NRPsPart predict_part) const override;
-
         NRPType getType() const override;
 
         std::vector<NRPLine> getLines() const override;

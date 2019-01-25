@@ -1,13 +1,6 @@
 #include <iostream>
 #include "NRPtail.h"
 
-std::vector<nrp::NRP::Segment> nrp::NRPtail::containNRPsPart(nrpsprediction::NRPsPart predict_part) const {
-    std::vector<nrp::NRP::Segment> seg1 = v1.containNRPsPart(predict_part), seg2 = v2.containNRPsPart(predict_part);
-
-    seg1.insert(seg1.end(), seg2.begin(), seg2.end());
-    return seg1;
-}
-
 nrp::NRP::NRPType nrp::NRPtail::getType() const {
     return NRP::branch_cycle;
 }
