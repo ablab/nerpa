@@ -258,7 +258,11 @@ namespace nrp {
 
             nrpsprediction::NRPsPart nrps_part = getSubPart(bg, sz, delta, scr);
 
-            std::vector<NRP::Segment> segments = nrp.containNRPsPart(nrps_part);
+            std::vector<nrpsprediction::NRPsPart> parts;
+            parts.push_back(nrps_part);
+            matcher::Matcher matcher1(nrp, nrpsprediction::NRPsPrediction(parts));
+
+            std::vector<NRP::Segment> segments = matcher1.matche_seg(nrps_part);
             int rbg = bg;
             int red = ed;
             int rrev = 0;
@@ -299,7 +303,11 @@ namespace nrp {
 
             genRandNrpPart(partlen, nrps_part, predict);
 
-            std::vector<NRP::Segment> segments = nrp.containNRPsPart(nrps_part);
+            std::vector<nrpsprediction::NRPsPart> parts;
+            parts.push_back(nrps_part);
+            matcher::Matcher matcher1(nrp, nrpsprediction::NRPsPrediction(parts));
+
+            std::vector<NRP::Segment> segments = matcher1.matche_seg(nrps_part);
             for (int i = 0; i < segments.size(); ++i) {
                 if (segments[i].rev == false) {
                     ASSERT_TRUE(eqval(segments[i].l, 1, predict));
@@ -335,7 +343,11 @@ namespace nrp {
 
             nrpsprediction::NRPsPart nrps_part = getSubPart(bg, sz, delta, scr);
 
-            std::vector<NRP::Segment> segments = nrp.containNRPsPart(nrps_part);
+            std::vector<nrpsprediction::NRPsPart> parts;
+            parts.push_back(nrps_part);
+            matcher::Matcher matcher1(nrp, nrpsprediction::NRPsPrediction(parts));
+
+            std::vector<NRP::Segment> segments = matcher1.matche_seg(nrps_part);
             int rbg = std::min(bg, ed);
             int red = std::max(bg, ed);
             int rrev = (delta == -1);
@@ -365,7 +377,11 @@ namespace nrp {
 
             genRandNrpPart(partlen, nrps_part, predict);
 
-            std::vector<NRP::Segment> segments = nrp.containNRPsPart(nrps_part);
+            std::vector<nrpsprediction::NRPsPart> parts;
+            parts.push_back(nrps_part);
+            matcher::Matcher matcher1(nrp, nrpsprediction::NRPsPrediction(parts));
+
+            std::vector<NRP::Segment> segments = matcher1.matche_seg(nrps_part);
             for (int i = 0; i < segments.size(); ++i) {
                 ASSERT_TRUE(segments[i].r < len);
                 ASSERT_TRUE(segments[i].l <= segments[i].r);
