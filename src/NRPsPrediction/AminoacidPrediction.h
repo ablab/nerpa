@@ -30,9 +30,8 @@ namespace nrpsprediction {
         AminoacidPrediction(int pos, std::string predict_aminoacids);
         std::pair<std::string, double> parse_token(std::string token);
         bool contain(aminoacid::Aminoacids::Aminoacid aminoacid);
-        double getScore(aminoacid::Aminoacids::Aminoacid aminoacid);
-        AminoacidProb getAminoacid(aminoacid::Aminoacids::Aminoacid aminoacid);
-        std::pair<int, int> getAmnAcidPos(aminoacid::Aminoacids::Aminoacid aminoacid);
+        AminoacidProb getAminoacid(aminoacid::Aminoacids::Aminoacid aminoacid) const;
+        std::pair<int, int> getAmnAcidPos(aminoacid::Aminoacids::Aminoacid aminoacid) const;
         std::vector<AminoacidProb> getAAPrediction() {
             return aminoacid_prediction;
         }

@@ -7,6 +7,7 @@
 #include <cmath>
 #include <Matcher/Matcher.h>
 #include <Logger/log_writers.hpp>
+#include <boost/concept_check.hpp>
 
 namespace nrp {
     typedef matcher::Segment Segment;
@@ -16,7 +17,8 @@ namespace nrp {
     protected:
         std::vector<aminoacid::Aminoacids::Aminoacid> amnacid;
 
-        void genRandNrpPart(int partlen, nrpsprediction::NRPsPart& nrps_part, std::vector<std::vector<aminoacid::Aminoacids::Aminoacid>>& predict) {
+        void genRandNrpPart(int partlen, nrpsprediction::NRPsPart& nrps_part,
+                            std::vector<std::vector<aminoacid::Aminoacids::Aminoacid>>& predict) {
             predict.resize(partlen);
             for (int j = 0; j < partlen; ++j) {
                 std::vector<double> prob;
@@ -257,6 +259,7 @@ namespace nrp {
 
         nrpsprediction::NRPsPart getSubPart(int bg, int sz, int delta, double &score) {
             nrpsprediction::NRPsPart nrps_part("filename", "orf");
+            std::vector<aminoacid::Aminoacids::Aminoacid> aas;
             int len = amnacid.size();
             int j = 0;
             for (int i = bg; j < sz; i = (i + delta + len)%len, ++j) {
@@ -279,9 +282,14 @@ namespace nrp {
                 }
                 nrps_part.add_prediction(j + 1, ss.str());
                 auto predictions = nrps_part.getAminoacidsPrediction();
-                score += predictions.back().getScore(amnacid[i]);
+                aas.push_back(amnacid[i]);
             }
 
+            matcher::Score scoring;
+            double curs = 0;
+            scoring.getScoreForSegment(aas, nrps_part, curs);
+            score += curs;
+            
             return nrps_part;
         }
     };

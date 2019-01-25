@@ -67,7 +67,7 @@ bool nrpsprediction::AminoacidPrediction::contain(aminoacid::Aminoacids::Aminoac
 }
 
 nrpsprediction::AminoacidPrediction::AminoacidProb
-nrpsprediction::AminoacidPrediction::getAminoacid(aminoacid::Aminoacids::Aminoacid aminoacid) {
+nrpsprediction::AminoacidPrediction::getAminoacid(aminoacid::Aminoacids::Aminoacid aminoacid) const {
     for (int i = 0; i < (int)aminoacid_prediction.size(); ++i) {
         if (aminoacid::Aminoacids::same(aminoacid_prediction[i].aminoacid, aminoacid)) {
             return aminoacid_prediction[i];
@@ -77,7 +77,7 @@ nrpsprediction::AminoacidPrediction::getAminoacid(aminoacid::Aminoacids::Aminoac
     return AminoacidProb(aminoacid::Aminoacids::AMINOACID_CNT, 0);
 }
 
-std::pair<int, int> nrpsprediction::AminoacidPrediction::getAmnAcidPos(aminoacid::Aminoacids::Aminoacid aminoacid) {
+std::pair<int, int> nrpsprediction::AminoacidPrediction::getAmnAcidPos(aminoacid::Aminoacids::Aminoacid aminoacid) const {
     double  prb = -1;
     for (int i = 0; i < (int)aminoacid_prediction.size(); ++i) {
         if (aminoacid::Aminoacids::same(aminoacid_prediction[i].aminoacid, aminoacid)) {
@@ -98,25 +98,4 @@ std::pair<int, int> nrpsprediction::AminoacidPrediction::getAmnAcidPos(aminoacid
     }
 
     return std::make_pair(bg, ed);
-}
-
-double nrpsprediction::AminoacidPrediction::getScore(aminoacid::Aminoacids::Aminoacid aminoacid) {
-    double posscore[100];
-    double curscore = 1;
-    for (int i = 0; i < 100; ++i) {
-        posscore[i] = curscore;
-        curscore /= 1.25;
-    }
-    std::pair<int, int> position = getAmnAcidPos(aminoacid);
-    nrpsprediction::AminoacidPrediction::AminoacidProb prob = getAminoacid(aminoacid);
-
-    if (position.first == -1) {
-        return -1;
-    } else {
-        int mdpos = (position.first + position.second)/2;
-        if (mdpos >= 10) {
-            return 0;
-        }
-        return prob.prob/100. * posscore[mdpos];
-    }
 }
