@@ -20,13 +20,15 @@ namespace matcher {
         class Match {
         private:
             const nrp::NRP* nrp;
+            double scr;
             std::vector<nrpsprediction::NRPsPart> nrpParts;
             std::vector<int> parts_id;
             std::vector<int> parts_pos;
         public:
             Match() = default;
 
-            Match(const nrp::NRP* nrp, std::vector<nrpsprediction::NRPsPart> nrpParts): nrp(nrp), nrpParts(nrpParts) {
+            Match(const nrp::NRP* nrp, std::vector<nrpsprediction::NRPsPart> nrpParts, double scr):
+                    nrp(nrp), nrpParts(nrpParts), scr(scr) {
                 parts_id.resize(nrp->getLen(), -1);
                 parts_pos.resize(nrp->getLen(), -1);
             }

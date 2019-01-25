@@ -36,20 +36,7 @@ matcher::Matcher::Match matcher::Matcher::getLineMatch() const {
         }
     }
 
-    double best_score = -len-1;
-    matcher::Matcher::Match resMatch(&nrp, nrpparts);
-
-    matcher::Matcher::Match curMatch = isCoverLine(segments, toSmallId, toBigId);
-
-    if (curMatch.score() > best_score) {
-        std::vector<std::pair<int, int> > matchs = curMatch.getMatchs();
-
-        for (int i = 0; i < matchs.size(); ++i) {
-            resMatch.match(i, matchs[i].first, matchs[i].second);
-        }
-    }
-
-    return resMatch;
+    return isCoverLine(segments, toSmallId, toBigId);
 }
 
 matcher::Matcher::Match matcher::Matcher::getCycleMatch() const {
@@ -72,8 +59,8 @@ matcher::Matcher::Match matcher::Matcher::getCycleMatch() const {
         }
     }
 
-    double best_score = -len - 1;
-    matcher::Matcher::Match resMatchs(&nrp, nrpparts);
+    double best_score = score.minScore(nrp);
+    matcher::Matcher::Match resMatchs(&nrp, nrpparts, score.minScore(nrp));
 
     for (int bg = 0; bg < len; ++bg) {
         std::vector<nrp::NRP::Segment> tmpSeg;
@@ -116,7 +103,7 @@ matcher::Matcher::Match matcher::Matcher::getBranchMatch() const {
 matcher::Matcher::Match
 matcher::Matcher::updateMatch(const nrpsprediction::NRPsPrediction &nrPsPrediction, matcher::Matcher::Match match,
                               int bg) const {
-    matcher::Matcher::Match nmatch(&nrp, nrPsPrediction.getNrpsParts());
+    matcher::Matcher::Match nmatch(&nrp, nrPsPrediction.getNrpsParts(), match.score());
     std::vector<std::pair<int, int> > part_id_pos = match.getMatchs();
     for (int i = 0; i < part_id_pos.size(); ++i) {
         nmatch.match((i + bg)%nrp.getLen(), part_id_pos[i].first, part_id_pos[i].second);
@@ -205,7 +192,7 @@ matcher::Matcher::isCoverLine(std::vector<nrp::NRP::Segment> &segments,
         }
     }
 
-    matcher::Matcher::Match nrPsMatch(&nrp, prediction.getNrpsParts());
+    matcher::Matcher::Match nrPsMatch(&nrp, prediction.getNrpsParts(), mn);
     int pos = len;
     while (pos > 0) {
         int nxtp = p[pos][rmsk].first;

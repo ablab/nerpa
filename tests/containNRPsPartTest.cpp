@@ -118,6 +118,9 @@ namespace nrp {
                 }
             }
             score -= difseg.size();
+            if (difseg.size() == 0 && type == NRP::cycle) {
+                score -= 1;
+            }
             ASSERT_LE(abs(score - match.score()), EPS);
         }
 

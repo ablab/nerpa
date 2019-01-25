@@ -10,23 +10,7 @@ void matcher::Matcher::Match::match(int pos, int part_id, int part_pos) {
 }
 
 double matcher::Matcher::Match::score() {
-    double cnt = 0;
-    std::vector<int> difparts;
-    for (int i = 0; i < parts_id.size(); ++i) {
-        if (parts_id[i] < 0 && ((i == 0 && nrp->getType() != nrp::NRP::cycle) ||
-                parts_id[(i - 1 + parts_id.size())%parts_id.size()] >= 0)) {
-            cnt -= 1;
-        } else if (parts_id[i] >= 0) {
-            nrpsprediction::AminoacidPrediction amn_pred = nrpParts[parts_id[i]].getAminoacidsPrediction()[parts_pos[i]];
-            cnt += amn_pred.getScore(nrp->getAminoacid(i));
-            difparts.push_back(parts_id[i]);
-        }
-    }
-
-    std::sort(difparts.begin(), difparts.end());
-    difparts.resize(std::unique(difparts.begin(), difparts.end()) - difparts.begin());
-    cnt -= difparts.size();
-    return cnt;
+    return scr;
 }
 
 std::vector<std::pair<int, int> > matcher::Matcher::Match::getMatchs() {
