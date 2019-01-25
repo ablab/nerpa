@@ -30,7 +30,8 @@ set(SOURCE_FILES main.cpp
         Matcher/Matcher.h
         Matcher/Matcher.cpp
         Matcher/Score/Score.cpp
-        Matcher/Score/Score.h)
+        Matcher/Score/Score.h
+        Matcher/Segment.h)
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})
 add_executable(NRPsMatcher main.cpp)

@@ -6,6 +6,7 @@
 #define NRPSMATCHER_SCORE_H
 
 #include <NRP/NRP.h>
+#include <Matcher/Segment.h>
 
 namespace matcher {
     class Score {
@@ -22,7 +23,7 @@ namespace matcher {
             return 0;
         }
 
-        double addSegment(nrp::NRP::Segment seg) const {
+        double addSegment(Segment seg) const {
             return seg.scor - 1;
         }
 

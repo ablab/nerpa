@@ -13,22 +13,6 @@ namespace nrp {
     class NRPLine;
 
     class NRP {
-    public:
-        struct Segment {
-            int l;
-            int r;
-            int part_id;
-            bool rev;
-            double scor;
-
-            Segment(){}
-            Segment(int l, int r, int id, bool rev, double scor): l(l), r(r), part_id(id), rev(rev), scor(scor) {}
-
-            bool operator < (Segment b) {
-                return l < b.l;
-            }
-        };
-
     protected:
         friend class ContainNRPsTest;
         std::vector <aminoacid::Aminoacids::Aminoacid> aminoacids;

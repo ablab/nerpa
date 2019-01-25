@@ -8,6 +8,7 @@
 #include <NRPsPrediction/AminoacidPrediction.h>
 #include <NRP/NRP.h>
 #include <Matcher/Score/Score.h>
+#include "Segment.h"
 
 namespace matcher {
     typedef aminoacid::Aminoacids::Aminoacid aacid;
@@ -44,13 +45,11 @@ namespace matcher {
 
             bool operator < (Match b);
         };
-
-
         Matcher(const nrp::NRP &nrp, const nrpsprediction::NRPsPrediction& prediction):
                 nrp(nrp), prediction(prediction) {}
 
         matcher::Matcher::Match getMatch() const;
-        std::vector<nrp::NRP::Segment> matche_seg(const nrpsprediction::NRPsPart& predict_part) const;
+        std::vector<Segment> matche_seg(const nrpsprediction::NRPsPart& predict_part) const;
     private:
         matcher::Matcher::Match getLineMatch() const;
         matcher::Matcher::Match getCycleMatch() const;
@@ -58,7 +57,7 @@ namespace matcher {
 
 
         matcher::Matcher::Match updateMatch(const nrpsprediction::NRPsPrediction& nrPsPrediction, matcher::Matcher::Match match, int bg) const;
-        virtual matcher::Matcher::Match isCoverLine(std::vector<nrp::NRP::Segment>& segments,
+        virtual matcher::Matcher::Match isCoverLine(std::vector<Segment>& segments,
                                   const std::vector<int>& toSmallId, const std::vector<int>& toBigId) const;
 
         std::vector<aacid> getSubset(std::vector<aacid> vector, int l, int r, int stp) const;
