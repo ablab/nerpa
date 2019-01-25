@@ -115,7 +115,8 @@ namespace nrp {
             int start = 0;
             if (type == NRP::cycle) {
                 for (int i = 0; i < matchs.size(); ++i) {
-                    if (matchs[i].first != -1) {
+                    int j = (i - 1 + matchs.size()) % matchs.size();
+                    if (matchs[i].first != -1 && (matchs[j].first != matchs[i].first)) {
                         start = i;
                         break;
                     }
