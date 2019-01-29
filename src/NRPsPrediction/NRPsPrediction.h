@@ -2,6 +2,7 @@
 #define NRPSMATCHER_NRPSPREDICTION_H
 
 #include "NRPsPart.h"
+#include <iostream>
 
 namespace nrpsprediction {
     //structure for store NRPs predictions

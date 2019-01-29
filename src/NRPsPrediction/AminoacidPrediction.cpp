@@ -1,6 +1,7 @@
 #include <sstream>
 #include <cmath>
 #include <iostream>
+#include <assert.h>
 #include "AminoacidPrediction.h"
 
 
@@ -59,6 +60,8 @@ std::pair<std::string, double> nrpsprediction::AminoacidPrediction::parse_token(
 
 bool nrpsprediction::AminoacidPrediction::contain(aminoacid::Aminoacids::Aminoacid aminoacid) {
     for (int i = 0; i < (int)aminoacid_prediction.size(); ++i) {
+        assert(aminoacid_prediction[i].aminoacid >= 0 &&
+                       aminoacid_prediction[i].aminoacid < aminoacid::Aminoacids::AMINOACID_CNT);
         if (aminoacid::Aminoacids::same(aminoacid_prediction[i].aminoacid, aminoacid)) {
             return true;
         }

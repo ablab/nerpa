@@ -14,6 +14,7 @@ bool matcher::Score::getScoreForSegment(const std::vector<aminoacid::Aminoacids:
         if (!aminoacid_predictions[j].contain(amns[j])) {
             cnt_mismatch += 1;
         }
+
         segscor += aaScore(aminoacid_predictions[j], amns[j]);
     }
 

@@ -28,6 +28,8 @@ namespace aminoacid {
     }
 
     bool aminoacid::Aminoacids::same(aminoacid::Aminoacids::Aminoacid a, aminoacid::Aminoacids::Aminoacid b) {
+        assert(a >= 0 && a <= AMINOACID_CNT);
+        assert(b >= 0 && b <= AMINOACID_CNT);
         if (FORMULS[a] == FORMULS[b]) return true;
         return false;
     }

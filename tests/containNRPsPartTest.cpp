@@ -552,6 +552,73 @@ namespace nrp {
             check_seq_match_with_nrp(match, nrpParts);
         }
     }
+
+    TEST_F(ContainNRPsTest, BranchCycleFakeEnd) {
+        typedef aminoacid::Aminoacids::Aminoacid Aminoacid;
+
+        //generate branch cycle
+        int len = 6;
+        std::vector<std::string> strformula(len);
+        std::vector<int> first_part = {0, 1};
+        std::vector<int> second_part = {2, 3, 4, 5};
+        std::vector<Aminoacid> aa1 = {Aminoacid::none, Aminoacid::val};
+        std::vector<Aminoacid> aa2 = {Aminoacid::trp, Aminoacid::aad, Aminoacid::gua, Aminoacid::orn};
+        std::vector<int> pos1 = first_part, pos2 = first_part;
+        std::vector<Aminoacid> aa_sum1 = aa1, aa_sum2 = aa1;
+        pos1.insert(pos1.end(), second_part.begin(), second_part.end());
+        pos2.insert(pos2.end(), second_part.rbegin(), second_part.rend());
+        aa_sum1.insert(aa_sum1.end(), aa2.begin(), aa2.end());
+        aa_sum2.insert(aa_sum2.end(), aa2.rbegin(), aa2.rend());
+
+
+        NRPLine nrp1("", strformula, aa_sum1, pos1, "", "");
+        NRPLine nrp2("", strformula, aa_sum2, pos2, "", "");
+        NRPtail nrp(nrp1, nrp2);
+
+        nrpsprediction::NRPsPart nrps_part("", "");
+
+        std::vector<Aminoacid> aas;
+        //generate part for prediction
+        for (int i = 1; i < aa_sum1.size(); ++i) {
+            std::vector<double> prob;
+            std::vector<std::string> names;
+            for (int g = 0; g < 3; ++g) {
+                prob.push_back(60 + rand() % 4 * 10);
+                names.push_back(
+                        aminoacid::Aminoacids::AMINOACID_NAMES[rand() % (int(aminoacid::Aminoacids::AMINOACID_CNT))]);
+            }
+
+            int right_AA_pos = rand() % 3;
+            names[right_AA_pos] = aminoacid::Aminoacids::AMINOACID_NAMES[int(aa_sum1[i])];
+            std::sort(prob.rbegin(), prob.rend());
+            std::stringstream ss;
+            for (int g = 0; g < 3; ++g) {
+                ss << names[g] << "(" << prob[g] << ")";
+                if (g < 2) {
+                    ss << ";";
+                }
+            }
+            nrps_part.add_prediction(i, ss.str());
+            aas.push_back(aa_sum1[i]);
+        }
+
+
+        //calculate score
+        matcher::Score scoring;
+        double score = 0;
+        scoring.getScoreForSegment(aas, nrps_part, score);
+        score += scoring.addSegment(matcher::Segment(1, 5, 0, 0, score));
+
+        //match
+        std::vector<nrpsprediction::NRPsPart> parts;
+        parts.push_back(nrps_part);
+        nrpsprediction::NRPsPrediction prediction(parts);
+        matcher::Matcher matcher1(nrp, prediction);
+        auto match = matcher1.getMatch();
+
+        //compare score
+        ASSERT_LE(abs(score - match.score()), EPS);
+    }
 }
 
 int main(int argc, char *argv[]) {
