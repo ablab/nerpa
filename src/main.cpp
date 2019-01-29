@@ -10,6 +10,7 @@
 #include "NRP/NRP.h"
 #include "NRPsPrediction/NRPsPrediction.h"
 #include <Logger/log_writers.hpp>
+#include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
 #include "Matcher/Matcher.h"
 
 const int MIN_SCROE = 2;
@@ -61,11 +62,12 @@ std::vector<nrpsprediction::NRPsPrediction>  save_predictions(char* file_name) {
         //}
         INFO(cur_line);
 
-        nrpsprediction::NRPsPrediction nrPsPrediction;
-        nrPsPrediction.read_file(cur_line);
+        nrpsprediction::Nrpspredictor2Builder nrPsPredictionBuilder;
+        nrPsPredictionBuilder.read_file(cur_line);
 
-        INFO("Parts in prediction: " << nrPsPrediction.getNrpsParts().size());
-        preds.push_back(nrPsPrediction);
+        preds.push_back(nrPsPredictionBuilder.getPrediction());
+        INFO("Parts in prediction: " << preds.back().getNrpsParts().size());
+
     }
 
     return preds;

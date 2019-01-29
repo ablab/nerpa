@@ -31,7 +31,11 @@ set(SOURCE_FILES main.cpp
         Matcher/Matcher.cpp
         Matcher/Score/Score.cpp
         Matcher/Score/Score.h
-        Matcher/Segment.h)
+        Matcher/Segment.h
+        NRPsPrediction/Builders/PredictionBuilderBase.h
+        NRPsPrediction/Builders/PredictionBuilderBase.cpp
+        NRPsPrediction/Builders/Nrpspredictor2Builder.h
+        NRPsPrediction/Builders/Nrpspredictor2Builder.cpp)
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})
 add_executable(NRPsMatcher main.cpp)
