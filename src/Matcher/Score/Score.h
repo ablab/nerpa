@@ -11,8 +11,8 @@
 namespace matcher {
     class Score {
     public:
-        double minScore(const nrp::NRP& nrp) const {
-            return -nrp.getLen() - 1;
+        double minScore(const int len) const {
+            return -len - 1;
         }
 
         double openGap() const {

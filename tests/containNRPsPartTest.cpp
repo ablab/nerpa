@@ -605,9 +605,9 @@ namespace nrp {
 
         //calculate score
         matcher::Score scoring;
-        double score = 0;
-        scoring.getScoreForSegment(aas, nrps_part, score);
-        score += scoring.addSegment(matcher::Segment(1, 5, 0, 0, score));
+        double score = 0, segscore = 0;
+        scoring.getScoreForSegment(aas, nrps_part, segscore);
+        score += scoring.addSegment(matcher::Segment(1, 5, 0, 0, segscore));
 
         //match
         std::vector<nrpsprediction::NRPsPart> parts;

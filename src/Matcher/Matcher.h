@@ -51,16 +51,18 @@ namespace matcher {
         matcher::Matcher::Match getMatch() const;
         std::vector<Segment> matche_seg(const nrpsprediction::NRPsPart& predict_part) const;
     private:
-        matcher::Matcher::Match getLineMatch() const;
+        matcher::Matcher::Match getLineMatch(bool can_skip_first = true, bool can_skip_last = true) const;
         matcher::Matcher::Match getCycleMatch() const;
         matcher::Matcher::Match getBranchMatch() const;
 
 
         matcher::Matcher::Match updateMatch(const nrpsprediction::NRPsPrediction& nrPsPrediction, matcher::Matcher::Match match, int bg) const;
-        virtual matcher::Matcher::Match isCoverLine(std::vector<Segment>& segments,
-                                  const std::vector<int>& toSmallId, const std::vector<int>& toBigId) const;
+        matcher::Matcher::Match isCoverLine(std::vector<Segment>& segments,
+                                  const std::vector<int>& toSmallId, const std::vector<int>& toBigId, int len) const;
 
         std::vector<aacid> getSubset(std::vector<aacid> vector, int l, int r, int stp) const;
+
+        int addSegments(const std::vector<Segment> &vector, std::vector<Segment> &segments, bool skip_first, bool skip_last, int id) const;
     };
 }
 
