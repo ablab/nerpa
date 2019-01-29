@@ -8,7 +8,7 @@
 
 matcher::Matcher::Match matcher::Matcher::getMatch() const {
     if (nrp.getType() == nrp::NRP::line) {
-        return getLineMatch(false, false);
+        return getLineMatch(true, true);
     } else if (nrp.getType() == nrp::NRP::cycle) {
         return getCycleMatch();
     } else {

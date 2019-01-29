@@ -77,7 +77,7 @@ namespace nrp {
             amnacid.resize(0);
             for (int i = 0; i < len; ++i) {
                 position[i] = i;
-                amnacid.push_back(aminoacid::Aminoacids::Aminoacid(rand() % aminoacid::Aminoacids::AMINOACID_CNT));
+                amnacid.push_back(aminoacid::Aminoacids::Aminoacid(rand() % aminoacid::Aminoacids::none));
             }
 
             std::random_shuffle(position.begin(), position.end());
