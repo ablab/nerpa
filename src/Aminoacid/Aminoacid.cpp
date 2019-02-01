@@ -4,38 +4,6 @@
 #include "Formula.h"
 
 namespace aminoacid {
-    aminoacid::Aminoacid::AminoacidId aminoacid::Aminoacid::get_aminoacid(std::string aminoacid_name) {
-        for (int i = 0; i < AMINOACID_CNT; ++i) {
-            if (AMINOACID_NAMES[i] == aminoacid_name) {
-                return static_cast<AminoacidId>(i);
-            }
-        }
-
-        std::cerr << aminoacid_name << "\n";
-        assert(false);
-    }
-
-    aminoacid::Aminoacid::AminoacidId aminoacid::Aminoacid::get_aminoacid_from_formula(std::string formula) {
-        Formula curf(formula);
-        for (int i = 0; i < AMINOACID_CNT; ++i) {
-            if (FORMULS[i] == curf) {
-                return static_cast<AminoacidId>(i);
-            }
-        }
-
-        //std::cerr << formula << "\n";
-        //assert(false);
-
-        return static_cast<AminoacidId>(AMINOACID_CNT - 1);
-    }
-
-    bool aminoacid::Aminoacid::same(aminoacid::Aminoacid::AminoacidId a, aminoacid::Aminoacid::AminoacidId b) {
-        assert(a >= 0 && a <= AMINOACID_CNT);
-        assert(b >= 0 && b <= AMINOACID_CNT);
-        if (FORMULS[a] == FORMULS[b]) return true;
-        return false;
-    }
-
     //uda=ureidoalanine
     //dhp=dehydroalanine
     //phg=phenylglycine
