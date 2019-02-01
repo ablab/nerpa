@@ -22,7 +22,7 @@ namespace nrp {
 
         std::string getFormula(int i) const override;
 
-        aminoacid::Aminoacid::AminoacidId getAminoacid(int i) const override;
+        aminoacid::Aminoacid getAminoacid(int i) const override;
 
         void print() const override;
 

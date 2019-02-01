@@ -21,12 +21,6 @@ set(SOURCE_FILES main.cpp
         NRP/NRPLine.cpp
         NRP/NRPtail.h
         NRP/NRPtail.cpp
-        NRPGenerator/NRPGenerator.h
-        NRPGenerator/NRPGenerator.cpp
-        NRPGenerator/NRPGeneratorTriplet.h
-        NRPGenerator/NRPGeneratorTriplet.cpp
-        NRPGenerator/NRPsPredictionGenerator.h
-        NRPGenerator/NRPsPredictionGenerator.cpp
         Matcher/Matcher.h
         Matcher/Matcher.cpp
         Matcher/Score/Score.cpp

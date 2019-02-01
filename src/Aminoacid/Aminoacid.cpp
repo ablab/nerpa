@@ -132,7 +132,21 @@ namespace aminoacid {
         aa = none;
     }
 
-    bool Aminoacid::operator==(Aminoacid &b) {
+    bool Aminoacid::operator==(const Aminoacid &b) const {
         return formula == b.formula;
+    }
+
+    std::string Aminoacid::get_name() const {
+        return AMINOACID_NAMES[aa];
+    }
+
+    Aminoacid::Aminoacid(Aminoacid::AminoacidId aid) {
+        aa = aid;
+        formula = FORMULS[aa];
+    }
+
+    Aminoacid::Aminoacid() {
+        aa = AMINOACID_CNT;
+        formula = Formula();
     }
 }

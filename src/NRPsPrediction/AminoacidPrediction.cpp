@@ -58,11 +58,9 @@ std::pair<std::string, double> nrpsprediction::AminoacidPrediction::parse_token(
     return make_pair(name, prb);
 }
 
-bool nrpsprediction::AminoacidPrediction::contain(aminoacid::Aminoacid::AminoacidId aminoacid) {
+bool nrpsprediction::AminoacidPrediction::contain(aminoacid::Aminoacid aminoacid) const {
     for (int i = 0; i < (int)aminoacid_prediction.size(); ++i) {
-        assert(aminoacid_prediction[i].aminoacid >= 0 &&
-                       aminoacid_prediction[i].aminoacid < aminoacid::Aminoacid::AMINOACID_CNT);
-        if (aminoacid::Aminoacid::same(aminoacid_prediction[i].aminoacid, aminoacid)) {
+        if (aminoacid_prediction[i].aminoacid == aminoacid) {
             return true;
         }
     }
@@ -70,20 +68,20 @@ bool nrpsprediction::AminoacidPrediction::contain(aminoacid::Aminoacid::Aminoaci
 }
 
 nrpsprediction::AminoacidPrediction::AminoacidProb
-nrpsprediction::AminoacidPrediction::getAminoacid(aminoacid::Aminoacid::AminoacidId aminoacid) const {
+nrpsprediction::AminoacidPrediction::getAminoacid(aminoacid::Aminoacid aminoacid) const {
     for (int i = 0; i < (int)aminoacid_prediction.size(); ++i) {
-        if (aminoacid::Aminoacid::same(aminoacid_prediction[i].aminoacid, aminoacid)) {
+        if (aminoacid_prediction[i].aminoacid == aminoacid) {
             return aminoacid_prediction[i];
         }
     }
 
-    return AminoacidProb(aminoacid::Aminoacid::AMINOACID_CNT, 0);
+    return AminoacidProb(aminoacid::Aminoacid("none"), 0);
 }
 
-std::pair<int, int> nrpsprediction::AminoacidPrediction::getAmnAcidPos(aminoacid::Aminoacid::AminoacidId aminoacid) const {
+std::pair<int, int> nrpsprediction::AminoacidPrediction::getAmnAcidPos(aminoacid::Aminoacid aminoacid) const {
     double  prb = -1;
     for (int i = 0; i < (int)aminoacid_prediction.size(); ++i) {
-        if (aminoacid::Aminoacid::same(aminoacid_prediction[i].aminoacid, aminoacid)) {
+        if (aminoacid_prediction[i].aminoacid == aminoacid) {
             prb = aminoacid_prediction[i].prob;
             break;
         }

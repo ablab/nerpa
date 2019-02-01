@@ -20,13 +20,13 @@ int nrp::NRP::getInd(int i) const {
     return position[i];
 }
 
-aminoacid::Aminoacid::AminoacidId nrp::NRP::getAminoacid(int i) const {
+aminoacid::Aminoacid nrp::NRP::getAminoacid(int i) const {
     return aminoacids[i];
 }
 
 void nrp::NRP::print() const {
     for (int i = 0; i < (int)aminoacids.size(); ++i) {
-        std::cerr << aminoacid::Aminoacid::AMINOACID_NAMES[aminoacids[i]] << "(" << position[i] << ") ";
+        std::cerr << aminoacids[i].get_name() << "(" << position[i] << ") ";
     }
     std::cerr << "\n";
 }
@@ -40,6 +40,6 @@ std::string nrp::NRP::get_extra_info() const {
     return extra_info;
 }
 
-std::vector<aminoacid::Aminoacid::AminoacidId> nrp::NRP::getAminoacids() const {
+std::vector<aminoacid::Aminoacid> nrp::NRP::getAminoacids() const {
     return aminoacids;
 }

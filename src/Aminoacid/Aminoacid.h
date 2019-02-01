@@ -17,13 +17,16 @@ namespace aminoacid {
 
         explicit Aminoacid(std::string aminoacid_name);
         explicit Aminoacid(Formula formula);
+        explicit Aminoacid(AminoacidId aid);
+        Aminoacid();
 
         static AminoacidId get_aminoacid(std::string aminoacid_name);
 
         static AminoacidId get_aminoacid_from_formula(std::string fotmula);
 
         static bool same(AminoacidId a, AminoacidId b);
-        bool operator == (Aminoacid& b);
+        bool operator == (const Aminoacid& b) const;
+        std::string get_name() const;
 
     private:
         Formula formula;

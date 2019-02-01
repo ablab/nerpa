@@ -15,7 +15,7 @@ nrp::NRP* nrp::NRPBuilder::build(std::string fragment_graph, std::string extra_i
     std::string s;
     std::vector<std::string> strformula;
     std::vector<std::vector<int> > formuls;
-    std::vector<aminoacid::Aminoacid::AminoacidId> aminoacids;
+    std::vector<aminoacid::Aminoacid> aminoacids;
 
     int line_cnt;
     in >> s >> s >> s >> s >> line_cnt;
@@ -59,7 +59,7 @@ nrp::NRP* nrp::NRPBuilder::build(std::string fragment_graph, std::string extra_i
 
     for (int i = 0; i < formuls.size(); ++i) {
         //std::cerr << "Parse AA num " << i << " " << aminoacid::Aminoacid::AMINOACID_NAMES[aminoacid::Aminoacid::get_aminoacid_from_formula(to_string(formuls[i]))];
-        aminoacids.push_back(aminoacid::Aminoacid::get_aminoacid_from_formula(to_string(formuls[i])));
+        aminoacids.push_back(aminoacid::Aminoacid(aminoacid::Formula(to_string(formuls[i]))));
     }
 
     in.close();
@@ -70,12 +70,12 @@ nrp::NRP* nrp::NRPBuilder::build(std::string fragment_graph, std::string extra_i
 
     if (isCycle(g, gr)) {
         std::vector<int> pos = parseCycle(g, gr);
-        std::vector<aminoacid::Aminoacid::AminoacidId> resaacid = aminoacids_by_pos(aminoacids, pos);
+        std::vector<aminoacid::Aminoacid> resaacid = aminoacids_by_pos(aminoacids, pos);
 
         return new nrp::NRPCycle(fragment_graph, strformula, resaacid, pos, graph, extra_info);
     } else if (isLine(g, gr)) {
         std::vector<int> pos = parseLine(g, gr);
-        std::vector<aminoacid::Aminoacid::AminoacidId> resaacid = aminoacids_by_pos(aminoacids, pos);
+        std::vector<aminoacid::Aminoacid> resaacid = aminoacids_by_pos(aminoacids, pos);
 
         return new NRPLine(fragment_graph, strformula, resaacid, pos, graph, extra_info);
     } else if (isTail(g, gr)) {
@@ -91,8 +91,8 @@ nrp::NRP* nrp::NRPBuilder::build(std::string fragment_graph, std::string extra_i
             pos2.push_back(pos_cycle[i]);
         }
 
-        std::vector<aminoacid::Aminoacid::AminoacidId> resaacid1 = aminoacids_by_pos(aminoacids, pos1);
-        std::vector<aminoacid::Aminoacid::AminoacidId> resaacid2 = aminoacids_by_pos(aminoacids, pos2);
+        std::vector<aminoacid::Aminoacid> resaacid1 = aminoacids_by_pos(aminoacids, pos1);
+        std::vector<aminoacid::Aminoacid> resaacid2 = aminoacids_by_pos(aminoacids, pos2);
 
         NRPLine ver1(fragment_graph, strformula, resaacid1, pos1, graph, extra_info), ver2(fragment_graph, strformula, resaacid2, pos2, graph, extra_info);
 
@@ -103,10 +103,10 @@ nrp::NRP* nrp::NRPBuilder::build(std::string fragment_graph, std::string extra_i
     assert(false);
 }
 
-std::vector<aminoacid::Aminoacid::AminoacidId>
-nrp::NRPBuilder::aminoacids_by_pos(const std::vector<aminoacid::Aminoacid::AminoacidId> &aminoacids,
+std::vector<aminoacid::Aminoacid>
+nrp::NRPBuilder::aminoacids_by_pos(const std::vector<aminoacid::Aminoacid> &aminoacids,
                               const std::vector<int> &pos) {
-    std::vector<aminoacid::Aminoacid::AminoacidId> resaacid;
+    std::vector<aminoacid::Aminoacid> resaacid;
     for (int i = 0; i < pos.size(); ++i) {
             resaacid.push_back(aminoacids[pos[i]]);
         }
