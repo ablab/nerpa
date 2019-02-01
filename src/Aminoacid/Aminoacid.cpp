@@ -131,4 +131,8 @@ namespace aminoacid {
         this->formula = formula;
         aa = none;
     }
+
+    bool Aminoacid::operator==(Aminoacid &b) {
+        return formula == b.formula;
+    }
 }

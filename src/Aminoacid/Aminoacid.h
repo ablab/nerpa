@@ -23,6 +23,7 @@ namespace aminoacid {
         static AminoacidId get_aminoacid_from_formula(std::string fotmula);
 
         static bool same(AminoacidId a, AminoacidId b);
+        bool operator == (Aminoacid& b);
 
     private:
         Formula formula;
