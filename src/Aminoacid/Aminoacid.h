@@ -2,6 +2,7 @@
 #define NRPSMATCHER_AMINOACIDS_H
 
 #include <string>
+#include "Formula.h"
 
 namespace aminoacid {
     class Aminoacid {
@@ -14,7 +15,7 @@ namespace aminoacid {
 
         static const std::string AMINOACID_NAMES[AMINOACID_CNT];
 
-        static const std::string FORMULS[AMINOACID_CNT];
+        static const Formula FORMULS[AMINOACID_CNT];
 
         static AminoacidId get_aminoacid(std::string aminoacid_name);
 

@@ -20,34 +20,36 @@ namespace aminoacid {
                                               {"Cl", 0}};
     public:
         Formula() = default;
-        explicit Formula(std::string s);
-    };
-
-    Formula::Formula(std::string s) {
-        std::string elem;
-        int cnt_elem = 0;
-        for (char c : s) {
-            if (c >= 'A' && c <= 'Z') {
-                if (cnt_elem == 0) {
-                    cnt_elem = 1;
+        explicit Formula(std::string s) {
+            std::string elem;
+            int cnt_elem = 0;
+            for (char c : s) {
+                if (c >= 'A' && c <= 'Z') {
+                    if (cnt_elem == 0) {
+                        cnt_elem = 1;
+                    }
+                    formula[elem] = cnt_elem;
+                    elem = c;
+                    cnt_elem = 0;
+                } else if (c >= 'a' && c <= 'z') {
+                    elem += c;
+                } else if (c >= '0' && c <= '9') {
+                    cnt_elem = cnt_elem * 10 + (c - '0');
+                } else {
+                    static_assert(true);
                 }
-                formula[elem] = cnt_elem;
-                elem = c;
-                cnt_elem = 0;
-            } else if (c >= 'a' && c <= 'z') {
-                elem += c;
-            } else if (c >= '0' && c <= '9') {
-                cnt_elem = cnt_elem * 10 + (c - '0');
-            } else {
-                static_assert(true, c + " is not letter or number");
             }
+
+            if (cnt_elem == 0) {
+                cnt_elem = 1;
+            }
+            formula[elem] = cnt_elem;
         }
 
-        if (cnt_elem == 0) {
-            cnt_elem = 1;
+        bool operator == (const Formula& b) const {
+            return formula == b.formula;
         }
-        formula[elem] = cnt_elem;
-    }
+    };
 }
 
 

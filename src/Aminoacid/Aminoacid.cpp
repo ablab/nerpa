@@ -1,6 +1,7 @@
 #include <cassert>
 #include <iostream>
 #include "Aminoacid.h"
+#include "Formula.h"
 
 namespace aminoacid {
     aminoacid::Aminoacid::AminoacidId aminoacid::Aminoacid::get_aminoacid(std::string aminoacid_name) {
@@ -15,8 +16,9 @@ namespace aminoacid {
     }
 
     aminoacid::Aminoacid::AminoacidId aminoacid::Aminoacid::get_aminoacid_from_formula(std::string formula) {
+        Formula curf(formula);
         for (int i = 0; i < AMINOACID_CNT; ++i) {
-            if (FORMULS[i] == formula) {
+            if (FORMULS[i] == curf) {
                 return static_cast<AminoacidId>(i);
             }
         }
@@ -96,16 +98,16 @@ namespace aminoacid {
                                                                                 "none"};
 
 
-    const std::string Aminoacid::FORMULS[Aminoacid::AMINOACID_CNT] = {"C11H12N2O2", "C3H7NO3", "C2H5NO2", "C4H9N3O3", "C4H9NO3",
-                                                                        "C3H5NO2", "C5H10N2O3", "C4H10N2O2", "C6H14N4O2", "C6H14N2O2",
-                                                                        "C3H7NO2", "C9H11NO2", "C5H11NO2", "C9H17NO2", "C8H9NO4",
-                                                                        "C8H9NO2", "C6H9N3O2", "C10H17NO4", "C9H17NO3", "C4H9NO3",
-                                                                        "C5H11NO2S", "C3H7NO2", "C6H10Cl3NO2", "C7H6O3", "C4H9NO3",
-                                                                        "C3H7NO2", "C7H6O4", "C6H13NO2", "C6H12N4O2", "C6H13NO2",
-                                                                        "-", "C10H13NO3", "C5H9NO4", "C9H11NO4", "C8H9NO3",
-                                                                        "C4H9NO2", "C5H9NO2", "C9H11NO3", "-", "C4H8N2O3",
-                                                                        "C6H13N3O3", "C5H13NO", "C3H7NO2S", "C4H7NO4", "C9H9NO3",
-                                                                        "C9H16N2O5", "C5H12N2O2", "-", "C4H9NO2", "C6H11NO4",
-                                                                        "C6H11NO2", "C8H9NO4", "C6H11NO4", "C4H8N2O4",
-                                                                        "*"};
+    const Formula Aminoacid::FORMULS[Aminoacid::AMINOACID_CNT] = {Formula("C11H12N2O2"), Formula("C3H7NO3"), Formula("C2H5NO2"), Formula("C4H9N3O3"), Formula("C4H9NO3"),
+                                                                  Formula("C3H5NO2"), Formula("C5H10N2O3"), Formula("C4H10N2O2"), Formula("C6H14N4O2"), Formula("C6H14N2O2"),
+                                                                  Formula("C3H7NO2"), Formula("C9H11NO2"), Formula("C5H11NO2"), Formula("C9H17NO2"), Formula("C8H9NO4"),
+                                                                  Formula("C8H9NO2"), Formula("C6H9N3O2"), Formula("C10H17NO4"), Formula("C9H17NO3"), Formula("C4H9NO3"),
+                                                                  Formula("C5H11NO2S"), Formula("C3H7NO2"), Formula("C6H10Cl3NO2"), Formula("C7H6O3"), Formula("C4H9NO3"),
+                                                                  Formula("C3H7NO2"), Formula("C7H6O4"), Formula("C6H13NO2"), Formula("C6H12N4O2"), Formula("C6H13NO2"),
+                                                                  Formula(), Formula("C10H13NO3"), Formula("C5H9NO4"), Formula("C9H11NO4"), Formula("C8H9NO3"),
+                                                                  Formula("C4H9NO2"), Formula("C5H9NO2"), Formula("C9H11NO3"), Formula(""), Formula("C4H8N2O3"),
+                                                                  Formula("C6H13N3O3"), Formula("C5H13NO"), Formula("C3H7NO2S"), Formula("C4H7NO4"), Formula("C9H9NO3"),
+                                                                  Formula("C9H16N2O5"), Formula("C5H12N2O2"), Formula(), Formula("C4H9NO2"), Formula("C6H11NO4"),
+                                                                  Formula("C6H11NO2"), Formula("C8H9NO4"), Formula("C6H11NO4"), Formula("C4H8N2O4"),
+                                                                  Formula()};
 }
