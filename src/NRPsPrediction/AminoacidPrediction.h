@@ -3,21 +3,21 @@
 
 #include <vector>
 #include <string>
-#include "../Aminoacid/Aminoacids.h"
+#include "Aminoacid/Aminoacid.h"
 
 namespace nrpsprediction {
     class AminoacidPrediction {
     public:
         struct AminoacidProb {
-            aminoacid::Aminoacids::Aminoacid aminoacid;
+            aminoacid::Aminoacid::AminoacidId aminoacid;
             double prob;
 
             AminoacidProb(std::string aacid, double prob) {
                 this->prob = prob;
-                aminoacid = aminoacid::Aminoacids::get_aminoacid(aacid);
+                aminoacid = aminoacid::Aminoacid::get_aminoacid(aacid);
             }
 
-            AminoacidProb(aminoacid::Aminoacids::Aminoacid aacid, double prob) {
+            AminoacidProb(aminoacid::Aminoacid::AminoacidId aacid, double prob) {
                 this->prob = prob;
                 aminoacid = aacid;
             }
@@ -29,9 +29,9 @@ namespace nrpsprediction {
     public:
         AminoacidPrediction(int pos, std::string predict_aminoacids);
         std::pair<std::string, double> parse_token(std::string token);
-        bool contain(aminoacid::Aminoacids::Aminoacid aminoacid);
-        AminoacidProb getAminoacid(aminoacid::Aminoacids::Aminoacid aminoacid) const;
-        std::pair<int, int> getAmnAcidPos(aminoacid::Aminoacids::Aminoacid aminoacid) const;
+        bool contain(aminoacid::Aminoacid::AminoacidId aminoacid);
+        AminoacidProb getAminoacid(aminoacid::Aminoacid::AminoacidId aminoacid) const;
+        std::pair<int, int> getAmnAcidPos(aminoacid::Aminoacid::AminoacidId aminoacid) const;
         std::vector<AminoacidProb> getAAPrediction() {
             return aminoacid_prediction;
         }

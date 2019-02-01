@@ -22,8 +22,8 @@ matcher::Matcher::Match matcher::Matcher::getLineMatch(bool can_skip_first, bool
     std::vector<int> toSmallId(nrpparts.size(), -1);
     std::vector<int> toBigId;
     int len = nrp.getLen();
-    bool skip_first = (can_skip_first && len > 0 && (nrp.getAminoacid(0) == aminoacid::Aminoacids::none));
-    bool skip_last = (can_skip_last && len > 0 && (nrp.getAminoacid(len - 1) == aminoacid::Aminoacids::none));
+    bool skip_first = (can_skip_first && len > 0 && (nrp.getAminoacid(0) == aminoacid::Aminoacid::none));
+    bool skip_last = (can_skip_last && len > 0 && (nrp.getAminoacid(len - 1) == aminoacid::Aminoacid::none));
 
     len -= (skip_first + skip_last);
 

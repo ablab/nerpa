@@ -15,19 +15,19 @@ namespace nrp {
 
     class ContainNRPsTest : public ::testing::Test {
     protected:
-        std::vector<aminoacid::Aminoacids::Aminoacid> amnacid;
+        std::vector<aminoacid::Aminoacid::AminoacidId> amnacid;
 
         void genRandNrpPart(int partlen, nrpsprediction::NRPsPart& nrps_part,
-                            std::vector<std::vector<aminoacid::Aminoacids::Aminoacid>>& predict) {
+                            std::vector<std::vector<aminoacid::Aminoacid::AminoacidId>>& predict) {
             predict.resize(partlen);
             for (int j = 0; j < partlen; ++j) {
                 std::vector<double> prob;
                 std::vector<std::string> names;
                 for (int g = 0; g < 3; ++g) {
                     prob.push_back(rand()%10 * 10);
-                    predict[j].push_back(aminoacid::Aminoacids::Aminoacid(rand()%(int(aminoacid::Aminoacids::AMINOACID_CNT))));
+                    predict[j].push_back(aminoacid::Aminoacid::AminoacidId(rand()%(int(aminoacid::Aminoacid::AMINOACID_CNT))));
 
-                    names.push_back(aminoacid::Aminoacids::AMINOACID_NAMES[predict[j][predict[j].size() - 1]]);
+                    names.push_back(aminoacid::Aminoacid::AMINOACID_NAMES[predict[j][predict[j].size() - 1]]);
                 }
 
                 std::sort(prob.rbegin(), prob.rend());
@@ -40,12 +40,12 @@ namespace nrp {
                 }
 
                 for (int g = 0; g < 3; ++g) {
-                    if (predict[j][g] == aminoacid::Aminoacids::Aminoacid::glu) {
-                        predict[j].push_back(aminoacid::Aminoacids::me3_glu);
+                    if (predict[j][g] == aminoacid::Aminoacid::AminoacidId::glu) {
+                        predict[j].push_back(aminoacid::Aminoacid::me3_glu);
                     }
 
-                    if (predict[j][g] == aminoacid::Aminoacids::Aminoacid::asn) {
-                        predict[j].push_back(aminoacid::Aminoacids::OH_asn);
+                    if (predict[j][g] == aminoacid::Aminoacid::AminoacidId::asn) {
+                        predict[j].push_back(aminoacid::Aminoacid::OH_asn);
                     }
                 }
 
@@ -60,7 +60,7 @@ namespace nrp {
             amnacid.resize(0);
             for (int i = 0; i < len; ++i) {
                 position[i] = i;
-                amnacid.push_back(aminoacid::Aminoacids::Aminoacid(rand() % aminoacid::Aminoacids::AMINOACID_CNT));
+                amnacid.push_back(aminoacid::Aminoacid::AminoacidId(rand() % aminoacid::Aminoacid::AMINOACID_CNT));
             }
 
             std::random_shuffle(position.begin(), position.end());
@@ -77,7 +77,7 @@ namespace nrp {
             amnacid.resize(0);
             for (int i = 0; i < len; ++i) {
                 position[i] = i;
-                amnacid.push_back(aminoacid::Aminoacids::Aminoacid(rand() % aminoacid::Aminoacids::none));
+                amnacid.push_back(aminoacid::Aminoacid::AminoacidId(rand() % aminoacid::Aminoacid::none));
             }
 
             std::random_shuffle(position.begin(), position.end());
@@ -87,12 +87,12 @@ namespace nrp {
             return res;
         }
 
-        bool eqval(int st, int delta, std::vector<std::vector<aminoacid::Aminoacids::Aminoacid>> predict) {
+        bool eqval(int st, int delta, std::vector<std::vector<aminoacid::Aminoacid::AminoacidId>> predict) {
             for (int i = st, j = 0; j < predict.size(); ++j, i = (i + delta + amnacid.size()) % amnacid.size()) {
                 bool has = false;
 
                 for (int g = 0; g < predict[j].size(); ++g) {
-                    if (aminoacid::Aminoacids::FORMULS[predict[j][g]] == aminoacid::Aminoacids::FORMULS[amnacid[i]]) {
+                    if (aminoacid::Aminoacid::FORMULS[predict[j][g]] == aminoacid::Aminoacid::FORMULS[amnacid[i]]) {
                         has = true;
                     }
                 }
@@ -108,7 +108,7 @@ namespace nrp {
             ASSERT_EQ(matchs.size(), amnacid.size());
             double score = 0;
             matcher::Score scoring;
-            std::vector<aminoacid::Aminoacids::Aminoacid> amns;
+            std::vector<aminoacid::Aminoacid::AminoacidId> amns;
             int cur_part_id = -1;
             int rev = 0;
 
@@ -260,7 +260,7 @@ namespace nrp {
 
         nrpsprediction::NRPsPart getSubPart(int bg, int sz, int delta, double &score) {
             nrpsprediction::NRPsPart nrps_part("filename", "orf");
-            std::vector<aminoacid::Aminoacids::Aminoacid> aas;
+            std::vector<aminoacid::Aminoacid::AminoacidId> aas;
             int len = amnacid.size();
             int j = 0;
             for (int i = bg; j < sz; i = (i + delta + len)%len, ++j) {
@@ -268,11 +268,11 @@ namespace nrp {
                 std::vector<std::string> names;
                 for (int g = 0; g < 3; ++g) {
                     prob.push_back(60 + rand()%4 * 10);
-                    names.push_back(aminoacid::Aminoacids::AMINOACID_NAMES[rand()%(int(aminoacid::Aminoacids::AMINOACID_CNT))]);
+                    names.push_back(aminoacid::Aminoacid::AMINOACID_NAMES[rand()%(int(aminoacid::Aminoacid::AMINOACID_CNT))]);
                 }
 
                 int right_AA_pos = rand()%3;
-                names[right_AA_pos] = aminoacid::Aminoacids::AMINOACID_NAMES[int(amnacid[i])];
+                names[right_AA_pos] = aminoacid::Aminoacid::AMINOACID_NAMES[int(amnacid[i])];
                 std::sort(prob.rbegin(), prob.rend());
                 std::stringstream ss;
                 for (int g = 0; g < 3; ++g) {
@@ -354,7 +354,7 @@ namespace nrp {
             int partlen = rand()%len + 1;
 
             nrpsprediction::NRPsPart nrps_part("filename", "orf");
-            std::vector<std::vector<aminoacid::Aminoacids::Aminoacid>> predict(partlen);
+            std::vector<std::vector<aminoacid::Aminoacid::AminoacidId>> predict(partlen);
 
             genRandNrpPart(partlen, nrps_part, predict);
 
@@ -428,7 +428,7 @@ namespace nrp {
 
             int partlen = rand()%len + 1;
             nrpsprediction::NRPsPart nrps_part ("filename", "orf");
-            std::vector<std::vector<aminoacid::Aminoacids::Aminoacid>> predict(partlen);
+            std::vector<std::vector<aminoacid::Aminoacid::AminoacidId>> predict(partlen);
 
             genRandNrpPart(partlen, nrps_part, predict);
 
@@ -483,7 +483,7 @@ namespace nrp {
             for (int i = 0; i < 10; ++i) {
                 int partlen = rand()%10 + 1;
                 nrpsprediction::NRPsPart nrps_part ("filename", "orf");
-                std::vector<std::vector<aminoacid::Aminoacids::Aminoacid>> predict(partlen);
+                std::vector<std::vector<aminoacid::Aminoacid::AminoacidId>> predict(partlen);
 
                 genRandNrpPart(partlen, nrps_part, predict);
                 nrpParts.push_back(nrps_part);
@@ -534,7 +534,7 @@ namespace nrp {
             for (int i = 0; i < 10; ++i) {
                 int partlen = rand()%10 + 1;
                 nrpsprediction::NRPsPart nrps_part ("filename", "orf");
-                std::vector<std::vector<aminoacid::Aminoacids::Aminoacid>> predict(partlen);
+                std::vector<std::vector<aminoacid::Aminoacid::AminoacidId>> predict(partlen);
 
                 genRandNrpPart(partlen, nrps_part, predict);
                 nrpParts.push_back(nrps_part);
@@ -554,7 +554,7 @@ namespace nrp {
     }
 
     TEST_F(ContainNRPsTest, BranchCycleFakeEnd) {
-        typedef aminoacid::Aminoacids::Aminoacid Aminoacid;
+        typedef aminoacid::Aminoacid::AminoacidId Aminoacid;
 
         //generate branch cycle
         int len = 6;
@@ -585,11 +585,11 @@ namespace nrp {
             for (int g = 0; g < 3; ++g) {
                 prob.push_back(60 + rand() % 4 * 10);
                 names.push_back(
-                        aminoacid::Aminoacids::AMINOACID_NAMES[rand() % (int(aminoacid::Aminoacids::AMINOACID_CNT))]);
+                        aminoacid::Aminoacid::AMINOACID_NAMES[rand() % (int(aminoacid::Aminoacid::AMINOACID_CNT))]);
             }
 
             int right_AA_pos = rand() % 3;
-            names[right_AA_pos] = aminoacid::Aminoacids::AMINOACID_NAMES[int(aa_sum1[i])];
+            names[right_AA_pos] = aminoacid::Aminoacid::AMINOACID_NAMES[int(aa_sum1[i])];
             std::sort(prob.rbegin(), prob.rend());
             std::stringstream ss;
             for (int g = 0; g < 3; ++g) {

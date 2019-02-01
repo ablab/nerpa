@@ -2,8 +2,8 @@ include_directories(.)
 
 add_subdirectory(Logger)
 set(SOURCE_FILES main.cpp
-        Aminoacid/Aminoacids.cpp
-        Aminoacid/Aminoacids.h
+        Aminoacid/Aminoacid.cpp
+        Aminoacid/Aminoacid.h
         NRPsPrediction/AminoacidPrediction.cpp
         NRPsPrediction/AminoacidPrediction.h
         NRPsPrediction/NRPsPart.cpp

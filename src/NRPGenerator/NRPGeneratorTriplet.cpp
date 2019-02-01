@@ -6,10 +6,10 @@
 
 namespace nrp_generator {
     NRPGeneratorTriplet::NRPGeneratorTriplet(const std::vector<nrp::NRP *> &mols) : NRPGenerator(mols) {
-        graph.resize(aminoacid::Aminoacids::AMINOACID_CNT*aminoacid::Aminoacids::AMINOACID_CNT,
-                     std::vector<int> (aminoacid::Aminoacids::AMINOACID_CNT*aminoacid::Aminoacids::AMINOACID_CNT, 0));
+        graph.resize(aminoacid::Aminoacid::AMINOACID_CNT*aminoacid::Aminoacid::AMINOACID_CNT,
+                     std::vector<int> (aminoacid::Aminoacid::AMINOACID_CNT*aminoacid::Aminoacid::AMINOACID_CNT, 0));
 
-        cntVert.resize(aminoacid::Aminoacids::AMINOACID_CNT*aminoacid::Aminoacids::AMINOACID_CNT, 0);
+        cntVert.resize(aminoacid::Aminoacid::AMINOACID_CNT*aminoacid::Aminoacid::AMINOACID_CNT, 0);
         for (auto mol : mols) {
             int mollen = mol->getLen();
             if (mollen < 2) continue;
@@ -46,7 +46,7 @@ namespace nrp_generator {
     nrp::NRP *NRPGeneratorTriplet::generateNRPCycle(int len) {
         std::vector<std::string> strformula(len);
         std::vector<int> position(len, 0);
-        std::vector<aminoacid::Aminoacids::Aminoacid> amnacid;
+        std::vector<aminoacid::Aminoacid::AminoacidId> amnacid;
 
         amnacid.resize(0);
         int strv = genStartVert();
@@ -63,7 +63,7 @@ namespace nrp_generator {
     }
 
     nrp::NRP *NRPGeneratorTriplet::generateNRPLine(int len) {
-        std::vector<aminoacid::Aminoacids::Aminoacid> amnacid;
+        std::vector<aminoacid::Aminoacid::AminoacidId> amnacid;
         std::vector<std::string> strformula(len);
         std::vector<int> position(len);
 
@@ -85,7 +85,7 @@ namespace nrp_generator {
         int tailLen = rand() % len;
         std::vector<std::string> strformula(len);
         std::vector<int> position(len);
-        std::vector<aminoacid::Aminoacids::Aminoacid> amnacid;
+        std::vector<aminoacid::Aminoacid::AminoacidId> amnacid;
 
         amnacid.resize(0);
         int strv = genStartVert();
@@ -124,11 +124,11 @@ namespace nrp_generator {
     }
 
     int NRPGeneratorTriplet::getVertexId(Aminoacid aa1, Aminoacid aa2) {
-        return (int)aa1 * aminoacid::Aminoacids::AMINOACID_CNT + (int)aa2;
+        return (int)aa1 * aminoacid::Aminoacid::AMINOACID_CNT + (int)aa2;
     }
 
     std::pair<Aminoacid, Aminoacid> NRPGeneratorTriplet::getVertexAA(int id) {
-        return std::make_pair(Aminoacid(id/aminoacid::Aminoacids::AMINOACID_CNT),
-                              Aminoacid(id%aminoacid::Aminoacids::AMINOACID_CNT));
+        return std::make_pair(Aminoacid(id/aminoacid::Aminoacid::AMINOACID_CNT),
+                              Aminoacid(id%aminoacid::Aminoacid::AMINOACID_CNT));
     }
 }

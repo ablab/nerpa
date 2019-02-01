@@ -9,7 +9,7 @@ namespace nrp {
 
     public:
         NRPCycle(const std::string &file_name, const std::vector<std::string> &strformula,
-                 const std::vector<aminoacid::Aminoacids::Aminoacid> &aminoacids, const std::vector<int> &position,
+                 const std::vector<aminoacid::Aminoacid::AminoacidId> &aminoacids, const std::vector<int> &position,
                  const std::string &graph, const std::string& extra_info);
 
         NRPType getType() const override;

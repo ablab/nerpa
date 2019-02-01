@@ -17,7 +17,7 @@ namespace nrp_generator {
 
         virtual nrp::NRP* generate(nrp::NRP::NRPType type, int len);
 
-        aminoacid::Aminoacids::Aminoacid genAA();
+        aminoacid::Aminoacid::AminoacidId genAA();
     };
 }
 

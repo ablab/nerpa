@@ -10,8 +10,8 @@ namespace nrp {
         enum Elem{C, H, Cl, N, O, S, ELEM_CNT};
         static const std::string ELEM_NAME[ELEM_CNT];
 
-        static std::vector<aminoacid::Aminoacids::Aminoacid> aminoacids_by_pos(
-                const std::vector<aminoacid::Aminoacids::Aminoacid> &aminoacids, const std::vector<int> &pos);
+        static std::vector<aminoacid::Aminoacid::AminoacidId> aminoacids_by_pos(
+                const std::vector<aminoacid::Aminoacid::AminoacidId> &aminoacids, const std::vector<int> &pos);
 
         static int get_elem_id(std::string c);
         static std::vector<int> parse_formula(std::string formula);

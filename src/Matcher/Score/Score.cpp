@@ -4,7 +4,7 @@
 
 #include "Score.h"
 
-bool matcher::Score::getScoreForSegment(const std::vector<aminoacid::Aminoacids::Aminoacid>& amns,
+bool matcher::Score::getScoreForSegment(const std::vector<aminoacid::Aminoacid::AminoacidId>& amns,
                         const nrpsprediction::NRPsPart& part, double& score) const {
     std::vector<nrpsprediction::AminoacidPrediction> aminoacid_predictions = part.getAminoacidsPrediction();
     int cnt_mismatch = 0;
@@ -27,7 +27,7 @@ bool matcher::Score::getScoreForSegment(const std::vector<aminoacid::Aminoacids:
 }
 
 double matcher::Score::aaScore(const nrpsprediction::AminoacidPrediction &apred,
-                               const aminoacid::Aminoacids::Aminoacid &aminoacid) const {
+                               const aminoacid::Aminoacid::AminoacidId &aminoacid) const {
     double posscore[100];
     double curscore = 1;
     for (int i = 0; i < 100; ++i) {

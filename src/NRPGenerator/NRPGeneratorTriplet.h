@@ -4,7 +4,7 @@
 #include "NRPGenerator.h"
 
 namespace nrp_generator {
-typedef aminoacid::Aminoacids::Aminoacid Aminoacid;
+typedef aminoacid::Aminoacid::AminoacidId Aminoacid;
     class NRPGeneratorTriplet : public NRPGenerator {
     private:
         std::vector<std::vector<int> > graph;

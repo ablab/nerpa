@@ -9,7 +9,7 @@ namespace nrp_generator {
     class NRPsPredictionGenerator {
     private:
         std::vector<int> cntAA[11];
-        aminoacid::Aminoacids::Aminoacid genAA(double prob, std::vector<aminoacid::Aminoacids::Aminoacid>& aa);
+        aminoacid::Aminoacid::AminoacidId genAA(double prob, std::vector<aminoacid::Aminoacid::AminoacidId>& aa);
     public:
         explicit NRPsPredictionGenerator(std::vector<nrpsprediction::NRPsPrediction>& predictions);
         nrpsprediction::NRPsPrediction genPrediction(nrpsprediction::NRPsPrediction prediction);

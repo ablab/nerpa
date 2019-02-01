@@ -1,12 +1,12 @@
 #include <cassert>
 #include <iostream>
-#include "Aminoacids.h"
+#include "Aminoacid.h"
 
 namespace aminoacid {
-    aminoacid::Aminoacids::Aminoacid aminoacid::Aminoacids::get_aminoacid(std::string aminoacid_name) {
+    aminoacid::Aminoacid::AminoacidId aminoacid::Aminoacid::get_aminoacid(std::string aminoacid_name) {
         for (int i = 0; i < AMINOACID_CNT; ++i) {
             if (AMINOACID_NAMES[i] == aminoacid_name) {
-                return static_cast<Aminoacid>(i);
+                return static_cast<AminoacidId>(i);
             }
         }
 
@@ -14,20 +14,20 @@ namespace aminoacid {
         assert(false);
     }
 
-    aminoacid::Aminoacids::Aminoacid aminoacid::Aminoacids::get_aminoacid_from_formula(std::string formula) {
+    aminoacid::Aminoacid::AminoacidId aminoacid::Aminoacid::get_aminoacid_from_formula(std::string formula) {
         for (int i = 0; i < AMINOACID_CNT; ++i) {
             if (FORMULS[i] == formula) {
-                return static_cast<Aminoacid>(i);
+                return static_cast<AminoacidId>(i);
             }
         }
 
         //std::cerr << formula << "\n";
         //assert(false);
 
-        return static_cast<Aminoacid>(AMINOACID_CNT - 1);
+        return static_cast<AminoacidId>(AMINOACID_CNT - 1);
     }
 
-    bool aminoacid::Aminoacids::same(aminoacid::Aminoacids::Aminoacid a, aminoacid::Aminoacids::Aminoacid b) {
+    bool aminoacid::Aminoacid::same(aminoacid::Aminoacid::AminoacidId a, aminoacid::Aminoacid::AminoacidId b) {
         assert(a >= 0 && a <= AMINOACID_CNT);
         assert(b >= 0 && b <= AMINOACID_CNT);
         if (FORMULS[a] == FORMULS[b]) return true;
@@ -82,7 +82,7 @@ namespace aminoacid {
     //dhb=Threonine
 
     //TODO finish formuls, sure have mis
-    const std::string Aminoacids::AMINOACID_NAMES[Aminoacids::AMINOACID_CNT] = {"trp", "ser", "gly", "uda", "thr",
+    const std::string Aminoacid::AMINOACID_NAMES[Aminoacid::AMINOACID_CNT] = {"trp", "ser", "gly", "uda", "thr",
                                                                                 "dhp", "gln", "dab", "arg", "lys",
                                                                                 "ala-d", "phe", "val", "cha", "dhpg",
                                                                                 "phg", "his", "aeo", "bmt", "hse",
@@ -96,7 +96,7 @@ namespace aminoacid {
                                                                                 "none"};
 
 
-    const std::string Aminoacids::FORMULS[Aminoacids::AMINOACID_CNT] = {"C11H12N2O2", "C3H7NO3", "C2H5NO2", "C4H9N3O3", "C4H9NO3",
+    const std::string Aminoacid::FORMULS[Aminoacid::AMINOACID_CNT] = {"C11H12N2O2", "C3H7NO3", "C2H5NO2", "C4H9N3O3", "C4H9NO3",
                                                                         "C3H5NO2", "C5H10N2O3", "C4H10N2O2", "C6H14N4O2", "C6H14N2O2",
                                                                         "C3H7NO2", "C9H11NO2", "C5H11NO2", "C9H17NO2", "C8H9NO4",
                                                                         "C8H9NO2", "C6H9N3O2", "C10H17NO4", "C9H17NO3", "C4H9NO3",

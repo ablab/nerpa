@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "../NRPsPrediction/NRPsPrediction.h"
-#include "../Aminoacid/Aminoacids.h"
+#include "Aminoacid/Aminoacid.h"
 #include "../NRPsPrediction/NRPsPart.h"
 #include <iostream>
 #include "assert.h"
@@ -15,7 +15,7 @@ namespace nrp {
     class NRP {
     protected:
         friend class ContainNRPsTest;
-        std::vector <aminoacid::Aminoacids::Aminoacid> aminoacids;
+        std::vector <aminoacid::Aminoacid::AminoacidId> aminoacids;
         std::vector <int> position;
         std::vector <std::string> strformula;
         std::string graph;
@@ -26,7 +26,7 @@ namespace nrp {
         enum NRPType {cycle, line, branch_cycle};
         NRP() = default;
         NRP(std::string file_name, std::vector<std::string> strformula,
-            std::vector <aminoacid::Aminoacids::Aminoacid> aminoacids, std::vector<int> position,
+            std::vector <aminoacid::Aminoacid::AminoacidId> aminoacids, std::vector<int> position,
             std::string graph, std::string extra_info):
                 file_name(file_name), strformula(strformula), aminoacids(aminoacids), position(position),
                 graph(graph), extra_info(extra_info) {
@@ -39,9 +39,9 @@ namespace nrp {
 
         virtual std::string getFormula(int i) const;
 
-        virtual aminoacid::Aminoacids::Aminoacid getAminoacid(int i) const;
+        virtual aminoacid::Aminoacid::AminoacidId getAminoacid(int i) const;
 
-        virtual std::vector<aminoacid::Aminoacids::Aminoacid> getAminoacids() const;
+        virtual std::vector<aminoacid::Aminoacid::AminoacidId> getAminoacids() const;
 
         virtual void print() const;
 

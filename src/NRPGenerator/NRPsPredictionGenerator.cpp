@@ -3,13 +3,13 @@
 #include "NRPsPredictionGenerator.h"
 
 using namespace nrpsprediction;
-typedef aminoacid::Aminoacids::Aminoacid AA;
+typedef aminoacid::Aminoacid::AminoacidId AA;
 
 namespace nrp_generator {
     NRPsPredictionGenerator::NRPsPredictionGenerator(
             std::vector<NRPsPrediction> &predictions) {
         for (int i = 0; i < 11; ++i) {
-            cntAA[i].resize(aminoacid::Aminoacids::AMINOACID_CNT);
+            cntAA[i].resize(aminoacid::Aminoacid::AMINOACID_CNT);
         }
 
         for (NRPsPrediction &pred : predictions) {
@@ -44,7 +44,7 @@ namespace nrp_generator {
                 std::vector<AminoacidPrediction::AminoacidProb> probs = pred[i].getAAPrediction();
                 std::vector<AA> gena;
                 for (auto &prob : probs) {
-                    ss << aminoacid::Aminoacids::AMINOACID_NAMES[genAA(prob.prob, gena)] << "(" << prob.prob << ");";
+                    ss << aminoacid::Aminoacid::AMINOACID_NAMES[genAA(prob.prob, gena)] << "(" << prob.prob << ");";
                 }
                 newPart.add_prediction(i + 1, ss.str());
             }

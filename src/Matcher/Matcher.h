@@ -11,7 +11,7 @@
 #include "Segment.h"
 
 namespace matcher {
-    typedef aminoacid::Aminoacids::Aminoacid aacid;
+    typedef aminoacid::Aminoacid::AminoacidId aacid;
     class Matcher {
     private:
         const nrp::NRP& nrp;

@@ -33,12 +33,12 @@ nrpsprediction::AminoacidPrediction::AminoacidPrediction(int pos, std::string pr
     for (int i = 0; i < aacids.size(); ++i) {
         if (aacids[i].second >= val - EPS) {
             aminoacid_prediction.push_back(AminoacidProb(aacids[i].first, aacids[i].second));
-            if (aminoacid_prediction[aminoacid_prediction.size() - 1].aminoacid == aminoacid::Aminoacids::Aminoacid::glu) {
-                aminoacid_prediction.push_back(AminoacidProb(aminoacid::Aminoacids::Aminoacid::me3_glu,
+            if (aminoacid_prediction[aminoacid_prediction.size() - 1].aminoacid == aminoacid::Aminoacid::AminoacidId::glu) {
+                aminoacid_prediction.push_back(AminoacidProb(aminoacid::Aminoacid::AminoacidId::me3_glu,
                                                              aminoacid_prediction[aminoacid_prediction.size() - 1].prob));
             }
-            if (aminoacid_prediction[aminoacid_prediction.size() - 1].aminoacid == aminoacid::Aminoacids::Aminoacid::asn) {
-                aminoacid_prediction.push_back(AminoacidProb(aminoacid::Aminoacids::Aminoacid::OH_asn,
+            if (aminoacid_prediction[aminoacid_prediction.size() - 1].aminoacid == aminoacid::Aminoacid::AminoacidId::asn) {
+                aminoacid_prediction.push_back(AminoacidProb(aminoacid::Aminoacid::AminoacidId::OH_asn,
                                                              aminoacid_prediction[aminoacid_prediction.size() - 1].prob));
             }
         }
@@ -58,11 +58,11 @@ std::pair<std::string, double> nrpsprediction::AminoacidPrediction::parse_token(
     return make_pair(name, prb);
 }
 
-bool nrpsprediction::AminoacidPrediction::contain(aminoacid::Aminoacids::Aminoacid aminoacid) {
+bool nrpsprediction::AminoacidPrediction::contain(aminoacid::Aminoacid::AminoacidId aminoacid) {
     for (int i = 0; i < (int)aminoacid_prediction.size(); ++i) {
         assert(aminoacid_prediction[i].aminoacid >= 0 &&
-                       aminoacid_prediction[i].aminoacid < aminoacid::Aminoacids::AMINOACID_CNT);
-        if (aminoacid::Aminoacids::same(aminoacid_prediction[i].aminoacid, aminoacid)) {
+                       aminoacid_prediction[i].aminoacid < aminoacid::Aminoacid::AMINOACID_CNT);
+        if (aminoacid::Aminoacid::same(aminoacid_prediction[i].aminoacid, aminoacid)) {
             return true;
         }
     }
@@ -70,20 +70,20 @@ bool nrpsprediction::AminoacidPrediction::contain(aminoacid::Aminoacids::Aminoac
 }
 
 nrpsprediction::AminoacidPrediction::AminoacidProb
-nrpsprediction::AminoacidPrediction::getAminoacid(aminoacid::Aminoacids::Aminoacid aminoacid) const {
+nrpsprediction::AminoacidPrediction::getAminoacid(aminoacid::Aminoacid::AminoacidId aminoacid) const {
     for (int i = 0; i < (int)aminoacid_prediction.size(); ++i) {
-        if (aminoacid::Aminoacids::same(aminoacid_prediction[i].aminoacid, aminoacid)) {
+        if (aminoacid::Aminoacid::same(aminoacid_prediction[i].aminoacid, aminoacid)) {
             return aminoacid_prediction[i];
         }
     }
 
-    return AminoacidProb(aminoacid::Aminoacids::AMINOACID_CNT, 0);
+    return AminoacidProb(aminoacid::Aminoacid::AMINOACID_CNT, 0);
 }
 
-std::pair<int, int> nrpsprediction::AminoacidPrediction::getAmnAcidPos(aminoacid::Aminoacids::Aminoacid aminoacid) const {
+std::pair<int, int> nrpsprediction::AminoacidPrediction::getAmnAcidPos(aminoacid::Aminoacid::AminoacidId aminoacid) const {
     double  prb = -1;
     for (int i = 0; i < (int)aminoacid_prediction.size(); ++i) {
-        if (aminoacid::Aminoacids::same(aminoacid_prediction[i].aminoacid, aminoacid)) {
+        if (aminoacid::Aminoacid::same(aminoacid_prediction[i].aminoacid, aminoacid)) {
             prb = aminoacid_prediction[i].prob;
             break;
         }

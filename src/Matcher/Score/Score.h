@@ -27,11 +27,11 @@ namespace matcher {
             return seg.scor - 1;
         }
 
-        bool getScoreForSegment(const std::vector<aminoacid::Aminoacids::Aminoacid>& amns,
+        bool getScoreForSegment(const std::vector<aminoacid::Aminoacid::AminoacidId>& amns,
                                 const nrpsprediction::NRPsPart& part, double& score) const;
 
         double aaScore(const nrpsprediction::AminoacidPrediction &apred,
-                       const aminoacid::Aminoacids::Aminoacid &aminoacid) const;
+                       const aminoacid::Aminoacid::AminoacidId &aminoacid) const;
     };
 }
 

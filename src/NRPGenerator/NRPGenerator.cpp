@@ -7,7 +7,7 @@
 namespace nrp_generator {
     using namespace nrp;
     NRPGenerator::NRPGenerator(std::vector<nrp::NRP *> mols) {
-        cntAA.resize(aminoacid::Aminoacids::AMINOACID_CNT, 0);
+        cntAA.resize(aminoacid::Aminoacid::AMINOACID_CNT, 0);
         for (int i = 0; i < mols.size(); ++i) {
             int mollen = mols[i]->getLen();
             for (int j = 0; j < mollen; ++j) {
@@ -32,7 +32,7 @@ namespace nrp_generator {
     nrp::NRP *NRPGenerator::generateNRPCycle(int len) {
         std::vector<std::string> strformula(len);
         std::vector<int> position(len);
-        std::vector<aminoacid::Aminoacids::Aminoacid> amnacid;
+        std::vector<aminoacid::Aminoacid::AminoacidId> amnacid;
 
         amnacid.resize(0);
         for (int i = 0; i < len; ++i) {
@@ -45,7 +45,7 @@ namespace nrp_generator {
     }
 
     nrp::NRP *NRPGenerator::generateNRPLine(int len) {
-        std::vector<aminoacid::Aminoacids::Aminoacid> amnacid;
+        std::vector<aminoacid::Aminoacid::AminoacidId> amnacid;
         std::vector<std::string> strformula(len);
         std::vector<int> position(len);
 
@@ -63,7 +63,7 @@ namespace nrp_generator {
         int tailLen = rand() % len;
         std::vector<std::string> strformula(len);
         std::vector<int> position(len);
-        std::vector<aminoacid::Aminoacids::Aminoacid> amnacid;
+        std::vector<aminoacid::Aminoacid::AminoacidId> amnacid;
 
         amnacid.resize(0);
         for (int i = 0; i < len; ++i) {
@@ -78,15 +78,15 @@ namespace nrp_generator {
         return res;
     }
 
-    aminoacid::Aminoacids::Aminoacid NRPGenerator::genAA() {
+    aminoacid::Aminoacid::AminoacidId NRPGenerator::genAA() {
         int rv = rand() % sumAA;
         int curSum = 0;
-        for (int i = 0; i < aminoacid::Aminoacids::AMINOACID_CNT; ++i, curSum += cntAA[i]) {
+        for (int i = 0; i < aminoacid::Aminoacid::AMINOACID_CNT; ++i, curSum += cntAA[i]) {
             if (curSum <= rv && rv < curSum + cntAA[i]) {
-                return aminoacid::Aminoacids::Aminoacid(i);
+                return aminoacid::Aminoacid::AminoacidId(i);
             }
         }
 
-        return aminoacid::Aminoacids::AMINOACID_CNT;
+        return aminoacid::Aminoacid::AMINOACID_CNT;
     }
 }

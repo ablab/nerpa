@@ -58,7 +58,7 @@ void matcher::Matcher::Match::print(std::ofstream &out) {
             nrpsprediction::AminoacidPrediction amn_pred = nrpParts[parts_id[ri]].getAminoacidsPrediction()[parts_pos[ri]];
             nrpsprediction::AminoacidPrediction::AminoacidProb amprob = amn_pred.getAminoacid(nrp->getAminoacid(ri));
             std::pair<int, int> pos = amn_pred.getAmnAcidPos((nrp->getAminoacid(ri)));
-            out << aminoacid::Aminoacids::AMINOACID_NAMES[amprob.aminoacid] << "("  << amprob.prob <<"; "
+            out << aminoacid::Aminoacid::AMINOACID_NAMES[amprob.aminoacid] << "("  << amprob.prob <<"; "
                 << pos.first << "-" << pos.second << ") "
                 << nrpParts[parts_id[ri]].get_orf_name() << " " << parts_pos[ri] << "\n";
         }

@@ -17,7 +17,7 @@ std::string nrp::NRPtail::getFormula(int i) const {
     return v1.getFormula(i);
 }
 
-aminoacid::Aminoacids::Aminoacid nrp::NRPtail::getAminoacid(int i) const {
+aminoacid::Aminoacid::AminoacidId nrp::NRPtail::getAminoacid(int i) const {
     return v1.getAminoacid(i);
 }
 
