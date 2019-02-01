@@ -110,4 +110,25 @@ namespace aminoacid {
                                                                   Formula("C9H16N2O5"), Formula("C5H12N2O2"), Formula(), Formula("C4H9NO2"), Formula("C6H11NO4"),
                                                                   Formula("C6H11NO2"), Formula("C8H9NO4"), Formula("C6H11NO4"), Formula("C4H8N2O4"),
                                                                   Formula()};
+
+    Aminoacid::Aminoacid(std::string aminoacid_name) {
+        int was = 0;
+        for (int i = 0; i < AMINOACID_CNT; ++i) {
+            if (AMINOACID_NAMES[i] == aminoacid_name) {
+                aa = static_cast<AminoacidId>(i);
+                was = 1;
+            }
+        }
+        if (was == 0) {
+            std::cerr << aminoacid_name << "\n";
+            assert(false);
+        }
+
+        formula = FORMULS[aa];
+    }
+
+    Aminoacid::Aminoacid(Formula formula) {
+        this->formula = formula;
+        aa = none;
+    }
 }
