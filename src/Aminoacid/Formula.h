@@ -23,14 +23,19 @@ namespace aminoacid {
         explicit Formula(std::string s) {
             std::string elem;
             int cnt_elem = 0;
+            int sign = 1;
             for (char c : s) {
+                if (c == '-') {
+                    sign = -1;
+                }
                 if (c >= 'A' && c <= 'Z') {
                     if (cnt_elem == 0) {
                         cnt_elem = 1;
                     }
-                    formula[elem] = cnt_elem;
+                    formula[elem] = sign * cnt_elem;
                     elem = c;
                     cnt_elem = 0;
+                    sign = 1;
                 } else if (c >= 'a' && c <= 'z') {
                     elem += c;
                 } else if (c >= '0' && c <= '9') {
@@ -43,7 +48,7 @@ namespace aminoacid {
             if (cnt_elem == 0) {
                 cnt_elem = 1;
             }
-            formula[elem] = cnt_elem;
+            formula[elem] = sign * cnt_elem;
         }
 
         bool operator == (const Formula& b) const {

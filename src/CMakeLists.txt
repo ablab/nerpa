@@ -30,7 +30,9 @@ set(SOURCE_FILES main.cpp
         NRPsPrediction/Builders/PredictionBuilderBase.cpp
         NRPsPrediction/Builders/Nrpspredictor2Builder.h
         NRPsPrediction/Builders/Nrpspredictor2Builder.cpp
-        Aminoacid/Formula.h)
+        Aminoacid/Formula.h
+        Aminoacid/Modification.h
+        Aminoacid/Modification.cpp)
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})
 add_executable(NRPsMatcher main.cpp)
