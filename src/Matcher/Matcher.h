@@ -21,6 +21,7 @@ namespace matcher {
         class Match {
         private:
             const nrp::NRP* nrp;
+            const Score* scoreFun;
             double scr;
             std::vector<nrpsprediction::NRPsPart> nrpParts;
             std::vector<int> parts_id;
@@ -28,8 +29,8 @@ namespace matcher {
         public:
             Match() = default;
 
-            Match(const nrp::NRP* nrp, std::vector<nrpsprediction::NRPsPart> nrpParts, double scr):
-                    nrp(nrp), nrpParts(nrpParts), scr(scr) {
+            Match(const nrp::NRP* nrp, std::vector<nrpsprediction::NRPsPart> nrpParts, double scr, const Score* score):
+                    nrp(nrp), nrpParts(nrpParts), scr(scr), scoreFun(score) {
                 parts_id.resize(nrp->getLen(), -1);
                 parts_pos.resize(nrp->getLen(), -1);
             }
