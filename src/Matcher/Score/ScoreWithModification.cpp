@@ -2,6 +2,7 @@
 // Created by olga on 01.02.19.
 //
 
+#include <cmath>
 #include "ScoreWithModification.h"
 
 namespace matcher {
@@ -29,6 +30,37 @@ namespace matcher {
 
     double ScoreWithModification::aaScore(const nrpsprediction::AminoacidPrediction &apred,
                                           const aminoacid::Aminoacid &aminoacid) const {
-        return Score::aaScore(apred, aminoacid);
+        auto AAprobs = apred.getAAPrediction();
+        int bg = 0;
+        int ed = 0;
+        double maxScore = -1;
+        for (int i = 0; i < AAprobs.size(); ++i) {
+            if (fabs(AAprobs[i].prob - AAprobs[bg].prob) > EPS) {
+                bg = i;
+                ed = i;
+                while (ed < AAprobs.size() && fabs(AAprobs[ed].prob - AAprobs[bg].prob) < EPS) {
+                    ed += 1;
+                }
+            }
+            maxScore = std::max(maxScore, getScore(aminoacid, AAprobs[i].aminoacid, AAprobs[i], std::make_pair(bg, ed - 1)));
+        }
+        return maxScore;
+    }
+
+    double ScoreWithModification::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
+                                           const nrpsprediction::AminoacidPrediction::AminoacidProb &prob,
+                                           const std::pair<int, int> &pos) const {
+        if (!(nrpAA == predAA)) {
+            return -1;
+        }
+        if (pos.first == -1) {
+            return -1;
+        } else {
+            int mdpos = (pos.first + pos.second)/2;
+            if (mdpos >= 10) {
+                return 0;
+            }
+            return prob.prob/100. * posscore[mdpos];
+        }
     }
 }

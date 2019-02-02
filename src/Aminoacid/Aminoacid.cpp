@@ -117,4 +117,8 @@ namespace aminoacid {
         aa = AMINOACID_CNT;
         formula = Formula();
     }
+
+    Formula Aminoacid::operator-(const Aminoacid &b) const {
+        return formula - b.formula;
+    }
 }

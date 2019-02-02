@@ -28,12 +28,6 @@ bool matcher::Score::getScoreForSegment(const std::vector<aminoacid::Aminoacid>&
 
 double matcher::Score::aaScore(const nrpsprediction::AminoacidPrediction &apred,
                                const aminoacid::Aminoacid &aminoacid) const {
-    double posscore[100];
-    double curscore = 1;
-    for (int i = 0; i < 100; ++i) {
-        posscore[i] = curscore;
-        curscore /= 1.25;
-    }
     std::pair<int, int> position = apred.getAmnAcidPos(aminoacid);
     nrpsprediction::AminoacidPrediction::AminoacidProb prob = apred.getAminoacid(aminoacid);
 
@@ -45,5 +39,13 @@ double matcher::Score::aaScore(const nrpsprediction::AminoacidPrediction &apred,
             return 0;
         }
         return prob.prob/100. * posscore[mdpos];
+    }
+}
+
+matcher::Score::Score() {
+    double curscore = 1;
+    for (int i = 0; i < 100; ++i) {
+        posscore[i] = curscore;
+        curscore /= 1.25;
     }
 }

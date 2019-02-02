@@ -10,6 +10,8 @@
 namespace matcher {
     class ScoreWithModification : public Score {
     public:
+        ScoreWithModification();
+
         double minScore(const int len) const override;
 
         double openGap() const override;
@@ -25,8 +27,12 @@ namespace matcher {
         aaScore(const nrpsprediction::AminoacidPrediction &apred, const aminoacid::Aminoacid &aminoacid) const override;
 
     private:
+        double getScore(const aminoacid::Aminoacid& nrpAA,
+                        const aminoacid::Aminoacid& predAA,
+                        const nrpsprediction::AminoacidPrediction::AminoacidProb& prob,
+                        const std::pair<int, int>& pos) const;
 
-
+        double EPS = 1e-5;
     };
 }
 

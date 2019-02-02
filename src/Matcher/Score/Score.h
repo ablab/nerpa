@@ -11,6 +11,7 @@
 namespace matcher {
     class Score {
     public:
+        Score();
         virtual double minScore(const int len) const {
             return -len - 1;
         }
@@ -32,6 +33,9 @@ namespace matcher {
 
         virtual double aaScore(const nrpsprediction::AminoacidPrediction &apred,
                        const aminoacid::Aminoacid &aminoacid) const;
+
+    protected:
+        double posscore[100];
     };
 }
 

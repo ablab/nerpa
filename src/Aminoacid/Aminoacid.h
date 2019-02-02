@@ -21,6 +21,7 @@ namespace aminoacid {
         Aminoacid();
 
         bool operator == (const Aminoacid& b) const;
+        Formula operator - (const Aminoacid& b) const;
         std::string get_name() const;
 
     private:
