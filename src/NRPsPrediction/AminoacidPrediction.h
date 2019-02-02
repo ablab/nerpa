@@ -9,6 +9,8 @@ namespace nrpsprediction {
     class AminoacidPrediction {
     public:
         struct AminoacidProb {
+            AminoacidProb() {}
+
             aminoacid::Aminoacid aminoacid;
             double prob;
 

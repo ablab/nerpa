@@ -27,7 +27,9 @@ namespace matcher {
         aaScore(const nrpsprediction::AminoacidPrediction &apred, const aminoacid::Aminoacid &aminoacid) const override;
 
         std::pair<double, aminoacid::Aminoacid> getTheBestAAInPred(const nrpsprediction::AminoacidPrediction &apred,
-                                                                   const aminoacid::Aminoacid &aminoacid) const override;
+                                                                   const aminoacid::Aminoacid &aminoacid,
+                                                                   nrpsprediction::AminoacidPrediction::AminoacidProb &probRes,
+                                                                   std::pair<int, int> &posRes) const override;
 
     private:
         double getScore(const aminoacid::Aminoacid& nrpAA,

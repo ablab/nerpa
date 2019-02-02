@@ -30,7 +30,9 @@ namespace matcher {
 
     double ScoreWithModification::aaScore(const nrpsprediction::AminoacidPrediction &apred,
                                           const aminoacid::Aminoacid &aminoacid) const {
-        return getTheBestAAInPred(apred, aminoacid).first;
+        nrpsprediction::AminoacidPrediction::AminoacidProb probRes;
+        std::pair<int, int> posRes;
+        return getTheBestAAInPred(apred, aminoacid, probRes, posRes).first;
     }
 
     double ScoreWithModification::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
@@ -52,7 +54,9 @@ namespace matcher {
 
     std::pair<double, aminoacid::Aminoacid>
     ScoreWithModification::getTheBestAAInPred(const nrpsprediction::AminoacidPrediction &apred,
-                                              const aminoacid::Aminoacid &aminoacid) const {
+                                              const aminoacid::Aminoacid &aminoacid,
+                                              nrpsprediction::AminoacidPrediction::AminoacidProb &probRes,
+                                              std::pair<int, int> &posRes) const {
         auto AAprobs = apred.getAAPrediction();
         aminoacid::Aminoacid theBest;
         int bg = 0;
@@ -70,6 +74,9 @@ namespace matcher {
             if (maxScore < curScore) {
                 maxScore = curScore;
                 theBest = AAprobs[i].aminoacid;
+                probRes = AAprobs[i];
+                auto cur = std::make_pair(bg, ed - 1);
+                posRes.swap(cur);
             }
         }
 

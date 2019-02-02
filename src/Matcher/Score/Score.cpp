@@ -52,8 +52,12 @@ matcher::Score::Score() {
 
 std::pair<double, aminoacid::Aminoacid>
 matcher::Score::getTheBestAAInPred(const nrpsprediction::AminoacidPrediction &apred,
-                                   const aminoacid::Aminoacid &aminoacid) const {
+                                   const aminoacid::Aminoacid &aminoacid,
+                                   nrpsprediction::AminoacidPrediction::AminoacidProb &probRes,
+                                   std::pair<int, int> &posRes) const {
     double score = aaScore(apred, aminoacid);
-    nrpsprediction::AminoacidPrediction::AminoacidProb prob = apred.getAminoacid(aminoacid);
-    return std::pair<double, aminoacid::Aminoacid>(score, prob.aminoacid);
+    auto curpos = apred.getAmnAcidPos(aminoacid);
+    std::swap(posRes, curpos);
+    probRes = apred.getAminoacid(aminoacid);
+    return std::pair<double, aminoacid::Aminoacid>(score, probRes.aminoacid);
 }

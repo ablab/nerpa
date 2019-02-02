@@ -8,6 +8,8 @@
 #include <NRPsPrediction/AminoacidPrediction.h>
 #include <NRP/NRP.h>
 #include <Matcher/Score/Score.h>
+
+#include <utility>
 #include "Segment.h"
 
 namespace matcher {
@@ -46,8 +48,8 @@ namespace matcher {
 
             bool operator < (Match b);
         };
-        Matcher(const nrp::NRP &nrp, const nrpsprediction::NRPsPrediction& prediction):
-                nrp(nrp), prediction(prediction) {}
+        Matcher(const nrp::NRP &nrp, const nrpsprediction::NRPsPrediction& prediction, const Score &score=Score()):
+                nrp(nrp), prediction(prediction), score(std::move(score)){}
 
         matcher::Matcher::Match getMatch() const;
         std::vector<Segment> matche_seg(const nrpsprediction::NRPsPart& predict_part) const;

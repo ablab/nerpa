@@ -25,10 +25,9 @@ std::vector<std::pair<int, int> > matcher::Matcher::Match::getMatchs() {
 bool matcher::Matcher::Match::isMatched(int i) {
     if (parts_id[i] == -1) {
         return false;
+    } else {
+        return true;
     }
-    nrpsprediction::AminoacidPrediction amn_pred = nrpParts[parts_id[i]].getAminoacidsPrediction()[parts_pos[i]];
-    std::pair<int, int> pos = amn_pred.getAmnAcidPos((nrp->getAminoacid(i)));
-    return pos.first != -1;
 }
 
 
@@ -48,7 +47,7 @@ void matcher::Matcher::Match::print(std::ofstream &out) {
     out << "number of components : " << nrp->getLen() << "\n";
     for (int i = 0; i < parts_id.size(); ++i) {
         int ri = rp[i];
-        std::string formula = nrp->getFormula(i);
+        std::string formula = nrp->getFormula(i); //FIXME i not ri?? check
 
         out << formula << " -> ";
 
@@ -56,9 +55,13 @@ void matcher::Matcher::Match::print(std::ofstream &out) {
             out << "-\n";
         } else {
             nrpsprediction::AminoacidPrediction amn_pred = nrpParts[parts_id[ri]].getAminoacidsPrediction()[parts_pos[ri]];
-            nrpsprediction::AminoacidPrediction::AminoacidProb amprob = amn_pred.getAminoacid(nrp->getAminoacid(ri));
-            std::pair<int, int> pos = amn_pred.getAmnAcidPos((nrp->getAminoacid(ri)));
-            out << amprob.aminoacid.get_name() << "("  << amprob.prob <<"; "
+
+
+            nrpsprediction::AminoacidPrediction::AminoacidProb amprob;
+            std::pair<int, int> pos;
+            auto res = scoreFun->getTheBestAAInPred(amn_pred, nrp->getAminoacid(ri), amprob, pos);
+
+            out << res.second.get_name() << "("  << res.first <<"; "
                 << pos.first << "-" << pos.second << ") "
                 << nrpParts[parts_id[ri]].get_orf_name() << " " << parts_pos[ri] << "\n";
         }
