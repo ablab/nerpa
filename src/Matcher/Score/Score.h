@@ -11,26 +11,26 @@
 namespace matcher {
     class Score {
     public:
-        double minScore(const int len) const {
+        virtual double minScore(const int len) const {
             return -len - 1;
         }
 
-        double openGap() const {
+        virtual double openGap() const {
             return -1;
         }
 
-        double continueGap() const {
+        virtual double continueGap() const {
             return 0;
         }
 
-        double addSegment(Segment seg) const {
+        virtual double addSegment(Segment seg) const {
             return seg.scor - 1;
         }
 
-        bool getScoreForSegment(const std::vector<aminoacid::Aminoacid>& amns,
+        virtual bool getScoreForSegment(const std::vector<aminoacid::Aminoacid>& amns,
                                 const nrpsprediction::NRPsPart& part, double& score) const;
 
-        double aaScore(const nrpsprediction::AminoacidPrediction &apred,
+        virtual double aaScore(const nrpsprediction::AminoacidPrediction &apred,
                        const aminoacid::Aminoacid &aminoacid) const;
     };
 }

@@ -54,6 +54,20 @@ namespace aminoacid {
         bool operator == (const Formula& b) const {
             return formula == b.formula;
         }
+
+        Formula operator - (const Formula& b) const {
+            Formula res;
+            res.formula = formula;
+            for (auto const& x: b.formula) {
+                if (res.formula.count(x.first)) {
+                    res.formula[x.first] -= x.second;
+                } else {
+                    res.formula[x.first] = -x.second;
+                }
+            }
+
+            return res;
+        }
     };
 }
 

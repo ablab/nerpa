@@ -32,7 +32,9 @@ set(SOURCE_FILES main.cpp
         NRPsPrediction/Builders/Nrpspredictor2Builder.cpp
         Aminoacid/Formula.h
         Aminoacid/Modification.h
-        Aminoacid/Modification.cpp)
+        Aminoacid/Modification.cpp
+        Matcher/Score/ScoreWithModification.cpp
+        Matcher/Score/ScoreWithModification.h)
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})
 add_executable(NRPsMatcher main.cpp)
