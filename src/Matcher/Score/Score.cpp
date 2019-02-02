@@ -49,3 +49,11 @@ matcher::Score::Score() {
         curscore /= 1.25;
     }
 }
+
+std::pair<double, aminoacid::Aminoacid>
+matcher::Score::getTheBestAAInPred(const nrpsprediction::AminoacidPrediction &apred,
+                                   const aminoacid::Aminoacid &aminoacid) const {
+    double score = aaScore(apred, aminoacid);
+    nrpsprediction::AminoacidPrediction::AminoacidProb prob = apred.getAminoacid(aminoacid);
+    return std::pair<double, aminoacid::Aminoacid>(score, prob.aminoacid);
+}

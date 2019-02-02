@@ -34,6 +34,9 @@ namespace matcher {
         virtual double aaScore(const nrpsprediction::AminoacidPrediction &apred,
                        const aminoacid::Aminoacid &aminoacid) const;
 
+        virtual std::pair<double, aminoacid::Aminoacid> getTheBestAAInPred(const nrpsprediction::AminoacidPrediction &apred,
+                                                                           const aminoacid::Aminoacid &aminoacid) const;
+
     protected:
         double posscore[100];
     };

@@ -30,21 +30,7 @@ namespace matcher {
 
     double ScoreWithModification::aaScore(const nrpsprediction::AminoacidPrediction &apred,
                                           const aminoacid::Aminoacid &aminoacid) const {
-        auto AAprobs = apred.getAAPrediction();
-        int bg = 0;
-        int ed = 0;
-        double maxScore = -1;
-        for (int i = 0; i < AAprobs.size(); ++i) {
-            if (fabs(AAprobs[i].prob - AAprobs[bg].prob) > EPS) {
-                bg = i;
-                ed = i;
-                while (ed < AAprobs.size() && fabs(AAprobs[ed].prob - AAprobs[bg].prob) < EPS) {
-                    ed += 1;
-                }
-            }
-            maxScore = std::max(maxScore, getScore(aminoacid, AAprobs[i].aminoacid, AAprobs[i], std::make_pair(bg, ed - 1)));
-        }
-        return maxScore;
+        return getTheBestAAInPred(apred, aminoacid).first;
     }
 
     double ScoreWithModification::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
@@ -62,5 +48,31 @@ namespace matcher {
             }
             return prob.prob/100. * posscore[mdpos];
         }
+    }
+
+    std::pair<double, aminoacid::Aminoacid>
+    ScoreWithModification::getTheBestAAInPred(const nrpsprediction::AminoacidPrediction &apred,
+                                              const aminoacid::Aminoacid &aminoacid) const {
+        auto AAprobs = apred.getAAPrediction();
+        aminoacid::Aminoacid theBest;
+        int bg = 0;
+        int ed = 0;
+        double maxScore = -1;
+        for (int i = 0; i < AAprobs.size(); ++i) {
+            if (fabs(AAprobs[i].prob - AAprobs[bg].prob) > EPS) {
+                bg = i;
+                ed = i;
+                while (ed < AAprobs.size() && fabs(AAprobs[ed].prob - AAprobs[bg].prob) < EPS) {
+                    ed += 1;
+                }
+            }
+            double curScore = getScore(aminoacid, AAprobs[i].aminoacid, AAprobs[i], std::make_pair(bg, ed - 1));
+            if (maxScore < curScore) {
+                maxScore = curScore;
+                theBest = AAprobs[i].aminoacid;
+            }
+        }
+
+        return std::make_pair(maxScore, theBest);
     }
 }
