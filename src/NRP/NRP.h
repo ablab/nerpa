@@ -15,6 +15,7 @@ namespace nrp {
     class NRP {
     protected:
         friend class ContainNRPsTest;
+        friend class ModificationTest;
         std::vector <aminoacid::Aminoacid> aminoacids;
         std::vector <int> position;
         std::vector <std::string> strformula;
@@ -53,7 +54,7 @@ namespace nrp {
 
         virtual NRPType getType() const = 0;
 
-        virtual std::vector<NRPLine> getLines() const = 0;
+        virtual std::vector<NRPLine*> getLines() const = 0;
 
         virtual bool is_valid_seg(int l, int r, int stp) const = 0;
     };

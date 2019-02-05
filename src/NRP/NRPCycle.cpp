@@ -14,9 +14,9 @@ nrp::NRP::NRPType nrp::NRPCycle::getType() const {
 }
 
 //TODO
-std::vector<nrp::NRPLine> nrp::NRPCycle::getLines() const {
+std::vector<nrp::NRPLine*> nrp::NRPCycle::getLines() const {
     ERROR("Get lines for NRP cycle. NOT implemented");
-    return std::vector<nrp::NRPLine>();
+    return std::vector<nrp::NRPLine*>();
 }
 
 bool nrp::NRPCycle::is_valid_seg(int l, int r, int stp) const {

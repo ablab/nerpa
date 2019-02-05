@@ -11,6 +11,7 @@
 #include "NRPsPrediction/NRPsPrediction.h"
 #include <Logger/log_writers.hpp>
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
+#include <Matcher/Score/ScoreWithModification.h>
 #include "Matcher/Matcher.h"
 
 const int MIN_SCROE = 2;
@@ -101,10 +102,10 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::N
     if (pred.getNrpsParts().size() == 0) return;
     std::ofstream out(output_filename);
     std::ofstream out_short("report_predictions", std::ofstream::out | std::ofstream::app);
-
+    matcher::ScoreWithModification score;
     std::vector<matcher::Matcher::Match> nrpsMatchs;
     for (int i = 0; i < mols.size(); ++i) {
-        matcher::Matcher matcher(*mols[i], pred);
+        matcher::Matcher matcher(*mols[i], pred, &score);
         matcher::Matcher::Match match = matcher.getMatch();
         if (match.score() >= MIN_SCROE) {
             nrpsMatchs.push_back(match);
@@ -132,14 +133,16 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::N
 
 void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp::NRP* mol, std::string output_filename) {
     std::ofstream out_short("report_mols", std::ofstream::out | std::ofstream::app);
-
+    matcher::ScoreWithModification score;
     std::vector<matcher::Matcher::Match> nrpsMatchs;
     for (int i = 0; i < preds.size(); ++i) {
-        matcher::Matcher matcher(*mol, preds[i]);
+        matcher::Matcher matcher(*mol, preds[i], &score);
         matcher::Matcher::Match match = matcher.getMatch();
         if (match.score() >= MIN_SCROE) {
             nrpsMatchs.push_back(match);
         }
+        std::ofstream out(output_filename);
+        match.print(out);
     }
 
     INFO("Found: " << nrpsMatchs.size() << " predictions");

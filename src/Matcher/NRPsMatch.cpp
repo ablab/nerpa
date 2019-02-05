@@ -61,7 +61,7 @@ void matcher::Matcher::Match::print(std::ofstream &out) {
             std::pair<int, int> pos;
             auto res = scoreFun->getTheBestAAInPred(amn_pred, nrp->getAminoacid(ri), amprob, pos);
 
-            out << res.second.get_name() << "("  << res.first <<"; "
+            out << res.second << "("  << res.first <<"; "
                 << pos.first << "-" << pos.second << ") "
                 << nrpParts[parts_id[ri]].get_orf_name() << " " << parts_pos[ri] << "\n";
         }

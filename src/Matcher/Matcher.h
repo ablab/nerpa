@@ -18,7 +18,7 @@ namespace matcher {
     private:
         const nrp::NRP& nrp;
         const nrpsprediction::NRPsPrediction& prediction;
-        const Score score = Score();
+        const Score* score;
     public:
         class Match {
         private:
@@ -29,10 +29,8 @@ namespace matcher {
             std::vector<int> parts_id;
             std::vector<int> parts_pos;
         public:
-            Match() = default;
-
             Match(const nrp::NRP* nrp, std::vector<nrpsprediction::NRPsPart> nrpParts, double scr, const Score* score):
-                    nrp(nrp), nrpParts(nrpParts), scr(scr), scoreFun(score) {
+                    nrp(nrp), nrpParts(std::move(nrpParts)), scr(scr), scoreFun(score) {
                 parts_id.resize(nrp->getLen(), -1);
                 parts_pos.resize(nrp->getLen(), -1);
             }
@@ -48,8 +46,9 @@ namespace matcher {
 
             bool operator < (Match b);
         };
-        Matcher(const nrp::NRP &nrp, const nrpsprediction::NRPsPrediction& prediction, const Score &score=Score()):
-                nrp(nrp), prediction(prediction), score(std::move(score)){}
+        Matcher(const nrp::NRP &nrp, const nrpsprediction::NRPsPrediction& prediction, const Score* score):
+                nrp(nrp), prediction(prediction), score(score) {
+        }
 
         matcher::Matcher::Match getMatch() const;
         std::vector<Segment> matche_seg(const nrpsprediction::NRPsPart& predict_part) const;

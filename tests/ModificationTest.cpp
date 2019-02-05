@@ -1,0 +1,313 @@
+//
+// Created by olga on 03.02.19.
+//
+
+#include "gtest/gtest.h"
+#include "../src/NRP/NRP.h"
+#include "../src/NRP/NRPCycle.h"
+#include "../src/NRP/NRPLine.h"
+#include "../src/NRP/NRPtail.h"
+#include <algorithm>
+#include <cmath>
+#include <Matcher/Matcher.h>
+#include <Logger/log_writers.hpp>
+#include <boost/concept_check.hpp>
+#include <Matcher/Score/ScoreWithModification.h>
+
+namespace nrp {
+    typedef matcher::Segment Segment;
+    typedef aminoacid::Modification Modification;
+    typedef aminoacid::Aminoacid Aminoacid;
+    const double EPS = 1e-4;
+
+    class ModificationTest : public ::testing::Test {
+    protected:
+        std::vector<aminoacid::Aminoacid> amnacid;
+
+        void addModificationToAA(Aminoacid &aa) {
+            if (aa.get_name() == "asn") {
+                aa.addModification(Modification(Modification::OH));
+                std::cerr << "MOD OH\n";
+            } else if (aa.get_name() == "glu") {
+                aa.addModification(Modification(Modification::me3));
+                std::cerr << "MOD me3\n";
+            }
+        }
+
+        void genRandNrpPart(int partlen, nrpsprediction::NRPsPart &nrps_part,
+                            std::vector<std::vector<aminoacid::Aminoacid>> &predict) {
+            predict.resize(partlen);
+            for (int j = 0; j < partlen; ++j) {
+                std::vector<double> prob;
+                std::vector<std::string> names;
+                for (int g = 0; g < 3; ++g) {
+                    prob.push_back(rand() % 10 * 10);
+                    predict[j].push_back(aminoacid::Aminoacid(
+                            aminoacid::Aminoacid::AminoacidId(rand() % (int(aminoacid::Aminoacid::none)))));
+
+                    names.push_back(predict[j][predict[j].size() - 1].get_name());
+                }
+
+                std::sort(prob.rbegin(), prob.rend());
+                std::stringstream ss;
+                for (int g = 0; g < 3; ++g) {
+                    ss << names[g] << "(" << prob[g] << ")";
+                    if (g < 2) {
+                        ss << ";";
+                    }
+                }
+
+                nrps_part.add_prediction(j + 1, ss.str());
+            }
+        }
+
+        NRPCycle genRandCycleNRP(int len) {
+            std::vector<std::string> strformula(len);
+            std::vector<int> position(len);
+
+            amnacid.resize(0);
+            for (int i = 0; i < len; ++i) {
+                position[i] = i;
+                amnacid.push_back(aminoacid::Aminoacid(
+                        aminoacid::Aminoacid::AminoacidId(rand() % aminoacid::Aminoacid::none)));
+                addModificationToAA(amnacid.back());
+            }
+
+            std::random_shuffle(position.begin(), position.end());
+
+            NRPCycle res("", strformula, amnacid, position, "", "");
+            res.aminoacids = amnacid;
+            return res;
+        }
+
+        NRPLine genRandLineNRP(int len) {
+            std::vector<std::string> strformula(len);
+            std::vector<int> position(len);
+
+            amnacid.resize(0);
+            for (int i = 0; i < len; ++i) {
+                position[i] = i;
+                amnacid.push_back(aminoacid::Aminoacid(
+                        aminoacid::Aminoacid::AminoacidId(rand() % aminoacid::Aminoacid::none)));
+
+                std::cerr << amnacid.back().get_name() << "\n";
+                amnacid.back().getFormula().print();
+                addModificationToAA(amnacid.back());
+            }
+
+            std::random_shuffle(position.begin(), position.end());
+
+            NRPLine res("", strformula, amnacid, position, "", "");
+            res.aminoacids = amnacid;
+            return res;
+        }
+
+        nrpsprediction::NRPsPart getSubPart(int bg, int sz, int delta, double &score) {
+            std::cerr << bg << " " << sz << " " << delta << "\n";
+            nrpsprediction::NRPsPart nrps_part("filename", "orf");
+            std::vector<aminoacid::Aminoacid> aas;
+            int len = amnacid.size();
+            int j = 0;
+            for (int i = bg; j < sz; i = (i + delta + len) % len, ++j) {
+                std::vector<double> prob;
+                std::vector<std::string> names;
+                for (int g = 0; g < 3; ++g) {
+                    prob.push_back(60 + rand() % 4 * 10);
+                    names.push_back(aminoacid::Aminoacid::AMINOACID_NAMES[rand() % (int(aminoacid::Aminoacid::none))]);
+                }
+
+                int right_AA_pos = rand() % 3;
+                names[right_AA_pos] = amnacid[i].get_name();
+                std::sort(prob.rbegin(), prob.rend());
+                std::stringstream ss;
+                for (int g = 0; g < 3; ++g) {
+                    ss << names[g] << "(" << prob[g] << ")";
+                    if (g < 2) {
+                        ss << ";";
+                    }
+                }
+                nrps_part.add_prediction(j + 1, ss.str());
+                auto predictions = nrps_part.getAminoacidsPrediction();
+                aas.push_back(amnacid[i]);
+            }
+
+            matcher::ScoreWithModification scoring;
+            double curs = 0;
+            bool found_seg = scoring.getScoreForSegment(aas, nrps_part, curs);
+            matcher::Score scoring2;
+            double curs2 = 0;
+            bool found_seg2 = scoring2.getScoreForSegment(aas, nrps_part, curs2);
+            std::cerr << "scoreing " << curs << " " << curs2 << "\n";
+            score += curs;
+
+            return nrps_part;
+        }
+
+        void checkSubPart(int bg, int sz, int delta, nrpsprediction::NRPsPart nrps_part) {
+            std::vector<aminoacid::Aminoacid> aas;
+            int len = amnacid.size();
+            int j = 0;
+            for (int i = bg; j < sz; i = (i + delta + len) % len, ++j) {
+                aas.push_back(amnacid[i]);
+            }
+
+            matcher::ScoreWithModification scoring;
+            double curs = 0;
+            ASSERT_TRUE(scoring.getScoreForSegment(aas, nrps_part, curs));
+        }
+    };
+
+    TEST_F(ModificationTest, coverRandLineTest) {
+        matcher::ScoreWithModification swm;
+        for (int tst = 0; tst < 1000; ++tst) {
+            int len = rand() % 20 + 1;
+            NRPLine nrp = genRandLineNRP(len);
+
+            int cntbp = rand() % 5 + 1;
+            std::vector<int> bps(cntbp);
+            for (int i = 0; i < cntbp; ++i) {
+                bps[i] = rand() % len;
+            }
+
+            bps.push_back(0);
+            bps.push_back(len);
+
+            std::sort(bps.begin(), bps.end());
+
+            std::vector<nrpsprediction::NRPsPart> nrpParts;
+            double res_score = 0;
+            for (int i = 1; i < bps.size(); ++i) {
+                if (bps[i] != bps[i - 1]) {
+                    if (rand() % 2 == 0) {
+                        if (rand() % 2 == 0) {
+                            nrpParts.push_back(getSubPart(bps[i - 1], (bps[i] - bps[i - 1]), 1, res_score));
+                            checkSubPart(bps[i - 1], (bps[i] - bps[i - 1]), 1, nrpParts.back());
+                        } else {
+                            nrpParts.push_back(getSubPart(bps[i] - 1, (bps[i] - bps[i - 1]), -1, res_score));
+                            checkSubPart(bps[i] - 1, (bps[i] - bps[i - 1]), -1, nrpParts.back());
+                        }
+                    }
+                    res_score -= 1;
+                }
+            }
+
+            for (int i = 0; i < 10; ++i) {
+                int partlen = rand() % 10 + 1;
+                nrpsprediction::NRPsPart nrps_part("filename", "orf");
+                std::vector<std::vector<aminoacid::Aminoacid>> predict(partlen);
+
+                genRandNrpPart(partlen, nrps_part, predict);
+                nrpParts.push_back(nrps_part);
+            }
+
+            std::random_shuffle(nrpParts.begin(), nrpParts.end());
+            nrpsprediction::NRPsPrediction nrpsPrediction(nrpParts);
+
+            matcher::Matcher matcher(nrp, nrpsPrediction, &swm);
+            matcher::Matcher::Match match = matcher.getMatch();
+
+            ASSERT_GE(match.score() - res_score, -EPS);
+        }
+    }
+
+    TEST_F(ModificationTest, coverRandCycleTest) {
+        matcher::ScoreWithModification swm;
+
+        for (int tst = 0; tst < 1000; ++tst) {
+            int len = rand() % 20 + 1;
+            NRPCycle nrp = genRandCycleNRP(len);
+
+            int cntbp = rand() % 5 + 1;
+            std::vector<int> bps(cntbp);
+            for (int i = 0; i < cntbp; ++i) {
+                bps[i] = rand() % len;
+            }
+
+            std::sort(bps.begin(), bps.end());
+
+            std::vector<nrpsprediction::NRPsPart> nrpParts;
+            double res_score = 0;
+            for (int i = 0; i < bps.size(); ++i) {
+                int pi = (i - 1 + bps.size()) % bps.size();
+                if (bps[i] != bps[pi] || (bps[i] == bps[pi] && i == 0)) {
+                    res_score -= 1;
+                    if (rand() % 2 == 0) {
+                        if (rand() % 2 == 0) {
+                            nrpParts.push_back(getSubPart(bps[pi], (bps[i] - bps[pi] + len) % len, 1, res_score));
+                            checkSubPart(bps[pi], (bps[i] - bps[pi] + len) % len, 1, nrpParts.back());
+                        } else {
+                            nrpParts.push_back(getSubPart((bps[i] - 1 + len) % len, (bps[i] - bps[pi] + len) % len, -1,
+                                                          res_score));
+                            checkSubPart((bps[i] - 1 + len) % len, (bps[i] - bps[pi] + len) % len, -1, nrpParts.back());
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < 10; ++i) {
+                int partlen = rand() % 10 + 1;
+                nrpsprediction::NRPsPart nrps_part("filename", "orf");
+                std::vector<std::vector<aminoacid::Aminoacid>> predict(partlen);
+
+                genRandNrpPart(partlen, nrps_part, predict);
+                nrpParts.push_back(nrps_part);
+            }
+
+            std::random_shuffle(nrpParts.begin(), nrpParts.end());
+            nrpsprediction::NRPsPrediction nrpsPrediction(nrpParts);
+
+            matcher::Matcher matcher(nrp, nrpsPrediction, &swm);
+            matcher::Matcher::Match match = matcher.getMatch();
+
+            ASSERT_GE(match.score() - res_score, -EPS);
+        }
+    }
+
+    TEST_F(ModificationTest, WithoutSameWithScore) {
+        for (int tst = 0; tst < 1000; ++tst) {
+            int len = 10;
+            amnacid.resize(0);
+            for (int i = 0; i < len; ++i) {
+                amnacid.push_back(aminoacid::Aminoacid(
+                        aminoacid::Aminoacid::AminoacidId(rand() % aminoacid::Aminoacid::none)));
+            }
+
+            nrpsprediction::NRPsPart nrps_part("filename", "orf");
+            int j = 0;
+            for (int i = 0; j < len; i += 1, ++j) {
+                std::vector<double> prob;
+                std::vector<std::string> names;
+                for (int g = 0; g < 3; ++g) {
+                    prob.push_back(60 + rand() % 4 * 10);
+                    names.push_back(aminoacid::Aminoacid::AMINOACID_NAMES[rand() % (int(aminoacid::Aminoacid::none))]);
+                }
+
+                names[0] = amnacid[i].get_name();
+                std::sort(prob.rbegin(), prob.rend());
+                std::stringstream ss;
+                for (int g = 0; g < 3; ++g) {
+                    ss << names[g] << "(" << prob[g] << ")";
+                    if (g < 2) {
+                        ss << ";";
+                    }
+                }
+                nrps_part.add_prediction(j + 1, ss.str());
+                auto predictions = nrps_part.getAminoacidsPrediction();
+            }
+
+            matcher::ScoreWithModification scoring;
+            double curs = 0;
+            bool found_seg = scoring.getScoreForSegment(amnacid, nrps_part, curs);
+            matcher::Score scoring2;
+            double curs2 = 0;
+            bool found_seg2 = scoring2.getScoreForSegment(amnacid, nrps_part, curs2);
+            ASSERT_LE(fabs(curs - curs2), EPS);
+        }
+    }
+}
+
+int main(int argc, char *argv[]) {
+    ::testing::InitGoogleTest(&argc, argv);
+    logging::create_logger("");
+    return RUN_ALL_TESTS();
+}

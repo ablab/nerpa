@@ -62,8 +62,7 @@ namespace aminoacid {
                                                                                 "apa", "pro", "tyr", "hyv", "asn",
                                                                                 "cit", "vol", "cys", "asp", "dht",
                                                                                 "ahp", "orn", "apc", "abu", "aad",
-                                                                                "pip", "dpg", "3-me-glu", "OH-asn",
-                                                                                "none"};
+                                                                                "pip", "dpg", "none"};
 
 
     const Formula Aminoacid::FORMULS[Aminoacid::AMINOACID_CNT] = {Formula("C11H12N2O2"), Formula("C3H7NO3"), Formula("C2H5NO2"), Formula("C4H9N3O3"), Formula("C4H9NO3"),
@@ -72,12 +71,11 @@ namespace aminoacid {
                                                                   Formula("C8H9NO2"), Formula("C6H9N3O2"), Formula("C10H17NO4"), Formula("C9H17NO3"), Formula("C4H9NO3"),
                                                                   Formula("C5H11NO2S"), Formula("C3H7NO2"), Formula("C6H10Cl3NO2"), Formula("C7H6O3"), Formula("C4H9NO3"),
                                                                   Formula("C3H7NO2"), Formula("C7H6O4"), Formula("C6H13NO2"), Formula("C6H12N4O2"), Formula("C6H13NO2"),
-                                                                  Formula(), Formula("C10H13NO3"), Formula("C5H9NO4"), Formula("C9H11NO4"), Formula("C8H9NO3"),
-                                                                  Formula("C4H9NO2"), Formula("C5H9NO2"), Formula("C9H11NO3"), Formula(""), Formula("C4H8N2O3"),
+                                                                  Formula("C179"), Formula("C10H13NO3"), Formula("C5H9NO4"), Formula("C9H11NO4"), Formula("C8H9NO3"),
+                                                                  Formula("C4H9NO2"), Formula("C5H9NO2"), Formula("C9H11NO3"), Formula("H179"), Formula("C4H8N2O3"),
                                                                   Formula("C6H13N3O3"), Formula("C5H13NO"), Formula("C3H7NO2S"), Formula("C4H7NO4"), Formula("C9H9NO3"),
-                                                                  Formula("C9H16N2O5"), Formula("C5H12N2O2"), Formula(), Formula("C4H9NO2"), Formula("C6H11NO4"),
-                                                                  Formula("C6H11NO2"), Formula("C8H9NO4"), Formula("C6H11NO4"), Formula("C4H8N2O4"),
-                                                                  Formula()};
+                                                                  Formula("C9H16N2O5"), Formula("C5H12N2O2"), Formula("S179"), Formula("C4H9NO2"), Formula("C6H11NO4"),
+                                                                  Formula("C6H11NO2"), Formula("C8H9NO4"), Formula()};
 
     Aminoacid::Aminoacid(std::string aminoacid_name) {
         int was = 0;
@@ -120,5 +118,14 @@ namespace aminoacid {
 
     Formula Aminoacid::operator-(const Aminoacid &b) const {
         return formula - b.formula;
+    }
+
+    void Aminoacid::addModification(Modification m) {
+        formula += m.getFormula();
+        modifications.push_back(m);
+    }
+
+    const Formula &Aminoacid::getFormula() const {
+        return formula;
     }
 }

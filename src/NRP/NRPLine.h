@@ -11,7 +11,7 @@ namespace nrp {
                 const std::string &graph, const std::string& extra_info);
 
         NRPType getType() const override;
-        std::vector<NRPLine> getLines() const override;
+        std::vector<NRPLine*> getLines() const override;
 
         bool is_valid_seg(int l, int r, int stp) const override;
     };

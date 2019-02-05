@@ -7,6 +7,10 @@ add_subdirectory(lib/gtest-1.7.0)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 add_executable(runContainNRPsPartTest containNRPsPartTest.cpp)
+add_executable(runModificationTest ModificationTest.cpp)
 
 target_link_libraries(runContainNRPsPartTest gtest gtest_main)
 target_link_libraries(runContainNRPsPartTest nrps_matcher_lib logger_lib)
+
+target_link_libraries(runModificationTest gtest gtest_main)
+target_link_libraries(runModificationTest nrps_matcher_lib logger_lib)

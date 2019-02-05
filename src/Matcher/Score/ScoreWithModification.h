@@ -10,8 +10,6 @@
 namespace matcher {
     class ScoreWithModification : public Score {
     public:
-        ScoreWithModification();
-
         double minScore(const int len) const override;
 
         double openGap() const override;

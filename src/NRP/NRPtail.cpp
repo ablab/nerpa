@@ -37,10 +37,10 @@ std::string nrp::NRPtail::get_extra_info() const {
     return v1.get_extra_info();
 }
 
-std::vector<nrp::NRPLine> nrp::NRPtail::getLines() const {
-    std::vector<nrp::NRPLine> lines;
-    lines.push_back(v1);
-    lines.push_back(v2);
+std::vector<nrp::NRPLine*> nrp::NRPtail::getLines() const {
+    std::vector<nrp::NRPLine*> lines;
+    lines.push_back(const_cast<nrp::NRPLine*>(&v1));
+    lines.push_back(const_cast<nrp::NRPLine*>(&v2));
     return lines;
 }
 

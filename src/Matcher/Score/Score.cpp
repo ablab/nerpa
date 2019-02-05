@@ -14,8 +14,9 @@ bool matcher::Score::getScoreForSegment(const std::vector<aminoacid::Aminoacid>&
         if (!aminoacid_predictions[j].contain(amns[j])) {
             cnt_mismatch += 1;
         }
+        double  cur_sc = aaScore(aminoacid_predictions[j], amns[j]);
 
-        segscor += aaScore(aminoacid_predictions[j], amns[j]);
+        segscor += cur_sc;
     }
 
     if (cnt_mismatch == 0 || (cnt_mismatch == 1 && aminoacid_predictions.size() > 4)) {

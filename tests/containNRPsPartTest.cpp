@@ -318,7 +318,8 @@ namespace nrp {
 
             std::vector<nrpsprediction::NRPsPart> parts;
             parts.push_back(nrps_part);
-            matcher::Matcher matcher1(nrp, nrpsprediction::NRPsPrediction(parts));
+            matcher::Score score;
+            matcher::Matcher matcher1(nrp, nrpsprediction::NRPsPrediction(parts), &score);
 
             std::vector<Segment> segments = matcher1.matche_seg(nrps_part);
             int rbg = bg;
@@ -351,6 +352,7 @@ namespace nrp {
 
     //check all find segment is right
     TEST_F(ContainNRPsTest, containRandCycleTest) {
+        matcher::Score score;
         for (int tst = 0; tst < 1000; ++tst) {
             int len = rand()%20 + 1;
             NRPCycle nrp = genRandCycleNRP(len);
@@ -363,7 +365,7 @@ namespace nrp {
 
             std::vector<nrpsprediction::NRPsPart> parts;
             parts.push_back(nrps_part);
-            matcher::Matcher matcher1(nrp, nrpsprediction::NRPsPrediction(parts));
+            matcher::Matcher matcher1(nrp, nrpsprediction::NRPsPrediction(parts), &score);
 
             std::vector<Segment> segments = matcher1.matche_seg(nrps_part);
             for (int i = 0; i < segments.size(); ++i) {
@@ -382,6 +384,7 @@ namespace nrp {
 
     //check if has segment in NRP then find it.
     TEST_F(ContainNRPsTest, containTrueRandLineTest) {
+        matcher::Score score;
         double scr = 0;
         for (int tst = 0; tst < 1000; ++tst) {
             int len = rand()%100 + 2;
@@ -403,7 +406,7 @@ namespace nrp {
 
             std::vector<nrpsprediction::NRPsPart> parts;
             parts.push_back(nrps_part);
-            matcher::Matcher matcher1(nrp, nrpsprediction::NRPsPrediction(parts));
+            matcher::Matcher matcher1(nrp, nrpsprediction::NRPsPrediction(parts), &score);
 
             std::vector<Segment> segments = matcher1.matche_seg(nrps_part);
             int rbg = std::min(bg, ed);
@@ -425,6 +428,7 @@ namespace nrp {
 
     //check all find segment is right
     TEST_F(ContainNRPsTest, containRandLineTest) {
+        matcher::Score score;
         for (int tst = 0; tst < 1000; ++tst) {
             int len = rand()%20 + 1;
             NRPLine nrp = genRandLineNRP(len);
@@ -437,7 +441,7 @@ namespace nrp {
 
             std::vector<nrpsprediction::NRPsPart> parts;
             parts.push_back(nrps_part);
-            matcher::Matcher matcher1(nrp, nrpsprediction::NRPsPrediction(parts));
+            matcher::Matcher matcher1(nrp, nrpsprediction::NRPsPrediction(parts), &score);
 
             std::vector<Segment> segments = matcher1.matche_seg(nrps_part);
             for (int i = 0; i < segments.size(); ++i) {
@@ -495,7 +499,8 @@ namespace nrp {
             std::random_shuffle(nrpParts.begin(), nrpParts.end());
             nrpsprediction::NRPsPrediction nrpsPrediction(nrpParts);
 
-            matcher::Matcher matcher(nrp, nrpsPrediction);
+            matcher::Score score;
+            matcher::Matcher matcher(nrp, nrpsPrediction, &score);
             matcher::Matcher::Match match = matcher.getMatch();
 
             ASSERT_GE(match.score() - res_score, -EPS);
@@ -506,6 +511,7 @@ namespace nrp {
     }
 
     TEST_F(ContainNRPsTest, coverRandCycleTest) {
+        matcher::Score score;
         for (int tst = 0; tst < 1000; ++tst) {
             int len = rand()%20 + 1;
             NRPCycle nrp = genRandCycleNRP(len);
@@ -546,7 +552,7 @@ namespace nrp {
             std::random_shuffle(nrpParts.begin(), nrpParts.end());
             nrpsprediction::NRPsPrediction nrpsPrediction(nrpParts);
 
-            matcher::Matcher matcher(nrp, nrpsPrediction);
+            matcher::Matcher matcher(nrp, nrpsPrediction, &score);
             matcher::Matcher::Match match = matcher.getMatch();
 
             ASSERT_GE(match.score() - res_score, -EPS);
@@ -616,7 +622,7 @@ namespace nrp {
         std::vector<nrpsprediction::NRPsPart> parts;
         parts.push_back(nrps_part);
         nrpsprediction::NRPsPrediction prediction(parts);
-        matcher::Matcher matcher1(nrp, prediction);
+        matcher::Matcher matcher1(nrp, prediction, &scoring);
         auto match = matcher1.getMatch();
 
         //compare score

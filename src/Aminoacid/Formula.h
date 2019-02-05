@@ -5,14 +5,16 @@
 #ifndef NRPSMATCHER_FORMULA_H
 #define NRPSMATCHER_FORMULA_H
 
-#include<string>
+#include <string>
 #include <map>
 #include <cassert>
+#include <iostream>
 
 namespace aminoacid {
     class Formula {
     private:
-        std::map<std::string, int> formula = {{"C", 0},
+        std::map<std::string, int> formula = {{"", 0},
+                                              {"C", 0},
                                               {"H", 0},
                                               {"N", 0},
                                               {"O", 0},
@@ -32,7 +34,7 @@ namespace aminoacid {
                     if (cnt_elem == 0) {
                         cnt_elem = 1;
                     }
-                    formula[elem] = sign * cnt_elem;
+                    if (elem != "") formula[elem] = sign * cnt_elem;
                     elem = c;
                     cnt_elem = 0;
                     sign = 1;
@@ -45,10 +47,12 @@ namespace aminoacid {
                 }
             }
 
+
             if (cnt_elem == 0) {
                 cnt_elem = 1;
             }
-            formula[elem] = sign * cnt_elem;
+
+            if (elem != "") formula[elem] = sign * cnt_elem;
         }
 
         bool operator == (const Formula& b) const {
@@ -68,6 +72,24 @@ namespace aminoacid {
 
             return res;
         }
+
+        Formula& operator += (const Formula& b) {
+            for (auto const& x: b.formula) {
+                if (formula.count(x.first)) {
+                    formula[x.first] += x.second;
+                } else {
+                    formula[x.first] = x.second;
+                }
+            }
+            return  *this;
+        }
+
+        void print() const {
+            for (auto const& x: formula) {
+                std::cerr << "formula[" << x.first << "] = " << x.second << "\n";
+            }
+        }
+
     };
 }
 

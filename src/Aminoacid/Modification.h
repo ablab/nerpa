@@ -10,10 +10,16 @@
 namespace aminoacid {
     class Modification {
     public:
-        enum ModificationId {OH, me3, MODIFICATION_CNT};
+        enum ModificationId {OH, me3, empty, MODIFICATION_CNT};
         static const std::string NAMES[MODIFICATION_CNT];
         static const Formula FORMULS[MODIFICATION_CNT];
 
+        Formula getFormula() const;
+        ModificationId getId() const;
+
+        explicit Modification(ModificationId id);
+        explicit Modification(Formula formula);
+        Modification();
     private:
         Formula formula;
         ModificationId id;
