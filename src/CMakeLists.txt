@@ -36,7 +36,9 @@ set(SOURCE_FILES main.cpp
         Aminoacid/Modification.h
         Aminoacid/Modification.cpp
         Matcher/Score/ScoreWithModification.cpp
-        Matcher/Score/ScoreWithModification.h)
+        Matcher/Score/ScoreWithModification.h
+        Matcher/Score/ScoreMinowa.cpp
+        Matcher/Score/ScoreMinowa.h)
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})
 add_executable(NRPsMatcher main.cpp)
