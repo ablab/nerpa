@@ -13,6 +13,7 @@
 #include <Logger/log_writers.hpp>
 #include <boost/concept_check.hpp>
 #include <Matcher/Score/ScoreWithModification.h>
+#include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
 
 namespace nrp {
     typedef matcher::Segment Segment;
@@ -57,7 +58,9 @@ namespace nrp {
                     }
                 }
 
-                nrps_part.add_prediction(j + 1, ss.str());
+                using namespace nrpsprediction;
+                nrps_part.add_prediction(j + 1, AminoacidPrediction(j + 1,
+                                                                    Nrpspredictor2Builder::parse_predictions(ss.str())));
             }
         }
 
@@ -126,7 +129,9 @@ namespace nrp {
                         ss << ";";
                     }
                 }
-                nrps_part.add_prediction(j + 1, ss.str());
+                using namespace nrpsprediction;
+                nrps_part.add_prediction(j + 1, AminoacidPrediction(j + 1,
+                                                                    Nrpspredictor2Builder::parse_predictions(ss.str())));
                 auto predictions = nrps_part.getAminoacidsPrediction();
                 aas.push_back(amnacid[i]);
             }
@@ -291,7 +296,9 @@ namespace nrp {
                         ss << ";";
                     }
                 }
-                nrps_part.add_prediction(j + 1, ss.str());
+                using namespace nrpsprediction;
+                nrps_part.add_prediction(j + 1, AminoacidPrediction(j + 1,
+                                                                   Nrpspredictor2Builder::parse_predictions(ss.str())));
                 auto predictions = nrps_part.getAminoacidsPrediction();
             }
 

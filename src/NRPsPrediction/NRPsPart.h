@@ -11,11 +11,11 @@ namespace nrpsprediction {
         std::string orf;
         std::vector<AminoacidPrediction> aminoacids;
     public:
-        NRPsPart(std::string file_name, std::string orf_name, int num,  std::string predict_aminoacids);
+        NRPsPart(std::string file_name, std::string orf_name, int num,  const AminoacidPrediction& prediction);
         NRPsPart(std::string file_name, std::string orf_name);
         std::string get_orf_name();
         std::string get_file_name();
-        void add_prediction(int num, std::string predict_aminoacids);
+        void add_prediction(int num, const AminoacidPrediction& prediction);
         std::vector<AminoacidPrediction> getAminoacidsPrediction() const;
     };
 }

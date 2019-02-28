@@ -14,11 +14,13 @@ namespace nrpsprediction {
     void MinowaPredictionBuilder::read_file(std::string file_name) {
         std::ifstream in(file_name);
         std::string s;
-        while (getline(in, s) && s != "\\") {
+        while (getline(in, s)) {
+            while (s != "\\" && getline(in, s)) {}
             std::string orf_name;
             getline(in, orf_name);
             getline(in, s);
-            while(true){
+            std::pair <std::string, int> orf_name_num = get_orf_name_and_order(orf_name);
+            while (getline(in, s) && s != "") {
 
             }
         }
