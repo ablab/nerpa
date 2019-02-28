@@ -37,20 +37,4 @@ namespace nrpsprediction {
     NRPsPrediction Nrpspredictor2Builder::getPrediction() {
         return  NRPsPrediction(nrpparts);
     }
-
-    std::pair<std::string, int> Nrpspredictor2Builder::get_orf_name_and_order(std::string orf) {
-        std::stringstream ss(orf);
-        std::string prefix;
-        std::string orfname;
-        std::string tail;
-        getline(ss, prefix, '_');
-        getline(ss, orfname, '_');
-        getline(ss, tail, '_');
-
-        std::stringstream ss2(tail.substr(1));
-        int pos;
-        ss2 >> pos;
-
-        return std::make_pair(orfname, pos);
-    }
 }

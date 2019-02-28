@@ -9,6 +9,10 @@
 
 namespace nrpsprediction {
     class PredictionBuilderBase {
+    protected:
+        //orf = <prefix>_<orfname>_A<num>
+        //return (<orfname>, <num>)
+        std::pair<std::string, int> get_orf_name_and_order(std::string orf);
     public:
         virtual void read_file(std::string file_name) = 0;
 

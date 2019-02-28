@@ -30,6 +30,8 @@ set(SOURCE_FILES main.cpp
         NRPsPrediction/Builders/PredictionBuilderBase.cpp
         NRPsPrediction/Builders/Nrpspredictor2Builder.h
         NRPsPrediction/Builders/Nrpspredictor2Builder.cpp
+        NRPsPrediction/Builders/MinowaPredictionBuilder.h
+        NRPsPrediction/Builders/MinowaPredictionBuilder.cpp
         Aminoacid/Formula.h
         Aminoacid/Modification.h
         Aminoacid/Modification.cpp

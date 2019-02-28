@@ -1,18 +1,18 @@
 //
-// Created by olga on 29.01.19.
+// Created by olga on 23.02.19.
 //
 
-#ifndef NRPSMATCHER_NRPSPREDICTOR2BUILDER_H
-#define NRPSMATCHER_NRPSPREDICTOR2BUILDER_H
+#ifndef NRPSMATCHER_MINOWAPREDICTIONBUILDER_H
+#define NRPSMATCHER_MINOWAPREDICTIONBUILDER_H
 
 #include "PredictionBuilderBase.h"
 
 namespace nrpsprediction {
-    class Nrpspredictor2Builder : public PredictionBuilderBase {
+    class MinowaPredictionBuilder : public PredictionBuilderBase {
     private:
         std::vector<NRPsPart> nrpparts;
     public:
-        //parse ctg1_nrpspredictor2_codes.txt file
+        //parse ctg1_minowa_nrpspredoutput.txt file
         //expected groupded by orfs and sorted by num in one group
         void read_file(std::string file_name) override;
 
@@ -20,4 +20,5 @@ namespace nrpsprediction {
     };
 }
 
-#endif //NRPSMATCHER_NRPSPREDICTOR2BUILDER_H
+
+#endif //NRPSMATCHER_MINOWAPREDICTIONBUILDER_H
