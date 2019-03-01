@@ -52,8 +52,9 @@ std::string getDir(const std::string& filename) {
 void getPredictor(std::string predictor_name, nrpsprediction::PredictionBuilderBase*& predictionBuilder) {
     if (predictor_name == "MINOWA") {
         predictionBuilder = new nrpsprediction::MinowaPredictionBuilder();
+    } else {
+        predictionBuilder = new nrpsprediction::Nrpspredictor2Builder();
     }
-    predictionBuilder = new nrpsprediction::Nrpspredictor2Builder();
 }
 
 std::vector<nrpsprediction::NRPsPrediction>  save_predictions(char* file_name, std::string predictor_name) {
@@ -111,8 +112,9 @@ std::vector<nrp::NRP*> save_mols(char* file_name) {
 void getScoreFunction(std::string predictor_name, matcher::Score*& score) {
     if (predictor_name == "MINOWA") {
         score = new matcher::ScoreMinowa;
+    } else {
+        score = new matcher::ScoreWithModification;
     }
-    score = new matcher::ScoreWithModification;
 }
 
 void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::NRP*> mols, std::string output_filename,

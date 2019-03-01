@@ -30,7 +30,7 @@ namespace nrpsprediction {
         std::ifstream in(file_name);
         std::string s;
         while (getline(in, s)) {
-            while (s != "\\" && getline(in, s)) {}
+            while (s != "\\\\" && getline(in, s)) {}
             std::string orf_name;
             getline(in, orf_name);
             getline(in, s);
@@ -46,12 +46,23 @@ namespace nrpsprediction {
                 nrpparts.push_back(NRPsPart(file_name, orf_name_num.first, orf_name_num.second,
                                             AminoacidPrediction(orf_name_num.second, prediction)));
             }
-
         }
 
         if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
             nrpparts.pop_back();
         }
+        /*std::cerr << nrpparts.size() << "\n";
+        for (int i = 0; i < nrpparts.size(); ++i) {
+            auto predictions = nrpparts[i].getAminoacidsPrediction();
+            std::cerr << i << " size:" << predictions.size() << "\n";
+            for (int j = 0; j < predictions.size(); ++j) {
+                auto probs = predictions[j].getAAPrediction();
+                for (int g = 0; g < probs.size(); ++g) {
+                    std::cerr << probs[g].aminoacid << " " << probs[g].prob << "; ";
+                }
+                std::cerr << "\n";
+            }
+        }*/
         in.close();
     }
 
@@ -61,14 +72,19 @@ namespace nrpsprediction {
         double score;
 
         std::vector<std::pair<std::string, double> > aacids;
-        while (in >> name >> score) {
+        std::string s;
+        getline(in, s);
+        while (s != "") {
+            std::stringstream ss(s);
+            ss >> name >> score;
             aacids.push_back(std::make_pair(name, score));
+            getline(in, s);
         }
 
         std::vector<AminoacidPrediction::AminoacidProb> aminoacid_prediction;
 
 
-        double val = std::max(aacids[2].second, 100.);
+        double val = std::min(aacids[0].second, std::max(aacids[2].second, 100.));
 
         for (int i = 0; i < aacids.size(); ++i) {
             if (aacids[i].second >= val - EPS) {
@@ -76,7 +92,7 @@ namespace nrpsprediction {
                         aminoacid::Aminoacid(getAAbyName(aacids[i].first)), aacids[i].second));
             }
         }
-        return std::vector<AminoacidPrediction::AminoacidProb>();
+        return aminoacid_prediction;
     }
 
     aminoacid::Aminoacid::AminoacidId MinowaPredictionBuilder::getAAbyName(std::string s) {

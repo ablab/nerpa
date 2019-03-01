@@ -134,7 +134,6 @@ def run(args):
         log.err("dereplicator not found. Please install dereplicator and add it to PATH.")
         sys.exit()
 
-
     main_out_dir = os.path.abspath(".") + "/"
     if args.local_output_dir != None:
         main_out_dir = os.path.abspath(args.local_output_dir[0]) + "/"
