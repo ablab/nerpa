@@ -39,6 +39,12 @@ def parse_args():
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--predictions", "-p", nargs=1, dest="predictions", help="path to file with paths to prediction files", type=str)
     parser.add_argument("--lib_info", dest="lib_info", nargs=1, help="path to file with paths to mol files", type=str)
+    parser.add_argument("--predictor",
+                        dest="predictor",
+                        default="NRPSPREDICTOR2",
+                        choices=["NRPSPREDICTOR2", "MINOWA"],
+                        help="AA domain predictor name (NRPSPREDICTOR2, MINOWA) [default=NRPSPREDICTOR2]",
+                        action='store')
     parser.add_argument("--local_output_dir", "-o", nargs=1, help="use this output dir", type=str)
     args = parser.parse_args()
     return args
@@ -148,8 +154,8 @@ def run(args):
     if not os.path.exists(os.path.dirname('details_mols/')):
         os.makedirs(os.path.dirname('details_mols/'))
 
-    print(path_to_exec_dir + "/NRPsMatcher \"" +  path_to_pred + "\" \"" + path_to_graphs + "\"\n")
-    os.system(path_to_exec_dir + "/NRPsMatcher \"" +  path_to_pred + "\" \"" + path_to_graphs + "\"\n")
+    print(path_to_exec_dir + "/NRPsMatcher \"" +  path_to_pred + "\" \"" + path_to_graphs + "\" " + args.predictor + "\n")
+    os.system(path_to_exec_dir + "/NRPsMatcher \"" +  path_to_pred + "\" \"" + path_to_graphs + "\" " + args.predictor + "\n")
     return
 
 args = parse_args()

@@ -12,6 +12,8 @@
 #include <Logger/log_writers.hpp>
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
 #include <Matcher/Score/ScoreWithModification.h>
+#include <NRPsPrediction/Builders/MinowaPredictionBuilder.h>
+#include <Matcher/Score/ScoreMinowa.h>
 #include "Matcher/Matcher.h"
 
 const int MIN_SCROE = 2;
@@ -47,7 +49,14 @@ std::string getDir(const std::string& filename) {
     return fn;
 }
 
-std::vector<nrpsprediction::NRPsPrediction>  save_predictions(char* file_name) {
+void getPredictor(std::string predictor_name, nrpsprediction::PredictionBuilderBase*& predictionBuilder) {
+    if (predictor_name == "MINOWA") {
+        predictionBuilder = new nrpsprediction::MinowaPredictionBuilder();
+    }
+    predictionBuilder = new nrpsprediction::Nrpspredictor2Builder();
+}
+
+std::vector<nrpsprediction::NRPsPrediction>  save_predictions(char* file_name, std::string predictor_name) {
     std::vector<nrpsprediction::NRPsPrediction> preds;
     std::ifstream in_predictions_files(file_name);
 
@@ -63,12 +72,13 @@ std::vector<nrpsprediction::NRPsPrediction>  save_predictions(char* file_name) {
         //}
         INFO(cur_line);
 
-        nrpsprediction::Nrpspredictor2Builder nrPsPredictionBuilder;
-        nrPsPredictionBuilder.read_file(cur_line);
+        nrpsprediction::PredictionBuilderBase* nrPsPredictionBuilder;
+        getPredictor(predictor_name, nrPsPredictionBuilder);
+        nrPsPredictionBuilder->read_file(cur_line);
 
-        preds.push_back(nrPsPredictionBuilder.getPrediction());
+        preds.push_back(nrPsPredictionBuilder->getPrediction());
         INFO("Parts in prediction: " << preds.back().getNrpsParts().size());
-
+        delete(nrPsPredictionBuilder);
     }
 
     return preds;
@@ -98,14 +108,23 @@ std::vector<nrp::NRP*> save_mols(char* file_name) {
     return mols;
 }
 
-void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::NRP*> mols, std::string output_filename) {
+void getScoreFunction(std::string predictor_name, matcher::Score*& score) {
+    if (predictor_name == "MINOWA") {
+        score = new matcher::ScoreMinowa;
+    }
+    score = new matcher::ScoreWithModification;
+}
+
+void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::NRP*> mols, std::string output_filename,
+                         std::string predictor_name) {
     if (pred.getNrpsParts().size() == 0) return;
     std::ofstream out(output_filename);
     std::ofstream out_short("report_predictions", std::ofstream::out | std::ofstream::app);
-    matcher::ScoreWithModification score;
+    matcher::Score* score;
+    getScoreFunction(predictor_name, score);
     std::vector<matcher::Matcher::Match> nrpsMatchs;
     for (int i = 0; i < mols.size(); ++i) {
-        matcher::Matcher matcher(*mols[i], pred, &score);
+        matcher::Matcher matcher(*mols[i], pred, score);
         matcher::Matcher::Match match = matcher.getMatch();
         if (match.score() >= MIN_SCROE) {
             nrpsMatchs.push_back(match);
@@ -129,14 +148,17 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::N
 
     out_short.close();
     out.close();
+    delete(score);
 }
 
-void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp::NRP* mol, std::string output_filename) {
+void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp::NRP* mol, std::string output_filename,
+                         std::string predictor_name) {
     std::ofstream out_short("report_mols", std::ofstream::out | std::ofstream::app);
-    matcher::ScoreWithModification score;
+    matcher::Score* score;
+    getScoreFunction(predictor_name, score);
     std::vector<matcher::Matcher::Match> nrpsMatchs;
     for (int i = 0; i < preds.size(); ++i) {
-        matcher::Matcher matcher(*mol, preds[i], &score);
+        matcher::Matcher matcher(*mol, preds[i], score);
         matcher::Matcher::Match match = matcher.getMatch();
         if (match.score() >= MIN_SCROE) {
             nrpsMatchs.push_back(match);
@@ -167,6 +189,7 @@ void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp:
     out_short.close();
     out_csv.close();
     out.close();
+    delete(score);
 }
 
 std::string gen_filename(std::string ifile, std::string prefix) {
@@ -187,9 +210,14 @@ std::string gen_filename(std::string ifile, std::string prefix) {
 int main(int argc, char* argv[]) {
     logging::create_console_logger("");
 
+    std::string predictor_name = "";
+    if (argc > 3) {
+        predictor_name = argv[3];
+    }
+
     INFO("NRPs Matcher START");
     INFO("Saving predictions");
-    std::vector<nrpsprediction::NRPsPrediction> preds = save_predictions(argv[1]);
+    std::vector<nrpsprediction::NRPsPrediction> preds = save_predictions(argv[1], predictor_name);
     INFO("Saving NRPs structures");
     std::vector<nrp::NRP*> mols = save_mols(argv[2]);
 
@@ -199,7 +227,7 @@ int main(int argc, char* argv[]) {
         INFO("Prediction #" << i);
         if (preds[i].getNrpsParts().size() == 0) continue;
         std::string output_filename = gen_filename(preds[i].getNrpsParts()[0].get_file_name(), "details_predictions/");
-        run_prediction_mols(preds[i], mols, output_filename);
+        run_prediction_mols(preds[i], mols, output_filename, predictor_name);
     }
 
     std::ofstream out_csv("report.csv");
@@ -211,7 +239,7 @@ int main(int argc, char* argv[]) {
         INFO("NRP structure #" << i)
         std::string output_filename = gen_filename(mols[i]->get_file_name(), "details_mols/");
 
-        run_mol_predictions(preds, mols[i], output_filename);
+        run_mol_predictions(preds, mols[i], output_filename, predictor_name);
     }
     return 0;
 }
