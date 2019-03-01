@@ -32,13 +32,16 @@ set(SOURCE_FILES main.cpp
         NRPsPrediction/Builders/Nrpspredictor2Builder.cpp
         NRPsPrediction/Builders/MinowaPredictionBuilder.h
         NRPsPrediction/Builders/MinowaPredictionBuilder.cpp
+        NRPsPrediction/Builders/PrismPredictionBuilder.h
+        NRPsPrediction/Builders/PrismPredictionBuilder.cpp
         Aminoacid/Formula.h
         Aminoacid/Modification.h
         Aminoacid/Modification.cpp
         Matcher/Score/ScoreWithModification.cpp
         Matcher/Score/ScoreWithModification.h
         Matcher/Score/ScoreMinowa.cpp
-        Matcher/Score/ScoreMinowa.h)
+        Matcher/Score/ScoreMinowa.h
+        Json/json.hpp)
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})
 add_executable(NRPsMatcher main.cpp)

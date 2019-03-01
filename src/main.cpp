@@ -14,6 +14,7 @@
 #include <Matcher/Score/ScoreWithModification.h>
 #include <NRPsPrediction/Builders/MinowaPredictionBuilder.h>
 #include <Matcher/Score/ScoreMinowa.h>
+#include <NRPsPrediction/Builders/PrismPredictionBuilder.h>
 #include "Matcher/Matcher.h"
 
 const int MIN_SCROE = 2;
@@ -52,6 +53,8 @@ std::string getDir(const std::string& filename) {
 void getPredictor(std::string predictor_name, nrpsprediction::PredictionBuilderBase*& predictionBuilder) {
     if (predictor_name == "MINOWA") {
         predictionBuilder = new nrpsprediction::MinowaPredictionBuilder();
+    } else if (predictor_name == "PRISM") {
+        predictionBuilder = new nrpsprediction::PrismPredictionBuilder();
     } else {
         predictionBuilder = new nrpsprediction::Nrpspredictor2Builder();
     }
