@@ -15,6 +15,7 @@
 #include <NRPsPrediction/Builders/MinowaPredictionBuilder.h>
 #include <Matcher/Score/ScoreMinowa.h>
 #include <NRPsPrediction/Builders/PrismPredictionBuilder.h>
+#include <Matcher/Score/ScorePrism.h>
 #include "Matcher/Matcher.h"
 
 const int MIN_SCROE = 2;
@@ -115,6 +116,8 @@ std::vector<nrp::NRP*> save_mols(char* file_name) {
 void getScoreFunction(std::string predictor_name, matcher::Score*& score) {
     if (predictor_name == "MINOWA") {
         score = new matcher::ScoreMinowa;
+    } else if (predictor_name == "PRISM") {
+        score = new matcher::ScorePrism;
     } else {
         score = new matcher::ScoreWithModification;
     }
