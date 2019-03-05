@@ -1,16 +1,16 @@
 //
-// Created by olga on 23.02.19.
+// Created by olga on 05.03.19.
 //
 
-#ifndef NRPSMATCHER_MINOWAPREDICTIONBUILDER_H
-#define NRPSMATCHER_MINOWAPREDICTIONBUILDER_H
+#ifndef NRPSMATCHER_SANDPUMAPREDICTIONBUILDER_H
+#define NRPSMATCHER_SANDPUMAPREDICTIONBUILDER_H
 
 #include "PredictionBuilderBase.h"
 
 namespace nrpsprediction {
-    class MinowaPredictionBuilder : public PredictionBuilderBase {
+    class SandpumaPredictionBuilder : public PredictionBuilderBase {
     private:
-        std::vector<AminoacidPrediction::AminoacidProb> parse_predictions(std::ifstream& in);
+        //std::vector<AminoacidPrediction::AminoacidProb> parse_predictions(std::ifstream& in);
     public:
         static const std::string AMINOACID_NAMES[aminoacid::Aminoacid::AMINOACID_CNT];
 
@@ -21,4 +21,4 @@ namespace nrpsprediction {
 }
 
 
-#endif //NRPSMATCHER_MINOWAPREDICTIONBUILDER_H
+#endif //NRPSMATCHER_SANDPUMAPREDICTIONBUILDER_H

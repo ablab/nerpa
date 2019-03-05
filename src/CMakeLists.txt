@@ -34,6 +34,8 @@ set(SOURCE_FILES main.cpp
         NRPsPrediction/Builders/MinowaPredictionBuilder.cpp
         NRPsPrediction/Builders/PrismPredictionBuilder.h
         NRPsPrediction/Builders/PrismPredictionBuilder.cpp
+        NRPsPrediction/Builders/SandpumaPredictionBuilder.h
+        NRPsPrediction/Builders/SandpumaPredictionBuilder.cpp
         Aminoacid/Formula.h
         Aminoacid/Modification.h
         Aminoacid/Modification.cpp

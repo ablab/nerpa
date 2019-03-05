@@ -37,10 +37,6 @@ namespace nrpsprediction {
         in.close();
     }
 
-    NRPsPrediction Nrpspredictor2Builder::getPrediction() {
-        return  NRPsPrediction(nrpparts);
-    }
-
     std::vector<AminoacidPrediction::AminoacidProb> Nrpspredictor2Builder::parse_predictions(std::string predictions) {
         std::vector<AminoacidPrediction::AminoacidProb> aminoacid_prediction;
         std::stringstream ss(predictions);

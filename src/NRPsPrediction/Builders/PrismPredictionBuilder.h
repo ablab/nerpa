@@ -12,16 +12,11 @@
 namespace nrpsprediction {
     class PrismPredictionBuilder : public PredictionBuilderBase {
     private:
-        static const double EPS;
-        std::vector<NRPsPart> nrpparts;
-        aminoacid::Aminoacid::AminoacidId getAAbyName(std::string s);
         std::vector<AminoacidPrediction::AminoacidProb> parse_predictions(nlohmann::json predictions);
-
-        static const std::string AMINOACID_NAMES[aminoacid::Aminoacid::AMINOACID_CNT];
     public:
-        void read_file(std::string file_name) override;
+        static const std::string AMINOACID_NAMES[aminoacid::Aminoacid::AMINOACID_CNT];
 
-        NRPsPrediction getPrediction() override;
+        void read_file(std::string file_name) override;
     };
 }
 

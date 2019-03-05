@@ -20,8 +20,6 @@ namespace nrpsprediction {
         //parse ctg1_nrpspredictor2_codes.txt file
         //expected groupded by orfs and sorted by num in one group
         void read_file(std::string file_name) override;
-
-        NRPsPrediction getPrediction() override;
     };
 }
 

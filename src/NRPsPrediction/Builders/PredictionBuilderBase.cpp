@@ -6,6 +6,8 @@
 #include "PredictionBuilderBase.h"
 
 namespace nrpsprediction {
+    const double PredictionBuilderBase::EPS = 1e-4;
+
     std::pair<std::string, int> PredictionBuilderBase::get_orf_name_and_order(std::string orf) {
         std::stringstream ss(orf);
         std::string prefix;
@@ -20,5 +22,19 @@ namespace nrpsprediction {
         ss2 >> pos;
 
         return std::make_pair(orfname, pos);
+    }
+
+    aminoacid::Aminoacid::AminoacidId PredictionBuilderBase::getAAbyName(std::string s, const std::string* AMINOACID_NAMES) {
+        for (int i = 0; i < aminoacid::Aminoacid::AMINOACID_CNT; ++i) {
+            if (s == AMINOACID_NAMES[i]) {
+                return aminoacid::Aminoacid::AminoacidId(i);
+            }
+        }
+
+        return aminoacid::Aminoacid::none;
+    }
+
+    NRPsPrediction PredictionBuilderBase::getPrediction() {
+        return NRPsPrediction(nrpparts);
     }
 }

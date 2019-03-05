@@ -19,11 +19,6 @@ namespace nrpsprediction {
                                                                                                        "Ahp", "Orn", "apc", "Abu", "Aad",
                                                                                                        "Pip", "dpg", "none"};
 
-
-    NRPsPrediction PrismPredictionBuilder::getPrediction() {
-        return NRPsPrediction(nrpparts);
-    }
-
     void PrismPredictionBuilder::read_file(std::string file_name) {
         using json = nlohmann::json;
 
@@ -75,19 +70,9 @@ namespace nrpsprediction {
 
         for (auto aa : predictions) {
             aminoacid_prediction.push_back(AminoacidPrediction::AminoacidProb(
-                    aminoacid::Aminoacid(getAAbyName(aa["name"])), aa["score"]));
+                    aminoacid::Aminoacid(getAAbyName(aa["name"], AMINOACID_NAMES)), aa["score"]));
         }
 
         return aminoacid_prediction;
-    }
-
-    aminoacid::Aminoacid::AminoacidId PrismPredictionBuilder::getAAbyName(std::string s) {
-        for (int i = 0; i < aminoacid::Aminoacid::AMINOACID_CNT; ++i) {
-            if (s == AMINOACID_NAMES[i]) {
-                return aminoacid::Aminoacid::AminoacidId(i);
-            }
-        }
-
-        return aminoacid::Aminoacid::none;
     }
 }

@@ -18,13 +18,7 @@ namespace nrpsprediction {
                                                                               "cit", "vol", "Cys", "Asp", "dht",
                                                                               "Ahp", "Orn", "apc", "Abu", "Aad",
                                                                               "pipecolate", "dpg", "none"};
-
-
-    const double nrpsprediction::MinowaPredictionBuilder::EPS = 1e-4;
-
-    NRPsPrediction MinowaPredictionBuilder::getPrediction() {
-        return NRPsPrediction(nrpparts);
-    }
+    
 
     void MinowaPredictionBuilder::read_file(std::string file_name) {
         std::ifstream in(file_name);
@@ -89,19 +83,9 @@ namespace nrpsprediction {
         for (int i = 0; i < aacids.size(); ++i) {
             if (aacids[i].second >= val - EPS) {
                 aminoacid_prediction.push_back(AminoacidPrediction::AminoacidProb(
-                        aminoacid::Aminoacid(getAAbyName(aacids[i].first)), aacids[i].second));
+                        aminoacid::Aminoacid(getAAbyName(aacids[i].first, AMINOACID_NAMES)), aacids[i].second));
             }
         }
         return aminoacid_prediction;
-    }
-
-    aminoacid::Aminoacid::AminoacidId MinowaPredictionBuilder::getAAbyName(std::string s) {
-        for (int i = 0; i < aminoacid::Aminoacid::AMINOACID_CNT; ++i) {
-            if (s == AMINOACID_NAMES[i]) {
-                return aminoacid::Aminoacid::AminoacidId(i);
-            }
-        }
-
-        return aminoacid::Aminoacid::none;
     }
 }
