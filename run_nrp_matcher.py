@@ -42,7 +42,7 @@ def parse_args():
     parser.add_argument("--predictor",
                         dest="predictor",
                         default="NRPSPREDICTOR2",
-                        choices=["NRPSPREDICTOR2", "MINOWA", "PRISM"],
+                        choices=["NRPSPREDICTOR2", "MINOWA", "PRISM", "SANDPUMA"],
                         help="AA domain predictor name [default=NRPSPREDICTOR2]",
                         action='store')
     parser.add_argument("--local_output_dir", "-o", nargs=1, help="use this output dir", type=str)

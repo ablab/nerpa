@@ -16,6 +16,8 @@
 #include <Matcher/Score/ScoreMinowa.h>
 #include <NRPsPrediction/Builders/PrismPredictionBuilder.h>
 #include <Matcher/Score/ScorePrism.h>
+#include <Matcher/Score/ScoreSandpuma.h>
+#include <NRPsPrediction/Builders/SandpumaPredictionBuilder.h>
 #include "Matcher/Matcher.h"
 
 const int MIN_SCROE = 2;
@@ -56,6 +58,8 @@ void getPredictor(std::string predictor_name, nrpsprediction::PredictionBuilderB
         predictionBuilder = new nrpsprediction::MinowaPredictionBuilder();
     } else if (predictor_name == "PRISM") {
         predictionBuilder = new nrpsprediction::PrismPredictionBuilder();
+    } else if (predictor_name == "SANDPUMA") {
+        predictionBuilder = new nrpsprediction::SandpumaPredictionBuilder();
     } else {
         predictionBuilder = new nrpsprediction::Nrpspredictor2Builder();
     }
@@ -118,6 +122,8 @@ void getScoreFunction(std::string predictor_name, matcher::Score*& score) {
         score = new matcher::ScoreMinowa;
     } else if (predictor_name == "PRISM") {
         score = new matcher::ScorePrism;
+    } else if (predictor_name == "SANDPUMA") {
+        score = new matcher::ScoreSandpuma;
     } else {
         score = new matcher::ScoreWithModification;
     }

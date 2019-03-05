@@ -18,7 +18,7 @@ namespace nrpsprediction {
                                                                               "cit", "vol", "Cys", "Asp", "dht",
                                                                               "Ahp", "Orn", "apc", "Abu", "Aad",
                                                                               "pipecolate", "dpg", "none"};
-    
+
 
     void MinowaPredictionBuilder::read_file(std::string file_name) {
         std::ifstream in(file_name);
