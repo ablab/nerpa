@@ -10,13 +10,27 @@
 namespace nrpsprediction {
     class SandpumaPredictionBuilder : public PredictionBuilderBase {
     private:
-        //std::vector<AminoacidPrediction::AminoacidProb> parse_predictions(std::ifstream& in);
+        struct Token {
+            std::string orf_id;
+            int id;
+            std::vector<std::string> res;
+
+            bool operator < (Token &t) {
+                return orf_id < t.orf_id || (orf_id == t.orf_id && id < t.id);
+            }
+        };
+
+        bool parse_token(std::ifstream& in, Token& t);
+
+        std::vector<AminoacidPrediction::AminoacidProb> parse_predictions(Token& t);
     public:
         static const std::string AMINOACID_NAMES[aminoacid::Aminoacid::AMINOACID_CNT];
 
         //parse ctg1_minowa_nrpspredoutput.txt file
         //expected groupded by orfs and sorted by num in one group
         void read_file(std::string file_name) override;
+
+        std::pair<std::string, int> split_name(std::string name);
     };
 }
 
