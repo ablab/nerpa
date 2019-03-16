@@ -7,7 +7,6 @@
 #include "Nrpspredictor2Builder.h"
 
 namespace nrpsprediction {
-    const double nrpsprediction::Nrpspredictor2Builder::EPS = 1e-4;
     void Nrpspredictor2Builder::read_file(std::string file_name) {
         std::ifstream in(file_name);
         std::string s;

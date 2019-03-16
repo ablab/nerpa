@@ -47,6 +47,8 @@ set(SOURCE_FILES main.cpp
         Matcher/Score/ScorePrism.h
         Matcher/Score/ScoreSandpuma.cpp
         Matcher/Score/ScoreSandpuma.h
+        Matcher/Score/ScorePositionOnly.cpp
+        Matcher/Score/ScorePositionOnly.h
         Json/json.hpp)
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})

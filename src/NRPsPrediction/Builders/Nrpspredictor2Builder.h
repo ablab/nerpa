@@ -10,9 +10,6 @@
 namespace nrpsprediction {
     class Nrpspredictor2Builder : public PredictionBuilderBase {
     private:
-        static const double EPS;
-        std::vector<NRPsPart> nrpparts;
-
         static std::pair<std::string, double> parse_token(std::string token);
     public:
         static std::vector<AminoacidPrediction::AminoacidProb> parse_predictions(std::string predictions);

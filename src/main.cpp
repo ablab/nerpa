@@ -18,6 +18,7 @@
 #include <Matcher/Score/ScorePrism.h>
 #include <Matcher/Score/ScoreSandpuma.h>
 #include <NRPsPrediction/Builders/SandpumaPredictionBuilder.h>
+#include <Matcher/Score/ScorePositionOnly.h>
 #include "Matcher/Matcher.h"
 
 const int MIN_SCROE = 2;
@@ -65,6 +66,14 @@ void getPredictor(std::string predictor_name, nrpsprediction::PredictionBuilderB
     }
 }
 
+std::string get_file_name(std::string cur_line) {
+    std::string res = "";
+    for (int i = 0; i < cur_line.size() && cur_line[i] != '\t'; ++i) {
+        res += cur_line[i];
+    }
+    return res;
+}
+
 std::vector<nrpsprediction::NRPsPrediction>  save_predictions(char* file_name, std::string predictor_name) {
     std::vector<nrpsprediction::NRPsPrediction> preds;
     std::ifstream in_predictions_files(file_name);
@@ -80,10 +89,12 @@ std::vector<nrpsprediction::NRPsPrediction>  save_predictions(char* file_name, s
         //    cur_line = getDir(file_name) + "/" + cur_line;
         //}
         INFO(cur_line);
+        std::string info_file_name = get_file_name(cur_line);
+        INFO(info_file_name)
 
         nrpsprediction::PredictionBuilderBase* nrPsPredictionBuilder;
         getPredictor(predictor_name, nrPsPredictionBuilder);
-        nrPsPredictionBuilder->read_file(cur_line);
+        nrPsPredictionBuilder->read_file(info_file_name);
 
         preds.push_back(nrPsPredictionBuilder->getPrediction());
         INFO("Parts in prediction: " << preds.back().getNrpsParts().size());
@@ -118,7 +129,8 @@ std::vector<nrp::NRP*> save_mols(char* file_name) {
 }
 
 void getScoreFunction(std::string predictor_name, matcher::Score*& score) {
-    if (predictor_name == "MINOWA") {
+    score = new matcher::ScorePositionOnly;
+    /*if (predictor_name == "MINOWA") {
         score = new matcher::ScoreMinowa;
     } else if (predictor_name == "PRISM") {
         score = new matcher::ScorePrism;
@@ -126,7 +138,7 @@ void getScoreFunction(std::string predictor_name, matcher::Score*& score) {
         score = new matcher::ScoreSandpuma;
     } else {
         score = new matcher::ScoreWithModification;
-    }
+    }*/
 }
 
 void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::NRP*> mols, std::string output_filename,
