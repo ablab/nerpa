@@ -204,10 +204,12 @@ std::string gen_filename(std::string ifile, std::string prefix) {
 int main(int argc, char* argv[]) {
     logging::create_console_logger("");
 
-    std::string predictor_name = "";
-    if (argc > 3) {
-        predictor_name = argv[3];
+    std::string AA_file_name = argv[3];
+    std::string predictor_name = "NRPSPREDICTOR2";
+    if (argc > 4) {
+        predictor_name = argv[4];
     }
+    aminoacid::AminoacidInfo::init(AA_file_name, predictor_name);
 
     INFO("NRPs Matcher START");
     INFO("Saving predictions");

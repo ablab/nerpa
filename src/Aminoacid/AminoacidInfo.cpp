@@ -2,6 +2,9 @@
 // Created by olga on 21.03.19.
 //
 
+#include <fstream>
+#include <sstream>
+#include <vector>
 #include "AminoacidInfo.h"
 
 namespace aminoacid {
@@ -53,7 +56,7 @@ namespace aminoacid {
     //dhb=Threonine
 
     //TODO finish formuls, sure have mis
-    const std::string AminoacidInfo::AMINOACID_NAMES[AminoacidInfo::AMINOACID_CNT] = {"trp", "ser", "gly", "uda", "thr",
+    std::vector<std::string> AminoacidInfo::AMINOACID_NAMES = {"trp", "ser", "gly", "uda", "thr",
                                                                                       "dhp", "gln", "dab", "arg", "lys",
                                                                                       "ala-d", "phe", "val", "cha", "dhpg",
                                                                                       "phg", "his", "aeo", "bmt", "hse",
@@ -66,7 +69,7 @@ namespace aminoacid {
                                                                                       "pip", "dpg", "none"};
 
 
-    const Formula AminoacidInfo::FORMULS[AminoacidInfo::AMINOACID_CNT] = {Formula("C11H12N2O2"), Formula("C3H7NO3"), Formula("C2H5NO2"), Formula("C4H9N3O3"), Formula("C4H9NO3"),
+    std::vector<Formula> AminoacidInfo::FORMULS = {Formula("C11H12N2O2"), Formula("C3H7NO3"), Formula("C2H5NO2"), Formula("C4H9N3O3"), Formula("C4H9NO3"),
                                                                           Formula("C3H5NO2"), Formula("C5H10N2O3"), Formula("C4H10N2O2"), Formula("C6H14N4O2"), Formula("C6H14N2O2"),
                                                                           Formula("C3H7NO2"), Formula("C9H11NO2"), Formula("C5H11NO2"), Formula("C9H17NO2"), Formula("C8H9NO4"),
                                                                           Formula("C8H9NO2"), Formula("C6H9N3O2"), Formula("C10H17NO4"), Formula("C9H17NO3"), Formula("C4H9NO3"),
@@ -77,4 +80,61 @@ namespace aminoacid {
                                                                           Formula("C6H13N3O3"), Formula("C5H13NO"), Formula("C3H7NO2S"), Formula("C4H7NO4"), Formula("C9H9NO3"),
                                                                           Formula("C9H16N2O5"), Formula("C5H12N2O2"), Formula("S179"), Formula("C4H9NO2"), Formula("C6H11NO4"),
                                                                           Formula("C6H11NO2"), Formula("C8H9NO4"), Formula()};
+
+    int AminoacidInfo::AMINOACID_CNT = int(AMINOACID_NAMES.size());
+
+    void AminoacidInfo::init(std::string filename, std::string predictor) {
+        std::ifstream in(filename);
+        std::string buffer;
+        getline(in, buffer);
+        std::stringstream ss(buffer);
+        std::vector<std::string> header;
+        std::string s;
+        int nameid = 0;
+        int formulaid = 0;
+        int i = 0;
+        while (getline(ss, s, '\t')) {
+            if (s.size() > 0 && (s.back() == '\r' || s.back() == '\b')) {
+                s.pop_back();
+            }
+
+            header.push_back(s);
+            if (s == "Formula") {
+                formulaid = i;
+            }
+            if (s == predictor) {
+                nameid = i;
+            }
+            i += 1;
+        }
+
+        FORMULS.resize(0);
+        AMINOACID_NAMES.resize(0);
+
+        while (getline(in, buffer)) {
+            std::stringstream ss1(buffer);
+            std::vector<std::string> parts;
+            std::string tmp;
+            while (getline(ss1, tmp, '\t')) {
+                if (tmp.size() > 0 && (tmp.back() == '\r' || tmp.back() == '\b')) {
+                    tmp.pop_back();
+                }
+                parts.push_back(tmp);
+            }
+            if (parts[nameid] != "-") {
+                AMINOACID_NAMES.push_back(parts[nameid]);
+                if (parts[formulaid] != "-") {
+                    FORMULS.push_back(Formula(parts[nameid]));
+                } else {
+                    FORMULS.push_back(Formula());
+                }
+            }
+        }
+
+        FORMULS.push_back(Formula());
+        AMINOACID_NAMES.push_back("none");
+
+        AMINOACID_CNT = AMINOACID_NAMES.size();
+        in.close();
+    }
 }
