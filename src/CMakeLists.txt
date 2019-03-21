@@ -39,6 +39,8 @@ set(SOURCE_FILES main.cpp
         Aminoacid/Formula.h
         Aminoacid/Modification.h
         Aminoacid/Modification.cpp
+        Aminoacid/AminoacidInfo.h
+        Aminoacid/AminoacidInfo.cpp
         Matcher/Score/ScoreWithModification.cpp
         Matcher/Score/ScoreWithModification.h
         Matcher/Score/ScoreMinowa.cpp
@@ -49,6 +51,8 @@ set(SOURCE_FILES main.cpp
         Matcher/Score/ScoreSandpuma.h
         Matcher/Score/ScorePositionOnly.cpp
         Matcher/Score/ScorePositionOnly.h
+        Matcher/Score/ScoreMinowaScoreOnly.cpp
+        Matcher/Score/ScoreMinowaScoreOnly.h
         Json/json.hpp)
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})

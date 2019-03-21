@@ -16,6 +16,6 @@ double matcher::ScoreMinowa::aaScore(const nrpsprediction::AminoacidPrediction &
         if (mdpos >= 10) {
             return 0;
         }
-        return prob.prob/300. * posscore[mdpos];
+        return std::min(1., prob.prob/350.) * posscore[mdpos];
     }
 }

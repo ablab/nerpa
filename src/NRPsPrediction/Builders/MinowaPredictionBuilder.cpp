@@ -7,19 +7,6 @@
 #include "MinowaPredictionBuilder.h"
 
 namespace nrpsprediction {
-    const std::string MinowaPredictionBuilder::AMINOACID_NAMES[aminoacid::Aminoacid::AMINOACID_CNT] = {"Trp", "Ser", "Gly", "uda", "Thr",
-                                                                              "dhp", "Gln", "Dab", "Arg", "Lys",
-                                                                              "ala-d", "Phe", "Val", "cha", "DHpg",
-                                                                              "phg", "His", "Aeo", "Bmt", "hse",
-                                                                              "met", "Ala", "tcl", "Sal", "allothr",
-                                                                              "B-Ala", "dhb", "Ile", "end", "Leu",
-                                                                              "gua", "homoTyr", "Glu", "bht", "Hpg",
-                                                                              "apa", "Pro", "Tyr", "hyv", "Asn",
-                                                                              "cit", "vol", "Cys", "Asp", "dht",
-                                                                              "Ahp", "Orn", "apc", "Abu", "Aad",
-                                                                              "pipecolate", "dpg", "none"};
-
-
     void MinowaPredictionBuilder::read_file(std::string file_name) {
         std::ifstream in(file_name);
         std::string s;
@@ -83,7 +70,7 @@ namespace nrpsprediction {
         for (int i = 0; i < aacids.size(); ++i) {
             if (aacids[i].second >= val - EPS) {
                 aminoacid_prediction.push_back(AminoacidPrediction::AminoacidProb(
-                        aminoacid::Aminoacid(getAAbyName(aacids[i].first, AMINOACID_NAMES)), aacids[i].second));
+                        aminoacid::Aminoacid(getAAbyName(aacids[i].first)), aacids[i].second));
             }
         }
         return aminoacid_prediction;

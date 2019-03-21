@@ -12,7 +12,7 @@ namespace nrpsprediction {
     protected:
         static const double EPS;
         std::vector<NRPsPart> nrpparts;
-        aminoacid::Aminoacid::AminoacidId getAAbyName(std::string s, const std::string* AMINOACID_NAME);
+        static int getAAbyName(std::string s);
 
         //orf = <prefix>_<orfname>_A<num>
         //return (<orfname>, <num>)

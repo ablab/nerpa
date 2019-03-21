@@ -7,18 +7,6 @@
 
 
 namespace nrpsprediction {
-    const std::string PrismPredictionBuilder::AMINOACID_NAMES[aminoacid::Aminoacid::AMINOACID_CNT] = {"W", "S", "G", "uda", "T",
-                                                                                                       "dhp", "Q", "Dab", "R", "K",
-                                                                                                       "ala-d", "F", "V", "cha", "DHpg",
-                                                                                                       "phg", "H", "Aeo", "Bmt", "hse",
-                                                                                                       "M", "A", "tcl", "Sal", "allothr",
-                                                                                                       "B-Ala", "Dhab", "I", "end", "L",
-                                                                                                       "gua", "homoTyr", "E", "bht", "Hpg",
-                                                                                                       "apa", "P", "Y", "hyv", "N",
-                                                                                                       "cit", "vol", "C", "D", "dht",
-                                                                                                       "Ahp", "Orn", "apc", "Abu", "Aad",
-                                                                                                       "Pip", "dpg", "none"};
-
     void PrismPredictionBuilder::read_file(std::string file_name) {
         using json = nlohmann::json;
 
@@ -70,7 +58,7 @@ namespace nrpsprediction {
 
         for (auto aa : predictions) {
             aminoacid_prediction.push_back(AminoacidPrediction::AminoacidProb(
-                    aminoacid::Aminoacid(getAAbyName(aa["name"], AMINOACID_NAMES)), aa["score"]));
+                    aminoacid::Aminoacid(getAAbyName(aa["name"])), aa["score"]));
         }
 
         return aminoacid_prediction;

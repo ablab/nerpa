@@ -14,8 +14,6 @@ namespace nrpsprediction {
     private:
         std::vector<AminoacidPrediction::AminoacidProb> parse_predictions(nlohmann::json predictions);
     public:
-        static const std::string AMINOACID_NAMES[aminoacid::Aminoacid::AMINOACID_CNT];
-
         void read_file(std::string file_name) override;
     };
 }

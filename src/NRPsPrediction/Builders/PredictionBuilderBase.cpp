@@ -24,14 +24,14 @@ namespace nrpsprediction {
         return std::make_pair(orfname, pos);
     }
 
-    aminoacid::Aminoacid::AminoacidId PredictionBuilderBase::getAAbyName(std::string s, const std::string* AMINOACID_NAMES) {
-        for (int i = 0; i < aminoacid::Aminoacid::AMINOACID_CNT; ++i) {
-            if (s == AMINOACID_NAMES[i]) {
-                return aminoacid::Aminoacid::AminoacidId(i);
+    int PredictionBuilderBase::getAAbyName(std::string s) {
+        for (int i = 0; i < aminoacid::AminoacidInfo::AMINOACID_CNT; ++i) {
+            if (s == aminoacid::AminoacidInfo::AMINOACID_NAMES[i]) {
+                return i;
             }
         }
 
-        return aminoacid::Aminoacid::none;
+        return aminoacid::AminoacidInfo::AMINOACID_CNT - 1;
     }
 
     NRPsPrediction PredictionBuilderBase::getPrediction() {
