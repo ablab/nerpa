@@ -155,9 +155,9 @@ def run(args):
 
     path_to_cur = os.path.dirname(os.path.abspath(__file__))
     path_to_AA = "./resources/aminoacids.tsv"
-    if (os.path.exists('./NRPsMatcher')):
+    if (os.path.exists(os.path.join(path_to_cur, './NRPsMatcher'))):
         path_to_AA = "../share/nrpsmatcher/aminoacids.tsv"
-    path_to_AA = os.join(path_to_cur, path_to_AA)
+    path_to_AA = os.path.join(path_to_cur, path_to_AA)
 
     comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_to_pred + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" " + args.predictor + "\n"
     print(comand)
