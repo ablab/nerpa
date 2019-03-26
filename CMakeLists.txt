@@ -12,18 +12,19 @@ install(PROGRAMS "${CMAKE_CURRENT_SOURCE_DIR}/run_nrp_matcher.py"
         DESTINATION bin
         COMPONENT runtime)
 
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/library.info.streptomedb"
-        DESTINATION share
-        COMPONENT runtime)
-
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/prediction.info"
-        DESTINATION share
+install(FILES
+        "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/library.info.streptomedb"
+        "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/prediction.info"
+        "${CMAKE_CURRENT_SOURCE_DIR}/resources/aminoacids.tsv"
+        DESTINATION share/nrpsmatcher
         COMPONENT runtime)
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/predictions"
-        DESTINATION share
+        DESTINATION share/nrpsmatcher
         COMPONENT runtime)
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/streptomedb"
-        DESTINATION share
+        DESTINATION share/nrpsmatcher
         COMPONENT runtime)
+
+

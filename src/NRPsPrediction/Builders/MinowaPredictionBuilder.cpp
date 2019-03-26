@@ -69,6 +69,7 @@ namespace nrpsprediction {
 
         for (int i = 0; i < aacids.size(); ++i) {
             if (aacids[i].second >= val - EPS) {
+                aminoacid::Aminoacid(getAAbyName(aacids[i].first)).getFormula().print();
                 aminoacid_prediction.push_back(AminoacidPrediction::AminoacidProb(
                         aminoacid::Aminoacid(getAAbyName(aacids[i].first)), aacids[i].second));
             }

@@ -153,8 +153,15 @@ def run(args):
     if not os.path.exists(os.path.dirname('details_mols/')):
         os.makedirs(os.path.dirname('details_mols/'))
 
-    print(path_to_exec_dir + "/NRPsMatcher \"" +  path_to_pred + "\" \"" + path_to_graphs + "\" " + args.predictor + "\n")
-    os.system(path_to_exec_dir + "/NRPsMatcher \"" +  path_to_pred + "\" \"" + path_to_graphs + "\" " + args.predictor + "\n")
+    path_to_cur = os.path.dirname(os.path.abspath(__file__))
+    path_to_AA = "./resources/aminoacids.tsv"
+    if (os.path.exists('./NRPsMatcher')):
+        path_to_AA = "../share/nrpsmatcher/aminoacids.tsv"
+    path_to_AA = os.join(path_to_cur, path_to_AA)
+
+    comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_to_pred + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" " + args.predictor + "\n"
+    print(comand)
+    os.system(comand)
     return
 
 args = parse_args()

@@ -124,7 +124,7 @@ namespace aminoacid {
             if (parts[nameid] != "-") {
                 AMINOACID_NAMES.push_back(parts[nameid]);
                 if (parts[formulaid] != "-") {
-                    FORMULS.push_back(Formula(parts[nameid]));
+                    FORMULS.push_back(Formula(parts[formulaid]));
                 } else {
                     FORMULS.push_back(Formula());
                 }
