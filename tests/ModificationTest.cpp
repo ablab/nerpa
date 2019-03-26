@@ -24,6 +24,9 @@ namespace nrp {
     class ModificationTest : public ::testing::Test {
     protected:
         std::vector<aminoacid::Aminoacid> amnacid;
+        virtual void SetUp() {
+            aminoacid::AminoacidInfo::init("../../resources/aminoacids.tsv", "NRPSPREDICTOR2");
+        }
 
         void addModificationToAA(Aminoacid &aa) {
             if (aa.get_name() == "asn") {
@@ -43,8 +46,7 @@ namespace nrp {
                 std::vector<std::string> names;
                 for (int g = 0; g < 3; ++g) {
                     prob.push_back(rand() % 10 * 10);
-                    predict[j].push_back(aminoacid::Aminoacid(
-                            aminoacid::Aminoacid::AminoacidId(rand() % (int(aminoacid::Aminoacid::none)))));
+                    predict[j].push_back(aminoacid::Aminoacid(rand() % (aminoacid::AminoacidInfo::AMINOACID_CNT - 1)));
 
                     names.push_back(predict[j][predict[j].size() - 1].get_name());
                 }
@@ -71,8 +73,7 @@ namespace nrp {
             amnacid.resize(0);
             for (int i = 0; i < len; ++i) {
                 position[i] = i;
-                amnacid.push_back(aminoacid::Aminoacid(
-                        aminoacid::Aminoacid::AminoacidId(rand() % aminoacid::Aminoacid::none)));
+                amnacid.push_back(aminoacid::Aminoacid(rand() % (aminoacid::AminoacidInfo::AMINOACID_CNT - 1)));
                 addModificationToAA(amnacid.back());
             }
 
@@ -90,8 +91,7 @@ namespace nrp {
             amnacid.resize(0);
             for (int i = 0; i < len; ++i) {
                 position[i] = i;
-                amnacid.push_back(aminoacid::Aminoacid(
-                        aminoacid::Aminoacid::AminoacidId(rand() % aminoacid::Aminoacid::none)));
+                amnacid.push_back(aminoacid::Aminoacid(rand() % (aminoacid::AminoacidInfo::AMINOACID_CNT - 1)));
 
                 std::cerr << amnacid.back().get_name() << "\n";
                 amnacid.back().getFormula().print();
@@ -116,7 +116,7 @@ namespace nrp {
                 std::vector<std::string> names;
                 for (int g = 0; g < 3; ++g) {
                     prob.push_back(60 + rand() % 4 * 10);
-                    names.push_back(aminoacid::Aminoacid::AMINOACID_NAMES[rand() % (int(aminoacid::Aminoacid::none))]);
+                    names.push_back(aminoacid::AminoacidInfo::AMINOACID_NAMES[rand() % (aminoacid::AminoacidInfo::AMINOACID_CNT - 1)]);
                 }
 
                 int right_AA_pos = rand() % 3;
@@ -273,8 +273,7 @@ namespace nrp {
             int len = 10;
             amnacid.resize(0);
             for (int i = 0; i < len; ++i) {
-                amnacid.push_back(aminoacid::Aminoacid(
-                        aminoacid::Aminoacid::AminoacidId(rand() % aminoacid::Aminoacid::none)));
+                amnacid.push_back(aminoacid::Aminoacid(rand() % (aminoacid::AminoacidInfo::AMINOACID_CNT - 1)));
             }
 
             nrpsprediction::NRPsPart nrps_part("filename", "orf");
@@ -284,7 +283,7 @@ namespace nrp {
                 std::vector<std::string> names;
                 for (int g = 0; g < 3; ++g) {
                     prob.push_back(60 + rand() % 4 * 10);
-                    names.push_back(aminoacid::Aminoacid::AMINOACID_NAMES[rand() % (int(aminoacid::Aminoacid::none))]);
+                    names.push_back(aminoacid::AminoacidInfo::AMINOACID_NAMES[rand() % (aminoacid::AminoacidInfo::AMINOACID_CNT - 1)]);
                 }
 
                 names[0] = amnacid[i].get_name();

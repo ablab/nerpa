@@ -9,6 +9,7 @@
 #include <Logger/log_writers.hpp>
 #include <boost/concept_check.hpp>
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
+#include <Matcher/Score/ScoreFullMatch.h>
 
 namespace nrp {
     typedef matcher::Segment Segment;
@@ -17,6 +18,9 @@ namespace nrp {
     class ContainNRPsTest : public ::testing::Test {
     protected:
         std::vector<aminoacid::Aminoacid> amnacid;
+        virtual void SetUp() {
+            aminoacid::AminoacidInfo::init("../../resources/aminoacids.tsv", "NRPSPREDICTOR2");
+        }
 
         void genRandNrpPart(int partlen, nrpsprediction::NRPsPart& nrps_part,
                             std::vector<std::vector<aminoacid::Aminoacid>>& predict) {
@@ -26,8 +30,7 @@ namespace nrp {
                 std::vector<std::string> names;
                 for (int g = 0; g < 3; ++g) {
                     prob.push_back(rand()%10 * 10);
-                    predict[j].push_back(aminoacid::Aminoacid(
-                            aminoacid::Aminoacid::AminoacidId(rand()%(int(aminoacid::Aminoacid::none)))));
+                    predict[j].push_back(aminoacid::Aminoacid(rand()%(aminoacid::AminoacidInfo::AMINOACID_CNT - 1)));
 
                     names.push_back(predict[j][predict[j].size() - 1].get_name());
                 }
@@ -64,8 +67,7 @@ namespace nrp {
             amnacid.resize(0);
             for (int i = 0; i < len; ++i) {
                 position[i] = i;
-                amnacid.push_back(aminoacid::Aminoacid(
-                        aminoacid::Aminoacid::AminoacidId(rand() % aminoacid::Aminoacid::none)));
+                amnacid.push_back(aminoacid::Aminoacid(rand()%(aminoacid::AminoacidInfo::AMINOACID_CNT - 1)));
             }
 
             std::random_shuffle(position.begin(), position.end());
@@ -82,8 +84,7 @@ namespace nrp {
             amnacid.resize(0);
             for (int i = 0; i < len; ++i) {
                 position[i] = i;
-                amnacid.push_back(aminoacid::Aminoacid(
-                        aminoacid::Aminoacid::AminoacidId(rand() % aminoacid::Aminoacid::none)));
+                amnacid.push_back(aminoacid::Aminoacid(rand()%(aminoacid::AminoacidInfo::AMINOACID_CNT - 1)));
             }
 
             std::random_shuffle(position.begin(), position.end());
@@ -98,6 +99,7 @@ namespace nrp {
                 bool has = false;
 
                 for (int g = 0; g < predict[j].size(); ++g) {
+                    std::cerr << predict[j][g] << " " << amnacid[i] << " " << predict[j].size() << "\n";
                     if (predict[j][g] == amnacid[i]) {
                         has = true;
                     }
@@ -274,7 +276,7 @@ namespace nrp {
                 std::vector<std::string> names;
                 for (int g = 0; g < 3; ++g) {
                     prob.push_back(60 + rand()%4 * 10);
-                    names.push_back(aminoacid::Aminoacid::AMINOACID_NAMES[rand()%(int(aminoacid::Aminoacid::none))]);
+                    names.push_back(aminoacid::AminoacidInfo::AMINOACID_NAMES[(rand()%(aminoacid::AminoacidInfo::AMINOACID_CNT - 1))]);
                 }
 
                 int right_AA_pos = rand()%3;
@@ -357,7 +359,7 @@ namespace nrp {
 
     //check all find segment is right
     TEST_F(ContainNRPsTest, containRandCycleTest) {
-        matcher::Score score;
+        matcher::ScoreFullMatch score;
         for (int tst = 0; tst < 1000; ++tst) {
             int len = rand()%20 + 1;
             NRPCycle nrp = genRandCycleNRP(len);
@@ -504,7 +506,7 @@ namespace nrp {
             std::random_shuffle(nrpParts.begin(), nrpParts.end());
             nrpsprediction::NRPsPrediction nrpsPrediction(nrpParts);
 
-            matcher::Score score;
+            matcher::ScoreFullMatch score;
             matcher::Matcher matcher(nrp, nrpsPrediction, &score);
             matcher::Matcher::Match match = matcher.getMatch();
 
@@ -516,7 +518,7 @@ namespace nrp {
     }
 
     TEST_F(ContainNRPsTest, coverRandCycleTest) {
-        matcher::Score score;
+        matcher::ScoreFullMatch score;
         for (int tst = 0; tst < 1000; ++tst) {
             int len = rand()%20 + 1;
             NRPCycle nrp = genRandCycleNRP(len);
@@ -599,7 +601,7 @@ namespace nrp {
             for (int g = 0; g < 3; ++g) {
                 prob.push_back(60 + rand() % 4 * 10);
                 names.push_back(
-                        aminoacid::Aminoacid::AMINOACID_NAMES[rand() % (int(aminoacid::Aminoacid::AMINOACID_CNT))]);
+                        aminoacid::AminoacidInfo::AMINOACID_NAMES[(rand()%(aminoacid::AminoacidInfo::AMINOACID_CNT))]);
             }
 
             int right_AA_pos = rand() % 3;
