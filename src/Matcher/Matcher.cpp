@@ -117,6 +117,11 @@ matcher::Matcher::updateMatch(const nrpsprediction::NRPsPrediction &nrPsPredicti
 matcher::Matcher::Match
 matcher::Matcher::isCoverLine(std::vector<Segment> &segments,
                       const std::vector<int> &toSmallId, const std::vector<int> &toBigId, int len) const {
+
+    if (toBigId.size() > 20) {
+        return matcher::Matcher::Match(&nrp, prediction.getNrpsParts(), -1, score);
+    }
+
     std::sort(segments.begin(), segments.end());
 
     std::vector<std::vector<std::vector<double> > > d(len + 1,

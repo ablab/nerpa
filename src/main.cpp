@@ -209,6 +209,11 @@ int main(int argc, char* argv[]) {
     if (argc > 4) {
         predictor_name = argv[4];
     }
+    int start_from = 0;
+    if (argc > 5) {
+        std::stringstream ss(argv[5]);
+        ss >> start_from;
+    }
     aminoacid::AminoacidInfo::init(AA_file_name, predictor_name);
 
     INFO("NRPs Matcher START");
@@ -217,12 +222,15 @@ int main(int argc, char* argv[]) {
     INFO("Saving NRPs structures");
     std::vector<nrp::NRP*> mols = save_mols(argv[2]);
 
-    std::ofstream out_csv("report.csv");
-    out_csv << "score,peptide,nrp len,match cnt,all matched,mol id,prediction id\n";
-    out_csv.close();
+    if (start_from == 0) {
+        std::ofstream out_csv("report.csv");
+        out_csv << "score,peptide,nrp len,match cnt,all matched,mol id,prediction id\n";
+        out_csv.close();
+    }
 
     INFO("Processing matching for NRPs structurs")
-    for (int i = 0; i < mols.size(); ++i) {
+    INFO("Start from: " << start_from)
+    for (int i = start_from; i < mols.size(); ++i) {
         INFO("NRP structure #" << i)
         std::string output_filename = gen_filename(mols[i]->get_file_name(), "details_mols/");
 
