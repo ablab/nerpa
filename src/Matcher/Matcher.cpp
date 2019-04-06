@@ -199,7 +199,7 @@ matcher::Matcher::isCoverLine(std::vector<Segment> &segments,
         }
     }
 
-    matcher::Matcher::Match nrPsMatch(&nrp, prediction.getNrpsParts(), mn, score);
+    matcher::Matcher::Match nrPsMatch(&nrp, prediction.getNrpsParts(), score->resultScore(mn, len), score);
     int pos = len;
     while (pos > 0) {
         int nxtp = p[pos][rmsk].first;

@@ -123,3 +123,13 @@ void matcher::Matcher::Match::print_csv(std::ofstream &out) {
     out << nrp->get_file_name() << ",";
     out << nrpParts[0].get_file_name() << "\n";
 }
+
+int matcher::Matcher::Match::getCntMatch() {
+    int cntMatch = 0;
+    for (int i = 0; i < parts_id.size(); ++i){
+        if (isMatched(i)) {
+            cntMatch += 1;
+        }
+    }
+    return cntMatch;
+}

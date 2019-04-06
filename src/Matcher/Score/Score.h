@@ -16,6 +16,15 @@ namespace matcher {
             return -len - 1;
         }
 
+        virtual double maxScore(const int len) const  {
+            int MAX_PRED_LEN = 5;
+            return len - (len + 1)/MAX_PRED_LEN;
+        }
+
+        virtual double resultScore(double score, const int len) const {
+            return score;
+        }
+
         virtual double openGap() const {
             return -1;
         }

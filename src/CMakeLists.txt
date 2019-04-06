@@ -55,6 +55,8 @@ set(SOURCE_FILES main.cpp
         Matcher/Score/ScoreMinowaScoreOnly.h
         Matcher/Score/ScoreFullMatch.cpp
         Matcher/Score/ScoreFullMatch.h
+        Matcher/Score/ScoreMinowaNormalize.h
+        Matcher/Score/ScoreMinowaNormalize.cpp
         Json/json.hpp)
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})

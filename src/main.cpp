@@ -17,9 +17,11 @@
 #include <NRPsPrediction/Builders/SandpumaPredictionBuilder.h>
 #include <Matcher/Score/ScorePositionOnly.h>
 #include <Matcher/Score/ScoreMinowaScoreOnly.h>
+#include <Matcher/Score/ScoreMinowaNormalize.h>
 #include "Matcher/Matcher.h"
 
-const int MIN_SCROE = 2;
+const int MIN_SCROE = 0;
+const double MIN_EXPLAIN_PART = 0.15;
 
 void getPredictor(std::string predictor_name, nrpsprediction::PredictionBuilderBase*& predictionBuilder) {
     if (predictor_name == "MINOWA") {
@@ -97,7 +99,7 @@ std::vector<nrp::NRP*> save_mols(char* file_name) {
 
 void getScoreFunction(std::string predictor_name, matcher::Score*& score) {
     if (predictor_name == "MINOWA") {
-        score = new matcher::ScoreMinowa;
+        score = new matcher::ScoreMinowaNormalize;
     } else if (predictor_name == "PRISM") {
         score = new matcher::ScorePrism;
     } else if (predictor_name == "SANDPUMA") {
@@ -118,7 +120,9 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::N
     for (int i = 0; i < mols.size(); ++i) {
         matcher::Matcher matcher(*mols[i], pred, score);
         matcher::Matcher::Match match = matcher.getMatch();
-        if (match.score() >= MIN_SCROE) {
+
+        if (match.score() >= MIN_SCROE &&
+                (double)match.getCntMatch()/pred.getSumPredictionLen() >= MIN_EXPLAIN_PART) {
             nrpsMatchs.push_back(match);
         }
     }
@@ -154,7 +158,8 @@ void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp:
         //std::cerr << mol->get_file_name() << " " << preds[i].getNrpsParts()[0].get_file_name() << "\n";
         matcher::Matcher matcher(*mol, preds[i], score);
         matcher::Matcher::Match match = matcher.getMatch();
-        if (match.score() >= MIN_SCROE) {
+        if (match.score() >= MIN_SCROE &&
+                (double)match.getCntMatch()/preds[i].getSumPredictionLen() >= MIN_EXPLAIN_PART) {
             nrpsMatchs.push_back(match);
         }
         std::ofstream out(output_filename);
