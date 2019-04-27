@@ -28,6 +28,7 @@ nrpsprediction::NRPsPart::NRPsPart(std::string file_name, std::string orf_name, 
 }
 
 void nrpsprediction::NRPsPart::add_prediction(int num, const nrpsprediction::AminoacidPrediction &prediction) {
+    std::cerr << num << " " << aminoacids.size() << "\n";
     assert(num - 1 == aminoacids.size());
     aminoacids.push_back(prediction);
 }

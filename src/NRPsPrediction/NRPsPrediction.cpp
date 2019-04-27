@@ -13,7 +13,7 @@ namespace nrpsprediction {
     int NRPsPrediction::getSumPredictionLen() const {
         int len = 0;
         for (int i = 0; i < nrpparts.size(); ++i) {
-            len += nrpparts[i].getAminoacidsPrediction().size()
+            len += nrpparts[i].getAminoacidsPrediction().size();
         }
 
         return len;

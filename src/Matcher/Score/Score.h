@@ -17,7 +17,7 @@ namespace matcher {
         }
 
         virtual double maxScore(const int len) const  {
-            int MAX_PRED_LEN = 5;
+            int MAX_PRED_LEN = 4;
             return len - (len + 1)/MAX_PRED_LEN;
         }
 

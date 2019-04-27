@@ -18,6 +18,10 @@
 #include <Matcher/Score/ScorePositionOnly.h>
 #include <Matcher/Score/ScoreMinowaScoreOnly.h>
 #include <Matcher/Score/ScoreMinowaNormalize.h>
+#include <Matcher/Score/ScoreMinowaNormalizeWithoutAffinGap.h>
+#include <Matcher/Score/ScoreNRPsPredictor2Normalize.h>
+#include <Matcher/Score/ScoreSandpumaNormalize.h>
+#include <Matcher/Score/ScorePrismNormalize.h>
 #include "Matcher/Matcher.h"
 
 const int MIN_SCROE = 0;
@@ -99,7 +103,7 @@ std::vector<nrp::NRP*> save_mols(char* file_name) {
 
 void getScoreFunction(std::string predictor_name, matcher::Score*& score) {
     if (predictor_name == "MINOWA") {
-        score = new matcher::ScoreMinowaNormalize;
+        score = new matcher::ScoreMinowaNormalizeWithoutAffinGap;
     } else if (predictor_name == "PRISM") {
         score = new matcher::ScorePrism;
     } else if (predictor_name == "SANDPUMA") {
@@ -121,6 +125,7 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::N
         matcher::Matcher matcher(*mols[i], pred, score);
         matcher::Matcher::Match match = matcher.getMatch();
 
+        //std::cerr << "EXPLAIN PERCENT: " << (double)match.getCntMatch()/pred.getSumPredictionLen() << "\n";
         if (match.score() >= MIN_SCROE &&
                 (double)match.getCntMatch()/pred.getSumPredictionLen() >= MIN_EXPLAIN_PART) {
             nrpsMatchs.push_back(match);

@@ -21,7 +21,7 @@ namespace nrpsprediction {
         int pos;
         ss2 >> pos;
 
-        return std::make_pair(orfname, pos);
+        return std::make_pair(prefix + "_" + orfname, pos);
     }
 
     int PredictionBuilderBase::getAAbyName(std::string s) {
