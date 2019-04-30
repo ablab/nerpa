@@ -7,7 +7,10 @@
 namespace matcher {
     class ScoreMinowaNormalize : public ScoreMinowa {
     public:
-        double resultScore(double score, const int len) const override;
+        double resultScore(double score, const int len,
+                           const std::vector<Segment>& matched_parts,
+                           const nrpsprediction::NRPsPrediction& prediction,
+                           const nrp::NRP& nrp) const override;
 
     };
 }

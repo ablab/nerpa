@@ -41,6 +41,7 @@ namespace matcher {
             void print_short_prediction(std::ofstream& out);
             void print_csv(std::ofstream& out);
             double score();
+            void setScore(double score);
             int getCntMatch();
             bool isMatched(int i);
             std::vector<std::pair<int, int> > getMatchs();
@@ -53,7 +54,7 @@ namespace matcher {
         }
 
         matcher::Matcher::Match getMatch() const;
-        std::vector<Segment> matche_seg(const nrpsprediction::NRPsPart& predict_part) const;
+        std::vector<Segment> matche_seg(const int part_id) const;
     private:
         matcher::Matcher::Match getLineMatch(bool can_skip_first = true, bool can_skip_last = true) const;
         matcher::Matcher::Match getCycleMatch() const;

@@ -12,7 +12,7 @@ namespace nrpsprediction {
     public:
         NRPsPrediction() = default;
         NRPsPrediction(std::vector<NRPsPart> nrpparts): nrpparts(nrpparts) {}
-        std::vector<NRPsPart> getNrpsParts() const;
+        const std::vector<NRPsPart>& getNrpsParts() const;
 
         int getSumPredictionLen() const;
     };

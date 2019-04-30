@@ -99,7 +99,6 @@ namespace nrp {
                 bool has = false;
 
                 for (int g = 0; g < predict[j].size(); ++g) {
-                    std::cerr << predict[j][g] << " " << amnacid[i] << " " << predict[j].size() << "\n";
                     if (predict[j][g] == amnacid[i]) {
                         has = true;
                     }
@@ -112,6 +111,7 @@ namespace nrp {
         }
 
         void check_correct_score(matcher::Matcher::Match match, std::vector< nrpsprediction::NRPsPart> nrpParts, NRP::NRPType type) {
+            nrpsprediction::NRPsPrediction prediction(nrpParts);
             std::vector<std::pair<int, int> > matchs = match.getMatchs();
             ASSERT_EQ(matchs.size(), amnacid.size());
             double score = 0;
@@ -145,7 +145,7 @@ namespace nrp {
                     if (rev) {
                         std::reverse(amns.begin(), amns.end());
                     }
-                    scoring.getScoreForSegment(amns, nrpParts[cur_part_id], segscore);
+                    scoring.getScoreForSegment(amns, prediction, cur_part_id, segscore);
                     Segment curseg((pos - amns.size() + matchs.size()) % matchs.size(),
                                    (pos - 1 + matchs.size()) % matchs.size(), 0, 0, segscore);
                     score += scoring.addSegment(curseg);
@@ -172,7 +172,7 @@ namespace nrp {
                 if (rev) {
                     std::reverse(amns.begin(), amns.end());
                 }
-                scoring.getScoreForSegment(amns, nrpParts[cur_part_id], segscore);
+                scoring.getScoreForSegment(amns, prediction, cur_part_id, segscore);
                 Segment curseg((pos - amns.size() + matchs.size()) % matchs.size(),
                                (pos - 1 + matchs.size()) % matchs.size(), 0, 0, segscore);
                 score += scoring.addSegment(curseg);
@@ -298,7 +298,10 @@ namespace nrp {
 
             matcher::Score scoring;
             double curs = 0;
-            scoring.getScoreForSegment(aas, nrps_part, curs);
+            std::vector<nrpsprediction::NRPsPart> parts;
+            parts.push_back(nrps_part);
+            nrpsprediction::NRPsPrediction prediction(parts);
+            scoring.getScoreForSegment(aas, prediction, 0, curs);
             score += curs;
             
             return nrps_part;
@@ -326,9 +329,9 @@ namespace nrp {
             std::vector<nrpsprediction::NRPsPart> parts;
             parts.push_back(nrps_part);
             matcher::Score score;
-            matcher::Matcher matcher1(nrp, nrpsprediction::NRPsPrediction(parts), &score);
-
-            std::vector<Segment> segments = matcher1.matche_seg(nrps_part);
+            nrpsprediction::NRPsPrediction prediction(parts);
+            matcher::Matcher matcher1(nrp, prediction, &score);
+            std::vector<Segment> segments = matcher1.matche_seg(0);
             int rbg = bg;
             int red = ed;
             int rrev = 0;
@@ -372,9 +375,10 @@ namespace nrp {
 
             std::vector<nrpsprediction::NRPsPart> parts;
             parts.push_back(nrps_part);
-            matcher::Matcher matcher1(nrp, nrpsprediction::NRPsPrediction(parts), &score);
+            nrpsprediction::NRPsPrediction prediction(parts);
+            matcher::Matcher matcher1(nrp, prediction, &score);
 
-            std::vector<Segment> segments = matcher1.matche_seg(nrps_part);
+            std::vector<Segment> segments = matcher1.matche_seg(0);
             for (int i = 0; i < segments.size(); ++i) {
                 if (segments[i].rev == false) {
                     ASSERT_TRUE(eqval(segments[i].l, 1, predict));
@@ -413,9 +417,10 @@ namespace nrp {
 
             std::vector<nrpsprediction::NRPsPart> parts;
             parts.push_back(nrps_part);
-            matcher::Matcher matcher1(nrp, nrpsprediction::NRPsPrediction(parts), &score);
+            nrpsprediction::NRPsPrediction prediction(parts);
+            matcher::Matcher matcher1(nrp, prediction, &score);
 
-            std::vector<Segment> segments = matcher1.matche_seg(nrps_part);
+            std::vector<Segment> segments = matcher1.matche_seg(0);
             int rbg = std::min(bg, ed);
             int red = std::max(bg, ed);
             int rrev = (delta == -1);
@@ -448,9 +453,10 @@ namespace nrp {
 
             std::vector<nrpsprediction::NRPsPart> parts;
             parts.push_back(nrps_part);
-            matcher::Matcher matcher1(nrp, nrpsprediction::NRPsPrediction(parts), &score);
+            nrpsprediction::NRPsPrediction prediction(parts);
+            matcher::Matcher matcher1(nrp, prediction, &score);
 
-            std::vector<Segment> segments = matcher1.matche_seg(nrps_part);
+            std::vector<Segment> segments = matcher1.matche_seg(0);
             for (int i = 0; i < segments.size(); ++i) {
                 ASSERT_TRUE(segments[i].r < len);
                 ASSERT_TRUE(segments[i].l <= segments[i].r);
@@ -624,12 +630,14 @@ namespace nrp {
         //calculate score
         matcher::Score scoring;
         double score = 0, segscore = 0;
-        scoring.getScoreForSegment(aas, nrps_part, segscore);
+
+        std::vector<nrpsprediction::NRPsPart> parts;
+        parts.push_back(nrps_part);
+        nrpsprediction::NRPsPrediction prediction1(parts);
+        scoring.getScoreForSegment(aas, prediction1, 0, segscore);
         score += scoring.addSegment(matcher::Segment(1, 5, 0, 0, segscore));
 
         //match
-        std::vector<nrpsprediction::NRPsPart> parts;
-        parts.push_back(nrps_part);
         nrpsprediction::NRPsPrediction prediction(parts);
         matcher::Matcher matcher1(nrp, prediction, &scoring);
         auto match = matcher1.getMatch();

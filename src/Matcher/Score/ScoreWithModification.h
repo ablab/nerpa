@@ -18,7 +18,8 @@ namespace matcher {
 
         double addSegment(Segment seg) const override;
 
-        bool getScoreForSegment(const std::vector<aminoacid::Aminoacid> &amns, const nrpsprediction::NRPsPart &part,
+        bool getScoreForSegment(const std::vector<aminoacid::Aminoacid> &amns,
+                                const nrpsprediction::NRPsPrediction& prediction, int part_id,
                                 double &score) const override;
 
         double

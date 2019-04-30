@@ -9,7 +9,10 @@
 
 namespace matcher {
     class ScoreSandpumaNormalize : public ScoreSandpuma {
-        double resultScore(double score, const int len) const override {
+        double resultScore(double score, const int len,
+                           const std::vector<Segment>& matched_parts,
+                           const nrpsprediction::NRPsPrediction& prediction,
+                           const nrp::NRP& nrp) const override {
             return score / maxScore(len);
         }
 

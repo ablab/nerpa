@@ -31,10 +31,8 @@ namespace nrp {
         void addModificationToAA(Aminoacid &aa) {
             if (aa.get_name() == "asn") {
                 aa.addModification(Modification(Modification::OH));
-                std::cerr << "MOD OH\n";
             } else if (aa.get_name() == "glu") {
                 aa.addModification(Modification(Modification::me3));
-                std::cerr << "MOD me3\n";
             }
         }
 
@@ -93,7 +91,6 @@ namespace nrp {
                 position[i] = i;
                 amnacid.push_back(aminoacid::Aminoacid(rand() % (aminoacid::AminoacidInfo::AMINOACID_CNT - 1)));
 
-                std::cerr << amnacid.back().get_name() << "\n";
                 amnacid.back().getFormula().print();
                 addModificationToAA(amnacid.back());
             }
@@ -106,7 +103,6 @@ namespace nrp {
         }
 
         nrpsprediction::NRPsPart getSubPart(int bg, int sz, int delta, double &score) {
-            std::cerr << bg << " " << sz << " " << delta << "\n";
             nrpsprediction::NRPsPart nrps_part("filename", "orf");
             std::vector<aminoacid::Aminoacid> aas;
             int len = amnacid.size();
@@ -138,11 +134,11 @@ namespace nrp {
 
             matcher::ScoreWithModification scoring;
             double curs = 0;
-            bool found_seg = scoring.getScoreForSegment(aas, nrps_part, curs);
+            nrpsprediction::NRPsPrediction preidction({nrps_part});
+            bool found_seg = scoring.getScoreForSegment(aas, preidction, 0, curs);
             matcher::Score scoring2;
             double curs2 = 0;
-            bool found_seg2 = scoring2.getScoreForSegment(aas, nrps_part, curs2);
-            std::cerr << "scoreing " << curs << " " << curs2 << "\n";
+            bool found_seg2 = scoring2.getScoreForSegment(aas, preidction, 0, curs2);
             score += curs;
 
             return nrps_part;
@@ -158,7 +154,8 @@ namespace nrp {
 
             matcher::ScoreWithModification scoring;
             double curs = 0;
-            ASSERT_TRUE(scoring.getScoreForSegment(aas, nrps_part, curs));
+            nrpsprediction::NRPsPrediction preidction({nrps_part});
+            ASSERT_TRUE(scoring.getScoreForSegment(aas, preidction, 0, curs));
         }
     };
 
@@ -303,10 +300,11 @@ namespace nrp {
 
             matcher::ScoreWithModification scoring;
             double curs = 0;
-            bool found_seg = scoring.getScoreForSegment(amnacid, nrps_part, curs);
+            nrpsprediction::NRPsPrediction preidction({nrps_part});
+            bool found_seg = scoring.getScoreForSegment(amnacid, preidction, 0, curs);
             matcher::Score scoring2;
             double curs2 = 0;
-            bool found_seg2 = scoring2.getScoreForSegment(amnacid, nrps_part, curs2);
+            bool found_seg2 = scoring2.getScoreForSegment(amnacid, preidction, 0, curs2);
             ASSERT_LE(fabs(curs - curs2), EPS);
         }
     }

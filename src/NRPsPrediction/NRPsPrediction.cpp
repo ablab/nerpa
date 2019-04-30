@@ -6,7 +6,7 @@
 #include "NRPsPrediction.h"
 
 namespace nrpsprediction {
-    std::vector<NRPsPart> NRPsPrediction::getNrpsParts() const {
+    const std::vector<NRPsPart>& NRPsPrediction::getNrpsParts() const {
         return nrpparts;
     }
 

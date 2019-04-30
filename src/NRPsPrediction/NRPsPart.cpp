@@ -3,7 +3,7 @@
 #include <iostream>
 #include "NRPsPart.h"
 
-std::string nrpsprediction::NRPsPart::get_orf_name() {
+std::string nrpsprediction::NRPsPart::get_orf_name() const {
     return orf;
 }
 
@@ -16,7 +16,7 @@ nrpsprediction::NRPsPart::NRPsPart(std::string file_name, std::string orf_name) 
     this->orf = orf_name;
 }
 
-std::string nrpsprediction::NRPsPart::get_file_name() {
+std::string nrpsprediction::NRPsPart::get_file_name() const {
     return file_name;
 }
 
@@ -28,7 +28,9 @@ nrpsprediction::NRPsPart::NRPsPart(std::string file_name, std::string orf_name, 
 }
 
 void nrpsprediction::NRPsPart::add_prediction(int num, const nrpsprediction::AminoacidPrediction &prediction) {
-    std::cerr << num << " " << aminoacids.size() << "\n";
     assert(num - 1 == aminoacids.size());
     aminoacids.push_back(prediction);
+}
+
+nrpsprediction::NRPsPart::NRPsPart() {
 }

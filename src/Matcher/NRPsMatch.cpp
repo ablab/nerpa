@@ -133,3 +133,7 @@ int matcher::Matcher::Match::getCntMatch() {
     }
     return cntMatch;
 }
+
+void matcher::Matcher::Match::setScore(double score) {
+    this->scr = score;
+}

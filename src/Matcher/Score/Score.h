@@ -21,7 +21,10 @@ namespace matcher {
             return len - (len + 1)/MAX_PRED_LEN;
         }
 
-        virtual double resultScore(double score, const int len) const {
+        virtual double resultScore(double score, const int len,
+                                   const std::vector<Segment>& matched_parts,
+                                   const nrpsprediction::NRPsPrediction& prediction,
+                                   const nrp::NRP& nrp) const {
             return score;
         }
 
@@ -38,7 +41,7 @@ namespace matcher {
         }
 
         virtual bool getScoreForSegment(const std::vector<aminoacid::Aminoacid>& amns,
-                                const nrpsprediction::NRPsPart& part, double& score) const;
+                                const nrpsprediction::NRPsPrediction& prediction, int part_id, double& score) const;
 
         virtual double aaScore(const nrpsprediction::AminoacidPrediction &apred,
                        const aminoacid::Aminoacid &aminoacid) const;
