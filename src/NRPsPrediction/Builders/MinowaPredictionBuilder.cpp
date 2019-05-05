@@ -11,13 +11,18 @@ namespace nrpsprediction {
     void MinowaPredictionBuilder::read_file(std::string file_name) {
         std::ifstream in(file_name);
         std::string s;
+        getline(in, s);
+        while (s != "\\\\" && getline(in, s)) {}
         while (getline(in, s)) {
-            while (s != "\\\\" && getline(in, s)) {}
-            std::string orf_name;
-            getline(in, orf_name);
+            std::string orf_name = s;
             getline(in, s);
             std::pair <std::string, int> orf_name_num = get_orf_name_and_order(orf_name);
             auto prediction = parse_predictions(in);
+
+            if (orf_name_num.second == -1) {
+                continue;
+            }
+
             if (!nrpparts.empty() && nrpparts[nrpparts.size() - 1].get_orf_name() == orf_name_num.first) {
                 nrpparts[nrpparts.size() - 1].add_prediction(orf_name_num.second,
                                                              AminoacidPrediction(orf_name_num.second, prediction));
@@ -56,12 +61,13 @@ namespace nrpsprediction {
         std::vector<std::pair<std::string, double> > aacids;
         std::string s;
         getline(in, s);
-        while (s != "") {
+        while (s != "" && s != "\\\\") {
             std::stringstream ss(s);
             ss >> name >> score;
             aacids.push_back(std::make_pair(name, score));
             getline(in, s);
         }
+        while (s != "\\\\" && getline(in, s)) {}
 
         std::vector<AminoacidPrediction::AminoacidProb> aminoacid_prediction;
 

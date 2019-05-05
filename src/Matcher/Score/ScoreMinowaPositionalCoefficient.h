@@ -14,16 +14,18 @@ namespace matcher {
     private:
         double getScoreForSubseg(const Segment& seg, const nrp::NRP& nrp,
                                  const nrpsprediction::NRPsPrediction &prediction, int part_id) const {
-            double score;
+            double score = 0;
             std::vector<aminoacid::Aminoacid> amns;
-            if (seg.rev == true) {
-                for (int i = seg.r; i >= seg.l; --i) {
+            if (seg.rev) {
+                for (int i = seg.r; i != seg.l; i = (i - 1 + nrp.getLen()) % nrp.getLen()) {
                     amns.push_back(nrp.getAminoacid(i));
                 }
+                amns.push_back(nrp.getAminoacid(seg.l));
             } else {
-                for (int i = seg.l; i <= seg.r; ++i) {
+                for (int i = seg.l; i != seg.r; i = (i + 1) % nrp.getLen()) {
                     amns.push_back(nrp.getAminoacid(i));
                 }
+                amns.push_back(nrp.getAminoacid(seg.r));
             }
 
             Score::getScoreForSegment(amns, prediction, part_id, score);
@@ -122,17 +124,19 @@ namespace matcher {
             int cntMore = 0;
             while (cntMore < not_matched_parts.size() &&
                     not_matched_parts[cntMore].getAminoacidsPrediction().size() >
-                            (matched_parts[i].r - matched_parts[i].l + 1)) {
+                            (matched_parts[i].r - matched_parts[i].l + nrp.getLen()) % nrp.getLen() + 1) {
                 ++cntMore;
             }
+
             double curSegScore = getScoreForSubseg(matched_parts[i], nrp, prediction, matched_parts[i].part_id);
             for (int j = 0; j < cntMore; ++j) {
                 curSegScore /= 1.25;
             }
             resScore += curSegScore;
         }
+        assert(resScore >= score - 0.0001);
 
-        return resScore;
+        return resScore/maxScore(len);
     }
 }
 

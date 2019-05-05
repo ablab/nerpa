@@ -18,6 +18,10 @@ namespace nrpsprediction {
         getline(ss, tail, '_');
 
         std::stringstream ss2(tail.substr(1));
+        if (tail[0] != 'A' || !(tail[1] >= '0' && tail[1] <= '9')) {
+            return std::make_pair(prefix + "_" + orfname, -1);
+        }
+
         int pos;
         ss2 >> pos;
 

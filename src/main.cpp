@@ -25,8 +25,8 @@
 #include <Matcher/Score/ScoreMinowaPositionalCoefficient.h>
 #include "Matcher/Matcher.h"
 
-const int MIN_SCROE = 0;
-const double MIN_EXPLAIN_PART = 0;//0.15;
+const double MIN_SCROE = 0.2;
+const double MIN_EXPLAIN_PART = 0.15;
 
 void getPredictor(std::string predictor_name, nrpsprediction::PredictionBuilderBase*& predictionBuilder) {
     if (predictor_name == "MINOWA") {
@@ -104,7 +104,7 @@ std::vector<nrp::NRP*> save_mols(char* file_name) {
 
 void getScoreFunction(std::string predictor_name, matcher::Score*& score) {
     if (predictor_name == "MINOWA") {
-        score = new matcher::ScoreMinowaPositionalCoefficient;
+        score = new matcher::ScoreMinowaNormalizeWithoutAffinGap;
     } else if (predictor_name == "PRISM") {
         score = new matcher::ScorePrism;
     } else if (predictor_name == "SANDPUMA") {
