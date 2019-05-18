@@ -5,8 +5,12 @@
 #include"Modification.h"
 
 namespace aminoacid {
-    const std::string Modification::NAMES[Modification::MODIFICATION_CNT] = {"OH", "3me", ""};
-    const Formula Modification::FORMULS[Modification::MODIFICATION_CNT] = {Formula("O-2"), Formula("CH2"), Formula()};
+    const std::string Modification::NAMES[Modification::MODIFICATION_CNT] = {"methylation", "dimethylation", "demethylation",
+                                                                             "hydration", "hydroxylation", "formylation",
+                                                                             "phosphotylation", "acetylation", ""};
+    const Formula Modification::FORMULS[Modification::MODIFICATION_CNT] = {Formula("CH2"), Formula("C2H4"), Formula("C-1H-2"),
+                                                                           Formula("H2O"), Formula("O"), Formula("CO"),
+                                                                           Formula("PH2O3"), Formula()};
 
     Formula Modification::getFormula() const {
         return formula;

@@ -12,6 +12,8 @@
 namespace matcher {
     class ScoreMinowaPositionalCoefficient : public ScoreMinowaNormalize {
     private:
+        double positional_coefficient = 2;
+
         double getScoreForSubseg(const Segment& seg, const nrp::NRP& nrp,
                                  const nrpsprediction::NRPsPrediction &prediction, int part_id) const {
             double score = 0;
@@ -78,7 +80,7 @@ namespace matcher {
             }
 
             for (int i = 0; i < cnt_longer; ++i) {
-                score /= 1.25;
+                score /= positional_coefficient;
             }
             return isSeg;
         }
@@ -130,7 +132,7 @@ namespace matcher {
 
             double curSegScore = getScoreForSubseg(matched_parts[i], nrp, prediction, matched_parts[i].part_id);
             for (int j = 0; j < cntMore; ++j) {
-                curSegScore /= 1.25;
+                curSegScore /= positional_coefficient;
             }
             resScore += curSegScore;
         }
