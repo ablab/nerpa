@@ -5,19 +5,11 @@
 #ifndef NRPSMATCHER_SCOREWITHMODIFICATION_H
 #define NRPSMATCHER_SCOREWITHMODIFICATION_H
 
-#include "Score.h"
+#include "Matcher/Score/Base/Score.h"
 
 namespace matcher {
     class ScoreWithModification : public Score {
     public:
-        double minScore(const int len) const override;
-
-        double openGap() const override;
-
-        double continueGap() const override;
-
-        double addSegment(Segment seg) const override;
-
         bool getScoreForSegment(const std::vector<aminoacid::Aminoacid> &amns,
                                 const nrpsprediction::NRPsPrediction& prediction, int part_id,
                                 double &score) const override;
@@ -30,8 +22,8 @@ namespace matcher {
                                                                    nrpsprediction::AminoacidPrediction::AminoacidProb &probRes,
                                                                    std::pair<int, int> &posRes) const override;
 
-    private:
-        double getScore(const aminoacid::Aminoacid& nrpAA,
+    protected:
+        virtual double getScore(const aminoacid::Aminoacid& nrpAA,
                         const aminoacid::Aminoacid& predAA,
                         const nrpsprediction::AminoacidPrediction::AminoacidProb& prob,
                         const std::pair<int, int>& pos) const;

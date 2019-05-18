@@ -9,7 +9,7 @@
 #include <Logger/log_writers.hpp>
 #include <boost/concept_check.hpp>
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
-#include <Matcher/Score/ScoreFullMatch.h>
+#include <Matcher/Score/Base/ScoreFullMatch.h>
 
 namespace nrp {
     typedef matcher::Segment Segment;

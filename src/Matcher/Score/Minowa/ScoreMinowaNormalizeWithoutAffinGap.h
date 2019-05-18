@@ -5,7 +5,7 @@
 #ifndef NRPSMATCHER_SCOREMINOWANORMALIZEWITHOUTAFFINGAP_H
 #define NRPSMATCHER_SCOREMINOWANORMALIZEWITHOUTAFFINGAP_H
 
-#include "Score.h"
+#include "Matcher/Score/Base/Score.h"
 #include "ScoreMinowa.h"
 #include "ScoreMinowaNormalize.h"
 

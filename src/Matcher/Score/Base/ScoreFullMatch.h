@@ -1,7 +1,7 @@
 #ifndef NRPSMATCHER_SCOREFULLMATCH_H
 #define NRPSMATCHER_SCOREFULLMATCH_H
 
-#include "Score.h"
+#include "Matcher/Score/Base/Score.h"
 
 namespace matcher {
     class ScoreFullMatch : public Score {

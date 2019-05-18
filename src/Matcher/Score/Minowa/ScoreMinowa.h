@@ -5,7 +5,7 @@
 #ifndef NRPSMATCHER_SCOREMINOWA_H
 #define NRPSMATCHER_SCOREMINOWA_H
 
-#include "Score.h"
+#include "Matcher/Score/Base/Score.h"
 
 namespace matcher {
     class ScoreMinowa : public Score {

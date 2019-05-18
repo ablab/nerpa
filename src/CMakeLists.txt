@@ -23,8 +23,8 @@ set(SOURCE_FILES main.cpp
         NRP/NRPtail.cpp
         Matcher/Matcher.h
         Matcher/Matcher.cpp
-        Matcher/Score/Score.cpp
-        Matcher/Score/Score.h
+        Matcher/Score/Base/Score.cpp
+        Matcher/Score/Base/Score.h
         Matcher/Segment.h
         NRPsPrediction/Builders/PredictionBuilderBase.h
         NRPsPrediction/Builders/PredictionBuilderBase.cpp
@@ -41,27 +41,29 @@ set(SOURCE_FILES main.cpp
         Aminoacid/Modification.cpp
         Aminoacid/AminoacidInfo.h
         Aminoacid/AminoacidInfo.cpp
-        Matcher/Score/ScoreWithModification.cpp
-        Matcher/Score/ScoreWithModification.h
-        Matcher/Score/ScoreMinowa.cpp
-        Matcher/Score/ScoreMinowa.h
-        Matcher/Score/ScorePrism.cpp
-        Matcher/Score/ScorePrism.h
-        Matcher/Score/ScoreSandpuma.cpp
-        Matcher/Score/ScoreSandpuma.h
-        Matcher/Score/ScorePositionOnly.cpp
-        Matcher/Score/ScorePositionOnly.h
-        Matcher/Score/ScoreMinowaScoreOnly.cpp
-        Matcher/Score/ScoreMinowaScoreOnly.h
-        Matcher/Score/ScoreFullMatch.cpp
-        Matcher/Score/ScoreFullMatch.h
-        Matcher/Score/ScoreMinowaNormalize.h
-        Matcher/Score/ScoreMinowaNormalize.cpp
-        Matcher/Score/ScoreMinowaNormalizeWithoutAffinGap.h
-        Matcher/Score/ScoreNRPsPredictor2Normalize.h
-        Matcher/Score/ScorePrismNormalize.h
-        Matcher/Score/ScoreSandpumaNormalize.h
-        Matcher/Score/ScoreMinowaPositionalCoefficient.h
+        Matcher/Score/Base/ScoreWithModification.cpp
+        Matcher/Score/Base/ScoreWithModification.h
+        Matcher/Score/Minowa/ScoreMinowa.cpp
+        Matcher/Score/Minowa/ScoreMinowa.h
+        Matcher/Score/Prism/ScorePrism.cpp
+        Matcher/Score/Prism/ScorePrism.h
+        Matcher/Score/Sandpuma/ScoreSandpuma.cpp
+        Matcher/Score/Sandpuma/ScoreSandpuma.h
+        Matcher/Score/Base/ScorePositionOnly.cpp
+        Matcher/Score/Base/ScorePositionOnly.h
+        Matcher/Score/Minowa/ScoreMinowaScoreOnly.cpp
+        Matcher/Score/Minowa/ScoreMinowaScoreOnly.h
+        Matcher/Score/Base/ScoreFullMatch.cpp
+        Matcher/Score/Base/ScoreFullMatch.h
+        Matcher/Score/Minowa/ScoreMinowaNormalize.h
+        Matcher/Score/Minowa/ScoreMinowaNormalize.cpp
+        Matcher/Score/Minowa/ScoreMinowaNormalizeWithoutAffinGap.h
+        Matcher/Score/NrpsPredictor2/ScoreNRPsPredictor2Normalize.h
+        Matcher/Score/Prism/ScorePrismNormalize.h
+        Matcher/Score/Sandpuma/ScoreSandpumaNormalize.h
+        Matcher/Score/Minowa/ScoreMinowaPositionalCoefficient.h
+        Matcher/Score/Minowa/ScoreMinowaWithModification.h
+        Matcher/Score/Minowa/ScoreMinowaWithModification.cpp
         Json/json.hpp)
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})

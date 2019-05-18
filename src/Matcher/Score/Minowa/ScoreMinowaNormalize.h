@@ -1,11 +1,12 @@
 #ifndef NRPSMATCHER_SCOREMINOWANORMALIZE_H
 #define NRPSMATCHER_SCOREMINOWANORMALIZE_H
 
-#include "Score.h"
+#include "Matcher/Score/Base/Score.h"
 #include "ScoreMinowa.h"
+#include "ScoreMinowaWithModification.h"
 
 namespace matcher {
-    class ScoreMinowaNormalize : public ScoreMinowa {
+    class ScoreMinowaNormalize : public ScoreMinowaWithModification {
     public:
         double resultScore(double score, const int len,
                            const std::vector<Segment>& matched_parts,

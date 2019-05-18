@@ -5,7 +5,7 @@
 #ifndef NRPSMATCHER_SCOREMINOWASCOREONLY_H
 #define NRPSMATCHER_SCOREMINOWASCOREONLY_H
 
-#include "Score.h"
+#include "Matcher/Score/Base/Score.h"
 
 namespace matcher {
     class ScoreMinowaScoreOnly : public Score {

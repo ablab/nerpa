@@ -5,7 +5,7 @@
 #ifndef NRPSMATCHER_SCORESANDPUMA_H
 #define NRPSMATCHER_SCORESANDPUMA_H
 
-#include "Score.h"
+#include "Matcher/Score/Base/Score.h"
 
 namespace matcher {
     class ScoreSandpuma : public Score {

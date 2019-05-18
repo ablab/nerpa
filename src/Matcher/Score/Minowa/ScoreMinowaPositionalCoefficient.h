@@ -6,7 +6,7 @@
 #define NRPSMATCHER_SCOREMINOWAPOSITIONALCOEFFICIENT_H
 
 #include <algorithm>
-#include "Score.h"
+#include "Matcher/Score/Base/Score.h"
 #include "ScoreMinowaNormalize.h"
 
 namespace matcher {

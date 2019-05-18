@@ -12,7 +12,7 @@
 #include <Matcher/Matcher.h>
 #include <Logger/log_writers.hpp>
 #include <boost/concept_check.hpp>
-#include <Matcher/Score/ScoreWithModification.h>
+#include <Matcher/Score/Base/ScoreWithModification.h>
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
 
 namespace nrp {

@@ -5,7 +5,7 @@
 #ifndef NRPSMATCHER_SCOREPRISM_H
 #define NRPSMATCHER_SCOREPRISM_H
 
-#include "Score.h"
+#include "Matcher/Score/Base/Score.h"
 
 namespace matcher {
     class ScorePrism : public Score {

@@ -7,7 +7,7 @@
 
 #include <NRPsPrediction/AminoacidPrediction.h>
 #include <NRP/NRP.h>
-#include <Matcher/Score/Score.h>
+#include <Matcher/Score/Base/Score.h>
 
 #include <utility>
 #include "Segment.h"

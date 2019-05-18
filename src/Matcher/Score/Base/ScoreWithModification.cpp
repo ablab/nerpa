@@ -6,23 +6,6 @@
 #include "ScoreWithModification.h"
 
 namespace matcher {
-
-    double ScoreWithModification::minScore(const int len) const {
-        return Score::minScore(len);
-    }
-
-    double ScoreWithModification::openGap() const {
-        return Score::openGap();
-    }
-
-    double ScoreWithModification::continueGap() const {
-        return Score::continueGap();
-    }
-
-    double ScoreWithModification::addSegment(Segment seg) const {
-        return Score::addSegment(seg);
-    }
-
     bool ScoreWithModification::getScoreForSegment(const std::vector<aminoacid::Aminoacid> &amns,
                                                    const nrpsprediction::NRPsPrediction& prediction, int part_id,
                                                    double &score) const {
@@ -63,14 +46,15 @@ namespace matcher {
             return -1;
         }
         if (modification.getId() == aminoacid::Modification::empty ||
-                (predAA.get_name() == "asn" && modification.getId() == aminoacid::Modification::OH) ||
-                (predAA.get_name() == "glu" && modification.getId() == aminoacid::Modification::me3)) {
+                (predAA.get_name() == "asn" && modification.getId() == aminoacid::Modification::hydration) ||
+                (predAA.get_name() == "glu" && modification.getId() == aminoacid::Modification::methylation)) {
             int mdpos = (pos.first + pos.second)/2;
             if (mdpos >= 10) {
                 return 0;
             }
             return prob.prob/100. * posscore[mdpos];
         }
+        return -1;
     }
 
     std::pair<double, aminoacid::Aminoacid>

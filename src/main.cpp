@@ -8,21 +8,21 @@
 #include "NRPsPrediction/NRPsPrediction.h"
 #include <Logger/log_writers.hpp>
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
-#include <Matcher/Score/ScoreWithModification.h>
+#include <Matcher/Score/Base/ScoreWithModification.h>
 #include <NRPsPrediction/Builders/MinowaPredictionBuilder.h>
-#include <Matcher/Score/ScoreMinowa.h>
+#include <Matcher/Score/Minowa/ScoreMinowa.h>
 #include <NRPsPrediction/Builders/PrismPredictionBuilder.h>
-#include <Matcher/Score/ScorePrism.h>
-#include <Matcher/Score/ScoreSandpuma.h>
+#include <Matcher/Score/Prism/ScorePrism.h>
+#include <Matcher/Score/Sandpuma/ScoreSandpuma.h>
 #include <NRPsPrediction/Builders/SandpumaPredictionBuilder.h>
-#include <Matcher/Score/ScorePositionOnly.h>
-#include <Matcher/Score/ScoreMinowaScoreOnly.h>
-#include <Matcher/Score/ScoreMinowaNormalize.h>
-#include <Matcher/Score/ScoreMinowaNormalizeWithoutAffinGap.h>
-#include <Matcher/Score/ScoreNRPsPredictor2Normalize.h>
-#include <Matcher/Score/ScoreSandpumaNormalize.h>
-#include <Matcher/Score/ScorePrismNormalize.h>
-#include <Matcher/Score/ScoreMinowaPositionalCoefficient.h>
+#include <Matcher/Score/Base/ScorePositionOnly.h>
+#include <Matcher/Score/Minowa/ScoreMinowaScoreOnly.h>
+#include <Matcher/Score/Minowa/ScoreMinowaNormalize.h>
+#include <Matcher/Score/Minowa/ScoreMinowaNormalizeWithoutAffinGap.h>
+#include <Matcher/Score/NrpsPredictor2/ScoreNRPsPredictor2Normalize.h>
+#include <Matcher/Score/Sandpuma/ScoreSandpumaNormalize.h>
+#include <Matcher/Score/Prism/ScorePrismNormalize.h>
+#include <Matcher/Score/Minowa/ScoreMinowaPositionalCoefficient.h>
 #include "Matcher/Matcher.h"
 
 const double MIN_SCROE = 0.002;

@@ -5,7 +5,7 @@
 #ifndef NRPSMATCHER_SCORENRPSPREDICTOR2NORMALIZE_H
 #define NRPSMATCHER_SCORENRPSPREDICTOR2NORMALIZE_H
 
-#include "Score.h"
+#include "Matcher/Score/Base/Score.h"
 
 namespace matcher {
     class ScoreNRPsPredictor2Normalize : public Score {

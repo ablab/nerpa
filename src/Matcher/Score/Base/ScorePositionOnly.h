@@ -5,7 +5,7 @@
 #ifndef NRPSMATCHER_SCOREPOSITIONONLY_H
 #define NRPSMATCHER_SCOREPOSITIONONLY_H
 
-#include "Score.h"
+#include "Matcher/Score/Base/Score.h"
 
 namespace matcher {
     class ScorePositionOnly : public Score {
