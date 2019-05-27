@@ -71,6 +71,7 @@ namespace matcher {
         std::vector<aacid> getSubset(std::vector<aacid> vector, int l, int r, int stp) const;
 
         int addSegments(const std::vector<Segment> &vector, std::vector<Segment> &segments, bool skip_first, bool skip_last, int id) const;
+        void matchSingleUnits(Match& match, std::vector<bool>& used_pos) const;
     };
 }
 

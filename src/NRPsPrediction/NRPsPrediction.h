@@ -9,10 +9,14 @@ namespace nrpsprediction {
     class NRPsPrediction {
     private:
         std::vector<NRPsPart> nrpparts;
+        std::vector<NRPsPart> short_parts;
     public:
         NRPsPrediction() = default;
         NRPsPrediction(std::vector<NRPsPart> nrpparts): nrpparts(nrpparts) {}
+        NRPsPrediction(std::vector<NRPsPart> nrpparts, std::vector<NRPsPart> short_parts):
+                nrpparts(nrpparts), short_parts(short_parts) {}
         const std::vector<NRPsPart>& getNrpsParts() const;
+        const std::vector<NRPsPart>& getShortParts() const;
 
         int getSumPredictionLen() const;
     };

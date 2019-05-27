@@ -64,3 +64,8 @@ matcher::Score::getTheBestAAInPred(const nrpsprediction::AminoacidPrediction &ap
     probRes = apred.getAminoacid(aminoacid);
     return std::pair<double, aminoacid::Aminoacid>(score, probRes.aminoacid);
 }
+
+double matcher::Score::singleUnitScore(const nrpsprediction::AminoacidPrediction &apred,
+                                       const aminoacid::Aminoacid &aminoacid) const {
+    return -1;
+}

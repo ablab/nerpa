@@ -10,6 +10,10 @@ namespace nrpsprediction {
         return nrpparts;
     }
 
+    const std::vector<NRPsPart>& NRPsPrediction::getShortParts() const {
+        return short_parts;
+    }
+
     int NRPsPrediction::getSumPredictionLen() const {
         int len = 0;
         for (int i = 0; i < nrpparts.size(); ++i) {

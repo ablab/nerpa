@@ -17,8 +17,9 @@ double matcher::ScoreMinowaWithModification::getScore(const aminoacid::Aminoacid
             return 0;
         }
         double modCoeff = 1;
+
         if (modification.getId() != aminoacid::Modification::empty) {
-            modCoeff = 0.8;
+            modCoeff = 0;
         }
 
         return std::min(1., prob.prob/350.) * posscore[mdpos] * modCoeff;

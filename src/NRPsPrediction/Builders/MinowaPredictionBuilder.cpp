@@ -28,6 +28,7 @@ namespace nrpsprediction {
                                                              AminoacidPrediction(orf_name_num.second, prediction));
             } else {
                 if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
+                    short_parts.push_back(nrpparts.back());
                     nrpparts.pop_back();
                 }
                 nrpparts.push_back(NRPsPart(file_name, orf_name_num.first, orf_name_num.second,
@@ -36,6 +37,7 @@ namespace nrpsprediction {
         }
 
         if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
+            short_parts.push_back(nrpparts.back());
             nrpparts.pop_back();
         }
         /*std::cerr << nrpparts.size() << "\n";

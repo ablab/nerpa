@@ -12,6 +12,7 @@ namespace nrpsprediction {
     protected:
         static const double EPS;
         std::vector<NRPsPart> nrpparts;
+        std::vector<NRPsPart> short_parts;
         static int getAAbyName(std::string s);
 
         //orf = <prefix>_<orfname>_A<num>

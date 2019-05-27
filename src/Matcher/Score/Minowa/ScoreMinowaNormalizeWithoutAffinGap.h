@@ -23,6 +23,11 @@ namespace matcher {
         /*double resultScore(double score, const int len) const {
             return score;
         }*/
+
+        double singleUnitScore(const nrpsprediction::AminoacidPrediction &apred,
+                               const aminoacid::Aminoacid &aminoacid) const override {
+            return aaScore(apred, aminoacid) * 0.5;
+        }
     };
 }
 

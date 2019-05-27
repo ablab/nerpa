@@ -51,6 +51,9 @@ namespace matcher {
                                                                            nrpsprediction::AminoacidPrediction::AminoacidProb &probRes,
                                                                            std::pair<int, int> &posRes) const;
 
+        virtual double singleUnitScore(const nrpsprediction::AminoacidPrediction &apred,
+                                       const aminoacid::Aminoacid &aminoacid) const;
+
     protected:
         double posscore[100];
     };

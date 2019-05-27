@@ -12,7 +12,11 @@ namespace aminoacid {
     public:
         enum ModificationId {methylation, dimethylation, demethylation,
             hydration, hydroxylation, formylation,
-            phosphotylation, acetylation, empty, MODIFICATION_CNT};
+            phosphotylation, acetylation,
+            dedimethylation,
+            dehydration, dehydroxylation, deformylation,
+            dephosphotylation, deacetylation,
+            empty, MODIFICATION_CNT};
         static const std::string NAMES[MODIFICATION_CNT];
         static const Formula FORMULS[MODIFICATION_CNT];
 

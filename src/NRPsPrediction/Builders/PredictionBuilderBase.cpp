@@ -39,6 +39,6 @@ namespace nrpsprediction {
     }
 
     NRPsPrediction PredictionBuilderBase::getPrediction() {
-        return NRPsPrediction(nrpparts);
+        return NRPsPrediction(nrpparts, short_parts);
     }
 }

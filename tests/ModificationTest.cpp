@@ -30,9 +30,9 @@ namespace nrp {
 
         void addModificationToAA(Aminoacid &aa) {
             if (aa.get_name() == "asn") {
-                aa.addModification(Modification(Modification::OH));
+                aa.addModification(Modification(Modification::hydration));
             } else if (aa.get_name() == "glu") {
-                aa.addModification(Modification(Modification::me3));
+                aa.addModification(Modification(Modification::methylation));
             }
         }
 
