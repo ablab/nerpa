@@ -653,6 +653,9 @@ def SplitBranchCicle(g):
 
     start = v
     circl.append(v)
+    if len(g[v]) == 1:
+        return (circl, line)
+        
     if (g[v][0] != u):
         u = v
         v = g[v][0]
