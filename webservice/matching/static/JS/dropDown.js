@@ -92,7 +92,7 @@ function updateForms() {
         document.getElementById("choose_db").innerHTML = '<p><b>NRPs Data Base:</b></p>'+
             '<div class="custom-select" style="width:600px;">' +
             '<select id="id_nrp_db" name="nrp_db">' +
-            '    <option value="streptome">Streptome</option>' +
+            '    <option value="PNP">PNP</option>' +
             '</select>' +
             '</div>';
 

@@ -2,7 +2,7 @@ import os
 from .vis_prediction import visualize_prediction
 from celery import shared_task
 from .vis_prediction import DB_NONE
-from .vis_prediction import DB_STREPTOME
+from .vis_prediction import DB_PNP
 
 path = "/home/dereplicator/kolga/web-serv/data/"
 genome_file = path + "genome.fna"
@@ -17,7 +17,7 @@ predictionPath = antismashRes + "nrpspks_predictions_txt/ctg1_nrpspredictor2_cod
 
 NRPsMatcher = "/home/dereplicator/kolga/soft/NRPsMatcher/bin/run_nrp_matcher.py"
 
-dbNRPinfo = {DB_STREPTOME: "/home/dereplicator/kolga/data/DB/PNP/library.info"}
+dbNRPinfo = {DB_PNP: "/home/dereplicator/kolga/data/DB/PNP/library.info"}
 dbPredictionInfo = {'bc': "/home/olga/CAB/NRP/data/DataBase/mibigNF.info"}
 
 def run_antismash():
