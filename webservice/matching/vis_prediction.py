@@ -655,7 +655,7 @@ def SplitBranchCicle(g):
     circl.append(v)
     if len(g[v]) == 1:
         return (circl, line)
-        
+
     if (g[v][0] != u):
         u = v
         v = g[v][0]
@@ -702,6 +702,7 @@ def SplitGraph(g):
 # sub_name, mass, dbs, ref
 def ParseExtraInfo(s, nrpDB):
     ss = s.split()[1:]
+    print(ss)
     if (nrpDB == DB_STREPTOME):
         return ss[0], float(ss[1]), nrpDB, ss[-1]
     else:
