@@ -8,7 +8,7 @@ from math import *
 from .models import MatchingResult
 from django.core.files import File
 
-DB_STREPTOME = 'streptome'
+DB_PNP = 'PNP'
 DB_NONE = 'none'
 
 colors = [
