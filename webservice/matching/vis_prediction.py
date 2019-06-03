@@ -831,7 +831,7 @@ def parsePrediction(predictionFN, predictionInfo, predictionList, color):
         for line in lines:
             spl = line.split('\t')
             orfname = spl[0]
-            orfname = orfname.split('_')[1]
+            orfname = '_'.join(orfname.split('_')[0:2])
             num = int(spl[0].split('_')[-1][1:]) - 1
             if (orfname not in predictionInfo):
                 predictionInfo[orfname] = []
