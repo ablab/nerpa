@@ -167,9 +167,9 @@ void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp:
         if (match.score() >= MIN_SCROE &&
                 (double)match.getCntMatch()/preds[i].getSumPredictionLen() >= MIN_EXPLAIN_PART) {
             nrpsMatchs.push_back(match);
+            std::ofstream out(output_filename);
+            match.print(out);
         }
-        std::ofstream out(output_filename);
-        match.print(out);
     }
 
     INFO("Found: " << nrpsMatchs.size() << " predictions");
