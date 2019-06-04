@@ -703,7 +703,7 @@ def SplitGraph(g):
 def ParseExtraInfo(s, nrpDB):
     ss = s.split()[1:]
     print(ss)
-    if (nrpDB == DB_STREPTOME):
+    if (nrpDB == DB_PNP):
         return ss[0], float(ss[1]), nrpDB, ss[-1]
     else:
         return "", float(ss[0]), "", ""
