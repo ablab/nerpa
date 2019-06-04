@@ -107,7 +107,7 @@ def handle_form(request, user_session):
                           search_mode=SEARCH_MODE_GN, genome_file=request.FILES['inputFileGenome'].name, nrp_file=nrpfilename)
             req.save()
 
-        return redirect('/res/' + str(request_id))
+        return redirect('/nerpa/res/' + str(request_id))
 
 # Create your views here.
 def main_page(request):
