@@ -119,12 +119,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/nerpa/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 print(BASE_DIR)
 print(STATIC_ROOT)
 
-MEDIA_URL = '/media/'
+MEDIA_URL = '/nerpa/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
