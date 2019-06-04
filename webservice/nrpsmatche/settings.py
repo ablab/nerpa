@@ -25,7 +25,7 @@ SECRET_KEY = '&1k=+t6qnf*@i+_2okgnhd=fs9pe4wpc#ay=80u03wh#a)s$!0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['hosein.andrew.cmu.edu', '127.0.0.1']
+ALLOWED_HOSTS = ['hosein.andrew.cmu.edu/nerpa/', '127.0.0.1']
 
 
 # Application definition
