@@ -22,7 +22,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(r'', include('matching.urls') )
+    path(r'nerpa/', include('matching.urls') )
 ]
 
 urlpatterns += staticfiles_urlpatterns()
