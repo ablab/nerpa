@@ -10,6 +10,7 @@ nrp_file = path + "nrp.mol"
 smile_file = path + "nrp.sml"
 predictionInfo = path + "predictions.info"
 molInfo = path + "mol.info"
+output_folder = path + "out/"
 
 pathToAntismash = "/home/dereplicator/kolga/soft/antismash-3.0.5.1/run_antismash.py"
 antismashRes = path + "antismashRes/"
@@ -20,6 +21,27 @@ NRPsMatcher = "/home/dereplicator/kolga/soft/NRPsMatcher/bin/run_nrp_matcher.py"
 dbNRPinfo = {DB_PNP: "/home/dereplicator/kolga/data/DB/PNP/library.info"}
 dbPredictionInfo = {'bc': "/home/olga/CAB/NRP/data/DataBase/mibigNF.info"}
 
+def init_var(request_id):
+    global genome_file
+    global nrp_file
+    global smile_file
+    global predictionInfo
+    global molInfo
+    global antismashRes
+    global predictionPath
+    global output_folder
+
+    res_folder = "res" + str(request_id)
+    genome_file = os.path.join(path, res_folder, "genome.fna")
+    nrp_file = os.path.join(path, res_folder, "nrp.mol")
+    smile_file = os.path.join(path, res_folder, "nrp.sml")
+    predictionInfo = os.path.join(path, res_folder, "predictions.info")
+    molInfo = os.path.join(path, res_folder, "mol.info")
+    output_folder = os.path.join(path, res_folder, "out")
+    antismashRes = os.path.join(path, res_folder, "antismashRes")
+    predictionPath = os.path.join(path, res_folder, "nrpspks_predictions_txt/ctg1_nrpspredictor2_codes.txt")
+
+
 def run_antismash():
     print(os.environ['PATH'])
     print("python2 " + pathToAntismash + " " + genome_file + " --outputfolder "  + antismashRes)
@@ -29,18 +51,18 @@ def run_antismash():
 
 
 def run_nrpsMatcher(prinfo, molinfo):
-    print("python3 " + NRPsMatcher + " -p " + prinfo + " --lib_info " + molinfo + " -o " + path)
-    os.system("python3 " + NRPsMatcher + " -p " + prinfo + " --lib_info " + molinfo + " -o " + path)
+    print("python3 " + NRPsMatcher + " -p " + prinfo + " --lib_info " + molinfo + " -o " + output_folder)
+    os.system("python3 " + NRPsMatcher + " -p " + prinfo + " --lib_info " + molinfo + " -o " + output_folder)
 
 
 def save_results(request_id, nrpDB = DB_NONE):
-    for filename in os.listdir(path + "/details_mols"):
-        visualize_prediction(path + "/details_mols/" + filename, predictionPath, filename, "ctg1_nrpspredictor2_codes", request_id, nrpDB)
+    for filename in os.listdir(output_folder + "/details_mols"):
+        visualize_prediction(output_folder + "/details_mols/" + filename, predictionPath, filename, "ctg1_nrpspredictor2_codes", request_id, nrpDB)
 
 
 def getAllPath(filename):
     paths = []
-    with open(path + "/details_mols/" + filename) as f:
+    with open(output_folder + "/details_mols/" + filename) as f:
         lines = f.readlines()
         cur = 0
         while (cur < len(lines)):
@@ -53,12 +75,12 @@ def getAllPath(filename):
 
 
 def save_results_prediction(request_id):
-    for filename in os.listdir(path + "/details_mols"):
+    for filename in os.listdir(output_folder + "/details_mols"):
         predpaths = getAllPath(filename)
         for predpath in predpaths:
             if (predpath[-1] == '\n'):
                 predpath = predpath[:-1]
-            visualize_prediction(path + "/details_mols/" + filename, predpath, "nrp", predpath, request_id, DB_NONE)
+            visualize_prediction(output_folder + "/details_mols/" + filename, predpath, "nrp", predpath, request_id, DB_NONE)
 
 
 def SMILE_to_MOL():
@@ -92,16 +114,7 @@ def update_mol_info(mol_info):
 
 
 def clear():
-    os.system("rm -r " + path + "/details_mols/")
-    os.system("rm -r " + path + "/details_predictions/")
-    os.system("rm -r " + path + "/graphs/")
-    os.system("rm -r " + path + "/antismashRes/nrpspks_predictions_txt/")
-    os.system("rm " + path + "/genome.fna")
-    os.system("rm " + path + "/nrp.mol")
-    os.system("rm " + path + "/nrp.sml")
-    os.system("rm " + path + "/path_to_graphs")
-    os.system("rm " + path + "/report.csv")
-    os.system("rm " + path + "/report_mols")
+    os.system("rm -r " + output_folder)
 
 @shared_task
 def handle_genome(request_id, nrpDB):

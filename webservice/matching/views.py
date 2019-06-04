@@ -10,6 +10,7 @@ from .tasks import handle_one
 from .tasks import genome_file
 from .tasks import nrp_file
 from .tasks import smile_file
+import tasks
 from random import *
 from django.shortcuts import redirect
 from django.utils import timezone
@@ -63,6 +64,7 @@ def handle_form(request, user_session):
         print(form.cleaned_data)
         print(form.cleaned_data['search_type'])
         request_id = randint(0, int(1e9))
+        tasks.init_var(request_id)
 
         if (form.cleaned_data['search_type'] == 'genome'):
             readGenome(request)
