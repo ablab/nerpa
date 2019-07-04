@@ -37,17 +37,17 @@ void matcher::MatcherBase::Match::print(std::ofstream &out) {
         out << nrpParts[0].get_file_name() << "\n";
     }
     double scr = score();
-    out << "SCORE: " << scr << "("<< nrp->getLen() << ")\n";
+    out << "SCORE: " << scr << "\n";
 
     std::vector<int> rp(parts_id.size());
     for (int i = 0; i < rp.size(); ++i) {
         rp[nrp->getInd(i)] = i;
     }
 
-    out << "number of components : " << nrp->getLen() << "\n";
+    out << "number of components : " << parts_id.size() << "\n";
     for (int i = 0; i < parts_id.size(); ++i) {
         int ri = rp[i];
-        std::string formula = nrp->getFormula(i); //FIXME i not ri?? check
+        std::string formula = nrp->getFormula(i);
 
         out << formula << " -> ";
 
@@ -99,7 +99,7 @@ void matcher::MatcherBase::Match::print_csv(std::ofstream &out) {
         }
     }
     out << org << ",";
-    int len = nrp->getLen();
+    int len = parts_id.size();
     int cntMatch = 0;
     for (int i = 0; i < parts_id.size(); ++i) {
         std::string formula = nrp->getFormula(i);

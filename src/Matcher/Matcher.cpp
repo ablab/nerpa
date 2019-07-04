@@ -273,6 +273,7 @@ std::vector<matcher::Segment> matcher::Matcher::matche_seg(const int part_id) co
     nrpsprediction::NRPsPart predict_part = prediction->getNrpsParts()[part_id];
     std::vector<Segment> segs;
     std::vector<aacid> amns = nrp->getAminoacids();
+    amns.resize(nrp->getLen());
     int part_len = predict_part.getAminoacidsPrediction().size();
 
     if (part_len > amns.size() || part_len == 0) {

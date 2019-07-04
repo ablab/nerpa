@@ -27,8 +27,8 @@ namespace matcher {
         public:
             Match(const nrp::NRP* nrp, std::vector<nrpsprediction::NRPsPart> nrpParts, double scr, const Score* score):
                     nrp(nrp), nrpParts(std::move(nrpParts)), scr(scr), scoreFun(score) {
-                parts_id.resize(nrp->getLen(), -1);
-                parts_pos.resize(nrp->getLen(), -1);
+                parts_id.resize(nrp->getFullLen(), -1);
+                parts_pos.resize(nrp->getFullLen(), -1);
             }
 
             void match(int pos, int part_id, int part_pos);

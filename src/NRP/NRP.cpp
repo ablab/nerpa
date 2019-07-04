@@ -13,7 +13,7 @@ std::string nrp::NRP::getGraphInString() const {
 }
 
 int nrp::NRP::getLen() const {
-    return aminoacids.size();
+    return len;
 }
 
 int nrp::NRP::getInd(int i) const {
@@ -42,4 +42,16 @@ std::string nrp::NRP::get_extra_info() const {
 
 std::vector<aminoacid::Aminoacid> nrp::NRP::getAminoacids() const {
     return aminoacids;
+}
+
+void nrp::NRP::deleteAA(int i) {
+    std::swap(aminoacids[i], aminoacids[len - 1]);
+    std::swap(position[i], position[len - 1]);
+    std::swap(strformula[i], strformula[len - 1]);
+
+    len -= 1;
+}
+
+int nrp::NRP::getFullLen() const {
+    return aminoacids.size();
 }
