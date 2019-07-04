@@ -45,9 +45,10 @@ namespace matcher {
             bool operator < (Match b);
         };
 
-        MatcherBase(const nrp::NRP *nrp, const nrpsprediction::NRPsPrediction* prediction, const Score* score) {}
+        MatcherBase() = default;
 
-        virtual matcher::MatcherBase::Match getMatch() const = 0;
+        virtual matcher::MatcherBase::Match getMatch(const nrp::NRP *nrp, const nrpsprediction::NRPsPrediction *prediction,
+                                                     const matcher::Score *score) = 0;
         virtual std::vector<Segment> matche_seg(const int part_id) const = 0;
     };
 }

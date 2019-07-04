@@ -418,3 +418,12 @@ void matcher::Matcher::matchSingleUnits(matcher::MatcherBase::Match &match, std:
 
     match.setScore(newScore);
 }
+
+matcher::MatcherBase::Match
+matcher::Matcher::getMatch(const nrp::NRP *nrp, const nrpsprediction::NRPsPrediction *prediction,
+                           const matcher::Score *score) {
+    this->nrp = nrp;
+    this->prediction = prediction;
+    this->score = score;
+    return getMatch();
+}
