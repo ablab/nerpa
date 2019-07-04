@@ -24,6 +24,7 @@
 #include <Matcher/Score/Prism/ScorePrismNormalize.h>
 #include <Matcher/Score/Minowa/ScoreMinowaPositionalCoefficient.h>
 #include "Matcher/Matcher.h"
+#include "Matcher/InDelMatcher.h"
 
 const double MIN_SCROE = 0.002;
 const double MIN_EXPLAIN_PART = 0;//0.15;
@@ -123,7 +124,7 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::N
     getScoreFunction(predictor_name, score);
     std::vector<matcher::MatcherBase::Match> nrpsMatchs;
     for (int i = 0; i < mols.size(); ++i) {
-        matcher::MatcherBase* matcher = new matcher::Matcher();
+        matcher::MatcherBase* matcher = new matcher::InDelMatcher();
         matcher::MatcherBase::Match match = matcher->getMatch(mols[i], &pred, score);
         delete matcher;
 
@@ -163,7 +164,7 @@ void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp:
     for (int i = 0; i < preds.size(); ++i) {
         if (preds[i].getNrpsParts().size() == 0) continue;
         //std::cerr << mol->get_file_name() << " " << preds[i].getNrpsParts()[0].get_file_name() << "\n";
-        matcher::MatcherBase* matcher = new matcher::Matcher();
+        matcher::MatcherBase* matcher = new matcher::InDelMatcher();
         matcher::MatcherBase::Match match = matcher->getMatch(mol, &preds[i], score);
         delete matcher;
 

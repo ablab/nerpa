@@ -24,6 +24,8 @@ set(SOURCE_FILES main.cpp
         Matcher/Matcher.h
         Matcher/Matcher.cpp
         Matcher/MatcherBase.h
+        Matcher/InDelMatcher.h
+        Matcher/InDelMatcher.cpp
         Matcher/Score/Base/Score.cpp
         Matcher/Score/Base/Score.h
         Matcher/Segment.h
