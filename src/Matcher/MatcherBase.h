@@ -45,7 +45,7 @@ namespace matcher {
             bool operator < (Match b);
         };
 
-        MatcherBase(const nrp::NRP &nrp, const nrpsprediction::NRPsPrediction& prediction, const Score* score) {}
+        MatcherBase(const nrp::NRP *nrp, const nrpsprediction::NRPsPrediction* prediction, const Score* score) {}
 
         virtual matcher::MatcherBase::Match getMatch() const = 0;
         virtual std::vector<Segment> matche_seg(const int part_id) const = 0;

@@ -17,11 +17,11 @@ namespace matcher {
     typedef aminoacid::Aminoacid aacid;
     class Matcher : public MatcherBase {
     private:
-        const nrp::NRP& nrp;
-        const nrpsprediction::NRPsPrediction& prediction;
+        const nrp::NRP* nrp;
+        const nrpsprediction::NRPsPrediction* prediction;
         const Score* score;
     public:
-        Matcher(const nrp::NRP &nrp, const nrpsprediction::NRPsPrediction& prediction, const Score* score):
+        Matcher(const nrp::NRP *nrp, const nrpsprediction::NRPsPrediction* prediction, const Score* score):
                 MatcherBase(nrp, prediction, score), nrp(nrp), prediction(prediction), score(score) {
         }
 

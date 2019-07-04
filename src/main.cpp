@@ -123,7 +123,7 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::N
     getScoreFunction(predictor_name, score);
     std::vector<matcher::MatcherBase::Match> nrpsMatchs;
     for (int i = 0; i < mols.size(); ++i) {
-        matcher::MatcherBase* matcher = new matcher::Matcher(*mols[i], pred, score);
+        matcher::MatcherBase* matcher = new matcher::Matcher(mols[i], &pred, score);
         matcher::MatcherBase::Match match = matcher->getMatch();
         delete matcher;
 
@@ -163,7 +163,7 @@ void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp:
     for (int i = 0; i < preds.size(); ++i) {
         if (preds[i].getNrpsParts().size() == 0) continue;
         //std::cerr << mol->get_file_name() << " " << preds[i].getNrpsParts()[0].get_file_name() << "\n";
-        matcher::MatcherBase* matcher = new matcher::Matcher(*mol, preds[i], score);
+        matcher::MatcherBase* matcher = new matcher::Matcher(mol, &preds[i], score);
         matcher::MatcherBase::Match match = matcher->getMatch();
         delete matcher;
 
