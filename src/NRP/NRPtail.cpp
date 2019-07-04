@@ -47,3 +47,10 @@ std::vector<nrp::NRPLine*> nrp::NRPtail::getLines() const {
 bool nrp::NRPtail::is_valid_seg(int l, int r, int stp) const {
     return v1.is_valid_seg(l, r, stp);
 }
+
+nrp::NRPtail::NRPtail(const nrp::NRP &refNrp) {
+    auto lines = refNrp.getLines();
+    assert(lines.size() == 2);
+    this->v1 = *lines[0];
+    this->v2 = *lines[1];
+}

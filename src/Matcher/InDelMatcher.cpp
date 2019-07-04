@@ -2,6 +2,7 @@
 // Created by olga on 04.07.19.
 //
 
+#include <NRP/NRPLine.h>
 #include "InDelMatcher.h"
 
 namespace  matcher {
@@ -9,6 +10,8 @@ namespace  matcher {
     matcher::InDelMatcher::getMatch(const nrp::NRP *nrp, const nrpsprediction::NRPsPrediction *prediction,
                                     const matcher::Score *score) {
         MatcherBase::Match theBestMatch = innerMatcher->getMatch(nrp, prediction, score);
+
+        nrp::NRPLine newNRP(*nrp);
 
         return theBestMatch;
     }

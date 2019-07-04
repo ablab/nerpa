@@ -18,6 +18,7 @@ namespace nrp {
 
         bool is_valid_seg(int l, int r, int stp) const override;
 
+        explicit NRPCycle(const NRP &refNrp);
     };
 }
 

@@ -14,6 +14,9 @@ namespace nrp {
         std::vector<NRPLine*> getLines() const override;
 
         bool is_valid_seg(int l, int r, int stp) const override;
+
+        explicit NRPLine(const NRP &refNrp);
+        NRPLine() = default;;
     };
 }
 

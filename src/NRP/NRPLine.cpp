@@ -18,3 +18,6 @@ std::vector<nrp::NRPLine*> nrp::NRPLine::getLines() const {
 bool nrp::NRPLine::is_valid_seg(int l, int r, int stp) const {
     return (l <= r && stp > 0) || (r <= l && stp < 0);
 }
+
+nrp::NRPLine::NRPLine(const nrp::NRP &refNrp) : NRP(refNrp) {
+}

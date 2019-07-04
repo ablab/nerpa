@@ -22,3 +22,6 @@ std::vector<nrp::NRPLine*> nrp::NRPCycle::getLines() const {
 bool nrp::NRPCycle::is_valid_seg(int l, int r, int stp) const {
     return true;
 }
+
+nrp::NRPCycle::NRPCycle(const nrp::NRP &refNrp) : NRP(refNrp) {
+}
