@@ -7,7 +7,7 @@
 #include <fstream>
 #include "Matcher.h"
 
-matcher::Matcher::Match matcher::Matcher::getMatch() const {
+matcher::MatcherBase::Match matcher::Matcher::getMatch() const {
     if (nrp.getType() == nrp::NRP::line) {
         return getLineMatch(true, true);
     } else if (nrp.getType() == nrp::NRP::cycle) {
@@ -17,7 +17,7 @@ matcher::Matcher::Match matcher::Matcher::getMatch() const {
     }
 }
 
-matcher::Matcher::Match matcher::Matcher::getLineMatch(bool can_skip_first, bool can_skip_last) const {
+matcher::MatcherBase::Match matcher::Matcher::getLineMatch(bool can_skip_first, bool can_skip_last) const {
     std::vector<Segment> segments;
     auto nrpparts = prediction.getNrpsParts();
     std::vector<int> toSmallId(nrpparts.size(), -1);
@@ -42,7 +42,7 @@ matcher::Matcher::Match matcher::Matcher::getLineMatch(bool can_skip_first, bool
     return updateMatch(prediction, isCoverLine(segments, toSmallId, toBigId, len, matched_parts_id), skip_first, matched_parts_id);
 }
 
-matcher::Matcher::Match matcher::Matcher::getCycleMatch() const {
+matcher::MatcherBase::Match matcher::Matcher::getCycleMatch() const {
     std::vector<Segment> segments;
     auto nrpparts = prediction.getNrpsParts();
     std::vector<int> toSmallId(nrpparts.size(), -1);
@@ -63,7 +63,7 @@ matcher::Matcher::Match matcher::Matcher::getCycleMatch() const {
     }
 
     double best_score = score->minScore(len);
-    matcher::Matcher::Match resMatchs(&nrp, nrpparts, score->minScore(len), score);
+    matcher::MatcherBase::Match resMatchs(&nrp, nrpparts, score->minScore(len), score);
 
     for (int bg = 0; bg < len; ++bg) {
         std::vector<Segment> tmpSeg;
@@ -76,7 +76,7 @@ matcher::Matcher::Match matcher::Matcher::getCycleMatch() const {
         }
 
         std::vector<Segment> matched_parts_id;
-        matcher::Matcher::Match curMatch = updateMatch(prediction, isCoverLine(tmpSeg, toSmallId, toBigId, len, matched_parts_id), bg, matched_parts_id);
+        matcher::MatcherBase::Match curMatch = updateMatch(prediction, isCoverLine(tmpSeg, toSmallId, toBigId, len, matched_parts_id), bg, matched_parts_id);
         if (curMatch.score() > best_score) {
             resMatchs = curMatch;
             best_score = curMatch.score();
@@ -88,15 +88,15 @@ matcher::Matcher::Match matcher::Matcher::getCycleMatch() const {
 }
 
 
-matcher::Matcher::Match matcher::Matcher::getBranchMatch() const {
+matcher::MatcherBase::Match matcher::Matcher::getBranchMatch() const {
     std::vector<nrp::NRPLine*> lines = nrp.getLines();
 
     assert(lines[0]->getFormula(0) == lines[1]->getFormula(0));
 
     Matcher matcher1(*lines[0], prediction, score);
     Matcher matcher2(*lines[1], prediction, score);
-    matcher::Matcher::Match m1 = matcher1.getLineMatch(true, false);
-    matcher::Matcher::Match m2 = matcher2.getLineMatch(true, false);
+    matcher::MatcherBase::Match m1 = matcher1.getLineMatch(true, false);
+    matcher::MatcherBase::Match m2 = matcher2.getLineMatch(true, false);
     if (m1.score() > m2.score()) {
         return m1;
     } else {
@@ -104,13 +104,13 @@ matcher::Matcher::Match matcher::Matcher::getBranchMatch() const {
     }
 }
 
-matcher::Matcher::Match
-matcher::Matcher::updateMatch(const nrpsprediction::NRPsPrediction &nrPsPrediction, matcher::Matcher::Match match,
+matcher::MatcherBase::Match
+matcher::Matcher::updateMatch(const nrpsprediction::NRPsPrediction &nrPsPrediction, matcher::MatcherBase::Match match,
                               int bg, std::vector<Segment>& matched_parts_id) const {
     auto parts = nrPsPrediction.getNrpsParts();
     auto short_parts = nrPsPrediction.getShortParts();
     parts.insert(parts.end(), short_parts.begin(), short_parts.end());
-    matcher::Matcher::Match nmatch(&nrp, parts, match.score(), score);
+    matcher::MatcherBase::Match nmatch(&nrp, parts, match.score(), score);
     std::vector<std::pair<int, int> > part_id_pos = match.getMatchs();
     std::vector<bool> matched_nrp_pos(nrp.getLen(), false);
     for (int i = 0; i < part_id_pos.size(); ++i) {
@@ -140,12 +140,12 @@ matcher::Matcher::updateMatch(const nrpsprediction::NRPsPrediction &nrPsPredicti
     return nmatch;
 }
 
-matcher::Matcher::Match
+matcher::MatcherBase::Match
 matcher::Matcher::isCoverLine(std::vector<Segment> &segments,
                       const std::vector<int> &toSmallId, const std::vector<int> &toBigId, int len, std::vector<Segment>& matched_parts_id) const {
 
     if (toBigId.size() > 20) {
-        return matcher::Matcher::Match(&nrp, prediction.getNrpsParts(), -1, score);
+        return matcher::MatcherBase::Match(&nrp, prediction.getNrpsParts(), -1, score);
     }
 
     std::sort(segments.begin(), segments.end());
@@ -228,7 +228,7 @@ matcher::Matcher::isCoverLine(std::vector<Segment> &segments,
     auto parts = prediction.getNrpsParts();
     auto short_parts = prediction.getShortParts();
     parts.insert(parts.end(), short_parts.begin(), short_parts.end());
-    matcher::Matcher::Match nrPsMatch(&nrp, parts, mn, score);
+    matcher::MatcherBase::Match nrPsMatch(&nrp, parts, mn, score);
     int pos = len;
     while (pos > 0) {
         int nxtp = p[pos][rmsk].first;
@@ -325,7 +325,7 @@ int matcher::Matcher::addSegments(const std::vector<matcher::Segment> &part_seg,
     return cnt_add;
 }
 
-void matcher::Matcher::matchSingleUnits(matcher::Matcher::Match &match, std::vector<bool> &used_pos) const {
+void matcher::Matcher::matchSingleUnits(matcher::MatcherBase::Match &match, std::vector<bool> &used_pos) const {
     const double INF = 1e9;
     auto short_parts = prediction.getShortParts();
     int cnt_big_parts = prediction.getNrpsParts().size();

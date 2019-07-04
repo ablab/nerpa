@@ -121,10 +121,11 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::N
     std::ofstream out_short("report_predictions", std::ofstream::out | std::ofstream::app);
     matcher::Score* score;
     getScoreFunction(predictor_name, score);
-    std::vector<matcher::Matcher::Match> nrpsMatchs;
+    std::vector<matcher::MatcherBase::Match> nrpsMatchs;
     for (int i = 0; i < mols.size(); ++i) {
-        matcher::Matcher matcher(*mols[i], pred, score);
-        matcher::Matcher::Match match = matcher.getMatch();
+        matcher::MatcherBase* matcher = new matcher::Matcher(*mols[i], pred, score);
+        matcher::MatcherBase::Match match = matcher->getMatch();
+        delete matcher;
 
         //std::cerr << "EXPLAIN PERCENT: " << (double)match.getCntMatch()/pred.getSumPredictionLen() << "\n";
         if (match.score() >= MIN_SCROE &&
@@ -158,12 +159,14 @@ void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp:
     std::ofstream out_short("report_mols", std::ofstream::out | std::ofstream::app);
     matcher::Score* score;
     getScoreFunction(predictor_name, score);
-    std::vector<matcher::Matcher::Match> nrpsMatchs;
+    std::vector<matcher::MatcherBase::Match> nrpsMatchs;
     for (int i = 0; i < preds.size(); ++i) {
         if (preds[i].getNrpsParts().size() == 0) continue;
         //std::cerr << mol->get_file_name() << " " << preds[i].getNrpsParts()[0].get_file_name() << "\n";
-        matcher::Matcher matcher(*mol, preds[i], score);
-        matcher::Matcher::Match match = matcher.getMatch();
+        matcher::MatcherBase* matcher = new matcher::Matcher(*mol, preds[i], score);
+        matcher::MatcherBase::Match match = matcher->getMatch();
+        delete matcher;
+
         if (match.score() >= MIN_SCROE &&
                 (double)match.getCntMatch()/preds[i].getSumPredictionLen() >= MIN_EXPLAIN_PART) {
             nrpsMatchs.push_back(match);

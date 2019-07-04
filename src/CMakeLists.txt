@@ -23,6 +23,7 @@ set(SOURCE_FILES main.cpp
         NRP/NRPtail.cpp
         Matcher/Matcher.h
         Matcher/Matcher.cpp
+        Matcher/MatcherBase.h
         Matcher/Score/Base/Score.cpp
         Matcher/Score/Base/Score.h
         Matcher/Segment.h

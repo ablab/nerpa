@@ -15,13 +15,13 @@ namespace normalized_match {
         double score = 0;
         double p_value = 0;
 
-        matcher::Matcher::Match match;
+        matcher::MatcherBase::Match match;
     public:
         NormalizedMatch() = default;
-        NormalizedMatch(matcher::Matcher::Match match, nrp_generator::NRPGenerator* generator,
+        NormalizedMatch(matcher::MatcherBase::Match match, nrp_generator::NRPGenerator* generator,
                         nrpsprediction::NRPsPrediction prediction, NRP* mol);
 
-        NormalizedMatch(matcher::Matcher::Match match, nrp_generator::NRPsPredictionGenerator* generator,
+        NormalizedMatch(matcher::MatcherBase::Match match, nrp_generator::NRPsPredictionGenerator* generator,
                         nrpsprediction::NRPsPrediction prediction, NRP* mol);
         void print(std::ofstream& out);
         void print_short(std::ofstream& out);

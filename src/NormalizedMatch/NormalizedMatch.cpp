@@ -5,7 +5,7 @@
 const int normalized_match::NormalizedMatch::CNT_GEN = 10;
 const double normalized_match::NormalizedMatch::EPS = 1e-9;
 
-normalized_match::NormalizedMatch::NormalizedMatch(matcher::Matcher::Match match, nrp_generator::NRPGenerator* generator,
+normalized_match::NormalizedMatch::NormalizedMatch(matcher::MatcherBase::Match match, nrp_generator::NRPGenerator* generator,
                                                    nrpsprediction::NRPsPrediction prediction, nrp::NRP *mol) {
     this->match = match;
     std::vector<double> scores;
@@ -69,7 +69,7 @@ void normalized_match::NormalizedMatch::print_csv(std::ofstream &out) {
     match.print_csv(out, score, p_value);
 }
 
-normalized_match::NormalizedMatch::NormalizedMatch(matcher::Matcher::Match match,
+normalized_match::NormalizedMatch::NormalizedMatch(matcher::MatcherBase::Match match,
                                                    nrp_generator::NRPsPredictionGenerator *generator,
                                                    nrpsprediction::NRPsPrediction prediction, nrp::NRP *mol) {
     std::cerr << "norm score\n";
