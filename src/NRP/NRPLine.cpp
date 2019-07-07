@@ -10,9 +10,9 @@ nrp::NRP::NRPType nrp::NRPLine::getType() const {
 }
 
 //TODO
-std::vector<nrp::NRPLine*> nrp::NRPLine::getLines() const {
+std::vector<std::shared_ptr<nrp::NRP>> nrp::NRPLine::getLines() const {
     ERROR("Get lines for NRP line. NOT implemented");
-    return std::vector<nrp::NRPLine*>();
+    return std::vector<std::shared_ptr<NRP>>();
 }
 
 bool nrp::NRPLine::is_valid_seg(int l, int r, int stp) const {

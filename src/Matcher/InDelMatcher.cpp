@@ -53,8 +53,8 @@ namespace  matcher {
             }
             return res;
         } else {
-            MatcherBase::Match firstMatch = getDeleteMatch(nrp->getLines()[0], prediction, score);
-            MatcherBase::Match secondMatch = getDeleteMatch(nrp->getLines()[1], prediction, score);
+            MatcherBase::Match firstMatch = getDeleteMatch(nrp->getLines()[0].get(), prediction, score);
+            MatcherBase::Match secondMatch = getDeleteMatch(nrp->getLines()[1].get(), prediction, score);
             if (firstMatch.score() > secondMatch.score()) {
                 return firstMatch;
             } else {
@@ -91,8 +91,8 @@ namespace  matcher {
             }
             return res;
         } else {
-            MatcherBase::Match firstMatch = getInsertMatch(nrp->getLines()[0], prediction, score);
-            MatcherBase::Match secondMatch = getInsertMatch(nrp->getLines()[1], prediction, score);
+            MatcherBase::Match firstMatch = getInsertMatch(nrp->getLines()[0].get(), prediction, score);
+            MatcherBase::Match secondMatch = getInsertMatch(nrp->getLines()[1].get(), prediction, score);
             if (firstMatch.score() > secondMatch.score()) {
                 return firstMatch;
             } else {

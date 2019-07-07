@@ -89,12 +89,12 @@ matcher::MatcherBase::Match matcher::Matcher::getCycleMatch() const {
 
 
 matcher::MatcherBase::Match matcher::Matcher::getBranchMatch() const {
-    std::vector<nrp::NRPLine*> lines = nrp->getLines();
+    std::vector<std::shared_ptr<nrp::NRP>> lines = nrp->getLines();
 
     assert(lines[0]->getFormula(0) == lines[1]->getFormula(0));
 
-    Matcher matcher1(lines[0], prediction, score);
-    Matcher matcher2(lines[1], prediction, score);
+    Matcher matcher1(lines[0].get(), prediction, score);
+    Matcher matcher2(lines[1].get(), prediction, score);
     matcher::MatcherBase::Match m1 = matcher1.getLineMatch(true, false);
     matcher::MatcherBase::Match m2 = matcher2.getLineMatch(true, false);
     if (m1.score() > m2.score()) {

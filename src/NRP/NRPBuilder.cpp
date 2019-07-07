@@ -94,7 +94,8 @@ std::shared_ptr<nrp::NRP> nrp::NRPBuilder::build(std::string fragment_graph, std
         std::vector<aminoacid::Aminoacid> resaacid1 = aminoacids_by_pos(aminoacids, pos1);
         std::vector<aminoacid::Aminoacid> resaacid2 = aminoacids_by_pos(aminoacids, pos2);
 
-        NRPLine ver1(fragment_graph, strformula, resaacid1, pos1, graph, extra_info), ver2(fragment_graph, strformula, resaacid2, pos2, graph, extra_info);
+        std::shared_ptr<NRP> ver1 = std::make_shared<NRPLine>(fragment_graph, strformula, resaacid1, pos1, graph, extra_info),
+                ver2 = std::make_shared<NRPLine>(fragment_graph, strformula, resaacid2, pos2, graph, extra_info);
 
         return std::make_shared<nrp::NRPtail>(ver1, ver2);
     }

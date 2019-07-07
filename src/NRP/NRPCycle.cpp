@@ -14,9 +14,9 @@ nrp::NRP::NRPType nrp::NRPCycle::getType() const {
 }
 
 //TODO
-std::vector<nrp::NRPLine*> nrp::NRPCycle::getLines() const {
+std::vector<std::shared_ptr<nrp::NRP>> nrp::NRPCycle::getLines() const {
     ERROR("Get lines for NRP cycle. NOT implemented");
-    return std::vector<nrp::NRPLine*>();
+    return std::vector<std::shared_ptr<NRP>>();
 }
 
 bool nrp::NRPCycle::is_valid_seg(int l, int r, int stp) const {
@@ -24,4 +24,5 @@ bool nrp::NRPCycle::is_valid_seg(int l, int r, int stp) const {
 }
 
 nrp::NRPCycle::NRPCycle(const nrp::NRP &refNrp) : NRP(refNrp) {
+
 }

@@ -6,6 +6,7 @@
 #include "Aminoacid/Aminoacid.h"
 #include "../NRPsPrediction/NRPsPart.h"
 #include <iostream>
+#include <memory>
 #include "assert.h"
 
 namespace nrp {
@@ -58,7 +59,7 @@ namespace nrp {
 
         virtual NRPType getType() const = 0;
 
-        virtual std::vector<NRPLine*> getLines() const = 0;
+        virtual std::vector<std::shared_ptr<NRP>> getLines() const = 0;
 
         virtual bool is_valid_seg(int l, int r, int stp) const = 0;
 
