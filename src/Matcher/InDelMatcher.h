@@ -19,6 +19,9 @@ namespace matcher {
 
         Match getDeleteMatch(const nrp::NRP *nrp, const nrpsprediction::NRPsPrediction *prediction,
                              const matcher::Score *score);
+
+        Match getInsertMatch(const nrp::NRP *nrp, const nrpsprediction::NRPsPrediction *prediction,
+                             const matcher::Score *score);
     public:
         InDelMatcher() {
             innerMatcher = new Matcher();

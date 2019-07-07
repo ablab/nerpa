@@ -45,13 +45,28 @@ std::vector<aminoacid::Aminoacid> nrp::NRP::getAminoacids() const {
 }
 
 void nrp::NRP::deleteAA(int i) {
-    std::swap(aminoacids[i], aminoacids[len - 1]);
-    std::swap(position[i], position[len - 1]);
-    std::swap(strformula[i], strformula[len - 1]);
-
+    for (int j = i; j < len - 1; ++j) {
+        std::swap(aminoacids[j], aminoacids[j + 1]);
+        std::swap(position[j], position[j + 1]);
+        std::swap(strformula[j], strformula[j + 1]);
+    }
     len -= 1;
 }
 
 int nrp::NRP::getFullLen() const {
     return aminoacids.size();
+}
+
+void nrp::NRP::insertAA(int i) {
+    aminoacids.push_back(aminoacid::Aminoacid("none"));
+    position.push_back(len);
+    strformula.push_back("-");
+
+    for (int j = len; j > i; --j) {
+        std::swap(aminoacids[j], aminoacids[j - 1]);
+        std::swap(position[j], position[j - 1]);
+        std::swap(strformula[j], strformula[j - 1]);
+    }
+
+    len += 1;
 }

@@ -63,6 +63,8 @@ namespace nrp {
         virtual bool is_valid_seg(int l, int r, int stp) const = 0;
 
         void deleteAA(int i);
+
+        void insertAA(int i);
     };
 
 }
