@@ -79,8 +79,8 @@ std::vector<nrpsprediction::NRPsPrediction>  save_predictions(char* file_name, s
     return preds;
 }
 
-std::vector<nrp::NRP*> save_mols(char* file_name) {
-    std::vector<nrp::NRP*> mols;
+std::vector<std::shared_ptr<nrp::NRP>> save_mols(char* file_name) {
+    std::vector<std::shared_ptr<nrp::NRP>> mols;
 
     std::ifstream in_nrps_files(file_name);
     std::string cur_nrp_file;
@@ -92,7 +92,7 @@ std::vector<nrp::NRP*> save_mols(char* file_name) {
         ss >> cur_nrp_file;
         std::string extra_info;
         getline(ss, extra_info);
-        nrp::NRP* nrp_from_fragment_graph = nrp::NRPBuilder::build(cur_nrp_file, extra_info);
+        std::shared_ptr<nrp::NRP> nrp_from_fragment_graph = nrp::NRPBuilder::build(cur_nrp_file, extra_info);
         if (nrp_from_fragment_graph == nullptr) {
             continue;
         }
@@ -115,7 +115,7 @@ void getScoreFunction(std::string predictor_name, matcher::Score*& score) {
     }
 }
 
-void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::NRP*> mols, std::string output_filename,
+void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<std::shared_ptr<nrp::NRP>> mols, std::string output_filename,
                          std::string predictor_name) {
     if (pred.getNrpsParts().size() == 0) return;
     std::ofstream out(output_filename);
@@ -125,7 +125,7 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<nrp::N
     std::vector<matcher::MatcherBase::Match> nrpsMatchs;
     for (int i = 0; i < mols.size(); ++i) {
         matcher::MatcherBase* matcher = new matcher::InDelMatcher();
-        matcher::MatcherBase::Match match = matcher->getMatch(mols[i], &pred, score);
+        matcher::MatcherBase::Match match = matcher->getMatch(mols[i].get(), &pred, score);
         delete matcher;
 
         //std::cerr << "EXPLAIN PERCENT: " << (double)match.getCntMatch()/pred.getSumPredictionLen() << "\n";
@@ -235,7 +235,7 @@ int main(int argc, char* argv[]) {
     INFO("Saving predictions");
     std::vector<nrpsprediction::NRPsPrediction> preds = save_predictions(argv[1], predictor_name);
     INFO("Saving NRPs structures");
-    std::vector<nrp::NRP*> mols = save_mols(argv[2]);
+    std::vector<std::shared_ptr<nrp::NRP>> mols = save_mols(argv[2]);
 
     if (start_from == 0) {
         std::ofstream out_csv("report.csv");
@@ -249,7 +249,7 @@ int main(int argc, char* argv[]) {
         INFO("NRP structure #" << i)
         std::string output_filename = gen_filename(mols[i]->get_file_name(), "details_mols/");
 
-        run_mol_predictions(preds, mols[i], output_filename, predictor_name);
+        run_mol_predictions(preds, mols[i].get(), output_filename, predictor_name);
     }
 
     INFO("Processing matching for prediction");

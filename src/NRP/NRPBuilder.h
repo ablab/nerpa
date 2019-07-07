@@ -2,6 +2,7 @@
 #define NRPSMATCHER_NRPBUILDER_H
 
 #include <string>
+#include <memory>
 #include "NRP.h"
 
 namespace nrp {
@@ -31,7 +32,7 @@ namespace nrp {
                               std::vector<int> &cycle);
 
     public:
-        static NRP* build(std::string fragment_graph, std::string extra_info);
+        static std::shared_ptr<nrp::NRP> build(std::string fragment_graph, std::string extra_info);
 
         static bool isConnected(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr);
 
