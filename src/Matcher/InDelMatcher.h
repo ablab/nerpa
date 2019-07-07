@@ -17,17 +17,17 @@ namespace matcher {
             delete innerMatcher;
         }
 
-        Match getDeleteMatch(const nrp::NRP *nrp, const nrpsprediction::NRPsPrediction *prediction,
+        Match getDeleteMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::NRPsPrediction *prediction,
                              const matcher::Score *score);
 
-        Match getInsertMatch(const nrp::NRP *nrp, const nrpsprediction::NRPsPrediction *prediction,
+        Match getInsertMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::NRPsPrediction *prediction,
                              const matcher::Score *score);
     public:
         InDelMatcher() {
             innerMatcher = new Matcher();
         }
 
-        Match getMatch(const nrp::NRP *nrp, const nrpsprediction::NRPsPrediction *prediction,
+        Match getMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::NRPsPrediction *prediction,
                        const matcher::Score *score) override;
 
 

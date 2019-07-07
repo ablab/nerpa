@@ -47,7 +47,8 @@ namespace matcher {
 
         MatcherBase() = default;
 
-        virtual matcher::MatcherBase::Match getMatch(const nrp::NRP *nrp, const nrpsprediction::NRPsPrediction *prediction,
+        virtual matcher::MatcherBase::Match getMatch(const std::shared_ptr<nrp::NRP> nrp,
+                                                     const nrpsprediction::NRPsPrediction *prediction,
                                                      const matcher::Score *score) = 0;
     };
 }

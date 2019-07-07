@@ -125,7 +125,7 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<std::s
     std::vector<matcher::MatcherBase::Match> nrpsMatchs;
     for (int i = 0; i < mols.size(); ++i) {
         matcher::MatcherBase* matcher = new matcher::InDelMatcher();
-        matcher::MatcherBase::Match match = matcher->getMatch(mols[i].get(), &pred, score);
+        matcher::MatcherBase::Match match = matcher->getMatch(mols[i], &pred, score);
         delete matcher;
 
         //std::cerr << "EXPLAIN PERCENT: " << (double)match.getCntMatch()/pred.getSumPredictionLen() << "\n";
@@ -155,7 +155,7 @@ void run_prediction_mols(nrpsprediction::NRPsPrediction pred, std::vector<std::s
     delete(score);
 }
 
-void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, nrp::NRP* mol, std::string output_filename,
+void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, std::shared_ptr<nrp::NRP> mol, std::string output_filename,
                          std::string predictor_name) {
     std::ofstream out_short("report_mols", std::ofstream::out | std::ofstream::app);
     matcher::Score* score;
@@ -249,7 +249,7 @@ int main(int argc, char* argv[]) {
         INFO("NRP structure #" << i)
         std::string output_filename = gen_filename(mols[i]->get_file_name(), "details_mols/");
 
-        run_mol_predictions(preds, mols[i].get(), output_filename, predictor_name);
+        run_mol_predictions(preds, mols[i], output_filename, predictor_name);
     }
 
     INFO("Processing matching for prediction");

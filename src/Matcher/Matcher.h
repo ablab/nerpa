@@ -17,18 +17,20 @@ namespace matcher {
     typedef aminoacid::Aminoacid aacid;
     class Matcher : public MatcherBase {
     private:
-        const nrp::NRP* nrp{};
+        std::shared_ptr<nrp::NRP> nrp;
         const nrpsprediction::NRPsPrediction* prediction{};
         const Score* score{};
     public:
-        Matcher(const nrp::NRP *nrp, const nrpsprediction::NRPsPrediction* prediction, const Score* score):
+        Matcher(std::shared_ptr<nrp::NRP> nrp,
+                const nrpsprediction::NRPsPrediction* prediction,
+                const Score* score):
                 nrp(nrp), prediction(prediction), score(score) {
         }
 
         Matcher() = default;
 
         matcher::MatcherBase::Match getMatch() const;
-        matcher::MatcherBase::Match getMatch(const nrp::NRP *nrp,
+        matcher::MatcherBase::Match getMatch(std::shared_ptr<nrp::NRP> nrp,
                                              const nrpsprediction::NRPsPrediction* prediction,
                                              const Score* score) override;
         std::vector<Segment> matche_seg(const int part_id) const;
