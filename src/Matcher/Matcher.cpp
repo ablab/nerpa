@@ -9,7 +9,7 @@
 
 matcher::MatcherBase::Match matcher::Matcher::getMatch() const {
     if (nrp->getType() == nrp::NRP::line) {
-        return getLineMatch(true, true);
+        return getLineMatch(false, false);
     } else if (nrp->getType() == nrp::NRP::cycle) {
         return getCycleMatch();
     } else {
@@ -63,7 +63,7 @@ matcher::MatcherBase::Match matcher::Matcher::getCycleMatch() const {
     }
 
     double best_score = score->minScore(len);
-    matcher::MatcherBase::Match resMatchs(nrp.get(), nrpparts, score->minScore(len), score);
+    matcher::MatcherBase::Match resMatchs(nrp, nrpparts, score->minScore(len), score);
 
     for (int bg = 0; bg < len; ++bg) {
         std::vector<Segment> tmpSeg;
@@ -110,7 +110,7 @@ matcher::Matcher::updateMatch(const nrpsprediction::NRPsPrediction &nrPsPredicti
     auto parts = nrPsPrediction.getNrpsParts();
     auto short_parts = nrPsPrediction.getShortParts();
     parts.insert(parts.end(), short_parts.begin(), short_parts.end());
-    matcher::MatcherBase::Match nmatch(nrp.get(), parts, match.score(), score);
+    matcher::MatcherBase::Match nmatch(nrp, parts, match.score(), score);
     std::vector<std::pair<int, int> > part_id_pos = match.getMatchs();
     std::vector<bool> matched_nrp_pos(nrp->getLen(), false);
     for (int i = 0; i < part_id_pos.size(); ++i) {
@@ -145,7 +145,7 @@ matcher::Matcher::isCoverLine(std::vector<Segment> &segments,
                       const std::vector<int> &toSmallId, const std::vector<int> &toBigId, int len, std::vector<Segment>& matched_parts_id) const {
 
     if (toBigId.size() > 20) {
-        return matcher::MatcherBase::Match(nrp.get(), prediction->getNrpsParts(), -1, score);
+        return matcher::MatcherBase::Match(nrp, prediction->getNrpsParts(), -1, score);
     }
 
     std::sort(segments.begin(), segments.end());
@@ -228,7 +228,7 @@ matcher::Matcher::isCoverLine(std::vector<Segment> &segments,
     auto parts = prediction->getNrpsParts();
     auto short_parts = prediction->getShortParts();
     parts.insert(parts.end(), short_parts.begin(), short_parts.end());
-    matcher::MatcherBase::Match nrPsMatch(nrp.get(), parts, mn, score);
+    matcher::MatcherBase::Match nrPsMatch(nrp, parts, mn, score);
     int pos = len;
     while (pos > 0) {
         int nxtp = p[pos][rmsk].first;

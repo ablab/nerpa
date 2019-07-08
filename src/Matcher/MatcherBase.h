@@ -18,14 +18,14 @@ namespace matcher {
     public:
         class Match {
         private:
-            const nrp::NRP* nrp;
+            std::shared_ptr<nrp::NRP> nrp;
             const Score* scoreFun;
             double scr;
             std::vector<nrpsprediction::NRPsPart> nrpParts;
             std::vector<int> parts_id;
             std::vector<int> parts_pos;
         public:
-            Match(const nrp::NRP* nrp, std::vector<nrpsprediction::NRPsPart> nrpParts, double scr, const Score* score):
+            Match(std::shared_ptr<nrp::NRP> nrp, std::vector<nrpsprediction::NRPsPart> nrpParts, double scr, const Score* score):
                     nrp(nrp), nrpParts(std::move(nrpParts)), scr(scr), scoreFun(score) {
                 parts_id.resize(nrp->getFullLen(), -1);
                 parts_pos.resize(nrp->getFullLen(), -1);
