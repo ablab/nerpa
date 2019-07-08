@@ -48,7 +48,7 @@ void nrp::NRP::deleteAA(int i) {
     for (int j = i; j < len - 1; ++j) {
         std::swap(aminoacids[j], aminoacids[j + 1]);
         std::swap(position[j], position[j + 1]);
-        std::swap(strformula[j], strformula[j + 1]);
+        //std::swap(strformula[j], strformula[j + 1]);
     }
     len -= 1;
 }
@@ -65,7 +65,7 @@ void nrp::NRP::insertAA(int i) {
     for (int j = len; j > i; --j) {
         std::swap(aminoacids[j], aminoacids[j - 1]);
         std::swap(position[j], position[j - 1]);
-        std::swap(strformula[j], strformula[j - 1]);
+        //std::swap(strformula[j], strformula[j - 1]);
     }
 
     len += 1;
