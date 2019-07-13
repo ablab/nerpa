@@ -275,7 +275,6 @@ std::vector<matcher::Segment> matcher::Matcher::matche_seg(const int part_id) co
     std::vector<aacid> amns = nrp->getAminoacids();
     amns.resize(nrp->getLen());
     int part_len = predict_part.getAminoacidsPrediction().size();
-
     if (part_len > amns.size() || part_len == 0) {
         return segs;
     }

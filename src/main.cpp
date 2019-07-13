@@ -26,7 +26,7 @@
 #include "Matcher/Matcher.h"
 #include "Matcher/InDelMatcher.h"
 
-const double MIN_SCROE = 0.002;
+const double MIN_SCROE = 0;//0.002;
 const double MIN_EXPLAIN_PART = 0;//0.15;
 
 void getPredictor(std::string predictor_name, nrpsprediction::PredictionBuilderBase*& predictionBuilder) {
@@ -105,7 +105,7 @@ std::vector<std::shared_ptr<nrp::NRP>> save_mols(char* file_name) {
 
 void getScoreFunction(std::string predictor_name, matcher::Score*& score) {
     if (predictor_name == "MINOWA") {
-        score = new matcher::ScoreMinowaNormalizeWithoutAffinGap;
+        score = new matcher::ScoreMinowaWithModification;
     } else if (predictor_name == "PRISM") {
         score = new matcher::ScorePrism;
     } else if (predictor_name == "SANDPUMA") {

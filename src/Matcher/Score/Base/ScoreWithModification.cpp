@@ -22,6 +22,7 @@ namespace matcher {
 
             segscor += cur_sc;
         }
+
         if (cnt_mismatch == 0 || (cnt_mismatch == 1 && aminoacid_predictions.size() > 4)) {
             score = segscor;
             return true;

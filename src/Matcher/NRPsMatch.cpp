@@ -15,7 +15,7 @@ double matcher::MatcherBase::Match::score() {
 
 std::vector<std::pair<int, int> > matcher::MatcherBase::Match::getMatchs() {
     std::vector<std::pair<int, int> > res;
-    for (int i = 0; i < parts_id.size(); ++i) {
+    for (int i = 0; i < nrp->getLen(); ++i) {
         res.push_back(std::make_pair(parts_id[i], parts_pos[i]));
     }
     return res;

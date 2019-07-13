@@ -14,6 +14,7 @@
 #include <boost/concept_check.hpp>
 #include <Matcher/Score/Base/ScoreWithModification.h>
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
+#include <memory>
 
 namespace nrp {
     typedef matcher::Segment Segment;
@@ -204,8 +205,7 @@ namespace nrp {
 
             std::random_shuffle(nrpParts.begin(), nrpParts.end());
             nrpsprediction::NRPsPrediction nrpsPrediction(nrpParts);
-
-            matcher::Matcher matcher(nrp, nrpsPrediction, &swm);
+            matcher::Matcher matcher(std::make_shared<NRPLine>(&nrp), &nrpsPrediction, &swm);
             matcher::Matcher::Match match = matcher.getMatch();
 
             ASSERT_GE(match.score() - res_score, -EPS);
@@ -258,7 +258,7 @@ namespace nrp {
             std::random_shuffle(nrpParts.begin(), nrpParts.end());
             nrpsprediction::NRPsPrediction nrpsPrediction(nrpParts);
 
-            matcher::Matcher matcher(nrp, nrpsPrediction, &swm);
+            matcher::Matcher matcher(std::make_shared<NRPCycle>(&nrp), &nrpsPrediction, &swm);
             matcher::Matcher::Match match = matcher.getMatch();
 
             ASSERT_GE(match.score() - res_score, -EPS);

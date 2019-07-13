@@ -6,9 +6,10 @@
 #define NRPSMATCHER_SCOREMINOWA_H
 
 #include "Matcher/Score/Base/Score.h"
+#include "ScoreMinowaWithModification.h"
 
 namespace matcher {
-    class ScoreMinowa : public Score {
+    class ScoreMinowa : public ScoreMinowaWithModification {
     public:
         double
         aaScore(const nrpsprediction::AminoacidPrediction &apred, const aminoacid::Aminoacid &aminoacid) const override;
