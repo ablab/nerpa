@@ -10,6 +10,7 @@
 #include <cassert>
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 namespace aminoacid {
     class Formula {

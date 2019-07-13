@@ -10,6 +10,23 @@
 
 const std::string nrp::NRPBuilder::ELEM_NAME[ELEM_CNT] = {"C", "H", "Cl", "N", "O", "S"};
 
+std::string graphToString(const std::vector<std::vector<int> >& g) {
+    std::stringstream ss;
+    int m = 0;
+    for (int i = 0; i < g.size(); ++i) {
+        m += g[i].size();
+    }
+
+    ss << "number of bonds : " << m << "\n";
+    for (int i = 0; i < g.size(); ++i) {
+        for (int j = 0; j < g[i].size(); ++j) {
+            ss << i << " -NC> " << g[i][j] << "\n";
+        }
+    }
+
+    return ss.str();
+}
+
 std::shared_ptr<nrp::NRP> nrp::NRPBuilder::build(std::string fragment_graph, std::string extra_info) {
     std::ifstream in(fragment_graph);
     std::string s;
@@ -41,9 +58,6 @@ std::shared_ptr<nrp::NRP> nrp::NRPBuilder::build(std::string fragment_graph, std
     std::string tmp;
     while(getline(in, tmp)) {
         if (tmp.size() > 0) {
-            graph += tmp;
-            graph += "\n";
-
             if (tmp[0] != 'n') {
                 std::stringstream ss(tmp);
                 int b, e;
@@ -63,6 +77,7 @@ std::shared_ptr<nrp::NRP> nrp::NRPBuilder::build(std::string fragment_graph, std
     }
 
     in.close();
+    graph = graphToString(g);
 
     if (!isConnected(g, gr)) {
         return nullptr;
