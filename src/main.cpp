@@ -17,12 +17,11 @@
 #include <NRPsPrediction/Builders/SandpumaPredictionBuilder.h>
 #include <Matcher/Score/Base/ScorePositionOnly.h>
 #include <Matcher/Score/Minowa/ScoreMinowaScoreOnly.h>
-#include <Matcher/Score/Minowa/ScoreMinowaNormalize.h>
-#include <Matcher/Score/Minowa/ScoreMinowaNormalizeWithoutAffinGap.h>
 #include <Matcher/Score/NrpsPredictor2/ScoreNRPsPredictor2Normalize.h>
-#include <Matcher/Score/Sandpuma/ScoreSandpumaNormalize.h>
-#include <Matcher/Score/Prism/ScorePrismNormalize.h>
 #include <Matcher/Score/Minowa/ScoreMinowaPositionalCoefficient.h>
+#include <Matcher/Score/Base/ScoreSingleUnit.h>
+#include <Matcher/Score/Base/ScoreOpenContinueGap.h>
+#include <Matcher/Score/Base/ScoreNormalize.h>
 #include "Matcher/Matcher.h"
 #include "Matcher/InDelMatcher.h"
 
@@ -104,14 +103,19 @@ std::vector<std::shared_ptr<nrp::NRP>> save_mols(char* file_name) {
 }
 
 void getScoreFunction(std::string predictor_name, matcher::Score*& score) {
+    using namespace matcher;
     if (predictor_name == "MINOWA") {
-        score = new matcher::ScoreMinowaWithModification;
+        score = new ScoreWithModification(
+                std::unique_ptr<Score>(new ScoreSingleUnit(
+                std::unique_ptr<Score>(new ScoreOpenContinueGap(
+                std::unique_ptr<Score>(new ScoreNormalize(
+                std::unique_ptr<Score>(new ScoreMinowa()))))))));
     } else if (predictor_name == "PRISM") {
-        score = new matcher::ScorePrism;
+        score = new ScorePrism;
     } else if (predictor_name == "SANDPUMA") {
-        score = new matcher::ScoreSandpuma;
+        score = new ScoreSandpuma;
     } else {
-        score = new matcher::ScoreWithModification;
+        score = new Score;
     }
 }
 

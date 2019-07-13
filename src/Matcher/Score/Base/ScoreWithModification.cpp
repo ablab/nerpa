@@ -45,17 +45,15 @@ namespace matcher {
         aminoacid::Modification modification(formula);
         if (modification.getId() == aminoacid::Modification::MODIFICATION_CNT) {
             return -1;
-        }
-        if (modification.getId() == aminoacid::Modification::empty ||
-                (predAA.get_name() == "asn" && modification.getId() == aminoacid::Modification::hydration) ||
-                (predAA.get_name() == "glu" && modification.getId() == aminoacid::Modification::methylation)) {
-            int mdpos = (pos.first + pos.second)/2;
-            if (mdpos >= 10) {
-                return 0;
+        } else {
+            double modCoeff = 1;
+
+            if (modification.getId() != aminoacid::Modification::empty && modification.getId() != aminoacid::Modification::methylation) {
+                modCoeff = 0;
             }
-            return prob.prob/100. * posscore[mdpos];
+
+            return baseScore->getScore(nrpAA, predAA, prob, pos) * modCoeff;
         }
-        return -1;
     }
 
     std::pair<double, aminoacid::Aminoacid>
@@ -92,4 +90,6 @@ namespace matcher {
 
         return std::make_pair(maxScore, theBest);
     }
+
+    ScoreWithModification::ScoreWithModification(std::unique_ptr<Score> base) : Score(std::move(base)) {}
 }

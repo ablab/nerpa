@@ -58,15 +58,12 @@ set(SOURCE_FILES main.cpp
         Matcher/Score/Minowa/ScoreMinowaScoreOnly.h
         Matcher/Score/Base/ScoreFullMatch.cpp
         Matcher/Score/Base/ScoreFullMatch.h
-        Matcher/Score/Minowa/ScoreMinowaNormalize.h
-        Matcher/Score/Minowa/ScoreMinowaNormalize.cpp
-        Matcher/Score/Minowa/ScoreMinowaNormalizeWithoutAffinGap.h
         Matcher/Score/NrpsPredictor2/ScoreNRPsPredictor2Normalize.h
-        Matcher/Score/Prism/ScorePrismNormalize.h
-        Matcher/Score/Sandpuma/ScoreSandpumaNormalize.h
         Matcher/Score/Minowa/ScoreMinowaPositionalCoefficient.h
-        Matcher/Score/Minowa/ScoreMinowaWithModification.h
-        Matcher/Score/Minowa/ScoreMinowaWithModification.cpp
+        Matcher/Score/Base/ScoreNormalize.cpp
+        Matcher/Score/Base/ScoreNormalize.h
+        Matcher/Score/Base/ScoreOpenContinueGap.h
+        Matcher/Score/Base/ScoreSingleUnit.h
         Json/json.hpp)
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})
