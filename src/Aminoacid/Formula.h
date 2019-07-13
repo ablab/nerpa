@@ -9,6 +9,7 @@
 #include <map>
 #include <cassert>
 #include <iostream>
+#include <sstream>
 
 namespace aminoacid {
     class Formula {
@@ -90,6 +91,20 @@ namespace aminoacid {
             }
         }
 
+        std::string toString() {
+            std::vector<std::string> elems({"C","H","N","O","S","Cl"});
+            std::stringstream ss;
+            for (auto elem : elems) {
+                if (formula[elem] != 0) {
+                    ss << elem;
+                    if (formula[elem] != 1) {
+                        ss << formula[elem];
+                    }
+                }
+            }
+
+            return ss.str();
+        }
     };
 }
 
