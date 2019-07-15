@@ -40,6 +40,7 @@ set(SOURCE_FILES main.cpp
         NRPsPrediction/Builders/SandpumaPredictionBuilder.h
         NRPsPrediction/Builders/SandpumaPredictionBuilder.cpp
         Aminoacid/Formula.h
+        Aminoacid/Formula.cpp
         Aminoacid/Modification.h
         Aminoacid/Modification.cpp
         Aminoacid/AminoacidInfo.h

@@ -8,7 +8,8 @@
 #include "NRPLine.h"
 #include "NRPtail.h"
 
-const std::string nrp::NRPBuilder::ELEM_NAME[ELEM_CNT] = {"C", "H", "Cl", "N", "O", "S"};
+using namespace aminoacid;
+typedef Formula::Elem Elem;
 
 std::string graphToString(const std::vector<std::vector<int> >& g) {
     std::stringstream ss;
@@ -25,6 +26,57 @@ std::string graphToString(const std::vector<std::vector<int> >& g) {
     }
 
     return ss.str();
+}
+
+void nrp::NRPBuilder::handleLoop(int v,
+                std::vector<std::vector<int> >& g,
+                std::vector<std::vector<int> >& gr,
+                std::vector<std::vector<int> >& formuls) {
+    if (g[v].size() != 2 || gr[v].size() != 2) {
+        return;
+    }
+
+    for (int j = 0; j < g[v].size(); ++j) {
+        if (g[v][j] == v) {
+            std::swap(g[v][j], g[v][g[v].size() - 1]);
+        }
+    }
+    g[v].resize(g[v].size() - 1);
+
+    for (int j = 0; j < gr[v].size(); ++j) {
+        if (gr[v][j] == v) {
+            std::swap(gr[v][j], gr[v][gr[v].size() - 1]);
+        }
+    }
+    gr[v].resize(gr[v].size() - 1);
+
+    int newv = g.size();
+    g.push_back({g[v][0]});
+    gr.push_back({v});
+    g[v][0] = newv;
+    for (int i = 0; i < gr[g[newv][0]].size(); ++i) {
+        if (gr[g[newv][0]][i] == v) {
+            gr[g[newv][0]][i] = newv;
+        }
+    }
+
+    std::string ahp = "C5H10N2O2";
+    formuls.push_back(Formula(ahp).toVector());
+    formuls[v] = (Formula(to_string(formuls[v])) - Formula(ahp) + Formula("NH3") - Formula("H2O")).toVector();
+}
+
+
+void nrp::NRPBuilder::handleLoops(std::vector<std::vector<int> >& g,
+                 std::vector<std::vector<int> >& gr,
+                 std::vector<std::vector<int> >& formuls) {
+    for (int i = 0; i < g.size(); ++i) {
+        for (int j = 0; j < g[i].size(); ++j) {
+            if (g[i][j] == i) {
+                handleLoop(i, g, gr, formuls);
+            }
+        }
+    }
+
 }
 
 std::shared_ptr<nrp::NRP> nrp::NRPBuilder::build(std::string fragment_graph, std::string extra_info) {
@@ -45,9 +97,6 @@ std::shared_ptr<nrp::NRP> nrp::NRPBuilder::build(std::string fragment_graph, std
         std::string formula;
         double mass;
         in >> id >> formula >> mass;
-        std::stringstream ss;
-        ss << id << " " << formula << " " << mass;
-        strformula.push_back(ss.str());
         formuls.push_back(parse_formula(formula));
     }
 
@@ -71,13 +120,25 @@ std::shared_ptr<nrp::NRP> nrp::NRPBuilder::build(std::string fragment_graph, std
         }
     }
 
+
+    handleLoops(g, gr, formuls);
+
     for (int i = 0; i < formuls.size(); ++i) {
-        //std::cerr << "Parse AA num " << i << " " << aminoacid::Aminoacid::AMINOACID_NAMES[aminoacid::Aminoacid::get_aminoacid_from_formula(to_string(formuls[i]))];
         aminoacids.push_back(aminoacid::Aminoacid(aminoacid::Formula(to_string(formuls[i]))));
     }
 
     in.close();
+
     graph = graphToString(g);
+    for (int i = 0; i < g.size(); ++i) {
+        std::stringstream ss;
+        std::vector<int> tmp_formuls = formuls[i];
+        tmp_formuls[int(Elem::H)] -= (g[i].size() + gr[i].size());
+        tmp_formuls[int(Elem::O)] -= gr[i].size();
+        aminoacid::Formula cur_form(to_string(tmp_formuls));
+        ss << i << " " << cur_form.toString() << " " << cur_form.getMass();
+        strformula.push_back(ss.str());
+    }
 
     if (!isConnected(g, gr)) {
         return nullptr;
@@ -281,13 +342,13 @@ nrp::NRPBuilder::parseTail(std::vector<std::vector<int>> &g, std::vector<std::ve
 }
 
 int nrp::NRPBuilder::get_elem_id(std::string c) {
-    for (int i = 0; i < ELEM_CNT; ++i) {
-        if (ELEM_NAME[i] == c) {
+    for (int i = 0; i < Formula::ELEM_CNT; ++i) {
+        if (Formula::ELEM_NAME[i] == c) {
             return i;
         }
     }
 
-    return ELEM_CNT;
+    return Formula::ELEM_CNT;
     assert(false);
 }
 
@@ -295,7 +356,7 @@ std::string nrp::NRPBuilder::to_string(std::vector<int> formula) {
     std::stringstream res;
     for (int i = 0; i < formula.size(); ++i) {
         if (formula[i] != 0) {
-            res << ELEM_NAME[i];
+            res << Formula::ELEM_NAME[i];
         }
         if (formula[i] > 1) {
             res << formula[i];
@@ -306,11 +367,11 @@ std::string nrp::NRPBuilder::to_string(std::vector<int> formula) {
 }
 
 std::vector<int> nrp::NRPBuilder::parse_formula(std::string formula) {
-    std::vector<int> res(ELEM_CNT, 0);
-    Elem curelem = ELEM_CNT;
+    std::vector<int> res(Formula::ELEM_CNT, 0);
+    Elem curelem = Formula::ELEM_CNT;
     for (int i = 0; i < formula.size(); ++i) {
         if (formula[i] >= 'A' && formula[i] <= 'Z') {
-            if (curelem != ELEM_CNT) {
+            if (curelem != Formula::ELEM_CNT) {
                 if (res[curelem] == 0) {
                     ++res[curelem];
                 }
@@ -323,7 +384,7 @@ std::vector<int> nrp::NRPBuilder::parse_formula(std::string formula) {
                 ++i;
             }
             curelem = Elem(get_elem_id(nm));
-            if (curelem == ELEM_CNT) {
+            if (curelem == Formula::ELEM_CNT) {
                 res[0] = 179;
                 return res;
             }
@@ -332,7 +393,7 @@ std::vector<int> nrp::NRPBuilder::parse_formula(std::string formula) {
         }
     }
 
-    if (curelem != ELEM_CNT) {
+    if (curelem != Formula::ELEM_CNT) {
         if (res[curelem] == 0) {
             ++res[curelem];
         }
