@@ -48,7 +48,8 @@ namespace matcher {
         } else {
             double modCoeff = 1;
 
-            if (modification.getId() != aminoacid::Modification::empty && modification.getId() != aminoacid::Modification::methylation) {
+            if (modification.getId() != aminoacid::Modification::empty &&
+                    modification.getId() != aminoacid::Modification::methylation) {
                 modCoeff = 0;
             }
 

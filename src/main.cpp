@@ -107,13 +107,17 @@ void getScoreFunction(std::string predictor_name, matcher::Score*& score) {
     if (predictor_name == "MINOWA") {
         score = new ScoreWithModification(
                 std::unique_ptr<Score>(new ScoreSingleUnit(
-                std::unique_ptr<Score>(new ScoreOpenContinueGap(
-                std::unique_ptr<Score>(new ScoreNormalize(
-                std::unique_ptr<Score>(new ScoreMinowa()))))))));
+                        std::unique_ptr<Score>(new ScoreOpenContinueGap(
+                                std::unique_ptr<Score>(new ScoreNormalize(
+                                        std::unique_ptr<Score>(new ScoreMinowa()))))))));
     } else if (predictor_name == "PRISM") {
         score = new ScorePrism;
     } else if (predictor_name == "SANDPUMA") {
-        score = new ScoreSandpuma;
+        score = new ScoreWithModification(
+                std::unique_ptr<Score>(new ScoreSingleUnit(
+                        std::unique_ptr<Score>(new ScoreOpenContinueGap(
+                                std::unique_ptr<Score>(new ScoreNormalize(
+                                        std::unique_ptr<Score>(new ScoreSandpuma()))))))));
     } else {
         score = new Score;
     }
