@@ -371,7 +371,7 @@ void matcher::Matcher::matchSingleUnits(matcher::MatcherBase::Match &match, std:
             int i0 = p[j0], delta = INF, j1;
             for (int j=1; j <= m; ++j) {
                 if (!used[j]) {
-                    int cur = a[i0][j]-u[i0]-v[j];
+                    double cur = a[i0][j]-u[i0]-v[j];
                     if (cur < minv[j]) {
                         minv[j] = cur, way[j] = j0;
                     }

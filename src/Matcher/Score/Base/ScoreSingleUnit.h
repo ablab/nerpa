@@ -15,7 +15,7 @@ namespace matcher {
     public:
         double singleUnitScore(const nrpsprediction::AminoacidPrediction &apred,
                                const aminoacid::Aminoacid &aminoacid) const override {
-            return aaScore(apred, aminoacid) * 0.5;
+            return baseScore->aaScore(apred, aminoacid) * 0.5;
         }
     };
 }
