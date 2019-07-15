@@ -14,6 +14,9 @@ namespace  matcher {
         MatcherBase::Match delBestMatch = getDeleteMatch(nrp, prediction, score);
         MatcherBase::Match inBestMatch = getInsertMatch(nrp, prediction, score);
 
+        delBestMatch.setScore(score->InDelScore(delBestMatch.score(), nrp->getLen() - 1));
+        inBestMatch.setScore(score->InDelScore(inBestMatch.score(), nrp->getLen() - 1));
+
         if (theBestMatch.score() > delBestMatch.score() && theBestMatch.score() > inBestMatch.score()) {
             return theBestMatch;
         }

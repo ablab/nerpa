@@ -84,6 +84,11 @@ namespace matcher {
                                 const aminoacid::Aminoacid& predAA,
                                 const nrpsprediction::AminoacidPrediction::AminoacidProb& prob,
                                 const std::pair<int, int>& pos) const;
+
+        virtual double InDelScore(double score, const int len) const {
+            return score - 1./len;
+        }
+
     protected:
         std::unique_ptr<Score> baseScore;
         double posscore[100];
