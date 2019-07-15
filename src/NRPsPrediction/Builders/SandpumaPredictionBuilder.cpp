@@ -9,7 +9,6 @@
 
 namespace nrpsprediction {
     void SandpumaPredictionBuilder::read_file(std::string file_name) {
-        file_name += "/ind.res.tsv";
         std::ifstream in(file_name);
         Token token;
         std::vector<Token> tokens;
@@ -29,6 +28,7 @@ namespace nrpsprediction {
             } else {
                 cur_id = 1;
                 if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
+                    short_parts.push_back(nrpparts.back());
                     nrpparts.pop_back();
                 }
                 nrpparts.push_back(NRPsPart(file_name, token.orf_id, cur_id,
@@ -38,6 +38,7 @@ namespace nrpsprediction {
             }
         }
         if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
+            short_parts.push_back(nrpparts.back());
             nrpparts.pop_back();
         }
     }
