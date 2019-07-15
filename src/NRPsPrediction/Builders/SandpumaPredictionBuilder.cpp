@@ -18,6 +18,7 @@ namespace nrpsprediction {
         }
 
         std::sort(tokens.begin(), tokens.end());
+        std::cerr << tokens.size() << "\n";
         int cur_id = 1;
         for (Token token : tokens) {
             if (!nrpparts.empty() && nrpparts.back().get_orf_name() == token.orf_id) {
@@ -73,8 +74,12 @@ namespace nrpsprediction {
         while (std::getline(ss, s, '_')) {
             split.push_back(s);
         }
+        int id = 0;
+        for (int i = 1; i < split[split.size() - 1].size(); ++i) {
+            id = id * 10 + (split[split.size() - 1][i] - '0');
+        }
 
-        return std::make_pair(split[split.size() - 3], std::stoi(split.back()));
+        return std::make_pair(split[split.size() - 3] + "_" + split[split.size() - 2], id);
     }
 
     std::vector<AminoacidPrediction::AminoacidProb>
