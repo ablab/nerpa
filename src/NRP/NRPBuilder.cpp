@@ -51,8 +51,8 @@ void nrp::NRPBuilder::handleLoop(int v,
     gr[v].resize(gr[v].size() - 1);
 
     int newv = g.size();
-    g.push_back({g[v][0]});
-    gr.push_back({v});
+    g.push_back(std::vector<int>(1,g[v][0]));
+    gr.push_back(std::vector<int>(1, v));
     g[v][0] = newv;
     for (int i = 0; i < gr[g[newv][0]].size(); ++i) {
         if (gr[g[newv][0]][i] == v) {

@@ -25,7 +25,7 @@
 #include "Matcher/Matcher.h"
 #include "Matcher/InDelMatcher.h"
 
-const double MIN_SCROE = 0;//0.002;
+const double MIN_SCROE = 0.002;
 const double MIN_EXPLAIN_PART = 0;//0.15;
 
 void getPredictor(std::string predictor_name, nrpsprediction::PredictionBuilderBase*& predictionBuilder) {

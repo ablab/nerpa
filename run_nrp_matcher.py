@@ -117,6 +117,8 @@ def gen_abs_paths_to_prediction(args):
     return predictions
 
 def run(args):
+    path_to_cur = os.path.dirname(os.path.abspath(__file__))
+
     if (len(sys.argv) == 1):
         parser.print_help()
         sys.exit()
@@ -153,9 +155,8 @@ def run(args):
     if not os.path.exists(os.path.dirname('details_mols/')):
         os.makedirs(os.path.dirname('details_mols/'))
 
-    path_to_cur = os.path.dirname(os.path.abspath(__file__))
     path_to_AA = "./resources/aminoacids.tsv"
-    if (os.path.exists(os.path.join(path_to_cur, './NRPsMatcher'))):
+    if (os.path.exists(os.path.join(path_to_cur, 'NRPsMatcher'))):
         path_to_AA = "../share/nrpsmatcher/aminoacids.tsv"
     path_to_AA = os.path.join(path_to_cur, path_to_AA)
 
