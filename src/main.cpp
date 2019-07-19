@@ -22,6 +22,7 @@
 #include <Matcher/Score/Base/ScoreSingleUnit.h>
 #include <Matcher/Score/Base/ScoreOpenContinueGap.h>
 #include <Matcher/Score/Base/ScoreNormalize.h>
+#include <ArgParse/Args.h>
 #include "Matcher/Matcher.h"
 #include "Matcher/InDelMatcher.h"
 
@@ -102,17 +103,17 @@ std::vector<std::shared_ptr<nrp::NRP>> save_mols(char* file_name) {
     return mols;
 }
 
-void getScoreFunction(std::string predictor_name, matcher::Score*& score) {
+void getScoreFunction(Args args, matcher::Score*& score) {
     using namespace matcher;
-    if (predictor_name == "MINOWA") {
+    if (args.predictor_name == "MINOWA") {
         score = new ScoreWithModification(
                 std::unique_ptr<Score>(new ScoreSingleUnit(
                         std::unique_ptr<Score>(new ScoreOpenContinueGap(
                                 std::unique_ptr<Score>(new ScoreNormalize(
                                         std::unique_ptr<Score>(new ScoreMinowa()))))))));
-    } else if (predictor_name == "PRISM") {
+    } else if (args.predictor_name == "PRISM") {
         score = new ScorePrism;
-    } else if (predictor_name == "SANDPUMA") {
+    } else if (args.predictor_name == "SANDPUMA") {
         score = new ScoreWithModification(
                 std::unique_ptr<Score>(new ScoreSingleUnit(
                         std::unique_ptr<Score>(new ScoreOpenContinueGap(
@@ -124,10 +125,10 @@ void getScoreFunction(std::string predictor_name, matcher::Score*& score) {
 }
 
 void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, std::shared_ptr<nrp::NRP> mol, std::string output_filename,
-                         std::string predictor_name) {
+                         Args args) {
     std::ofstream out_short("report_mols", std::ofstream::out | std::ofstream::app);
     matcher::Score* score;
-    getScoreFunction(predictor_name, score);
+    getScoreFunction(args, score);
     std::vector<matcher::MatcherBase::Match> nrpsMatchs;
     for (int i = 0; i < preds.size(); ++i) {
         if (preds[i].getNrpsParts().size() == 0) continue;
@@ -189,17 +190,18 @@ int main(int argc, char* argv[]) {
 
     std::string AA_file_name = argv[3];
     std::string cfg_filename = argv[4];
+    Args args(cfg_filename);
 
     int start_from = 0;
     if (argc > 5) {
         std::stringstream ss(argv[5]);
         ss >> start_from;
     }
-    aminoacid::AminoacidInfo::init(AA_file_name, predictor_name);
+    aminoacid::AminoacidInfo::init(AA_file_name, args.predictor_name);
 
     INFO("NRPs Matcher START");
     INFO("Saving predictions");
-    std::vector<nrpsprediction::NRPsPrediction> preds = save_predictions(argv[1], predictor_name);
+    std::vector<nrpsprediction::NRPsPrediction> preds = save_predictions(argv[1], args.predictor_name);
     INFO("Saving NRPs structures");
     std::vector<std::shared_ptr<nrp::NRP>> mols = save_mols(argv[2]);
 
@@ -215,7 +217,7 @@ int main(int argc, char* argv[]) {
         INFO("NRP structure #" << i)
         std::string output_filename = gen_filename(mols[i]->get_file_name(), "details_mols/");
 
-        run_mol_predictions(preds, mols[i], output_filename, predictor_name);
+        run_mol_predictions(preds, mols[i], output_filename, args);
     }
 
     return 0;

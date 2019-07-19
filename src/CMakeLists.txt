@@ -65,7 +65,9 @@ set(SOURCE_FILES main.cpp
         Matcher/Score/Base/ScoreNormalize.h
         Matcher/Score/Base/ScoreOpenContinueGap.h
         Matcher/Score/Base/ScoreSingleUnit.h
-        Json/json.hpp)
+        Json/json.hpp
+        ArgParse/Args.cpp
+        ArgParse/Args.h)
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})
 add_executable(NRPsMatcher main.cpp)
