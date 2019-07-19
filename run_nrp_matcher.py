@@ -149,9 +149,6 @@ def run(args):
         os.makedirs(directory)
     os.chdir(directory)
 
-    if not os.path.exists(os.path.dirname('details_predictions/')):
-        os.makedirs(os.path.dirname('details_predictions/'))
-
     if not os.path.exists(os.path.dirname('details_mols/')):
         os.makedirs(os.path.dirname('details_mols/'))
 
