@@ -188,10 +188,8 @@ int main(int argc, char* argv[]) {
     logging::create_console_logger("");
 
     std::string AA_file_name = argv[3];
-    std::string predictor_name = "NRPSPREDICTOR2";
-    if (argc > 4) {
-        predictor_name = argv[4];
-    }
+    std::string cfg_filename = argv[4];
+
     int start_from = 0;
     if (argc > 5) {
         std::stringstream ss(argv[5]);

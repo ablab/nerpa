@@ -38,16 +38,53 @@ def parse_args():
     global parser
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--predictions", "-p", nargs=1, dest="predictions", help="path to file with paths to prediction files", type=str)
-    parser.add_argument("--lib_info", dest="lib_info", nargs=1, help="path to file with paths to mol files", type=str)
+    parser.add_argument("--lib_info", "-l", dest="lib_info", nargs=1, help="path to file with paths to mol files", type=str)
     parser.add_argument("--predictor",
                         dest="predictor",
-                        default="NRPSPREDICTOR2",
+                        default="MINOWA",
                         choices=["NRPSPREDICTOR2", "MINOWA", "PRISM", "SANDPUMA"],
-                        help="AA domain predictor name [default=NRPSPREDICTOR2]",
+                        help="AA domain predictor name [default=MINOWA]",
                         action='store')
+    parser.add_argument("--insertion", help="allow insertion to NRP structure", action="store_true")
+    parser.add_argument("--deletion", help="allow deletion to NRP structure", action="store_true")
+    parser.add_argument("--open_gap", default=0, type=float, help="score for opening gap in NRP structure", action="store")
+    parser.add_argument("--continue_gap", default=0, type=float, help="score for continue gap in NRP structure", action="store")
+    parser.add_argument("--single_match", help="allow match prediction for single unit prediction", action="store_true")
+    parser.add_argument("--single_match_coeff", default=0.1, type=float, help="coefficient for single unit match", action="store")
+    parser.add_argument("--modification", help="allow modification", action="store_true")
     parser.add_argument("--local_output_dir", "-o", nargs=1, help="use this output dir", type=str)
     args = parser.parse_args()
     return args
+
+def print_cfg(args, output_dir):
+    cfg_file = os.path.join(output_dir, "nerpa.cfg")
+    with open(cfg_file, "w") as f:
+        f.write(args.predictor + "\n")
+        if args.insertion:
+            f.write("insertion on\n")
+        else:
+            f.write("insertion off\n")
+
+        if args.deletion:
+            f.write("deletion on\n")
+        else:
+            f.write("deletion off\n")
+
+        f.write("open_gap " + str(args.open_gap) + "\n")
+        f.write("continue_gap " + str(args.continue_gap) + "\n")
+
+        if args.single_match:
+            f.write("single_match on\n")
+        else:
+            f.write("single_match off\n")
+
+        f.write("single_match_coeff " + str(args.single_match_coeff) + "\n")
+        if args.modification:
+            f.write("modification on\n")
+        else:
+            f.write("modification off\n")
+
+    return cfg_file
 
 def which(program):
     def is_exe(fpath):
@@ -148,6 +185,8 @@ def run(args):
     if not os.path.exists(directory):
         os.makedirs(directory)
     os.chdir(directory)
+
+    print_cfg(args, main_out_dir)
 
     if not os.path.exists(os.path.dirname('details_mols/')):
         os.makedirs(os.path.dirname('details_mols/'))
