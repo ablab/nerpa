@@ -106,23 +106,26 @@ std::vector<std::shared_ptr<nrp::NRP>> save_mols(char* file_name) {
 void getScoreFunction(Args args, matcher::Score*& score) {
     using namespace matcher;
     if (args.predictor_name == "MINOWA") {
-        score = new ScoreWithModification(
-                std::unique_ptr<Score>(new ScoreSingleUnit(
-                        std::unique_ptr<Score>(new ScoreOpenContinueGap(
-                                std::unique_ptr<Score>(new ScoreNormalize(
-                                        std::unique_ptr<Score>(new ScoreMinowa()))))))));
+        score = new ScoreMinowa;
     } else if (args.predictor_name == "PRISM") {
         score = new ScorePrism;
     } else if (args.predictor_name == "SANDPUMA") {
-        score = new ScoreWithModification(
-                std::unique_ptr<Score>(new ScoreSingleUnit(
-                        std::unique_ptr<Score>(new ScoreOpenContinueGap(
-                                std::unique_ptr<Score>(new ScoreNormalize(
-                                        std::unique_ptr<Score>(new ScoreSandpuma()))))))));
+        score = new ScoreSandpuma;
     } else {
         score = new Score;
     }
+
+    score = new ScoreNormalize(std::unique_ptr<Score>(std::move(score)));
+    score = new ScoreOpenContinueGap(args.open_gap, args.continue_gap,
+                                     std::unique_ptr<Score>(std::move(score)));
+    if (args.single_match) {
+        score = new ScoreSingleUnit(args.single_match_coeff, std::unique_ptr<Score>(std::move(score)));
+    }
+    if (args.modification) {
+        score = new ScoreWithModification(std::unique_ptr<Score>(std::move(score)));
+    }
 }
+
 
 void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, std::shared_ptr<nrp::NRP> mol, std::string output_filename,
                          Args args) {
