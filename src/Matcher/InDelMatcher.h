@@ -29,6 +29,10 @@ namespace matcher {
             innerMatcher = new Matcher();
         }
 
+        InDelMatcher(MatcherBase* matcher) {
+            innerMatcher = matcher;
+        }
+
         InDelMatcher(bool insertion, bool deletion) {
             this->insertion = insertion;
             this->deletion = deletion;

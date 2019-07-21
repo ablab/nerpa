@@ -16,7 +16,7 @@
 namespace matcher {
     typedef aminoacid::Aminoacid aacid;
     class Matcher : public MatcherBase {
-    private:
+    protected:
         std::shared_ptr<nrp::NRP> nrp;
         const nrpsprediction::NRPsPrediction* prediction{};
         const Score* score{};
@@ -34,15 +34,18 @@ namespace matcher {
                                              const nrpsprediction::NRPsPrediction* prediction,
                                              const Score* score) override;
         std::vector<Segment> matche_seg(const int part_id) const;
-    private:
+
+    protected:
         matcher::MatcherBase::Match getLineMatch(bool can_skip_first = true, bool can_skip_last = true) const;
         matcher::MatcherBase::Match getCycleMatch() const;
         matcher::MatcherBase::Match getBranchMatch() const;
 
-
-        matcher::MatcherBase::Match updateMatch(const nrpsprediction::NRPsPrediction& nrPsPrediction,
+        virtual matcher::MatcherBase::Match updateMatch(const nrpsprediction::NRPsPrediction& nrPsPrediction,
                                             matcher::MatcherBase::Match match, int bg,
                                             std::vector<Segment>& matched_parts_id) const;
+        matcher::MatcherBase::Match setUpdateMatch(const nrpsprediction::NRPsPrediction& nrPsPrediction,
+                                                matcher::MatcherBase::Match match, int bg,
+                                                std::vector<Segment>& matched_parts_id) const;
         matcher::MatcherBase::Match isCoverLine(std::vector<Segment>& segments,
                                   const std::vector<int>& toSmallId, const std::vector<int>& toBigId, int len,
                                             std::vector<Segment>& matched_parts_id) const;
@@ -50,7 +53,6 @@ namespace matcher {
         std::vector<aacid> getSubset(std::vector<aacid> vector, int l, int r, int stp) const;
 
         int addSegments(const std::vector<Segment> &vector, std::vector<Segment> &segments, bool skip_first, bool skip_last, int id) const;
-        void matchSingleUnits(Match& match, std::vector<bool>& used_pos) const;
     };
 }
 

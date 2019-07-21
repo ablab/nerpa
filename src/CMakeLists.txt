@@ -26,6 +26,8 @@ set(SOURCE_FILES main.cpp
         Matcher/MatcherBase.h
         Matcher/InDelMatcher.h
         Matcher/InDelMatcher.cpp
+        Matcher/SingleUnitMatcher.cpp
+        Matcher/SingleUnitMatcher.h
         Matcher/Score/Base/Score.cpp
         Matcher/Score/Base/Score.h
         Matcher/Segment.h

@@ -23,6 +23,7 @@
 #include <Matcher/Score/Base/ScoreOpenContinueGap.h>
 #include <Matcher/Score/Base/ScoreNormalize.h>
 #include <ArgParse/Args.h>
+#include <Matcher/SingleUnitMatcher.h>
 #include "Matcher/Matcher.h"
 #include "Matcher/InDelMatcher.h"
 
@@ -127,10 +128,16 @@ void getScoreFunction(Args args, matcher::Score*& score) {
 }
 
 matcher::MatcherBase* getMatcher(Args args) {
-    if (args.deletion || args.insertion) {
-        return new matcher::InDelMatcher();
+    matcher::MatcherBase* matcherBase;
+    if (args.single_match) {
+        matcherBase = new matcher::SingleUnitMatcher();
     } else {
-        return new matcher::Matcher();
+        matcherBase = new matcher::Matcher();
+    }
+    if (args.deletion || args.insertion) {
+        return new matcher::InDelMatcher(matcherBase);
+    } else {
+        return matcherBase;
     }
 }
 
