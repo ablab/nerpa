@@ -11,6 +11,8 @@
 namespace matcher {
     class InDelMatcher : public MatcherBase {
     private:
+        bool insertion = true;
+        bool deletion = true;
         MatcherBase* innerMatcher = nullptr;
 
         ~InDelMatcher() {
@@ -27,10 +29,13 @@ namespace matcher {
             innerMatcher = new Matcher();
         }
 
+        InDelMatcher(bool insertion, bool deletion) {
+            this->insertion = insertion;
+            this->deletion = deletion;
+        }
+
         Match getMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::NRPsPrediction *prediction,
                        const matcher::Score *score) override;
-
-
     };
 }
 

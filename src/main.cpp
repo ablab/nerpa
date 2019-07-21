@@ -126,6 +126,14 @@ void getScoreFunction(Args args, matcher::Score*& score) {
     }
 }
 
+matcher::MatcherBase* getMatcher(Args args) {
+    if (args.deletion || args.insertion) {
+        return new matcher::InDelMatcher();
+    } else {
+        return new matcher::Matcher();
+    }
+}
+
 
 void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, std::shared_ptr<nrp::NRP> mol, std::string output_filename,
                          Args args) {
@@ -136,7 +144,7 @@ void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, std:
     for (int i = 0; i < preds.size(); ++i) {
         if (preds[i].getNrpsParts().size() == 0) continue;
         //std::cerr << mol->get_file_name() << " " << preds[i].getNrpsParts()[0].get_file_name() << "\n";
-        matcher::MatcherBase* matcher = new matcher::InDelMatcher();
+        matcher::MatcherBase* matcher = getMatcher(args);
         matcher::MatcherBase::Match match = matcher->getMatch(mol, &preds[i], score);
         delete matcher;
 

@@ -11,21 +11,22 @@ namespace  matcher {
     matcher::InDelMatcher::getMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::NRPsPrediction *prediction,
                                     const matcher::Score *score) {
         MatcherBase::Match theBestMatch = innerMatcher->getMatch(nrp, prediction, score);
-        MatcherBase::Match delBestMatch = getDeleteMatch(nrp, prediction, score);
-        MatcherBase::Match inBestMatch = getInsertMatch(nrp, prediction, score);
-
-        delBestMatch.setScore(score->InDelScore(delBestMatch.score(), nrp->getLen() - 1));
-        inBestMatch.setScore(score->InDelScore(inBestMatch.score(), nrp->getLen() - 1));
-
-        if (theBestMatch.score() > delBestMatch.score() && theBestMatch.score() > inBestMatch.score()) {
-            return theBestMatch;
+        if (deletion) {
+            MatcherBase::Match delBestMatch = getDeleteMatch(nrp, prediction, score);
+            delBestMatch.setScore(score->InDelScore(delBestMatch.score(), nrp->getLen() - 1));
+            if (delBestMatch.score() > theBestMatch.score()) {
+                theBestMatch = delBestMatch;
+            }
+        }
+        if (insertion) {
+            MatcherBase::Match inBestMatch = getInsertMatch(nrp, prediction, score);
+            inBestMatch.setScore(score->InDelScore(inBestMatch.score(), nrp->getLen() - 1));
+            if (inBestMatch.score() > theBestMatch.score()) {
+                theBestMatch = inBestMatch;
+            }
         }
 
-        if (delBestMatch.score() > inBestMatch.score()) {
-            return delBestMatch;
-        } else {
-            return inBestMatch;
-        }
+        return theBestMatch;
     }
 
     MatcherBase::Match
