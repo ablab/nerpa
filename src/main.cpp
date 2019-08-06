@@ -37,8 +37,10 @@ void getPredictor(std::string predictor_name, nrpsprediction::PredictionBuilderB
         predictionBuilder = new nrpsprediction::PrismPredictionBuilder();
     } else if (predictor_name == "SANDPUMA") {
         predictionBuilder = new nrpsprediction::SandpumaPredictionBuilder();
-    } else {
+    } else if (predictor_name == "NRPSPREDICTOR2"){
         predictionBuilder = new nrpsprediction::Nrpspredictor2Builder();
+    } else {
+        ERROR("Unknown predictor " + predictor_name);
     }
 }
 
@@ -135,7 +137,7 @@ matcher::MatcherBase* getMatcher(Args args) {
         matcherBase = new matcher::Matcher();
     }
     if (args.deletion || args.insertion) {
-        return new matcher::InDelMatcher(matcherBase);
+        return new matcher::InDelMatcher(matcherBase, args.insertion, args.deletion);
     } else {
         return matcherBase;
     }
@@ -216,6 +218,9 @@ int main(int argc, char* argv[]) {
         ss >> start_from;
     }
     aminoacid::AminoacidInfo::init(AA_file_name, args.predictor_name);
+
+    std::cerr << "cfg file name: " << cfg_filename << "\n";
+    std::cerr << args.predictor_name << "\n";
 
     INFO("NRPs Matcher START");
     INFO("Saving predictions");

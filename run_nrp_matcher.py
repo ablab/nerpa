@@ -186,7 +186,7 @@ def run(args):
         os.makedirs(directory)
     os.chdir(directory)
 
-    print_cfg(args, main_out_dir)
+    path_to_cfg = print_cfg(args, main_out_dir)
 
     if not os.path.exists(os.path.dirname('details_mols/')):
         os.makedirs(os.path.dirname('details_mols/'))
@@ -196,7 +196,7 @@ def run(args):
         path_to_AA = "../share/nrpsmatcher/aminoacids.tsv"
     path_to_AA = os.path.join(path_to_cur, path_to_AA)
 
-    comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_to_pred + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" " + args.predictor + "\n"
+    comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_to_pred + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" " + path_to_cfg + "\n"
     print(comand)
     os.system(comand)
     return

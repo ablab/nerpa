@@ -29,11 +29,19 @@ namespace matcher {
             innerMatcher = new Matcher();
         }
 
-        InDelMatcher(MatcherBase* matcher) {
+        explicit InDelMatcher(MatcherBase* matcher) {
             innerMatcher = matcher;
         }
 
         InDelMatcher(bool insertion, bool deletion) {
+            innerMatcher = new Matcher();
+            this->insertion = insertion;
+            this->deletion = deletion;
+        }
+
+
+        InDelMatcher(MatcherBase* matcher, bool insertion, bool deletion) {
+            innerMatcher = matcher;
             this->insertion = insertion;
             this->deletion = deletion;
         }
