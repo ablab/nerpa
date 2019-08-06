@@ -16,6 +16,7 @@ install(FILES
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/library.info.streptomedb"
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/prediction.info"
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/aminoacids.tsv"
+        "${CMAKE_CURRENT_SOURCE_DIR}/resources/modifications.tsv"
         DESTINATION share/nrpsmatcher
         COMPONENT runtime)
 

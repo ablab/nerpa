@@ -52,6 +52,7 @@ def parse_args():
     parser.add_argument("--single_match", help="allow match prediction for single unit prediction", action="store_true")
     parser.add_argument("--single_match_coeff", default=0.1, type=float, help="coefficient for single unit match", action="store")
     parser.add_argument("--modification", help="allow modification", action="store_true")
+    parser.add_argument("--modification_cfg", help="path to file with modification description", action="store", type=str)
     parser.add_argument("--local_output_dir", "-o", nargs=1, help="use this output dir", type=str)
     args = parser.parse_args()
     return args
@@ -83,6 +84,8 @@ def print_cfg(args, output_dir):
             f.write("modification on\n")
         else:
             f.write("modification off\n")
+
+        f.write(os.path.abspath(os.path.join(output_dir, "modifications.tsv")))
 
     return cfg_file
 
@@ -174,7 +177,7 @@ def run(args):
         sys.exit()
 
     main_out_dir = os.path.abspath(".") + "/"
-    if args.local_output_dir != None:
+    if args.local_output_dir is not None:
         main_out_dir = os.path.abspath(args.local_output_dir[0]) + "/"
 
     path_to_graphs, files_list = gen_graphs_by_mol(args, main_out_dir)
@@ -196,7 +199,17 @@ def run(args):
         path_to_AA = "../share/nrpsmatcher/aminoacids.tsv"
     path_to_AA = os.path.join(path_to_cur, path_to_AA)
 
-    comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_to_pred + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" " + path_to_cfg + "\n"
+    path_to_modification_cfg = "./resources/modifications.tsv"
+    if (os.path.exists(os.path.join(path_to_cur, 'NRPsMatcher'))):
+        path_to_modification_cfg = "../share/nrpsmatcher/modifications.tsv"
+    path_to_modification_cfg = os.path.join(path_to_cur, path_to_modification_cfg)
+    if args.modification_cfg is not None:
+        path_to_modification_cfg = os.path.abspath(args.modification_cfg)
+
+    local_modifications_cfg = os.path.join(main_out_dir, "modifications.tsv")
+    copyfile(path_to_modification_cfg, local_modifications_cfg)
+
+    comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_to_pred + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" \"" + path_to_cfg + "\"\n"
     print(comand)
     os.system(comand)
     return

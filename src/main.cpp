@@ -219,9 +219,6 @@ int main(int argc, char* argv[]) {
     }
     aminoacid::AminoacidInfo::init(AA_file_name, args.predictor_name);
 
-    std::cerr << "cfg file name: " << cfg_filename << "\n";
-    std::cerr << args.predictor_name << "\n";
-
     INFO("NRPs Matcher START");
     INFO("Saving predictions");
     std::vector<nrpsprediction::NRPsPrediction> preds = save_predictions(argv[1], args.predictor_name);
