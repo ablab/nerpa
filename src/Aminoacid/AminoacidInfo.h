@@ -13,9 +13,11 @@ namespace aminoacid {
     public:
         static int AMINOACID_CNT;
         static std::vector<std::string> AMINOACID_NAMES;
+        static std::vector<std::string> NAME_ID;
         static std::vector<Formula> FORMULS;
 
         static void init(std::string filename, std::string predictor);
+        static int getIdByNameId(std::string name);
     };
 }
 

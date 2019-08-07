@@ -68,6 +68,18 @@ namespace aminoacid {
                                                                                       "ahp", "orn", "apc", "abu", "aad",
                                                                                       "pip", "dpg", "none"};
 
+    std::vector<std::string> AminoacidInfo::NAME_ID = {"trp", "ser", "gly", "uda", "thr",
+                                                               "dhp", "gln", "dab", "arg", "lys",
+                                                               "ala-d", "phe", "val", "cha", "dhpg",
+                                                               "phg", "his", "aeo", "bmt", "hse",
+                                                               "met", "ala", "tcl", "sal", "allothr",
+                                                               "b-ala", "dhb", "ile", "end", "leu",
+                                                               "gua", "hty", "glu", "bht", "hpg",
+                                                               "apa", "pro", "tyr", "hyv", "asn",
+                                                               "cit", "vol", "cys", "asp", "dht",
+                                                               "ahp", "orn", "apc", "abu", "aad",
+                                                               "pip", "dpg", "none"};
+
 
     std::vector<Formula> AminoacidInfo::FORMULS = {Formula("C11H12N2O2"), Formula("C3H7NO3"), Formula("C2H5NO2"), Formula("C4H9N3O3"), Formula("C4H9NO3"),
                                                                           Formula("C3H5NO2"), Formula("C5H10N2O3"), Formula("C4H10N2O2"), Formula("C6H14N4O2"), Formula("C6H14N2O2"),
@@ -110,6 +122,7 @@ namespace aminoacid {
 
         FORMULS.resize(0);
         AMINOACID_NAMES.resize(0);
+        NAME_ID.resize(0);
 
         while (getline(in, buffer)) {
             std::stringstream ss1(buffer);
@@ -122,6 +135,7 @@ namespace aminoacid {
                 parts.push_back(tmp);
             }
             if (parts[nameid] != "-") {
+                NAME_ID.push_back(parts[0]);
                 AMINOACID_NAMES.push_back(parts[nameid]);
                 if (parts[formulaid] != "-") {
                     FORMULS.push_back(Formula(parts[formulaid]));
@@ -136,5 +150,14 @@ namespace aminoacid {
 
         AMINOACID_CNT = AMINOACID_NAMES.size();
         in.close();
+    }
+
+    int AminoacidInfo::getIdByNameId(std::string name) {
+        for (int i = 0; i < AMINOACID_CNT; ++i) {
+            if (NAME_ID[i] == name) {
+                return i;
+            }
+        }
+        return AMINOACID_CNT;
     }
 }
