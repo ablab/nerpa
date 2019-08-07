@@ -24,6 +24,7 @@
 #include <Matcher/Score/Base/ScoreNormalize.h>
 #include <ArgParse/Args.h>
 #include <Matcher/SingleUnitMatcher.h>
+#include <Aminoacid/ModificationInfo.h>
 #include "Matcher/Matcher.h"
 #include "Matcher/InDelMatcher.h"
 
@@ -218,6 +219,8 @@ int main(int argc, char* argv[]) {
         ss >> start_from;
     }
     aminoacid::AminoacidInfo::init(AA_file_name, args.predictor_name);
+    aminoacid::ModificationInfo::init(args.modification_cfg);
+    aminoacid::ModificationInfo::init_AAMod(args.AAmod_cfg);
 
     INFO("NRPs Matcher START");
     INFO("Saving predictions");

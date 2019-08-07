@@ -12,10 +12,8 @@ namespace aminoacid {
         static std::vector<std::vector<double>> COEFFICIENT;
 
         static void init(std::string filename);
-
-    private:
- //       static void get_modification_list(std::string filename);
-
+        static void init_AAMod(std::string filename);
+        static int getIdByNameId(std::string name);
     };
 }
 
