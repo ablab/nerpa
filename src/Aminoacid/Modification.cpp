@@ -3,50 +3,36 @@
 //
 
 #include"Modification.h"
+#include "ModificationInfo.h"
 
 namespace aminoacid {
-    const std::string Modification::NAMES[Modification::MODIFICATION_CNT] = {"methylation", "dimethylation", "demethylation",
-                                                                             "hydration", "hydroxylation", "formylation",
-                                                                             "phosphotylation", "acetylation",
-                                                                             "dedimethylation",
-                                                                             "dehydration", "dehydroxylation",
-                                                                             "deformylation", "dephosphotylation",
-                                                                             "deacetylation", "", };
-    const Formula Modification::FORMULS[Modification::MODIFICATION_CNT] = {Formula("CH2"), Formula("C2H4"), Formula("C-1H-2"),
-                                                                           Formula("H2O"), Formula("O"), Formula("CO"),
-                                                                           Formula("PH2O3"), Formula("C2H2O"),
-                                                                           Formula("C-2H-4"),
-                                                                           Formula("H-2O-1"), Formula("O-1"),
-                                                                           Formula("C-1O-1"), Formula("P-1H-2O-3"),
-                                                                           Formula("C-2H-2O-1"), Formula()};
-
     Formula Modification::getFormula() const {
         return formula;
     }
 
-    Modification::Modification(Modification::ModificationId id) {
+    Modification::Modification(int id) {
         this->id = id;
-        formula = FORMULS[id];
+        formula = ModificationInfo::FORMULS[id];
     }
 
     Modification::Modification() {
 
     }
 
-    Modification::ModificationId Modification::getId() const {
+    int Modification::getId() const {
         return id;
     }
 
     Modification::Modification(Formula formula) {
-        for (int i = 0; i < MODIFICATION_CNT; ++i) {
-            if (formula == FORMULS[i]) {
-                id = static_cast<ModificationId>(i);
+        for (int i = 0; i < ModificationInfo::MODIFICATION_CNT; ++i) {
+            if (formula == ModificationInfo::FORMULS[i]) {
+                id = i;
                 this->formula = formula;
                 return;
             }
         }
 
-        id = MODIFICATION_CNT;
+        id = ModificationInfo::MODIFICATION_CNT;
         this->formula = Formula();
     }
 }

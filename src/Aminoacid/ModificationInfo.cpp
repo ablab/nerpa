@@ -26,6 +26,13 @@ namespace aminoacid {
                 COEFFICIENT[i].push_back(coef);
             }
         }
+
+        NAMES.push_back("empty");
+        FORMULS.push_back(Formula());
+        for (int i = 0; i < COEFFICIENT.size(); ++i) {
+            COEFFICIENT[i].push_back(1);
+        }
+
         in.close();
     }
 
@@ -46,6 +53,7 @@ namespace aminoacid {
             }
 
         }
+
         in.close();
     }
 
