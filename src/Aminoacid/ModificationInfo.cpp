@@ -29,6 +29,7 @@ namespace aminoacid {
 
         NAMES.push_back("empty");
         FORMULS.push_back(Formula());
+        MODIFICATION_CNT += 1;
         for (int i = 0; i < COEFFICIENT.size(); ++i) {
             COEFFICIENT[i].push_back(1);
         }

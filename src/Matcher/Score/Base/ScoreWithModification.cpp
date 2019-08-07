@@ -43,13 +43,13 @@ namespace matcher {
                                            const std::pair<int, int> &pos) const {
         aminoacid::Formula formula = (nrpAA - predAA);
         aminoacid::Modification modification(formula);
-        if (modification.getId() == aminoacid::Modification::MODIFICATION_CNT) {
+        if (modification.getId() == aminoacid::ModificationInfo::MODIFICATION_CNT) {
             return -1;
         } else {
             double modCoeff = 1;
 
-            if (modification.getId() != aminoacid::Modification::empty &&
-                    modification.getId() != aminoacid::Modification::methylation) {
+            if (modification.getId() != aminoacid::ModificationInfo::MODIFICATION_CNT - 1 &&
+                    modification.getId() != 0) {
                 modCoeff = 0;
             }
 
@@ -81,7 +81,7 @@ namespace matcher {
                 theBest = AAprobs[i].aminoacid;
                 probRes = AAprobs[i];
                 aminoacid::Modification mod(aminoacid - AAprobs[i].aminoacid);
-                if (mod.getId() != mod.empty) {
+                if (mod.getId() != aminoacid::ModificationInfo::MODIFICATION_CNT - 1) {
                     theBest.addModification(mod);
                 }
                 auto cur = std::make_pair(bg, ed - 1);

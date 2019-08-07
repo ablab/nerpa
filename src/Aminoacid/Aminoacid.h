@@ -5,6 +5,7 @@
 #include "Formula.h"
 #include "Modification.h"
 #include "AminoacidInfo.h"
+#include "ModificationInfo.h"
 #include <vector>
 
 namespace aminoacid {
@@ -22,7 +23,7 @@ namespace aminoacid {
         friend std::ostream& operator << (std::ostream& out, const Aminoacid& a) {
             out << a.get_name();
             for (int i = 0; i < a.modifications.size(); ++i) {
-                out << "+" << Modification::NAMES[a.modifications[i].getId()];
+                out << "+" << ModificationInfo::NAMES[a.modifications[i].getId()];
             }
             return out;
         }
