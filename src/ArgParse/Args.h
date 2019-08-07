@@ -17,6 +17,8 @@ public:
     bool single_match;
     double single_match_coeff;
     bool modification;
+    std::string modification_cfg;
+    std::string AAmod_cfg;
 
     Args(std::string cfg_filename);
 };

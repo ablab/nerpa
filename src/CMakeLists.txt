@@ -47,6 +47,8 @@ set(SOURCE_FILES main.cpp
         Aminoacid/Modification.cpp
         Aminoacid/AminoacidInfo.h
         Aminoacid/AminoacidInfo.cpp
+        Aminoacid/ModificationInfo.h
+        Aminoacid/ModificationInfo.cpp
         Matcher/Score/Base/ScoreWithModification.cpp
         Matcher/Score/Base/ScoreWithModification.h
         Matcher/Score/Minowa/ScoreMinowa.cpp

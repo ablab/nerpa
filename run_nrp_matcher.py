@@ -53,6 +53,7 @@ def parse_args():
     parser.add_argument("--single_match_coeff", default=0.1, type=float, help="coefficient for single unit match", action="store")
     parser.add_argument("--modification", help="allow modification", action="store_true")
     parser.add_argument("--modification_cfg", help="path to file with modification description", action="store", type=str)
+    parser.add_argument("--AAmod_cfg", help="path to file with modification for specific AA description", action="store", type=str)
     parser.add_argument("--local_output_dir", "-o", nargs=1, help="use this output dir", type=str)
     args = parser.parse_args()
     return args
@@ -85,7 +86,8 @@ def print_cfg(args, output_dir):
         else:
             f.write("modification off\n")
 
-        f.write(os.path.abspath(os.path.join(output_dir, "modifications.tsv")))
+        f.write(os.path.abspath(os.path.join(output_dir, "modifications.tsv")) + "\n")
+        f.write(os.path.abspath(os.path.join(output_dir, "AAmod.tsv")) + "\n")
 
     return cfg_file
 
@@ -208,6 +210,16 @@ def run(args):
 
     local_modifications_cfg = os.path.join(main_out_dir, "modifications.tsv")
     copyfile(path_to_modification_cfg, local_modifications_cfg)
+
+    path_to_AAmod_cfg = "./resources/AAmod.tsv"
+    if (os.path.exists(os.path.join(path_to_cur, 'NRPsMatcher'))):
+        path_to_AAmod_cfg = "../share/nrpsmatcher/AAmod.tsv"
+    path_to_AAmod_cfg = os.path.join(path_to_cur, path_to_AAmod_cfg)
+    if args.AAmod_cfg is not None:
+        path_to_AAmod_cfg = os.path.abspath(args.AAmod_cfg)
+
+    local_AAmod_cfg = os.path.join(main_out_dir, "AAmod.tsv")
+    copyfile(path_to_AAmod_cfg, local_AAmod_cfg)
 
     comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_to_pred + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" \"" + path_to_cfg + "\"\n"
     print(comand)

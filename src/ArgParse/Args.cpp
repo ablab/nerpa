@@ -23,4 +23,6 @@ Args::Args(std::string cfg_filename) {
     in >> tmp >> x;
     single_match_coeff = x;
     modification = (val == "on");
+    in >> modification_cfg;
+    in >> AAmod_cfg;
 }
