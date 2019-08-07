@@ -1,5 +1,28 @@
 cmake_minimum_required(VERSION 3.5)
-project(NRPsMatcher)
+project(Nerpa)
+
+# Define option for static / dynamic build.
+option(NERPA_STATIC_BUILD "Link Nerpa statically" OFF)
+if (NERPA_STATIC_BUILD)
+    # it'll make cmake to find libraries archives, not dynamic link
+    set(CMAKE_FIND_LIBRARY_SUFFIXES .a)
+    set(LINK_SEARCH_START_STATIC TRUE)
+    set(LINK_SEARCH_END_STATIC TRUE)
+    # This is dirty hack to get rid of -Wl,-Bdynamic
+    set(CMAKE_EXE_LINK_DYNAMIC_C_FLAGS "-Wl,-Bstatic")
+    set(CMAKE_EXE_LINK_DYNAMIC_CXX_FLAGS "-Wl,-Bstatic")
+
+    if (APPLE)
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc")
+    else()
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
+        add_definitions(-static)
+    endif()
+
+    set(Boost_USE_STATIC_LIBS        ON)
+    set(Boost_USE_STATIC_RUNTIME     ON)
+endif()
+
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -O3")
 
