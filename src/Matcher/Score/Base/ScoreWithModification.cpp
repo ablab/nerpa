@@ -46,13 +46,11 @@ namespace matcher {
         if (modification.getId() == aminoacid::ModificationInfo::MODIFICATION_CNT) {
             return -1;
         } else {
-            double modCoeff = 1;
-
-            if (modification.getId() != aminoacid::ModificationInfo::MODIFICATION_CNT - 1 &&
-                    modification.getId() != 0) {
-                modCoeff = 0;
+            double modCoeff = modification.getScore(predAA.get_id());
+            if (modCoeff < 0) {
+                return -1;
             }
-
+            
             return baseScore->getScore(nrpAA, predAA, prob, pos) * modCoeff;
         }
     }
@@ -81,7 +79,7 @@ namespace matcher {
                 theBest = AAprobs[i].aminoacid;
                 probRes = AAprobs[i];
                 aminoacid::Modification mod(aminoacid - AAprobs[i].aminoacid);
-                if (mod.getId() != aminoacid::ModificationInfo::MODIFICATION_CNT - 1) {
+                if (aminoacid::ModificationInfo::NAMES[mod.getId()] != "empty") {
                     theBest.addModification(mod);
                 }
                 auto cur = std::make_pair(bg, ed - 1);

@@ -28,10 +28,13 @@ namespace aminoacid {
         }
 
         NAMES.push_back("empty");
+        NAMES.push_back("");
+        FORMULS.push_back(Formula());
         FORMULS.push_back(Formula());
         MODIFICATION_CNT += 1;
         for (int i = 0; i < COEFFICIENT.size(); ++i) {
             COEFFICIENT[i].push_back(1);
+            COEFFICIENT[i].push_back(-1);
         }
 
         in.close();
