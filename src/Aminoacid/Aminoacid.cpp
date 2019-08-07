@@ -55,4 +55,8 @@ namespace aminoacid {
     const Formula &Aminoacid::getFormula() const {
         return formula;
     }
+
+    int Aminoacid::get_id() const {
+        return aa;
+    }
 }

@@ -16,6 +16,8 @@ namespace aminoacid {
         explicit Modification(int id);
         explicit Modification(Formula formula);
         Modification();
+
+        double getScore(int AAid);
     private:
         Formula formula;
         int id;

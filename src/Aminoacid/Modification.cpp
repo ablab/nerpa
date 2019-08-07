@@ -4,6 +4,7 @@
 
 #include"Modification.h"
 #include "ModificationInfo.h"
+#include "AminoacidInfo.h"
 
 namespace aminoacid {
     Formula Modification::getFormula() const {
@@ -34,5 +35,12 @@ namespace aminoacid {
 
         id = ModificationInfo::MODIFICATION_CNT;
         this->formula = Formula();
+    }
+
+    double Modification::getScore(int AAid) {
+        if (id != ModificationInfo::MODIFICATION_CNT && AAid != AminoacidInfo::AMINOACID_CNT) {
+            return ModificationInfo::COEFFICIENT[AAid][id];
+        }
+        return -1;
     }
 }
