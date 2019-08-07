@@ -96,6 +96,11 @@ def which(program):
         return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
 
     fpath, fname = os.path.split(program)
+
+    cur_path = os.path.dirname(os.path.abspath(__file__))
+    if is_exe(os.path.join(cur_path, fname)):
+        return os.path.join(cur_path, fname)
+
     if fpath:
         if is_exe(program):
             return program
@@ -125,7 +130,7 @@ def gen_graphs_by_mol(args, main_out_dir):
             nfname = file.split('/')[-1][:-3] + "gr"
             info = ' '.join(line_parts[1:])
 
-            prfix_to_search = ["./", "../", "../../", "../share/", "../share/npdtools/" ]
+            prfix_to_search = ["./", "../", "../../", "../share/", "../share/npdtools/", "../share/nerpa/" ]
             config_folder = "configs"
             fragmintation_rule_folder = "Fragmentation_rule"
             path_to_program = which("print_structure")[:-15]
@@ -198,12 +203,12 @@ def run(args):
 
     path_to_AA = "./resources/aminoacids.tsv"
     if (os.path.exists(os.path.join(path_to_cur, 'NRPsMatcher'))):
-        path_to_AA = "../share/nrpsmatcher/aminoacids.tsv"
+        path_to_AA = "../share/nerpa/aminoacids.tsv"
     path_to_AA = os.path.join(path_to_cur, path_to_AA)
 
     path_to_modification_cfg = "./resources/modifications.tsv"
     if (os.path.exists(os.path.join(path_to_cur, 'NRPsMatcher'))):
-        path_to_modification_cfg = "../share/nrpsmatcher/modifications.tsv"
+        path_to_modification_cfg = "../share/nerpa/modifications.tsv"
     path_to_modification_cfg = os.path.join(path_to_cur, path_to_modification_cfg)
     if args.modification_cfg is not None:
         path_to_modification_cfg = os.path.abspath(args.modification_cfg)
@@ -213,7 +218,7 @@ def run(args):
 
     path_to_AAmod_cfg = "./resources/AAmod.tsv"
     if (os.path.exists(os.path.join(path_to_cur, 'NRPsMatcher'))):
-        path_to_AAmod_cfg = "../share/nrpsmatcher/AAmod.tsv"
+        path_to_AAmod_cfg = "../share/nerpa/AAmod.tsv"
     path_to_AAmod_cfg = os.path.join(path_to_cur, path_to_AAmod_cfg)
     if args.AAmod_cfg is not None:
         path_to_AAmod_cfg = os.path.abspath(args.AAmod_cfg)

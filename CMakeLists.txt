@@ -22,11 +22,11 @@ install(FILES
         COMPONENT runtime)
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/predictions"
-        DESTINATION share/nrpsmatcher
+        DESTINATION share/nerpa
         COMPONENT runtime)
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/streptomedb"
-        DESTINATION share/nrpsmatcher
+        DESTINATION share/nerpa
         COMPONENT runtime)
 
 
