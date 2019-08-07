@@ -50,7 +50,7 @@ namespace matcher {
             if (modCoeff < 0) {
                 return -1;
             }
-            
+
             return baseScore->getScore(nrpAA, predAA, prob, pos) * modCoeff;
         }
     }
