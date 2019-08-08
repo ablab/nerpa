@@ -1,0 +1,30 @@
+{% set version = "0.1" %}
+
+package: 
+    name: nerpa
+    version: {{ version }}
+
+build: 
+    number: 0
+    skip: True  # [py27]
+
+source:
+    url: https://github.com/olga24912/Nerpa/archive/v{{ version }}.zip
+    sha256: 386cf5b5374852f7f7a5ea8c38406ba0513c8338dc99c5110b8bf681c6f91bce
+    
+requirements:
+    build:
+        - {{ compiler('cxx') }}
+    host:
+        - python >=3
+    run:
+        - python >=3
+about: 
+    home: https://github.com/olga24912/Nerpa
+    license: GPLv2
+    summary: Nerpa is a tool for automated discovery of biosynthetic gene clusters (BGC) for nonribosomal peptides (NRP)
+
+test:
+    commands:
+        - run_nrp_matcher.py --help > /dev/null
+        - run_nrp_matcher.py --predictions $PREFIX/share/nerpa/prediction.info -l $PREFIX/share/nerpa/library.info.streptomedb --predictor NRPSPREDICTOR2 -o $PREFIX/out > /dev/null 2> /dev/null
