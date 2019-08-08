@@ -148,20 +148,18 @@ def gen_graphs_by_mol(args, main_out_dir):
     f.close()
     return path_file, files_list
 
-
-def gen_abs_paths_to_prediction(args):
-    predictions = []
-    with open(args.predictions[0]) as f:
-        for line in f:
-            if (line[-1] == '\n'):
-                line = line[:-1]
-            if line[0] == '/':
-                predictions.append(line)
-            else:
-                line = '/'.join(os.path.abspath(args.predictions[0]).split('/')[:-1]) + "/" + line
-                predictions.append(line)
-
-    return predictions
+def copy_prediction_list(args, main_out_dir):
+    new_prediction_path = os.path.join(main_out_dir, "prediction.info")
+    f = open(new_prediction_path, 'w')
+    with open(args.predictions[0]) as fr:
+        for line in fr:
+            line_parts = line.split()
+            file = line_parts[0]
+            if (file[0] != '/'):
+                file = os.path.join(os.path.dirname(os.path.abspath(args.predictions[0])), file)
+            f.write(file + "\n")
+    f.close()
+    return new_prediction_path
 
 def run(args):
     path_to_cur = os.path.dirname(os.path.abspath(__file__))
@@ -188,9 +186,8 @@ def run(args):
         main_out_dir = os.path.abspath(args.local_output_dir[0]) + "/"
 
     path_to_graphs, files_list = gen_graphs_by_mol(args, main_out_dir)
-    predictions = gen_abs_paths_to_prediction(args)
+    path_predictions = os.path.abspath(copy_prediction_list(args, main_out_dir))
 
-    path_to_pred = os.path.abspath(args.predictions[0])
     directory = os.path.dirname(main_out_dir)
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -226,7 +223,7 @@ def run(args):
     local_AAmod_cfg = os.path.join(main_out_dir, "AAmod.tsv")
     copyfile(path_to_AAmod_cfg, local_AAmod_cfg)
 
-    comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_to_pred + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" \"" + path_to_cfg + "\"\n"
+    comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_predictions + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" \"" + path_to_cfg + "\"\n"
     print(comand)
     os.system(comand)
     return

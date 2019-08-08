@@ -41,7 +41,7 @@ install(FILES
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/aminoacids.tsv"
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/modifications.tsv"
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/AAmod.tsv"
-        DESTINATION share/nrpsmatcher
+        DESTINATION share/nerpa
         COMPONENT runtime)
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/predictions"
