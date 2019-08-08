@@ -140,8 +140,8 @@ def gen_graphs_by_mol(args, main_out_dir):
                 if (os.path.exists(path_to_program + prefix + fragmintation_rule_folder)):
                     config_folder = path_to_program + prefix
 
-            print("print_structure " + file + " --print_rule_fragmented_graph -C "+ config_folder + " > " + main_out_dir + "graphs/" + nfname)
-            os.system("print_structure " + file + " --print_rule_fragmented_graph -C "+ config_folder + " > " + main_out_dir + "graphs/" + nfname)
+            print(os.path.join(path_to_program, "print_structure") + " " + file + " --print_rule_fragmented_graph -C "+ config_folder + " > " + main_out_dir + "graphs/" + nfname)
+            os.system(os.path.join(path_to_program, "print_structure") + " " + file + " --print_rule_fragmented_graph -C "+ config_folder + " > " + main_out_dir + "graphs/" + nfname)
             f.write((main_out_dir + "graphs/" + nfname + " " + info + "\n"))
             files_list.append(main_out_dir + "graphs/" + nfname)
 
