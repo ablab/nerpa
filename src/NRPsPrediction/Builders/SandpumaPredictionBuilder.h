@@ -15,7 +15,7 @@ namespace nrpsprediction {
             int id;
             std::vector<std::string> res;
 
-            bool operator < (Token &t) {
+            bool operator < (const Token &t) const {
                 return orf_id < t.orf_id || (orf_id == t.orf_id && id < t.id);
             }
         };
