@@ -36,13 +36,13 @@ namespace matcher {
             void print_short(std::ofstream& out);
             void print_short_prediction(std::ofstream& out);
             void print_csv(std::ofstream& out);
-            double score();
+            double score() const;
             void setScore(double score);
             int getCntMatch();
             bool isMatched(int i);
             std::vector<std::pair<int, int> > getMatchs();
 
-            bool operator < (Match b);
+            bool operator < (Match b) const;
         };
 
         MatcherBase() = default;

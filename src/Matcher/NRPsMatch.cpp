@@ -9,7 +9,7 @@ void matcher::MatcherBase::Match::match(int pos, int part_id, int part_pos) {
     parts_pos[pos] = part_pos;
 }
 
-double matcher::MatcherBase::Match::score() {
+double matcher::MatcherBase::Match::score() const {
     return scr;
 }
 
@@ -71,7 +71,7 @@ void matcher::MatcherBase::Match::print(std::ofstream &out) {
     out << "\n\n\n";
 }
 
-bool matcher::MatcherBase::Match::operator<(matcher::MatcherBase::Match b) {
+bool matcher::MatcherBase::Match::operator<(matcher::MatcherBase::Match b) const {
     return this->score() > b.score();
 }
 
