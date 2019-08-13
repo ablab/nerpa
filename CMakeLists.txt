@@ -31,7 +31,7 @@ include_directories(src)
 add_subdirectory(src)
 add_subdirectory(tests)
 
-install(PROGRAMS "${CMAKE_CURRENT_SOURCE_DIR}/run_nrp_matcher.py"
+install(PROGRAMS "${CMAKE_CURRENT_SOURCE_DIR}/nerpa.py"
         DESTINATION bin
         COMPONENT runtime)
 
