@@ -25,10 +25,11 @@
 #include <ArgParse/Args.h>
 #include <Matcher/SingleUnitMatcher.h>
 #include <Aminoacid/ModificationInfo.h>
+#include <omp.h>
 #include "Matcher/Matcher.h"
 #include "Matcher/InDelMatcher.h"
 
-const double MIN_SCROE = 0.002;
+const double MIN_SCROE = 0.05;
 const double MIN_EXPLAIN_PART = 0;//0.15;
 
 void getPredictor(std::string predictor_name, nrpsprediction::PredictionBuilderBase*& predictionBuilder) {
@@ -147,7 +148,6 @@ matcher::MatcherBase* getMatcher(Args args) {
 
 void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, std::shared_ptr<nrp::NRP> mol, std::string output_filename,
                          Args args) {
-    std::ofstream out_short("report_mols", std::ofstream::out | std::ofstream::app);
     matcher::Score* score;
     getScoreFunction(args, score);
     std::vector<matcher::MatcherBase::Match> nrpsMatchs;
@@ -172,22 +172,27 @@ void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, std:
     if (nrpsMatchs.size() == 0) {
         return;
     }
-    std::ofstream out(output_filename);
-    out_short << mol->get_file_name() << ":  ";
 
-    std::ofstream out_csv("report.csv", std::ofstream::out | std::ofstream::app);
-    for (int i = 0; i < nrpsMatchs.size(); ++i) {
-        nrpsMatchs[i].print(out);
-        nrpsMatchs[i].print_csv(out_csv);
-        if (i < 3) {
-            nrpsMatchs[i].print_short_prediction(out_short);
+#pragma omp critical
+    {
+        std::ofstream out_short("report_mols", std::ofstream::out | std::ofstream::app);
+        std::ofstream out(output_filename);
+        std::ofstream out_csv("report.csv", std::ofstream::out | std::ofstream::app);
+
+        out_short << mol->get_file_name() << ":  ";
+        for (int i = 0; i < nrpsMatchs.size(); ++i) {
+            nrpsMatchs[i].print(out);
+            nrpsMatchs[i].print_csv(out_csv);
+            if (i < 3) {
+                nrpsMatchs[i].print_short_prediction(out_short);
+            }
         }
-    }
-    out_short << "\n";
+        out_short << "\n";
 
-    out_short.close();
-    out_csv.close();
-    out.close();
+        out_short.close();
+        out_csv.close();
+        out.close();
+    };
     delete(score);
 }
 
@@ -236,6 +241,9 @@ int main(int argc, char* argv[]) {
 
     INFO("Processing matching for NRPs structurs")
     INFO("Start from: " << start_from)
+    unsigned nthreads = omp_get_max_threads();
+    INFO("THREADS #" << nthreads);
+#   pragma omp parallel for
     for (int i = start_from; i < mols.size(); ++i) {
         INFO("NRP structure #" << i)
         std::string output_filename = gen_filename(mols[i]->get_file_name(), "details_mols/");
