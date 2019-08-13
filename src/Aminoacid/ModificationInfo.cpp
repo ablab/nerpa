@@ -1,4 +1,5 @@
 #include <fstream>
+#include <Logger/logger.hpp>
 #include "ModificationInfo.h"
 #include "AminoacidInfo.h"
 

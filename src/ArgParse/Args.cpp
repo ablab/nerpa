@@ -22,6 +22,7 @@ Args::Args(std::string cfg_filename) {
     single_match = (val == "on");
     in >> tmp >> x;
     single_match_coeff = x;
+    in >> tmp >> val;
     modification = (val == "on");
     in >> modification_cfg;
     in >> AAmod_cfg;
