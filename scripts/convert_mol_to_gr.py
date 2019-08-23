@@ -1,11 +1,11 @@
 import os
 
-path_to_db_dir = "/home/olga/bio-project/NRP/soft/dereplicator/"
-path_file = "path_to_graphs"
-graphs_folder = "graphs"
-path_to_soft = "/home/olga/bio-project/NRP/soft/dereplicator_build/bin/print_structure"
+path_to_config = "/home/olga/CAB/NRP/soft/dereplicator_build/share/npdtools/"
+path_file = "/home/olga/CAB/NRP/data/DataBase/MiBig_2019/graphs.info"
+graphs_folder = "/home/olga/CAB/NRP/data/DataBase/MiBig_2019/graphs/"
+path_to_soft = "/home/olga/CAB/NRP/soft/dereplicator_build/bin/print_structure"
 
-lib_info_file = "library.info.combined"
+lib_info_file = "/home/olga/CAB/NRP/data/DataBase/MiBig_2019/mibig2019.info"
 
 #molfiles = [f for f in os.listdir(path_to_db_dir) if os.path.isfile(os.path.join(path_to_db_dir, f))]
 
@@ -21,7 +21,7 @@ with open(lib_info_file) as fr:
         print(file)
         print(nfname)
         print(info)
-        os.system(path_to_soft + " " + path_to_db_dir + "/" + file + " --print_rule_fragmented_graph > graphs/" + nfname)
-        f.write(("graphs/"+nfname+ " " + info))
+        os.system(path_to_soft + " " + file + " -C " + path_to_config + " --print_rule_fragmented_graph > " + graphs_folder + nfname)
+        f.write((graphs_folder+nfname+ " " + info))
 
 f.close()

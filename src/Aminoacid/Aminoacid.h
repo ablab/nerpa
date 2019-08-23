@@ -28,6 +28,7 @@ namespace aminoacid {
             return out;
         }
         std::string get_name() const;
+        std::string get_possible_name() const;
         int get_id() const;
         void addModification(Modification m);
 

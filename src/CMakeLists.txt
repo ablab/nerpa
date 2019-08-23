@@ -75,8 +75,10 @@ set(SOURCE_FILES main.cpp
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})
 add_executable(NRPsMatcher main.cpp)
+add_executable(ParseGraph parse_graphs.cpp)
 
 target_link_libraries(NRPsMatcher logger_lib nrps_matcher_lib)
+target_link_libraries(ParseGraph logger_lib nrps_matcher_lib)
 
 install(TARGETS NRPsMatcher
         DESTINATION bin

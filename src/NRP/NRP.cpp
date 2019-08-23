@@ -26,7 +26,7 @@ aminoacid::Aminoacid nrp::NRP::getAminoacid(int i) const {
 
 void nrp::NRP::print() const {
     for (int i = 0; i < (int)aminoacids.size(); ++i) {
-        std::cerr << aminoacids[i].get_name() << "(" << position[i] << ") ";
+        std::cerr << aminoacids[i].get_possible_name() << "(" << position[i] << ") ";
     }
     std::cerr << "\n";
 }

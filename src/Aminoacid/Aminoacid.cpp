@@ -33,6 +33,16 @@ namespace aminoacid {
         return  AminoacidInfo::AMINOACID_NAMES[aa];
     }
 
+    std::string Aminoacid::get_possible_name() const {
+        for (int i = 0; i < AminoacidInfo::AMINOACID_CNT; ++i) {
+            if (this->formula == AminoacidInfo::FORMULS[i]) {
+                return AminoacidInfo::AMINOACID_NAMES[i];
+            }
+        }
+
+        return  AminoacidInfo::AMINOACID_NAMES[aa];
+    }
+
     Aminoacid::Aminoacid(int aid) {
         this->aa = aid;
         formula = AminoacidInfo::FORMULS[aa];
