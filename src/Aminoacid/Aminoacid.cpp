@@ -40,6 +40,15 @@ namespace aminoacid {
             }
         }
 
+        for (int i = 0; i < AminoacidInfo::AMINOACID_CNT; ++i) {
+            for (int j = 0; j < ModificationInfo::MODIFICATION_CNT; ++j) {
+                if (this->formula - AminoacidInfo::FORMULS[i] == ModificationInfo::FORMULS[j]) {
+                    return AminoacidInfo::AMINOACID_NAMES[i] + "+" + ModificationInfo::NAMES[j];
+                }
+            }
+        }
+
+
         return  AminoacidInfo::AMINOACID_NAMES[aa];
     }
 

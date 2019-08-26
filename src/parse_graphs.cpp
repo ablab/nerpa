@@ -45,6 +45,8 @@ int main(int argc, char* argv[]) {
     logging::create_console_logger("");
 
     aminoacid::AminoacidInfo::init(argv[2], "MINOWA");
+    aminoacid::ModificationInfo::init(argv[3]);
+
     std::vector<std::shared_ptr<nrp::NRP>> mols = save_mols(argv[1]);
 
     return 0;
