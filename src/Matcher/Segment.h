@@ -17,7 +17,7 @@ namespace matcher {
 
         Segment(int l, int r, int id, bool rev, double scor) : l(l), r(r), part_id(id), rev(rev), scor(scor) {}
 
-        bool operator<(Segment b) {
+        bool operator<(Segment b) const {
             return l < b.l;
         }
     };

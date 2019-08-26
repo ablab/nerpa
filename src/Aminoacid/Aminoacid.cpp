@@ -33,6 +33,25 @@ namespace aminoacid {
         return  AminoacidInfo::AMINOACID_NAMES[aa];
     }
 
+    std::string Aminoacid::get_possible_name() const {
+        for (int i = 0; i < AminoacidInfo::AMINOACID_CNT; ++i) {
+            if (this->formula == AminoacidInfo::FORMULS[i]) {
+                return AminoacidInfo::AMINOACID_NAMES[i];
+            }
+        }
+
+        for (int i = 0; i < AminoacidInfo::AMINOACID_CNT; ++i) {
+            for (int j = 0; j < ModificationInfo::MODIFICATION_CNT; ++j) {
+                if (this->formula - AminoacidInfo::FORMULS[i] == ModificationInfo::FORMULS[j]) {
+                    return AminoacidInfo::AMINOACID_NAMES[i] + "+" + ModificationInfo::NAMES[j];
+                }
+            }
+        }
+
+
+        return  AminoacidInfo::AMINOACID_NAMES[aa];
+    }
+
     Aminoacid::Aminoacid(int aid) {
         this->aa = aid;
         formula = AminoacidInfo::FORMULS[aa];
@@ -54,5 +73,9 @@ namespace aminoacid {
 
     const Formula &Aminoacid::getFormula() const {
         return formula;
+    }
+
+    int Aminoacid::get_id() const {
+        return aa;
     }
 }

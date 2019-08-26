@@ -23,6 +23,11 @@ set(SOURCE_FILES main.cpp
         NRP/NRPtail.cpp
         Matcher/Matcher.h
         Matcher/Matcher.cpp
+        Matcher/MatcherBase.h
+        Matcher/InDelMatcher.h
+        Matcher/InDelMatcher.cpp
+        Matcher/SingleUnitMatcher.cpp
+        Matcher/SingleUnitMatcher.h
         Matcher/Score/Base/Score.cpp
         Matcher/Score/Base/Score.h
         Matcher/Segment.h
@@ -37,10 +42,13 @@ set(SOURCE_FILES main.cpp
         NRPsPrediction/Builders/SandpumaPredictionBuilder.h
         NRPsPrediction/Builders/SandpumaPredictionBuilder.cpp
         Aminoacid/Formula.h
+        Aminoacid/Formula.cpp
         Aminoacid/Modification.h
         Aminoacid/Modification.cpp
         Aminoacid/AminoacidInfo.h
         Aminoacid/AminoacidInfo.cpp
+        Aminoacid/ModificationInfo.h
+        Aminoacid/ModificationInfo.cpp
         Matcher/Score/Base/ScoreWithModification.cpp
         Matcher/Score/Base/ScoreWithModification.h
         Matcher/Score/Minowa/ScoreMinowa.cpp
@@ -55,21 +63,22 @@ set(SOURCE_FILES main.cpp
         Matcher/Score/Minowa/ScoreMinowaScoreOnly.h
         Matcher/Score/Base/ScoreFullMatch.cpp
         Matcher/Score/Base/ScoreFullMatch.h
-        Matcher/Score/Minowa/ScoreMinowaNormalize.h
-        Matcher/Score/Minowa/ScoreMinowaNormalize.cpp
-        Matcher/Score/Minowa/ScoreMinowaNormalizeWithoutAffinGap.h
         Matcher/Score/NrpsPredictor2/ScoreNRPsPredictor2Normalize.h
-        Matcher/Score/Prism/ScorePrismNormalize.h
-        Matcher/Score/Sandpuma/ScoreSandpumaNormalize.h
         Matcher/Score/Minowa/ScoreMinowaPositionalCoefficient.h
-        Matcher/Score/Minowa/ScoreMinowaWithModification.h
-        Matcher/Score/Minowa/ScoreMinowaWithModification.cpp
-        Json/json.hpp)
+        Matcher/Score/Base/ScoreNormalize.cpp
+        Matcher/Score/Base/ScoreNormalize.h
+        Matcher/Score/Base/ScoreOpenContinueGap.h
+        Matcher/Score/Base/ScoreSingleUnit.h
+        Json/json.hpp
+        ArgParse/Args.cpp
+        ArgParse/Args.h)
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})
 add_executable(NRPsMatcher main.cpp)
+add_executable(ParseGraph parse_graphs.cpp)
 
 target_link_libraries(NRPsMatcher logger_lib nrps_matcher_lib)
+target_link_libraries(ParseGraph logger_lib nrps_matcher_lib)
 
 install(TARGETS NRPsMatcher
         DESTINATION bin

@@ -10,9 +10,9 @@
 namespace matcher {
     class ScorePrism : public Score {
     public:
-        double
-        aaScore(const nrpsprediction::AminoacidPrediction &apred, const aminoacid::Aminoacid &aminoacid) const override;
-
+        double getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
+                        const nrpsprediction::AminoacidPrediction::AminoacidProb &prob,
+                        const std::pair<int, int> &pos) const override;
     };
 }
 

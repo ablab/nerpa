@@ -22,6 +22,7 @@ namespace matcher {
 
             segscor += cur_sc;
         }
+
         if (cnt_mismatch == 0 || (cnt_mismatch == 1 && aminoacid_predictions.size() > 4)) {
             score = segscor;
             return true;
@@ -42,19 +43,16 @@ namespace matcher {
                                            const std::pair<int, int> &pos) const {
         aminoacid::Formula formula = (nrpAA - predAA);
         aminoacid::Modification modification(formula);
-        if (modification.getId() == aminoacid::Modification::MODIFICATION_CNT) {
+        if (modification.getId() == aminoacid::ModificationInfo::MODIFICATION_CNT) {
             return -1;
-        }
-        if (modification.getId() == aminoacid::Modification::empty ||
-                (predAA.get_name() == "asn" && modification.getId() == aminoacid::Modification::hydration) ||
-                (predAA.get_name() == "glu" && modification.getId() == aminoacid::Modification::methylation)) {
-            int mdpos = (pos.first + pos.second)/2;
-            if (mdpos >= 10) {
-                return 0;
+        } else {
+            double modCoeff = modification.getScore(predAA.get_id());
+            if (modCoeff < 0) {
+                return -1;
             }
-            return prob.prob/100. * posscore[mdpos];
+
+            return baseScore->getScore(nrpAA, predAA, prob, pos) * modCoeff;
         }
-        return -1;
     }
 
     std::pair<double, aminoacid::Aminoacid>
@@ -81,7 +79,7 @@ namespace matcher {
                 theBest = AAprobs[i].aminoacid;
                 probRes = AAprobs[i];
                 aminoacid::Modification mod(aminoacid - AAprobs[i].aminoacid);
-                if (mod.getId() != mod.empty) {
+                if (aminoacid::ModificationInfo::NAMES[mod.getId()] != "empty") {
                     theBest.addModification(mod);
                 }
                 auto cur = std::make_pair(bg, ed - 1);
@@ -91,4 +89,6 @@ namespace matcher {
 
         return std::make_pair(maxScore, theBest);
     }
+
+    ScoreWithModification::ScoreWithModification(std::unique_ptr<Score> base) : Score(std::move(base)) {}
 }

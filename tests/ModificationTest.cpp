@@ -14,6 +14,7 @@
 #include <boost/concept_check.hpp>
 #include <Matcher/Score/Base/ScoreWithModification.h>
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
+#include <memory>
 
 namespace nrp {
     typedef matcher::Segment Segment;
@@ -26,13 +27,12 @@ namespace nrp {
         std::vector<aminoacid::Aminoacid> amnacid;
         virtual void SetUp() {
             aminoacid::AminoacidInfo::init("../../resources/aminoacids.tsv", "NRPSPREDICTOR2");
+            aminoacid::ModificationInfo::init("../../resources/modifications.tsv");
         }
 
         void addModificationToAA(Aminoacid &aa) {
-            if (aa.get_name() == "asn") {
-                aa.addModification(Modification(Modification::hydration));
-            } else if (aa.get_name() == "glu") {
-                aa.addModification(Modification(Modification::methylation));
+            if (aa.get_name() == "asn" || aa.get_name() == "glu") {
+                aa.addModification(Modification(aminoacid::ModificationInfo::getIdByNameId("methylation")));
             }
         }
 
@@ -64,7 +64,7 @@ namespace nrp {
             }
         }
 
-        NRPCycle genRandCycleNRP(int len) {
+        std::shared_ptr<nrp::NRP> genRandCycleNRP(int len) {
             std::vector<std::string> strformula(len);
             std::vector<int> position(len);
 
@@ -77,12 +77,12 @@ namespace nrp {
 
             std::random_shuffle(position.begin(), position.end());
 
-            NRPCycle res("", strformula, amnacid, position, "", "");
-            res.aminoacids = amnacid;
+            std::shared_ptr<nrp::NRP> res = std::make_shared<nrp::NRPCycle>("", strformula, amnacid, position, "", "");
+            res->aminoacids = amnacid;
             return res;
         }
 
-        NRPLine genRandLineNRP(int len) {
+        std::shared_ptr<nrp::NRP> genRandLineNRP(int len) {
             std::vector<std::string> strformula(len);
             std::vector<int> position(len);
 
@@ -91,14 +91,13 @@ namespace nrp {
                 position[i] = i;
                 amnacid.push_back(aminoacid::Aminoacid(rand() % (aminoacid::AminoacidInfo::AMINOACID_CNT - 1)));
 
-                amnacid.back().getFormula().print();
                 addModificationToAA(amnacid.back());
             }
 
             std::random_shuffle(position.begin(), position.end());
 
-            NRPLine res("", strformula, amnacid, position, "", "");
-            res.aminoacids = amnacid;
+            std::shared_ptr<nrp::NRP> res = std::make_shared<nrp::NRPLine>("", strformula, amnacid, position, "", "");
+            res->aminoacids = amnacid;
             return res;
         }
 
@@ -132,11 +131,12 @@ namespace nrp {
                 aas.push_back(amnacid[i]);
             }
 
-            matcher::ScoreWithModification scoring;
+            matcher::Score scoring2;
+            matcher::Score* score1 = new matcher::Score;
+            matcher::ScoreWithModification scoring(std::unique_ptr<matcher::Score>(std::move(score1)));
             double curs = 0;
             nrpsprediction::NRPsPrediction preidction({nrps_part});
             bool found_seg = scoring.getScoreForSegment(aas, preidction, 0, curs);
-            matcher::Score scoring2;
             double curs2 = 0;
             bool found_seg2 = scoring2.getScoreForSegment(aas, preidction, 0, curs2);
             score += curs;
@@ -152,7 +152,8 @@ namespace nrp {
                 aas.push_back(amnacid[i]);
             }
 
-            matcher::ScoreWithModification scoring;
+            matcher::Score* score1 = new matcher::Score;
+            matcher::ScoreWithModification scoring(std::unique_ptr<matcher::Score>(std::move(score1)));;
             double curs = 0;
             nrpsprediction::NRPsPrediction preidction({nrps_part});
             ASSERT_TRUE(scoring.getScoreForSegment(aas, preidction, 0, curs));
@@ -160,10 +161,11 @@ namespace nrp {
     };
 
     TEST_F(ModificationTest, coverRandLineTest) {
-        matcher::ScoreWithModification swm;
+        matcher::Score* score1 = new matcher::Score;
+        matcher::ScoreWithModification swm(std::unique_ptr<matcher::Score>(std::move(score1)));
         for (int tst = 0; tst < 1000; ++tst) {
             int len = rand() % 20 + 1;
-            NRPLine nrp = genRandLineNRP(len);
+            std::shared_ptr<NRP> nrp = genRandLineNRP(len);
 
             int cntbp = rand() % 5 + 1;
             std::vector<int> bps(cntbp);
@@ -204,8 +206,7 @@ namespace nrp {
 
             std::random_shuffle(nrpParts.begin(), nrpParts.end());
             nrpsprediction::NRPsPrediction nrpsPrediction(nrpParts);
-
-            matcher::Matcher matcher(nrp, nrpsPrediction, &swm);
+            matcher::Matcher matcher(nrp, &nrpsPrediction, &swm);
             matcher::Matcher::Match match = matcher.getMatch();
 
             ASSERT_GE(match.score() - res_score, -EPS);
@@ -213,11 +214,12 @@ namespace nrp {
     }
 
     TEST_F(ModificationTest, coverRandCycleTest) {
-        matcher::ScoreWithModification swm;
+        matcher::Score* score1 = new matcher::Score;
+        matcher::ScoreWithModification swm(std::unique_ptr<matcher::Score>(std::move(score1)));
 
         for (int tst = 0; tst < 1000; ++tst) {
             int len = rand() % 20 + 1;
-            NRPCycle nrp = genRandCycleNRP(len);
+            std::shared_ptr<NRP> nrp = genRandCycleNRP(len);
 
             int cntbp = rand() % 5 + 1;
             std::vector<int> bps(cntbp);
@@ -258,7 +260,7 @@ namespace nrp {
             std::random_shuffle(nrpParts.begin(), nrpParts.end());
             nrpsprediction::NRPsPrediction nrpsPrediction(nrpParts);
 
-            matcher::Matcher matcher(nrp, nrpsPrediction, &swm);
+            matcher::Matcher matcher(nrp, &nrpsPrediction, &swm);
             matcher::Matcher::Match match = matcher.getMatch();
 
             ASSERT_GE(match.score() - res_score, -EPS);
@@ -297,8 +299,9 @@ namespace nrp {
                                                                    Nrpspredictor2Builder::parse_predictions(ss.str())));
                 auto predictions = nrps_part.getAminoacidsPrediction();
             }
+            matcher::Score* score1 = new matcher::Score;
+            matcher::ScoreWithModification scoring(std::unique_ptr<matcher::Score>(std::move(score1)));
 
-            matcher::ScoreWithModification scoring;
             double curs = 0;
             nrpsprediction::NRPsPrediction preidction({nrps_part});
             bool found_seg = scoring.getScoreForSegment(amnacid, preidction, 0, curs);

@@ -11,67 +11,48 @@
 
 #include <utility>
 #include "Segment.h"
+#include "MatcherBase.h"
 
 namespace matcher {
     typedef aminoacid::Aminoacid aacid;
-    class Matcher {
-    private:
-        const nrp::NRP& nrp;
-        const nrpsprediction::NRPsPrediction& prediction;
-        const Score* score;
+    class Matcher : public MatcherBase {
+    protected:
+        std::shared_ptr<nrp::NRP> nrp;
+        const nrpsprediction::NRPsPrediction* prediction{};
+        const Score* score{};
     public:
-        class Match {
-        private:
-            const nrp::NRP* nrp;
-            const Score* scoreFun;
-            double scr;
-            std::vector<nrpsprediction::NRPsPart> nrpParts;
-            std::vector<int> parts_id;
-            std::vector<int> parts_pos;
-        public:
-            Match(const nrp::NRP* nrp, std::vector<nrpsprediction::NRPsPart> nrpParts, double scr, const Score* score):
-                    nrp(nrp), nrpParts(std::move(nrpParts)), scr(scr), scoreFun(score) {
-                parts_id.resize(nrp->getLen(), -1);
-                parts_pos.resize(nrp->getLen(), -1);
-            }
-
-            void match(int pos, int part_id, int part_pos);
-            void print(std::ofstream& out);
-            void print_short(std::ofstream& out);
-            void print_short_prediction(std::ofstream& out);
-            void print_csv(std::ofstream& out);
-            double score();
-            void setScore(double score);
-            int getCntMatch();
-            bool isMatched(int i);
-            std::vector<std::pair<int, int> > getMatchs();
-
-            bool operator < (Match b);
-        };
-
-        Matcher(const nrp::NRP &nrp, const nrpsprediction::NRPsPrediction& prediction, const Score* score):
+        Matcher(std::shared_ptr<nrp::NRP> nrp,
+                const nrpsprediction::NRPsPrediction* prediction,
+                const Score* score):
                 nrp(nrp), prediction(prediction), score(score) {
         }
 
-        matcher::Matcher::Match getMatch() const;
+        Matcher() = default;
+
+        matcher::MatcherBase::Match getMatch() const;
+        matcher::MatcherBase::Match getMatch(std::shared_ptr<nrp::NRP> nrp,
+                                             const nrpsprediction::NRPsPrediction* prediction,
+                                             const Score* score) override;
         std::vector<Segment> matche_seg(const int part_id) const;
-    private:
-        matcher::Matcher::Match getLineMatch(bool can_skip_first = true, bool can_skip_last = true) const;
-        matcher::Matcher::Match getCycleMatch() const;
-        matcher::Matcher::Match getBranchMatch() const;
 
+    protected:
+        matcher::MatcherBase::Match getLineMatch(bool can_skip_first = true, bool can_skip_last = true) const;
+        matcher::MatcherBase::Match getCycleMatch() const;
+        matcher::MatcherBase::Match getBranchMatch() const;
 
-        matcher::Matcher::Match updateMatch(const nrpsprediction::NRPsPrediction& nrPsPrediction,
-                                            matcher::Matcher::Match match, int bg,
+        virtual matcher::MatcherBase::Match updateMatch(const nrpsprediction::NRPsPrediction& nrPsPrediction,
+                                            matcher::MatcherBase::Match match, int bg,
                                             std::vector<Segment>& matched_parts_id) const;
-        matcher::Matcher::Match isCoverLine(std::vector<Segment>& segments,
+        matcher::MatcherBase::Match setUpdateMatch(const nrpsprediction::NRPsPrediction& nrPsPrediction,
+                                                matcher::MatcherBase::Match match, int bg,
+                                                std::vector<Segment>& matched_parts_id) const;
+        matcher::MatcherBase::Match isCoverLine(std::vector<Segment>& segments,
                                   const std::vector<int>& toSmallId, const std::vector<int>& toBigId, int len,
                                             std::vector<Segment>& matched_parts_id) const;
 
         std::vector<aacid> getSubset(std::vector<aacid> vector, int l, int r, int stp) const;
 
         int addSegments(const std::vector<Segment> &vector, std::vector<Segment> &segments, bool skip_first, bool skip_last, int id) const;
-        void matchSingleUnits(Match& match, std::vector<bool>& used_pos) const;
     };
 }
 

@@ -7,10 +7,10 @@
 
 #include <algorithm>
 #include "Matcher/Score/Base/Score.h"
-#include "ScoreMinowaNormalize.h"
+#include "ScoreMinowa.h"
 
 namespace matcher {
-    class ScoreMinowaPositionalCoefficient : public ScoreMinowaNormalize {
+    class ScoreMinowaPositionalCoefficient : public ScoreMinowa {
     private:
         double positional_coefficient = 2;
 

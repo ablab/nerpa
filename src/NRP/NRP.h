@@ -6,6 +6,7 @@
 #include "Aminoacid/Aminoacid.h"
 #include "../NRPsPrediction/NRPsPart.h"
 #include <iostream>
+#include <memory>
 #include "assert.h"
 
 namespace nrp {
@@ -22,6 +23,7 @@ namespace nrp {
         std::string graph;
         std::string file_name;
         std::string extra_info;
+        size_t len;
     public:
 
         enum NRPType {cycle, line, branch_cycle};
@@ -32,9 +34,12 @@ namespace nrp {
                 file_name(file_name), strformula(strformula), aminoacids(aminoacids), position(position),
                 graph(graph), extra_info(extra_info) {
             assert(position.size() == aminoacids.size());
+            len = aminoacids.size();
         }
 
         virtual int getLen() const;
+
+        virtual int getFullLen() const;
 
         virtual int getInd(int i) const;
 
@@ -54,9 +59,13 @@ namespace nrp {
 
         virtual NRPType getType() const = 0;
 
-        virtual std::vector<NRPLine*> getLines() const = 0;
+        virtual std::vector<std::shared_ptr<NRP>> getLines() const = 0;
 
         virtual bool is_valid_seg(int l, int r, int stp) const = 0;
+
+        void deleteAA(int i);
+
+        void insertAA(int i);
     };
 
 }

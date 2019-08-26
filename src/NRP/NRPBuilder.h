@@ -2,14 +2,12 @@
 #define NRPSMATCHER_NRPBUILDER_H
 
 #include <string>
+#include <memory>
 #include "NRP.h"
 
 namespace nrp {
     class NRPBuilder {
     private:
-        enum Elem{C, H, Cl, N, O, S, ELEM_CNT};
-        static const std::string ELEM_NAME[ELEM_CNT];
-
         static std::vector<aminoacid::Aminoacid> aminoacids_by_pos(
                 const std::vector<aminoacid::Aminoacid> &aminoacids, const std::vector<int> &pos);
 
@@ -29,9 +27,16 @@ namespace nrp {
 
         static void parseTail(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr, std::vector<int> &tail,
                               std::vector<int> &cycle);
+        static void handleLoops(std::vector<std::vector<int> >& g,
+                                std::vector<std::vector<int> >& gr,
+                                std::vector<std::vector<int> >& formuls);
+
+        static void handleLoop(int v, std::vector<std::vector<int> >& g,
+                               std::vector<std::vector<int> >& gr,
+                               std::vector<std::vector<int> >& formuls);
 
     public:
-        static NRP* build(std::string fragment_graph, std::string extra_info);
+        static std::shared_ptr<nrp::NRP> build(std::string fragment_graph, std::string extra_info);
 
         static bool isConnected(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr);
 

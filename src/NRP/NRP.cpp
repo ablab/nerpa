@@ -13,7 +13,7 @@ std::string nrp::NRP::getGraphInString() const {
 }
 
 int nrp::NRP::getLen() const {
-    return aminoacids.size();
+    return len;
 }
 
 int nrp::NRP::getInd(int i) const {
@@ -26,7 +26,7 @@ aminoacid::Aminoacid nrp::NRP::getAminoacid(int i) const {
 
 void nrp::NRP::print() const {
     for (int i = 0; i < (int)aminoacids.size(); ++i) {
-        std::cerr << aminoacids[i].get_name() << "(" << position[i] << ") ";
+        std::cerr << aminoacids[i].get_possible_name() << "(" << position[i] << ") ";
     }
     std::cerr << "\n";
 }
@@ -42,4 +42,31 @@ std::string nrp::NRP::get_extra_info() const {
 
 std::vector<aminoacid::Aminoacid> nrp::NRP::getAminoacids() const {
     return aminoacids;
+}
+
+void nrp::NRP::deleteAA(int i) {
+    for (int j = i; j < len - 1; ++j) {
+        std::swap(aminoacids[j], aminoacids[j + 1]);
+        std::swap(position[j], position[j + 1]);
+        //std::swap(strformula[j], strformula[j + 1]);
+    }
+    len -= 1;
+}
+
+int nrp::NRP::getFullLen() const {
+    return aminoacids.size();
+}
+
+void nrp::NRP::insertAA(int i) {
+    aminoacids.push_back(aminoacid::Aminoacid("none"));
+    position.push_back(len);
+    strformula.push_back("-");
+
+    for (int j = len; j > i; --j) {
+        std::swap(aminoacids[j], aminoacids[j - 1]);
+        std::swap(position[j], position[j - 1]);
+        //std::swap(strformula[j], strformula[j - 1]);
+    }
+
+    len += 1;
 }

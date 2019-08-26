@@ -10,6 +10,7 @@
 #include <boost/concept_check.hpp>
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
 #include <Matcher/Score/Base/ScoreFullMatch.h>
+#include <memory>
 
 namespace nrp {
     typedef matcher::Segment Segment;
@@ -60,7 +61,7 @@ namespace nrp {
             }
         }
 
-        NRPCycle genRandCycleNRP(int len) {
+        std::shared_ptr<nrp::NRP> genRandCycleNRP(int len) {
             std::vector<std::string> strformula(len);
             std::vector<int> position(len);
 
@@ -72,12 +73,12 @@ namespace nrp {
 
             std::random_shuffle(position.begin(), position.end());
 
-            NRPCycle res("", strformula, amnacid, position, "", "");
-            res.aminoacids = amnacid;
+            std::shared_ptr<nrp::NRP> res = std::make_shared<nrp::NRPCycle>("", strformula, amnacid, position, "", "");
+            res->aminoacids = amnacid;
             return res;
         }
 
-        NRPLine genRandLineNRP(int len) {
+        std::shared_ptr<nrp::NRP> genRandLineNRP(int len) {
             std::vector<std::string> strformula(len);
             std::vector<int> position(len);
 
@@ -89,8 +90,8 @@ namespace nrp {
 
             std::random_shuffle(position.begin(), position.end());
 
-            NRPLine res("", strformula, amnacid, position, "", "");
-            res.aminoacids = amnacid;
+            std::shared_ptr<nrp::NRP> res = std::make_shared<nrp::NRPLine>("", strformula, amnacid, position, "", "");
+            res->aminoacids = amnacid;
             return res;
         }
 
@@ -314,7 +315,7 @@ namespace nrp {
         double scr = 0;
         for (int tst = 0; tst < 1000; ++tst) {
             int len = rand()%100 + 2;
-            NRPCycle nrp = genRandCycleNRP(len);
+            std::shared_ptr<nrp::NRP> nrp = genRandCycleNRP(len);
             int bg = rand()%len, sz = rand()%len + 1;
 
             int delta = 1;
@@ -330,7 +331,7 @@ namespace nrp {
             parts.push_back(nrps_part);
             matcher::Score score;
             nrpsprediction::NRPsPrediction prediction(parts);
-            matcher::Matcher matcher1(nrp, prediction, &score);
+            matcher::Matcher matcher1(nrp, &prediction, &score);
             std::vector<Segment> segments = matcher1.matche_seg(0);
             int rbg = bg;
             int red = ed;
@@ -365,7 +366,7 @@ namespace nrp {
         matcher::ScoreFullMatch score;
         for (int tst = 0; tst < 1000; ++tst) {
             int len = rand()%20 + 1;
-            NRPCycle nrp = genRandCycleNRP(len);
+            std::shared_ptr<nrp::NRP> nrp = genRandCycleNRP(len);
             int partlen = rand()%len + 1;
 
             nrpsprediction::NRPsPart nrps_part("filename", "orf");
@@ -376,7 +377,7 @@ namespace nrp {
             std::vector<nrpsprediction::NRPsPart> parts;
             parts.push_back(nrps_part);
             nrpsprediction::NRPsPrediction prediction(parts);
-            matcher::Matcher matcher1(nrp, prediction, &score);
+            matcher::Matcher matcher1(nrp, &prediction, &score);
 
             std::vector<Segment> segments = matcher1.matche_seg(0);
             for (int i = 0; i < segments.size(); ++i) {
@@ -399,7 +400,7 @@ namespace nrp {
         double scr = 0;
         for (int tst = 0; tst < 1000; ++tst) {
             int len = rand()%100 + 2;
-            NRPLine nrp = genRandLineNRP(len);
+            std::shared_ptr<nrp::NRP> nrp = genRandLineNRP(len);
 
             int bg = rand()%len, ed = rand()%len;
             if (ed < bg) {
@@ -418,7 +419,7 @@ namespace nrp {
             std::vector<nrpsprediction::NRPsPart> parts;
             parts.push_back(nrps_part);
             nrpsprediction::NRPsPrediction prediction(parts);
-            matcher::Matcher matcher1(nrp, prediction, &score);
+            matcher::Matcher matcher1(nrp, &prediction, &score);
 
             std::vector<Segment> segments = matcher1.matche_seg(0);
             int rbg = std::min(bg, ed);
@@ -443,7 +444,7 @@ namespace nrp {
         matcher::Score score;
         for (int tst = 0; tst < 1000; ++tst) {
             int len = rand()%20 + 1;
-            NRPLine nrp = genRandLineNRP(len);
+            std::shared_ptr<nrp::NRP> nrp = genRandLineNRP(len);
 
             int partlen = rand()%len + 1;
             nrpsprediction::NRPsPart nrps_part ("filename", "orf");
@@ -454,7 +455,7 @@ namespace nrp {
             std::vector<nrpsprediction::NRPsPart> parts;
             parts.push_back(nrps_part);
             nrpsprediction::NRPsPrediction prediction(parts);
-            matcher::Matcher matcher1(nrp, prediction, &score);
+            matcher::Matcher matcher1(nrp, &prediction, &score);
 
             std::vector<Segment> segments = matcher1.matche_seg(0);
             for (int i = 0; i < segments.size(); ++i) {
@@ -472,7 +473,7 @@ namespace nrp {
     TEST_F(ContainNRPsTest, coverRandLineTest) {
         for (int tst = 0; tst < 1000; ++tst) {
             int len = rand()%20 + 1;
-            NRPLine nrp = genRandLineNRP(len);
+            std::shared_ptr<nrp::NRP> nrp = genRandLineNRP(len);
 
             int cntbp = rand()%5 + 1;
             std::vector<int> bps(cntbp);
@@ -513,7 +514,7 @@ namespace nrp {
             nrpsprediction::NRPsPrediction nrpsPrediction(nrpParts);
 
             matcher::ScoreFullMatch score;
-            matcher::Matcher matcher(nrp, nrpsPrediction, &score);
+            matcher::Matcher matcher(nrp, &nrpsPrediction, &score);
             matcher::Matcher::Match match = matcher.getMatch();
 
             ASSERT_GE(match.score() - res_score, -EPS);
@@ -527,7 +528,7 @@ namespace nrp {
         matcher::ScoreFullMatch score;
         for (int tst = 0; tst < 1000; ++tst) {
             int len = rand()%20 + 1;
-            NRPCycle nrp = genRandCycleNRP(len);
+            std::shared_ptr<nrp::NRP> nrp = genRandCycleNRP(len);
 
             int cntbp = rand()%5 + 1;
             std::vector<int> bps(cntbp);
@@ -565,7 +566,7 @@ namespace nrp {
             std::random_shuffle(nrpParts.begin(), nrpParts.end());
             nrpsprediction::NRPsPrediction nrpsPrediction(nrpParts);
 
-            matcher::Matcher matcher(nrp, nrpsPrediction, &score);
+            matcher::Matcher matcher(nrp, &nrpsPrediction, &score);
             matcher::Matcher::Match match = matcher.getMatch();
 
             ASSERT_GE(match.score() - res_score, -EPS);
@@ -593,9 +594,9 @@ namespace nrp {
         aa_sum2.insert(aa_sum2.end(), aa2.rbegin(), aa2.rend());
 
 
-        NRPLine nrp1("", strformula, aa_sum1, pos1, "", "");
-        NRPLine nrp2("", strformula, aa_sum2, pos2, "", "");
-        NRPtail nrp(nrp1, nrp2);
+        std::shared_ptr<NRP> nrp1 = std::make_shared<NRPLine>("", strformula, aa_sum1, pos1, "", "");
+        std::shared_ptr<NRP> nrp2 = std::make_shared<NRPLine>("", strformula, aa_sum2, pos2, "", "");
+        std::shared_ptr<NRP> nrp = std::make_shared<NRPtail>(nrp1, nrp2);
 
         nrpsprediction::NRPsPart nrps_part("", "");
 
@@ -639,7 +640,7 @@ namespace nrp {
 
         //match
         nrpsprediction::NRPsPrediction prediction(parts);
-        matcher::Matcher matcher1(nrp, prediction, &scoring);
+        matcher::Matcher matcher1(nrp, &prediction, &scoring);
         auto match = matcher1.getMatch();
 
         //compare score

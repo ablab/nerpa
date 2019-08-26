@@ -10,6 +10,9 @@
 namespace matcher {
     class ScoreWithModification : public Score {
     public:
+        ScoreWithModification(std::unique_ptr<Score> base);
+
+    public:
         bool getScoreForSegment(const std::vector<aminoacid::Aminoacid> &amns,
                                 const nrpsprediction::NRPsPrediction& prediction, int part_id,
                                 double &score) const override;
@@ -22,7 +25,6 @@ namespace matcher {
                                                                    nrpsprediction::AminoacidPrediction::AminoacidProb &probRes,
                                                                    std::pair<int, int> &posRes) const override;
 
-    protected:
         virtual double getScore(const aminoacid::Aminoacid& nrpAA,
                         const aminoacid::Aminoacid& predAA,
                         const nrpsprediction::AminoacidPrediction::AminoacidProb& prob,

@@ -9,7 +9,6 @@
 
 namespace matcher {
     class ScoreSandpuma : public Score {
-
     };
 }
 

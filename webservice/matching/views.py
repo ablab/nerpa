@@ -4,6 +4,7 @@ from .models import UserSession
 from .models import Request
 from .forms import SearchForm
 #from .run_search import handle_genome
+from .tasks import init_var
 from .tasks import handle_genome
 from .tasks import handle_nrp
 from .tasks import handle_one
@@ -37,18 +38,21 @@ def get_or_create_session(request, page):
     return user_session
 
 def readMOL(request):
+    from .tasks import nrp_file
     f = request.FILES['inputFileNRP']
     with open(nrp_file, "wb") as fw:
         for chunk in f.chunks():
             fw.write(chunk)
 
 def readGenome(request):
+    from .tasks import genome_file
     f = request.FILES['inputFileGenome']
     with open(genome_file, "wb") as fw:
         for chunk in f.chunks():
             fw.write(chunk)
 
 def readSMILE(request):
+    from .tasks import smile_file
     f = request.FILES['inputFileNRP']
     with open(smile_file, "wb") as fw:
         for chunk in f.chunks():

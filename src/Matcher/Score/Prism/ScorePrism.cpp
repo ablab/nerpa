@@ -5,12 +5,10 @@
 #include "ScorePrism.h"
 
 namespace matcher {
-    double
-    ScorePrism::aaScore(const nrpsprediction::AminoacidPrediction &apred, const aminoacid::Aminoacid &aminoacid) const {
-        std::pair<int, int> position = apred.getAmnAcidPos(aminoacid);
-        nrpsprediction::AminoacidPrediction::AminoacidProb prob = apred.getAminoacid(aminoacid);
-
-        if (position.first == -1) {
+    double ScorePrism::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
+                                const nrpsprediction::AminoacidPrediction::AminoacidProb &prob,
+                                const std::pair<int, int> &pos) const {
+        if (pos.first == -1) {
             return -1;
         } else {
             return prob.prob/500.;
