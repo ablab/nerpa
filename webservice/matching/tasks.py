@@ -32,8 +32,8 @@ def init_var(request_id):
     global output_folder
 
     res_folder = "res" + str(request_id)
-    if not os.path.exists(res_folder):
-        os.makedirs(res_folder)
+    if not os.path.exists(os.path.join(path, res_folder)):
+        os.makedirs(os.path.join(path, res_folder))
 
     genome_file = os.path.join(path, res_folder, "genome.fna")
     nrp_file = os.path.join(path, res_folder, "nrp.mol")
