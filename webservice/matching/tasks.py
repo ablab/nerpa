@@ -4,7 +4,7 @@ from celery import shared_task
 from .vis_prediction import DB_NONE
 from .vis_prediction import DB_PNP
 
-path = "/home/dereplicator/kolga/web-serv/data/"
+path = os.environ.get('DATA_PATH')
 genome_file = path + "genome.fna"
 nrp_file = path + "nrp.mol"
 smile_file = path + "nrp.sml"
@@ -32,6 +32,9 @@ def init_var(request_id):
     global output_folder
 
     res_folder = "res" + str(request_id)
+    if not os.path.exists(res_folder):
+        os.makedirs(res_folder)
+
     genome_file = os.path.join(path, res_folder, "genome.fna")
     nrp_file = os.path.join(path, res_folder, "nrp.mol")
     smile_file = os.path.join(path, res_folder, "nrp.sml")
