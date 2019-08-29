@@ -1,3 +1,7 @@
+body {
+    margin: 0px;
+}
+
 p {
     margin: 0px;
     font-size: 18px;
@@ -35,28 +39,71 @@ h1 {
 }
 
 
-.header .cab{
-    float: right;
-    width: 150px;
-    height: 150px;
+.header-wrapper {
+    height: 60px;
 }
 
-.header .cmu{
-    float: right;
-    width: 150px;
-    height: 150px;
+.header {
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    height: 40px;
+    overflow: hidden;
+    background: #E7E8CA;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
+.header a {
+    font-family: Roboto;
+    font-weight: bold;
+    font-size: 30px;
+    color: #CD4B2D;
+    margin-left: 5px;
+}
+
+.header-right {
+    float: right;
+    height: 40px;
+}
+
+.header-right a {
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: normal;
+    color: rgba(0, 0, 0, 0.72);
+    margin-left: 10px;
+    margin-right: 10px;
+    text-decoration: none;
+}
+
+.header-right a.active {
+    font-weight: bold;
+    color: #CD4B2D;
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 5px solid;
+    border-color: #CD4B2D;
+    line-height: 40px;
+}
 
 .header .logo {
     float: left;
-    width: 150px;
-    height: 150px;
+    padding-left: 10px;
+    width: 40px;
+    height: 40px;
 }
 
-.header h1 {
+.main_title .logo {
+    width: 100px;
+    height: 100px;
+}
+
+.main_title h1 {
   position: relative;
   top: 18px;
+  font-size: 64px;
 }
 
 .center-line {
@@ -71,8 +118,6 @@ h1 {
 .center-form {
     margin: 0;
     position: absolute;
-    top: 200px;
-    width: 800px;
     left: 50%;
     -ms-transform: translate(-50%, 0%);
     transform: translate(-50%, 0%);
@@ -196,12 +241,6 @@ button {
 
 .show {display:block;}
 
-.main_result {
-    border-top: 1px solid #BDBDBD;
-    position: relative;
-    top: 300px;
-}
-
 .result {
     border-top: 1px solid #BDBDBD;
 }
@@ -211,23 +250,7 @@ button {
     padding: 15px;
 }
 
-.top {
-    position: fixed;
-    height: 60px;
-    left: 0px;
-    right: 0px;
-    top:0px;
-    background: #E7E8CA;
-    border: 1px solid #BDBDBD;
-    box-sizing: border-box;
-    padding-left: 10px;
-    padding-right: 10px;
-}
 
-
-.top-wrapper {
-    height: 60px;
-}
 
 .result_container {
     position: fixed;

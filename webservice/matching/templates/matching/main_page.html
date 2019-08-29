@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% include 'matching/header.html' %}
 
 <html>
     <head>
@@ -9,16 +10,16 @@
     </head>
     <body>
 
-    <div class="center-line">
+    {% block header %}
+    {% endblock %}
 
-    <div class="header">
-        <img class="logo" src="{%  static 'img/icon.png' %}" alt="logo">
-        <img class="cab" src="{%  static 'img/cab.png' %}" alt="cab">
-        <img class="cmu" src="{%  static 'img/cmu.png' %}" alt="cmu">
-        <h1>Nerpa</h1>
-    </div>
+    <div class="center-line">
+        <div class="main_title">
+            <h1><img class="logo" src="{%  static 'img/icon.png' %}" alt="logo"> Nerpa</h1>
+        </div>
 
     <div class="center-form">
+
         <div class="clearfix">
         <form method="POST" enctype="multipart/form-data" > {% csrf_token %}
             <div class="oneline2">
@@ -59,37 +60,13 @@
         </form>
         </div>
     </div>
-
-
-        <div class="main_result">
-                <p style="position: absolute;left:0px;padding-top: 5px;"><b>Reports:</b></p>
-                <!-div style="padding-left: 150px"->
-                <table class="table-reports">
-                <tr>
-                    <th class="th-reports">Time</th>
-                    <th class="th-reports">Search mode</th>
-                    <th class="th-reports">Genome filename/database</th>
-                    <th class="th-reports">NRP filename/database</th>
-                    <th class="th-reports">Number of found matches</th>
-                    <th class="th-reports">Status</th>
-                </tr>
-
-                {% for request in requests %}
-                    <tr class="tr-reports" onclick="document.location = {% url 'res_page' pk=request.request_id %};">
-                        <td class="td-reports"><a href="{% url 'res_page' pk=request.request_id %}"> {{request.date}}</a></td>
-                        <td class="td-reports"><a href="{% url 'res_page' pk=request.request_id %}">{{request.search_mode}}</a></td>
-                        <td class="td-reports"><a href="{% url 'res_page' pk=request.request_id %}">{{request.genome_file}}</a></td>
-                        <td class="td-reports"><a href="{% url 'res_page' pk=request.request_id %}">{{request.nrp_file}}</a></td>
-                        <td class="td-reports"><a href="{% url 'res_page' pk=request.request_id %}">{{request.matchCnt}}</a></td>
-                        <td class="td-reports"><a href="{% url 'res_page' pk=request.request_id %}">{{request.status}}</a></td>
-                    </tr>
-                {% endfor %}
-                <!-/div->
-                </table>
-        </div>
     </div>
 
     <script src="{%  static 'JS/uploadFile.js' %}"></script>
     <script src="{%  static 'JS/dropDown.js' %}"></script>
+    <script src="{%  static 'JS/TabChoose.js' %}"></script>
+    <script>
+        changeActive("Search");
+    </script>
     </body>
 </html>

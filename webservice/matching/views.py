@@ -123,6 +123,12 @@ def main_page(request):
     if request.method == "POST":
         return handle_form(request, user_session)
 
+    return render(request, 'matching/main_page.html', {'form': form})
+
+
+def reports_page(request):
+    user_session = get_or_create_session(request, 'index')
+
     requests = Request.objects.filter(user_session=user_session)
     for i in range(len(requests)):
         if (requests[i].status == STATUS_PROGRESS):
@@ -137,7 +143,7 @@ def main_page(request):
         else:
             requests[i].matchCnt = ""
 
-    return render(request, 'matching/main_page.html', {'form': form, 'requests': requests})
+    return render(request, 'matching/reports_page.html', {'requests': requests})
 
 
 def vis_page(request, pk):

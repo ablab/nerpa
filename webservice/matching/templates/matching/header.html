@@ -1,0 +1,15 @@
+{% load staticfiles %}
+
+{% block header %}
+    <div class="header-wrapper">
+        <div class="header">
+            <img class="logo" src="{%  static 'img/icon.png' %}" alt="logo">
+            <a>Nerpa</a>
+            <div class="header-right" id="header-right">
+                <a class="active" href="{% url 'main_page'%}">Search</a>
+                <a href="{% url 'reports_page' %}">Reports</a>
+                <a href="{% url 'res_page'  pk=0 %}">Browse</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

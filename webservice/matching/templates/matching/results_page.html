@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% include 'matching/header.html' %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,12 +11,9 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
-        <div class="top-wrapper">
-        <div class="top">
-            <img src="{%  static 'img/icon.png' %}" alt="icon" hspace="10" width="60px">
-            <span style="vertical-align:top;font-family: Roboto;font-style: normal;font-weight: bold;line-height: normal;font-size: 40px;color: #CD4B2D;">Nerpa</span>
-        </div>
-        </div>
+
+{% block header-browse %}
+{% endblock %}
 
         <div class="clearfix">
             <p><b>{{request.search_mode}}</b></p>
@@ -69,7 +67,9 @@
             </div>
         </div>
 
-    <script src="{%  static 'JS/uploadFile.js' %}"></script>
-    <script src="{%  static 'JS/dropDown.js' %}"></script>
+    <script src="{%  static 'JS/TabChoose.js' %}"></script>
+    <script>
+        changeActive("Browse");
+    </script>
 </body>
 </html>
