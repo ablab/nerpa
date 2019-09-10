@@ -4,14 +4,10 @@ from .models import UserSession
 from .models import Request
 from .forms import SearchForm
 #from .run_search import handle_genome
-from .tasks import init_var
 from .tasks import handle_genome
 from .tasks import handle_nrp
 from .tasks import handle_one
-from .tasks import genome_file
-from .tasks import nrp_file
-from .tasks import smile_file
-from .tasks import init_var
+from .tasks import Query
 from random import *
 from django.shortcuts import redirect
 from django.utils import timezone
@@ -37,27 +33,26 @@ def get_or_create_session(request, page):
     user_session = UserSession.get_or_create(session_key)
     return user_session
 
-def readMOL(request):
-    from .tasks import nrp_file
+
+def readMOL(request, query):
     f = request.FILES['inputFileNRP']
-    with open(nrp_file, "wb") as fw:
+    with open(query.nrp_file, "wb") as fw:
         for chunk in f.chunks():
             fw.write(chunk)
 
-def readGenome(request):
-    from .tasks import genome_file
+
+def readGenome(request, query):
     f = request.FILES['inputFileGenome']
-    with open(genome_file, "wb") as fw:
+    with open(query.genome_file, "wb") as fw:
         for chunk in f.chunks():
             fw.write(chunk)
 
-def readSMILE(request):
-    from .tasks import smile_file
+
+def readSMILE(request, query):
     f = request.FILES['inputFileNRP']
-    with open(smile_file, "wb") as fw:
+    with open(query.smile_file, "wb") as fw:
         for chunk in f.chunks():
             fw.write(chunk)
-
 
 
 def handle_form(request, user_session):
@@ -68,11 +63,11 @@ def handle_form(request, user_session):
         print(form.cleaned_data)
         print(form.cleaned_data['search_type'])
         request_id = randint(0, int(1e9))
-        init_var(request_id)
+        query = Query(request_id)
 
         if (form.cleaned_data['search_type'] == 'genome'):
-            readGenome(request)
-            task = handle_genome.delay(request_id, form.cleaned_data['nrp_db'])
+            readGenome(request, query)
+            task = handle_genome.delay(query.request_id, form.cleaned_data['nrp_db'])
 
             req = Request(task_id=task.id, user_session=user_session, request_id=request_id, status=STATUS_PROGRESS,
                           search_mode=SEARCH_MODE_G, genome_file=request.FILES['inputFileGenome'].name, nrp_file=form.cleaned_data['nrp_db'])
@@ -84,12 +79,12 @@ def handle_form(request, user_session):
             if ('.' in nrpfilename and
                     (nrpfilename.split('.')[-1] == 'smile' or
                              nrpfilename.split('.')[-1] == 'sml' or nrpfilename.split('.')[-1] == 'SMILE')):
-                readSMILE(request)
+                readSMILE(request, query)
                 is_smile = True
             else:
-                readMOL(request)
+                readMOL(request, query)
 
-            task = handle_nrp.delay(request_id, form.cleaned_data['genome_db'], is_smile)
+            task = handle_nrp.delay(query.request_id, form.cleaned_data['genome_db'], is_smile)
 
             req = Request(task_id=task.id, user_session=user_session, request_id=request_id, status=STATUS_PROGRESS,
                           search_mode=SEARCH_MODE_N, genome_file=form.cleaned_data['genome_db'], nrp_file=nrpfilename)
@@ -97,23 +92,24 @@ def handle_form(request, user_session):
 
         if (form.cleaned_data['search_type'] == 'one'):
             is_smile = False
-            readGenome(request)
+            readGenome(request, query)
             nrpfilename = request.FILES['inputFileNRP'].name
             if ('.' in nrpfilename and
                     (nrpfilename.split('.')[-1] == 'smile' or
                              nrpfilename.split('.')[-1] == 'sml' or nrpfilename.split('.')[-1] == 'SMILE')):
-                readSMILE(request)
+                readSMILE(request, query)
                 is_smile = True
             else:
-                readMOL(request)
+                readMOL(request, query)
 
-            task = handle_one.delay(request_id, is_smile)
+            task = handle_one.delay(query.request_id, is_smile)
 
             req = Request(task_id=task.id, user_session=user_session, request_id=request_id, status=STATUS_PROGRESS,
                           search_mode=SEARCH_MODE_GN, genome_file=request.FILES['inputFileGenome'].name, nrp_file=nrpfilename)
             req.save()
 
         return redirect('/nerpa/res/' + str(request_id))
+
 
 # Create your views here.
 def main_page(request):
