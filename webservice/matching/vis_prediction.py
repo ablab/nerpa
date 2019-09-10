@@ -753,6 +753,10 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
             G.add_node(i)
             nodecolor[i] = color[vertInfo[-1][-2]]
             labels[i] = ""
+
+            if len(vertInfo[-1]) == 6:
+                vertInfo[-1] = ['-', '-'] + vertInfo[-1]
+
             if (vertInfo[-1][4] != "-\n"):
                 labels[i] = vertInfo[-1][4].split('(')[0] + "\n" + "(" + vertInfo[-1][4].split('(')[1] + " " + \
                             vertInfo[-1][5] + "\n"
@@ -818,9 +822,14 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
         node_size.append(0)
         nodecolor.append("#000000")
         nodecolor.append("#000000")
-        nx.draw(G, pos=pos, node_color=nodecolor, labels=labels, node_size=node_size)
-        plt.savefig('tmp.png')
-        plt.close()
+        try:
+            nx.draw(G, pos=pos, node_color=nodecolor, labels=labels, node_size=node_size)
+        except BaseException:
+            print("exception:((")
+        else:
+            plt.savefig('tmp.png')
+        finally:
+            plt.close()
 
         return sub_name, mass, ref, dbs, score, cntAA, cntMatchAA
 

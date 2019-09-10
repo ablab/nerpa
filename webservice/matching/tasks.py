@@ -51,24 +51,37 @@ class Query:
 
     def create_genomes_list(self):
         if (zipfile.is_zipfile(self.genome_file)):
-            self.zip_folder = os.path.join(self.res_folder, "genomes_fna")
+            self.zip_fna_folder = os.path.join(self.res_folder, "genomes_fna")
             with zipfile.ZipFile(self.genome_file) as genomezip:
-                genomezip.extractall(path=self.zip_folder)
+                genomezip.extractall(path=self.zip_fna_folder)
 
             cur_id = 0
-            for filename in os.listdir(self.zip_folder):
-                self.genomes.append(GenomeQuery(os.path.join(self.zip_folder, filename),
+            for filename in os.listdir(self.zip_fna_folder):
+                self.genomes.append(GenomeQuery(os.path.join(self.zip_fna_folder, filename),
                                                 "g" + str(cur_id), self.res_folder))
                 cur_id += 1
 
         else:
             self.genomes.append(GenomeQuery(self.genome_file, "g0", self.res_folder))
 
+    def handle_mols(self):
+        if (zipfile.is_zipfile(self.nrp_file)):
+            self.zip_mol_folder = os.path.join(self.res_folder, "structures_mol")
+            with zipfile.ZipFile(self.nrp_file) as nrpzip:
+                nrpzip.extractall(path=self.zip_mol_folder)
+
+            with open(self.molInfo, 'w') as fw:
+                for filename in os.listdir(self.zip_mol_folder):
+                    fw.write(os.path.join(self.zip_mol_folder, filename) + "\n")
+
+
     def handle_query(self):
         self.genomes = []
         self.create_genomes_list()
         for genome in self.genomes:
             genome.run_antismash(self.predictionInfo)
+
+        self.handle_mols()
 
 
 def run_nrpsMatcher(prinfo, molinfo, query):
@@ -101,14 +114,31 @@ def save_results_prediction(query):
         for predpath in predpaths:
             if (predpath[-1] == '\n'):
                 predpath = predpath[:-1]
-            visualize_prediction(query.output_folder + "/details_mols/" + filename, predpath, "nrp", predpath, query.request_id, DB_NONE)
+            visualize_prediction(query.output_folder + "/details_mols/" + filename, predpath, filename, predpath, query.request_id, DB_NONE)
 
 
 def SMILE_to_MOL(query):
     #print("molconvert mol:V3+H --smiles \"" + smile_file + "\" -o " + nrp_file)
     #os.system("molconvert mol:V3+H --smiles \"" + smile_file + "\" -o " + nrp_file)
-    print("molconvert mol:V3+H " + query.smile_file + " -o " + query.nrp_file)
-    os.system("molconvert mol:V3+H " + query.smile_file + " -o " + query.nrp_file)
+    res_mol = []
+    with open(query.smile_file, "r") as f:
+        i = 0
+        query.mol_folder = os.path.join(query.res_folder, "structures_mol")
+        if not os.path.exists(query.mol_folder):
+            os.makedirs(query.mol_folder)
+
+        for line in f:
+            sml = line.split()[0]
+            cmd = "molconvert mol:V3+H --smiles \"" + sml + "\" -o " + os.path.join(query.mol_folder, "sml" + str(i) + ".mol")
+            print(cmd)
+            res_mol.append(os.path.join(query.mol_folder, "sml" + str(i) + ".mol"))
+            os.system(cmd)
+            i += 1
+
+    with open(query.molInfo, "w") as fw:
+        for line in res_mol:
+            fw.write(line + "\n")
+
 
 
 MASS = {' C ': 12.011, ' N ': 14.007, ' O ': 16, ' Cl ': 35.453, ' P ': 30.974, ' S ': 32.065, ' H ': 1.008}
@@ -167,8 +197,8 @@ def handle_one(requst_id, is_smile=False):
     print("START HANDLE ONE")
     if (is_smile):
         SMILE_to_MOL(query)
-    update_mol_info(query.molInfo)
     query.handle_query()
+    update_mol_info(query.molInfo)
     #run_antismash(query)
     run_nrpsMatcher(query.predictionInfo, query.molInfo, query)
     save_results_prediction(query)
