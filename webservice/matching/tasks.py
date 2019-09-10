@@ -1,4 +1,5 @@
 import os
+import zipfile
 from .vis_prediction import visualize_prediction
 from celery import shared_task
 from .vis_prediction import DB_NONE
@@ -17,7 +18,9 @@ class GenomeQuery:
         self.path_to_genome = path_to_genome
         self.genome_id = genome_id
         self.res_folder = res_folder
-        self.antismashRes = os.path.join(self.res_folder, "antismashRes")
+        self.antismashRes = os.path.join(self.res_folder, "antismashRes", self.genome_id)
+        if not os.path.exists(self.antismashRes):
+            os.makedirs(self.antismashRes)
         self.predictionPath = os.path.join(self.antismashRes, "nrpspks_predictions_txt/ctg1_nrpspredictor2_codes.txt")
 
     def run_antismash(self, predictionInfo):
@@ -25,8 +28,8 @@ class GenomeQuery:
         print(cmdline)
         os.system(cmdline)
 
-        with open(predictionInfo, "w") as fw:
-            fw.write(self.predictionPath)
+        with open(predictionInfo, "a+") as fw:
+            fw.write(self.predictionPath + "\n")
 
 
 class Query:
@@ -46,9 +49,24 @@ class Query:
             fw.write(self.nrp_file)
         self.output_folder = os.path.join(self.res_folder, "out")
 
+    def create_genomes_list(self):
+        if (zipfile.is_zipfile(self.genome_file)):
+            self.zip_folder = os.path.join(self.res_folder, "genomes_fna")
+            with zipfile.ZipFile(self.genome_file) as genomezip:
+                genomezip.extractall(path=self.zip_folder)
+
+            cur_id = 0
+            for filename in os.listdir(self.zip_folder):
+                self.genomes.append(GenomeQuery(os.path.join(self.zip_folder, filename),
+                                                "g" + str(cur_id), self.res_folder))
+                cur_id += 1
+
+        else:
+            self.genomes.append(GenomeQuery(self.genome_file, "g0", self.res_folder))
+
     def handle_query(self):
         self.genomes = []
-        self.genomes.append(GenomeQuery(self.genome_file, "g0", self.res_folder))
+        self.create_genomes_list()
         for genome in self.genomes:
             genome.run_antismash(self.predictionInfo)
 
