@@ -5,18 +5,18 @@ from .vis_prediction import DB_NONE
 from .vis_prediction import DB_PNP
 
 path = os.environ.get('DATA_PATH')
-genome_file = path + "genome.fna"
-nrp_file = path + "nrp.mol"
-smile_file = path + "nrp.sml"
-predictionInfo = path + "predictions.info"
-molInfo = path + "mol.info"
-output_folder = path + "out/"
+genome_file = os.path.join(path, "genome.fna")
+nrp_file = os.path.join(path, "nrp.mol")
+smile_file = os.path.join(path, "nrp.sml")
+predictionInfo = os.path.join(path, "predictions.info")
+molInfo = os.path.join(path, "mol.info")
+output_folder = os.path.join(path, "out/")
 
-pathToAntismash = "/home/dereplicator/kolga/soft/antismash-3.0.5.1/run_antismash.py"
-antismashRes = path + "antismashRes/"
+pathToAntismash = os.environ.get('ANTISMASH_PATH')
+antismashRes = os.path.join(path, "antismashRes/")
 predictionPath = antismashRes + "nrpspks_predictions_txt/ctg1_nrpspredictor2_codes.txt"
 
-NRPsMatcher = "/home/dereplicator/kolga/soft/NRPsMatcher/bin/run_nrp_matcher.py"
+Nerpa = "nerpa.py"
 
 dbNRPinfo = {DB_PNP: "/home/dereplicator/kolga/data/DB/PNP/library.info"}
 dbPredictionInfo = {'bc': "/home/olga/CAB/NRP/data/DataBase/mibigNF.info"}
@@ -40,9 +40,11 @@ def init_var(request_id):
     smile_file = os.path.join(path, res_folder, "nrp.sml")
     predictionInfo = os.path.join(path, res_folder, "predictions.info")
     molInfo = os.path.join(path, res_folder, "mol.info")
+    with open(molInfo, "w") as fw:
+        fw.write(nrp_file)
     output_folder = os.path.join(path, res_folder, "out")
     antismashRes = os.path.join(path, res_folder, "antismashRes")
-    predictionPath = os.path.join(path, res_folder, "nrpspks_predictions_txt/ctg1_nrpspredictor2_codes.txt")
+    predictionPath = os.path.join(antismashRes, "nrpspks_predictions_txt/ctg1_nrpspredictor2_codes.txt")
 
 
 def run_antismash():
@@ -54,8 +56,8 @@ def run_antismash():
 
 
 def run_nrpsMatcher(prinfo, molinfo):
-    print("python3 " + NRPsMatcher + " -p " + prinfo + " --lib_info " + molinfo + " -o " + output_folder)
-    os.system("python3 " + NRPsMatcher + " -p " + prinfo + " --lib_info " + molinfo + " -o " + output_folder)
+    print(Nerpa + " -p " + prinfo + " --lib_info " + molinfo + " --predictor NRPSPREDICTOR2 --insertion --deletion --single_match --single_match_coeff 0.2 --modification -o " + output_folder)
+    os.system(Nerpa + " -p " + prinfo + " --lib_info " + molinfo + " --predictor NRPSPREDICTOR2 --insertion --deletion --single_match --single_match_coeff 0.2 --modification -o " + output_folder)
 
 
 def save_results(request_id, nrpDB = DB_NONE):
@@ -122,29 +124,32 @@ def clear():
 @shared_task
 def handle_genome(request_id, nrpDB):
     print("START HANDLE GENOME")
+    init_var(request_id)
     run_antismash()
     run_nrpsMatcher(predictionInfo, dbNRPinfo[nrpDB])
     save_results(request_id, nrpDB)
-    clear()
+    #clear()
 
 
 @shared_task
 def handle_nrp(request_id, predictDB, is_smile=False):
     print("START HANDLE NRP")
+    init_var(request_id)
     if (is_smile):
         SMILE_to_MOL()
     update_mol_info(molInfo)
     run_nrpsMatcher(dbPredictionInfo[predictDB], molInfo)
     save_results_prediction(request_id)
-    clear()
+    #clear()
 
 @shared_task
 def handle_one(request_id, is_smile=False):
     print("START HANDLE ONE")
+    init_var(request_id)
     if (is_smile):
         SMILE_to_MOL()
     update_mol_info(molInfo)
     run_antismash()
     run_nrpsMatcher(predictionInfo, molInfo)
     save_results(request_id, DB_NONE)
-    clear()
+    #clear()
