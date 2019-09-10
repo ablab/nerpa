@@ -12,6 +12,22 @@ Nerpa = "nerpa.py"
 dbNRPinfo = {DB_PNP: "/home/dereplicator/kolga/data/DB/PNP/library.info"}
 dbPredictionInfo = {'bc': "/home/olga/CAB/NRP/data/DataBase/mibigNF.info"}
 
+class GenomeQuery:
+    def __init__(self, path_to_genome, genome_id, res_folder):
+        self.path_to_genome = path_to_genome
+        self.genome_id = genome_id
+        self.res_folder = res_folder
+        self.antismashRes = os.path.join(self.res_folder, "antismashRes")
+        self.predictionPath = os.path.join(self.antismashRes, "nrpspks_predictions_txt/ctg1_nrpspredictor2_codes.txt")
+
+    def run_antismash(self, predictionInfo):
+        cmdline = "python2 " + pathToAntismash + " " + self.path_to_genome + " --outputfolder " + self.antismashRes
+        print(cmdline)
+        os.system(cmdline)
+
+        with open(predictionInfo, "w") as fw:
+            fw.write(self.predictionPath)
+
 
 class Query:
     def __init__(self, request_id):
@@ -29,16 +45,12 @@ class Query:
         with open(self.molInfo, "w") as fw:
             fw.write(self.nrp_file)
         self.output_folder = os.path.join(self.res_folder, "out")
-        self.antismashRes = os.path.join(self.res_folder, "antismashRes")
-        self.predictionPath = os.path.join(self.antismashRes, "nrpspks_predictions_txt/ctg1_nrpspredictor2_codes.txt")
 
-
-def run_antismash(query):
-    print(os.environ['PATH'])
-    print("python2 " + pathToAntismash + " " + query.genome_file + " --outputfolder "  + query.antismashRes)
-    os.system("python2 " + pathToAntismash + " " + query.genome_file + " --outputfolder " + query.antismashRes)
-    with open(query.predictionInfo, "w") as fw:
-        fw.write(query.predictionPath)
+    def handle_query(self):
+        self.genomes = []
+        self.genomes.append(GenomeQuery(self.genome_file, "g0", self.res_folder))
+        for genome in self.genomes:
+            genome.run_antismash(self.predictionInfo)
 
 
 def run_nrpsMatcher(prinfo, molinfo, query):
@@ -113,9 +125,10 @@ def clear(query):
 def handle_genome(requst_id, nrpDB):
     query = Query(requst_id)
     print("START HANDLE GENOME")
-    run_antismash(query)
+    #run_antismash(query)
+    query.handle_query()
     run_nrpsMatcher(query.predictionInfo, dbNRPinfo[nrpDB], query)
-    save_results(query, nrpDB)
+    #save_results(query, nrpDB)
     #clear(query)
 
 
@@ -137,7 +150,8 @@ def handle_one(requst_id, is_smile=False):
     if (is_smile):
         SMILE_to_MOL(query)
     update_mol_info(query.molInfo)
-    run_antismash(query)
+    query.handle_query()
+    #run_antismash(query)
     run_nrpsMatcher(query.predictionInfo, query.molInfo, query)
-    save_results(query, DB_NONE)
+    save_results_prediction(query)
     #clear(query)
