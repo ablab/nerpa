@@ -250,14 +250,19 @@ button {
     padding: 15px;
 }
 
+.infoblock {
+    position: fixed;
+    left: 10px;
+    right: 320px;
+}
 
 
 .result_container {
     position: fixed;
-    top: 280px;
+    top: 200px;
     bottom: 0;
     left: 10px;
-    right: 0;
+    right: 320px;
 }
 
 .overflowdiva {
@@ -375,3 +380,47 @@ th, td {
     text-align: center;
 }
 
+.filter_panel {
+    position: fixed;
+    width: 318px;
+    bottom: 0px;
+    right: 0px;
+    top:39px;
+    border: 1px solid#BDBDBD;
+}
+
+.block_with_line {
+    border-bottom: 1px solid #BDBDBD;
+}
+
+.block_filter {
+    padding-bottom: 20px;
+}
+
+
+.centerblock {
+    overflow-y: hidden;
+    overflow-x: hidden;
+
+    height: calc(100% - 60px);
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;;
+}
+
+.styled-select {
+    border: 1px solid #ccc;
+    height: 30px;
+    overflow: hidden;
+    width: 260px;
+}
+
+.styled-select select {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    height: 29px;
+    padding: 5px; /* If you add too much padding here, the options won't show in IE */
+    width: 260px;
+}

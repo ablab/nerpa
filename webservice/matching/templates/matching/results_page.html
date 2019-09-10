@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% include 'matching/header.html' %}
+{% include 'matching/filter_panel.html' %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +16,10 @@
 {% block header-browse %}
 {% endblock %}
 
+{% block filter_panel %}
+{% endblock %}
+
+<div class="infoblock">
         <div class="clearfix">
             <p><b>{{request.search_mode}}</b></p>
             {% if request.search_mode == "A genome against NRP database" %}
@@ -66,6 +71,7 @@
             </div>
             </div>
         </div>
+</div>
 
     <script src="{%  static 'JS/TabChoose.js' %}"></script>
     <script>
