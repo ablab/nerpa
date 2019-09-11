@@ -1,5 +1,4 @@
 {% load staticfiles %}
-{% include 'matching/header.html' %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,10 +21,9 @@
 </head>
 
 <body>
-    {% block header %}
-    {% endblock %}
-        <p>
-            <span class="state_pending">Task is being evaluated.</span>
-        </p>
+{% include 'matching/header.html' %}
+
+<p><span class="state_pending">Task is being evaluated.</span></p>
+
 </body>
 </html>

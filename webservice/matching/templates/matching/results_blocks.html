@@ -1,0 +1,28 @@
+{% load staticfiles %}
+
+{% block results_block %}
+    <div class="overflowdiva">
+            {% for result in results %}
+                <div class="block">
+                    <div class="clearfix">
+                        <a href="{% url 'vis_page' pk=result.pk %}">
+                            <img src="{{result.img.url }}" height="270" style="float: left; margin-right: 15px">
+                        </a>
+                        <div >
+                            <p> <b>Score:</b> {{ result.score }}</br>
+                                <b>NRP ID:</b> {{ result.mol_id }}</br>
+                                <b>Genome ID:</b> {{ result.genome_id }}</br>
+                                <b>Product name:</b> {{ result.product_name }} </br>
+                                <b>Mass:</b> {{ result.mass }} </br>
+                                <b>NRP database(s):</b> {{ result.databases }}</br>
+                                <b>Link:</b> <a href={{ result.ref }}> {{ result.ref }} </a> </br>
+                                <b>Num AA:</b> {{ result.AA_number }}</br>
+                                <b>Num Matched AA:</b> {{  result.AA_matching_number }} </br>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -150,6 +150,19 @@ def vis_page(request, pk):
     return render(request, 'matching/visualization_page.html', {'result': result})
 
 
+def update_results_for_group_by(group_by_value, results):
+    if group_by_value == "none":
+        return results
+    else:
+        used_genome_id = set()
+        output_results = []
+        for result in results:
+            if result.genome_id not in used_genome_id:
+                used_genome_id.add(result.genome_id)
+                output_results.append(result)
+
+        return output_results
+
 def res_page(request, pk):
     user_session = get_or_create_session(request, 'index')
 
@@ -160,11 +173,19 @@ def res_page(request, pk):
     if (state == 'SUCCESS'):
         req =  get_object_or_404(Request, request_id=pk)
         results = MatchingResult.objects.filter(request_id=pk).order_by('-score')
+
         req.matchCnt = len(results)
         for result in results:
             result.genome_id = result.genome_id.split('/')[-1]
             if (result.genome_id == "ctg1_nrpspredictor2_codes"):
                 result.genome_id = get_object_or_404(Request, request_id=result.request_id).genome_file
+
+        if request.method == "GET":
+            group_by_value = request.GET.get("value", None)
+            if group_by_value:
+                results = update_results_for_group_by(group_by_value, results)
+                return render(request, 'matching/results_blocks.html', {'results': results})
+
 
         return render(request, 'matching/results_page.html', {'results': results, 'request': req})
     else:

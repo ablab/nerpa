@@ -1,5 +1,4 @@
 {% load staticfiles %}
-{% include 'matching/header.html' %}
 
 <html>
     <head>
@@ -10,8 +9,8 @@
     </head>
     <body style="margin-left: 100px; margin-right: 100px">
 
-    {% block header-reports %}
-    {% endblock %}
+    {% include 'matching/header.html' %}
+
         <p style="padding-bottom: 10px"><b>Reports:</b></p>
         <!-div style="padding-left: 150px"->
         <table class="table-reports">
@@ -26,7 +25,7 @@
 
             {% for request in requests %}
                 <tr class="tr-reports" onclick="document.location = {% url 'res_page' pk=request.request_id %};">
-                    <td class="td-reports"><a href="{% url 'res_page' pk=request.request_id %}"> {{request.date}}</a></td>
+                    <td class="td-reports"><a href="{% url 'res_page' pk=request.request_id %}">{{request.date}}</a></td>
                     <td class="td-reports"><a href="{% url 'res_page' pk=request.request_id %}">{{request.search_mode}}</a></td>
                     <td class="td-reports"><a href="{% url 'res_page' pk=request.request_id %}">{{request.genome_file}}</a></td>
                     <td class="td-reports"><a href="{% url 'res_page' pk=request.request_id %}">{{request.nrp_file}}</a></td>

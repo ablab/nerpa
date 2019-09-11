@@ -1,5 +1,4 @@
 {% load staticfiles %}
-{% include 'matching/header.html' %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,9 +10,8 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
-    {% block header %}
-    {% endblock %}
 
+{% include 'matching/header.html' %}
         <div class="matchInfo">
             <div style="margin-left: 10px;">
                 <p> <b>Score:</b> {{ result.score }}</br>

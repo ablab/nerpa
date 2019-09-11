@@ -1,0 +1,21 @@
+{% load staticfiles %}
+
+{% block filter_panel %}
+    <div class="filter_panel">
+        <div class="centerblock">
+            <div class="block_with_line">
+                <div class="block_filter">
+                    <p class="section_name">
+                        <b> Group by: </b>
+                    </p>
+                    <div class="styled-select">
+                        <select id="select_group_by" onchange="group_by_update()">
+                            <option value="none">none</option>
+                            <option value="genome_id">genome id</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,9 +1,6 @@
 {% load staticfiles %}
-{% include 'matching/header.html' %}
-{% include 'matching/filter_panel.html' %}
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Nerpa</title>
@@ -13,11 +10,8 @@
 </head>
 <body>
 
-{% block header-browse %}
-{% endblock %}
-
-{% block filter_panel %}
-{% endblock %}
+{% include 'matching/header.html' %}
+{% include 'matching/filter_panel.html' %}
 
 <div class="infoblock">
         <div class="clearfix">
@@ -42,40 +36,18 @@
 
         </div>
 
-        <div class="result">
+        <div class="result" id="place_for_result_blocks">
         <h2>Results:</h2>
-            <div class="result_container">
-                <div class="overflowdiva">
-                {% for result in results %}
-                    <div class="block">
-                        <div class="clearfix">
-                         <a href="{% url 'vis_page' pk=result.pk %}">
-                            <img src="{{result.img.url }}" height="270" style="float: left; margin-right: 15px">
-                        </a>
-                             <div >
-                            <p> <b>Score:</b> {{ result.score }}</br>
-                                <b>NRP ID:</b> {{ result.mol_id }}</br>
-                                <b>Genome ID:</b> {{ result.genome_id }}</br>
-                                <b>Product name:</b> {{ result.product_name }} </br>
-                                <b>Mass:</b> {{ result.mass }} </br>
-                                <b>NRP database(s):</b> {{ result.databases }}</br>
-                                <b>Link:</b> <a href={{ result.ref }}> {{ result.ref }} </a> </br>
-                                <b>Num AA:</b> {{ result.AA_number }}</br>
-                                <b>Num Matched AA:</b> {{  result.AA_matching_number }} </br>
-                            </p>
-                        </div>
-                    </div>
-                    </div>
-
-                {% endfor %}
-            </div>
+            <div class="result_container" id="result_container">
+                {% include 'matching/results_blocks.html' %}
             </div>
         </div>
 </div>
 
-    <script src="{%  static 'JS/TabChoose.js' %}"></script>
-    <script>
-        changeActive("Browse");
-    </script>
+<script src="{%  static 'JS/TabChoose.js' %}"></script>
+<script src="{% static 'JS/filtration.js' %}"></script>
+<script>
+    changeActive("Browse");
+</script>
 </body>
 </html>
