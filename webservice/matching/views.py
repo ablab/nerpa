@@ -163,6 +163,51 @@ def update_results_for_group_by(group_by_value, results):
 
         return output_results
 
+
+class ResultFilter:
+    inner_filter = None
+
+    def __init__(self, ifilter=None):
+        inner_filter = ifilter
+
+    def is_good(self, result):
+        return True
+
+
+class GenomeIdResultFilter(ResultFilter):
+    def __init__(self, genome_id, ifilter=None):
+        self.genome_id = genome_id
+        ResultFilter.__init__(self, ifilter)
+
+    def is_good(self, result):
+        if result.genome_id != self.genome_id:
+            return False
+
+        if self.inner_filter is not None:
+            return self.inner_filter.is_good(result)
+        return True
+
+
+def apply_filters(request, results):
+    blocks_only = False
+    group_by_value = request.GET.get("value", None)
+    if group_by_value:
+        blocks_only = True
+        results = update_results_for_group_by(group_by_value, results)
+
+    current_filter = ResultFilter()
+    genome_id = request.GET.get("genome_id", None)
+    if genome_id is not None:
+        blocks_only = True
+        current_filter = GenomeIdResultFilter(genome_id, current_filter)
+
+    output_res = []
+    for result in results:
+        if current_filter.is_good(result):
+            output_res.append(result)
+    return (blocks_only, output_res)
+
+
 def res_page(request, pk):
     user_session = get_or_create_session(request, 'index')
 
@@ -181,11 +226,9 @@ def res_page(request, pk):
                 result.genome_id = get_object_or_404(Request, request_id=result.request_id).genome_file
 
         if request.method == "GET":
-            group_by_value = request.GET.get("value", None)
-            if group_by_value:
-                results = update_results_for_group_by(group_by_value, results)
+            blocks_only, results = apply_filters(request, results)
+            if blocks_only:
                 return render(request, 'matching/results_blocks.html', {'results': results})
-
 
         return render(request, 'matching/results_page.html', {'results': results, 'request': req})
     else:

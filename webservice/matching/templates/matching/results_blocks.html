@@ -3,7 +3,7 @@
 {% block results_block %}
     <div class="overflowdiva">
             {% for result in results %}
-                <div class="block">
+                <div class="block" onclick="choose_group('{{ result.genome_id }}')">
                     <div class="clearfix">
                         <a href="{% url 'vis_page' pk=result.pk %}">
                             <img src="{{result.img.url }}" height="270" style="float: left; margin-right: 15px">
