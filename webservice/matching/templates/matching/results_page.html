@@ -14,7 +14,7 @@
 {% include 'matching/filter_panel.html' %}
 
 <div class="infoblock">
-        <div class="clearfix">
+    <div class="clearfix">
             <p><b>{{request.search_mode}}</b></p>
             {% if request.search_mode == "A genome against NRP database" %}
                 <p><b>Genome file name:</b> {{ request.genome_file }}<p>
@@ -37,7 +37,20 @@
         </div>
 
         <div class="result" id="place_for_result_blocks">
-        <h2>Results:</h2>
+            <div class="groupby_navigation">
+                <ul>
+                    <li class="inline_item"><meta itemprop="position" content="0">
+                        <a><span>All results</span></a>
+                    </li>
+                    <li class="inline_item">
+                        <meta itemprop="position" content="1">
+                        <a><span>genome id</span></a>
+                    </li>
+                </ul>
+
+                <h2>Results:</h2>
+            </div>
+
             <div class="result_container" id="result_container">
                 {% include 'matching/results_blocks.html' %}
             </div>

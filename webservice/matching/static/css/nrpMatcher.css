@@ -13,6 +13,48 @@ h1 {
     font-size: 64px;
 }
 
+h2 {
+    margin: 0;
+}
+
+ul {
+    margin: 0px;
+    padding-left: 0px;
+    list-style: none;
+}
+
+.inline_item {
+    display: inline-block;
+    position: relative;
+    padding: 5px 6px 5px 10px;
+    color: #404040;
+    font-size: 11px;
+    line-height: 13px;
+}
+
+.inline_item:before {
+    content: '';
+    position: absolute;
+    top: 11px;
+    left: 0;
+    width: 3px;
+    height: 3px;
+    background: #999;
+    border-radius: 100%;
+}
+
+.inline_item:first-child {
+    padding-left: 0;
+}
+
+.inline_item:first-child:before {
+    display: none;
+}
+
+.groupby_navigation {
+    position: relative;
+    padding-left: 15px;
+}
 
 .table-reports {
     border-collapse: collapse;
@@ -40,7 +82,7 @@ h1 {
 
 
 .header-wrapper {
-    height: 60px;
+    height: 40px;
 }
 
 .header {
@@ -261,7 +303,7 @@ button {
     position: fixed;
     top: 200px;
     bottom: 0;
-    left: 10px;
+    left: 15px;
     right: 320px;
 }
 
