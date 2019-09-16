@@ -51,6 +51,11 @@ ul {
     display: none;
 }
 
+.inline_item a:hover {
+    color: red;
+    cursor: pointer;
+}
+
 .groupby_navigation {
     position: relative;
     padding-left: 15px;
