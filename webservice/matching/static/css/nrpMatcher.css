@@ -104,6 +104,21 @@ ul {
     padding-right: 10px;
 }
 
+.header_results {
+    position: fixed;
+    left: 0px;
+    right: 318px;
+    top: 40px;
+    height: 20px;
+    overflow: hidden;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.download-button {
+    margin: 5px;
+}
+
 .header a {
     font-family: Roboto;
     font-weight: bold;
