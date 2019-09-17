@@ -14,9 +14,10 @@ dbNRPinfo = {DB_PNP: "/home/dereplicator/kolga/data/DB/PNP/library.info"}
 dbPredictionInfo = {'bc': "/home/olga/CAB/NRP/data/DataBase/mibigNF.info"}
 
 class GenomeQuery:
-    def __init__(self, path_to_genome, genome_id, res_folder):
+    def __init__(self, path_to_genome, genome_id, res_folder, genome_name):
         self.path_to_genome = path_to_genome
         self.genome_id = genome_id
+        self.genome_name = genome_name
         self.res_folder = res_folder
         self.antismashRes = os.path.join(self.res_folder, "antismashRes", self.genome_id)
         if not os.path.exists(self.antismashRes):
@@ -49,6 +50,9 @@ class Query:
             fw.write(self.nrp_file)
         self.output_folder = os.path.join(self.res_folder, "out")
 
+    def set_load_genome_filename(self, filename):
+        self.load_genome_filename = filename
+
     def create_genomes_list(self):
         if (zipfile.is_zipfile(self.genome_file)):
             self.zip_fna_folder = os.path.join(self.res_folder, "genomes_fna")
@@ -58,11 +62,10 @@ class Query:
             cur_id = 0
             for filename in os.listdir(self.zip_fna_folder):
                 self.genomes.append(GenomeQuery(os.path.join(self.zip_fna_folder, filename),
-                                                "g" + str(cur_id), self.res_folder))
+                                                "g" + str(cur_id), self.res_folder, os.path.splitext(filename)[0]))
                 cur_id += 1
-
         else:
-            self.genomes.append(GenomeQuery(self.genome_file, "g0", self.res_folder))
+            self.genomes.append(GenomeQuery(self.genome_file, "g0", self.res_folder, self.load_genome_filename))
 
     def handle_mols(self):
         if (zipfile.is_zipfile(self.nrp_file)):
@@ -83,6 +86,11 @@ class Query:
 
         self.handle_mols()
 
+    def genome_name_by_path(self, path):
+        for genome_query in self.genomes:
+            if genome_query.predictionPath == path:
+                return genome_query.genome_name
+
 
 def run_nrpsMatcher(prinfo, molinfo, query):
     print(Nerpa + " -p " + prinfo + " --lib_info " + molinfo + " --predictor NRPSPREDICTOR2 --insertion --deletion --single_match --single_match_coeff 0.2 --modification -o " + query.output_folder)
@@ -91,7 +99,7 @@ def run_nrpsMatcher(prinfo, molinfo, query):
 
 def save_results(query, nrpDB = DB_NONE):
     for filename in os.listdir(query.output_folder + "/details_mols"):
-        visualize_prediction(query.output_folder + "/details_mols/" + filename, query.predictionPath, filename, "ctg1_nrpspredictor2_codes", query.request_id, nrpDB)
+        visualize_prediction(query.output_folder + "/details_mols/" + filename, query.predictionPath, filename, "ctg1_nrpspredictor2_codes", query.request_id, nrpDB, "some_genome")
 
 
 def getAllPath(query, filename):
@@ -114,7 +122,7 @@ def save_results_prediction(query):
         for predpath in predpaths:
             if (predpath[-1] == '\n'):
                 predpath = predpath[:-1]
-            visualize_prediction(query.output_folder + "/details_mols/" + filename, predpath, filename, predpath, query.request_id, DB_NONE)
+            visualize_prediction(query.output_folder + "/details_mols/" + filename, predpath, filename, predpath, query.request_id, DB_NONE, query.genome_name_by_path(predpath))
 
 
 def SMILE_to_MOL(query):
@@ -192,8 +200,9 @@ def handle_nrp(requst_id, predictDB, is_smile=False):
     #clear(query)
 
 @shared_task
-def handle_one(requst_id, is_smile=False):
+def handle_one(requst_id, genome_filename, is_smile=False):
     query = Query(requst_id)
+    query.set_load_genome_filename(os.path.splitext(genome_filename)[0])
     print("START HANDLE ONE")
     if (is_smile):
         SMILE_to_MOL(query)

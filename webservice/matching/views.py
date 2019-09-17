@@ -102,7 +102,7 @@ def handle_form(request, user_session):
             else:
                 readMOL(request, query)
 
-            task = handle_one.delay(query.request_id, is_smile)
+            task = handle_one.delay(query.request_id, request.FILES['inputFileGenome'].name, is_smile)
 
             req = Request(task_id=task.id, user_session=user_session, request_id=request_id, status=STATUS_PROGRESS,
                           search_mode=SEARCH_MODE_GN, genome_file=request.FILES['inputFileGenome'].name, nrp_file=nrpfilename)
