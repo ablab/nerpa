@@ -774,10 +774,10 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
                 usedOrfs.add(vertInfo[-1][-2])
                 cntMatchAA += 1
             labels[i] += "\n\n\n\n"
-            if (vertInfo[-1][4] != "-\n"):
+            if vertInfo[-1][4] != "-\n" and vertInfo[-1][0] != "-":
                 if (vertInfo[-1][-2] not in choosePred):
                     choosePred[vertInfo[-1][-2]] = dict()
-                choosePred[vertInfo[-1][-2]][int(vertInfo[-1][-1])] = vertInfo[-1][4].split('(')[0]
+                choosePred[vertInfo[-1][-2]][int(vertInfo[-1][-1])] = vertInfo[-1][4].split('(')[0].split('+')[0]
 
             cur += 1
 
@@ -822,14 +822,16 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
         node_size.append(0)
         nodecolor.append("#000000")
         nodecolor.append("#000000")
-        try:
-            nx.draw(G, pos=pos, node_color=nodecolor, labels=labels, node_size=node_size)
-        except BaseException:
-            print("exception:((")
-        else:
-            plt.savefig('tmp.png')
-        finally:
-            plt.close()
+
+        for i in range(n):
+            if i not in pos:
+                pos[i] = (-2* len(circ) * 10 - 10, -mxy)
+                node_size[i] = 0
+                labels[i] = ""
+
+        nx.draw(G, pos=pos, node_color=nodecolor, labels=labels, node_size=node_size)
+        plt.savefig('tmp.png')
+        plt.close()
 
         return sub_name, mass, ref, dbs, score, cntAA, cntMatchAA
 
