@@ -154,13 +154,16 @@ def update_results_for_group_by(group_by_value, results):
     if group_by_value == "none":
         return results
     else:
-        used_genome_id = set()
+        elem_cnt_genome_id = {}
         output_results = []
         for result in results:
-            if result.genome_id not in used_genome_id:
-                used_genome_id.add(result.genome_id)
+            if result.genome_id not in elem_cnt_genome_id:
+                elem_cnt_genome_id[result.genome_id] = 0
                 output_results.append(result)
+            elem_cnt_genome_id[result.genome_id] += 1
 
+        for i in range(len(output_results)):
+            output_results[i].elem_cnt = elem_cnt_genome_id[output_results[i].genome_id]
         return output_results
 
 
@@ -265,6 +268,9 @@ def res_page(request, pk):
         if request.method == "GET":
             blocks_only, results = apply_filters(request, results)
             if blocks_only:
+                group_by_value = request.GET.get("value", None)
+                if group_by_value and group_by_value != "none":
+                    return render(request, 'matching/group_blocks.html', {'results': results})
                 return render(request, 'matching/results_blocks.html', {'results': results})
 
         return render(request, 'matching/results_page.html', {'results': results, 'request': req})

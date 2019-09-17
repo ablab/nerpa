@@ -317,7 +317,6 @@ button {
 .overflowdiva {
     border: none;
     padding: 5px;
-    font: 24px/36px sans-serif;
     width: 99%;
     height: 100%;
     overflow-y: scroll;
@@ -326,6 +325,12 @@ button {
 
 .block {
     background: #FEFFE7;
+    margin-bottom: 20px;
+}
+
+
+.group_block {
+    background: #FFD7AE;
     margin-bottom: 20px;
 }
 
