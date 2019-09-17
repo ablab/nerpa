@@ -166,9 +166,8 @@ def update_results_for_group_by(group_by_value, results):
 
 class ResultFilter:
     inner_filter = None
-
     def __init__(self, ifilter=None):
-        inner_filter = ifilter
+        self.inner_filter = ifilter
 
     def is_good(self, result):
         return True
@@ -188,6 +187,34 @@ class GenomeIdResultFilter(ResultFilter):
         return True
 
 
+class MinScoreResultFilter(ResultFilter):
+    def __init__(self, min_score, ifilter=None):
+        self.min_score = min_score
+        ResultFilter.__init__(self, ifilter)
+
+    def is_good(self, result):
+        if result.score < self.min_score:
+            return False
+
+        if self.inner_filter is not None:
+            return self.inner_filter.is_good(result)
+        return True
+
+
+class MinLenResultFilter(ResultFilter):
+    def __init__(self, min_len, ifilter=None):
+        self.min_len = min_len
+        ResultFilter.__init__(self, ifilter)
+
+    def is_good(self, result):
+        if result.AA_number < self.min_len:
+            return False
+
+        if self.inner_filter is not None:
+            return self.inner_filter.is_good(result)
+        return True
+
+
 def apply_filters(request, results):
     blocks_only = False
     group_by_value = request.GET.get("value", None)
@@ -200,6 +227,16 @@ def apply_filters(request, results):
     if genome_id is not None:
         blocks_only = True
         current_filter = GenomeIdResultFilter(genome_id, current_filter)
+
+    min_score = request.GET.get("min_score", None)
+    if min_score is not None:
+        blocks_only = True
+        current_filter = MinScoreResultFilter(float(min_score), current_filter)
+
+    min_len = request.GET.get("min_len", None)
+    if min_len is not None:
+        blocks_only = True
+        current_filter = MinLenResultFilter(int(min_len), current_filter)
 
     output_res = []
     for result in results:

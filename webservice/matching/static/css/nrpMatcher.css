@@ -4,8 +4,10 @@ body {
 
 p {
     margin: 0px;
-    font-size: 18px;
+    font-size: 16px;
 }
+
+input{ width: 40%;}
 
 h1 {
     color: #CD4B2D;

@@ -28,13 +28,19 @@ function update_navigation() {
 }
 
 
-function query_for_groups() {
+function generate_query() {
     var data_query = {};
     for (var elem in groups) {
         if (elem.type != "none") {
             data_query[elem.type] = elem.name;
         }
     }
+
+    var min_len = document.getElementById("min_len").value;
+    var min_score = document.getElementById("min_score").value;
+
+    data_query["min_len"] = min_len;
+    data_query["min_score"] = min_score;
 
     $.ajax({
         type: "GET",
@@ -49,7 +55,7 @@ function query_for_groups() {
 function change_group(eid) {
     groups = groups.slice(0, eid + 1);
     update_navigation();
-    query_for_groups();
+    generate_query();
 }
 
 
@@ -58,5 +64,5 @@ function choose_group(genome_id) {
     document.getElementById('select_group_by').value = "none";
 
     update_navigation();
-    query_for_groups();
+    generate_query();
 }
