@@ -16,6 +16,7 @@ import datetime
 
 STATUS_PROGRESS = "in progress..."
 STATUS_COMPLETE = "compete"
+STATUS_FAILUER = "failed"
 SEARCH_MODE_G = "A genome against NRP database"
 SEARCH_MODE_N = "A NRP against genome database"
 SEARCH_MODE_GN = "A NRP against genome"
@@ -135,6 +136,10 @@ def reports_page(request):
             if (state == 'SUCCESS'):
                 requests[i].status = STATUS_COMPLETE
                 requests[i].save()
+            elif (state == "FAILURE"):
+                requests[i].status = STATUS_FAILUER
+                requests[i].save()
+
         if (requests[i].status == STATUS_COMPLETE):
             requests[i].matchCnt = len(MatchingResult.objects.filter(request_id=requests[i].request_id))
         else:
@@ -301,5 +306,7 @@ def res_page(request, pk):
                 return render(request, 'matching/results_blocks.html', {'results': results})
 
         return render(request, 'matching/results_page.html', {'results': results, 'request': req})
+    elif (state == 'FAILURE'):
+        return render(request, 'matching/wait_page.html', {'message': 'Task is failed :('})
     else:
-        return render(request, 'matching/wait_page.html')
+        return render(request, 'matching/wait_page.html', {'message': 'Task is being evaluated.'})

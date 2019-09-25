@@ -27,7 +27,8 @@ class GenomeQuery:
     def run_antismash(self, predictionInfo):
         cmdline = "python2 " + pathToAntismash + " " + self.path_to_genome + " --outputfolder " + self.antismashRes
         print(cmdline)
-        os.system(cmdline)
+        if os.system(cmdline) != 0:
+            raise Exception("Running antismash failed")
 
         with open(predictionInfo, "a+") as fw:
             fw.write(self.predictionPath + "\n")
@@ -93,8 +94,10 @@ class Query:
 
 
 def run_nrpsMatcher(prinfo, molinfo, query):
-    print(Nerpa + " -p " + prinfo + " --lib_info " + molinfo + " --predictor NRPSPREDICTOR2 --insertion --deletion --single_match --single_match_coeff 0.2 --modification -o " + query.output_folder)
-    os.system(Nerpa + " -p " + prinfo + " --lib_info " + molinfo + " --predictor NRPSPREDICTOR2 --insertion --deletion --single_match --single_match_coeff 0.2 --modification -o " + query.output_folder)
+    cmd = Nerpa + " -p " + prinfo + " --lib_info " + molinfo + " --predictor NRPSPREDICTOR2 --insertion --deletion --single_match --single_match_coeff 0.2 --modification -o " + query.output_folder
+    print(cmd)
+    if os.system(cmd) != 0:
+        raise Exception("Running Nerpa failed")
 
 
 def save_results(query, nrpDB = DB_NONE):
@@ -140,7 +143,8 @@ def SMILE_to_MOL(query):
             cmd = "molconvert mol:V3+H --smiles \"" + sml + "\" -o " + os.path.join(query.mol_folder, "sml" + str(i) + ".mol")
             print(cmd)
             res_mol.append(os.path.join(query.mol_folder, "sml" + str(i) + ".mol"))
-            os.system(cmd)
+            if os.system(cmd) != 0:
+                raise Exception("Convertion SMAIL to MOL failed")
             i += 1
 
     with open(query.molInfo, "w") as fw:
