@@ -15,7 +15,7 @@
 
 <div class="header_results">
     <div class="header-right">
-        <img height="15px" class="download-button" src="{%  static 'img/download-button.png' %}" alt="download-button">
+         <input type="image" height="15px" class="download-button" id="download-button" src="{%  static 'img/download-button.png' %}" alt="download-button" onClick="download_csv()">
     </div>
 </div>
 
@@ -61,6 +61,7 @@
 
 <script src="{%  static 'JS/TabChoose.js' %}"></script>
 <script src="{% static 'JS/filtration.js' %}"></script>
+<script src="{% static 'JS/download.js' %}"></script>
 <script>
     changeActive("Browse");
 </script>

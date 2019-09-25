@@ -11,6 +11,7 @@ from .tasks import Query
 from random import *
 from django.shortcuts import redirect
 from django.utils import timezone
+from django.http import HttpResponse
 import datetime
 
 STATUS_PROGRESS = "in progress..."
@@ -218,6 +219,27 @@ class MinLenResultFilter(ResultFilter):
         return True
 
 
+def generate_output_csv(results):
+    import csv
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="nerpa_results.csv"'
+
+    csv_writer = csv.writer(response, delimiter=',', quotechar='"')
+    csv_writer.writerow(["Score", "NRP ID", "Genome ID", "Peptide", "Mass", "Num AA", "Num Matched AA"])
+    for result in results:
+        csv_writer.writerow([result.score, result.mol_id, result.genome_id, result.product_name, result.mass, result.AA_number, result.AA_matching_number])
+
+    return response
+
+
+def check_download(request, results):
+    download_value = request.GET.get("DOWNLOAD", None)
+    if download_value is not None:
+        return generate_output_csv(results)
+    return None
+
+
 def apply_filters(request, results):
     blocks_only = False
     group_by_value = request.GET.get("value", None)
@@ -245,6 +267,7 @@ def apply_filters(request, results):
     for result in results:
         if current_filter.is_good(result):
             output_res.append(result)
+
     return (blocks_only, output_res)
 
 
@@ -267,6 +290,10 @@ def res_page(request, pk):
 
         if request.method == "GET":
             blocks_only, results = apply_filters(request, results)
+            response = check_download(request, results)
+            if response is not None:
+                return response
+
             if blocks_only:
                 group_by_value = request.GET.get("value", None)
                 if group_by_value and group_by_value != "none":

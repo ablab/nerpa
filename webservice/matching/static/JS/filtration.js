@@ -28,7 +28,7 @@ function update_navigation() {
 }
 
 
-function generate_query() {
+function generate_data_query() {
     var data_query = {};
     for (var elem in groups) {
         if (elem.type != "none") {
@@ -41,6 +41,12 @@ function generate_query() {
 
     data_query["min_len"] = min_len;
     data_query["min_score"] = min_score;
+
+    return data_query;
+}
+
+function generate_query() {
+    var data_query = generate_data_query();
 
     $.ajax({
         type: "GET",
