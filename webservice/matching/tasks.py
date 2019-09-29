@@ -4,6 +4,7 @@ from .vis_prediction import visualize_prediction
 from celery import shared_task
 from .vis_prediction import DB_NONE
 from .vis_prediction import DB_PNP
+from nrpsmatche.settings import ANTISMASH_ROOT
 
 path = os.environ.get('DATA_PATH')
 pathToAntismash = os.environ.get('ANTISMASH_PATH')
@@ -14,12 +15,12 @@ dbNRPinfo = {DB_PNP: "/home/dereplicator/kolga/data/DB/PNP/library.info"}
 dbPredictionInfo = {'bc': "/home/olga/CAB/NRP/data/DataBase/mibigNF.info"}
 
 class GenomeQuery:
-    def __init__(self, path_to_genome, genome_id, res_folder, genome_name):
+    def __init__(self, path_to_genome, genome_id, res_folder, genome_name, request_id):
         self.path_to_genome = path_to_genome
         self.genome_id = genome_id
         self.genome_name = genome_name
         self.res_folder = res_folder
-        self.antismashRes = os.path.join(self.res_folder, "antismashRes", self.genome_id)
+        self.antismashRes = os.path.join(ANTISMASH_ROOT, "res" + str(request_id), self.genome_id)
         if not os.path.exists(self.antismashRes):
             os.makedirs(self.antismashRes)
         self.predictionPath = os.path.join(self.antismashRes, "nrpspks_predictions_txt/ctg1_nrpspredictor2_codes.txt")
@@ -63,10 +64,10 @@ class Query:
             cur_id = 0
             for filename in os.listdir(self.zip_fna_folder):
                 self.genomes.append(GenomeQuery(os.path.join(self.zip_fna_folder, filename),
-                                                "g" + str(cur_id), self.res_folder, os.path.splitext(filename)[0]))
+                                                "g" + str(cur_id), self.res_folder, os.path.splitext(filename)[0], self.request_id))
                 cur_id += 1
         else:
-            self.genomes.append(GenomeQuery(self.genome_file, "g0", self.res_folder, self.load_genome_filename))
+            self.genomes.append(GenomeQuery(self.genome_file, "g0", self.res_folder, self.load_genome_filename, self.request_id))
 
     def handle_mols(self):
         if (zipfile.is_zipfile(self.nrp_file)):

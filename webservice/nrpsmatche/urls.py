@@ -27,3 +27,5 @@ urlpatterns = [
 
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.ANTISMASH_URL, document_root=settings.ANTISMASH_ROOT)
+
