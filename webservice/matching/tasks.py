@@ -93,6 +93,11 @@ class Query:
             if genome_query.predictionPath == path:
                 return genome_query.genome_name
 
+    def genome_id_by_path(self, path):
+        for genome_query in self.genomes:
+            if genome_query.predictionPath == path:
+                return genome_query.genome_id
+
 
 def run_nrpsMatcher(prinfo, molinfo, query):
     cmd = Nerpa + " -p " + prinfo + " --lib_info " + molinfo + " --predictor NRPSPREDICTOR2 --insertion --deletion --single_match --single_match_coeff 0.2 --modification -o " + query.output_folder
@@ -103,7 +108,8 @@ def run_nrpsMatcher(prinfo, molinfo, query):
 
 def save_results(query, nrpDB = DB_NONE):
     for filename in os.listdir(query.output_folder + "/details_mols"):
-        visualize_prediction(query.output_folder + "/details_mols/" + filename, query.predictionPath, filename, "ctg1_nrpspredictor2_codes", query.request_id, nrpDB, "some_genome")
+        visualize_prediction(query.output_folder + "/details_mols/" + filename, query.predictionPath, filename, "ctg1_nrpspredictor2_codes", query.request_id, nrpDB, "some_genome",
+                             "res" + str(query.request_id))
 
 
 def getAllPath(query, filename):
@@ -126,7 +132,9 @@ def save_results_prediction(query):
         for predpath in predpaths:
             if (predpath[-1] == '\n'):
                 predpath = predpath[:-1]
-            visualize_prediction(query.output_folder + "/details_mols/" + filename, predpath, filename, predpath, query.request_id, DB_NONE, query.genome_name_by_path(predpath))
+            visualize_prediction(query.output_folder + "/details_mols/" + filename, predpath, filename, predpath,
+                                 query.request_id, DB_NONE, query.genome_name_by_path(predpath),
+                                 os.path.join("res" + str(query.request_id), query.genome_id_by_path(predpath), "index.html"))
 
 
 def SMILE_to_MOL(query):

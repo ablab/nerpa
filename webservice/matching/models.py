@@ -25,6 +25,7 @@ class MatchingResult(models.Model):
     score = models.DecimalField(max_digits=10, decimal_places=3)
     AA_number = models.IntegerField()
     AA_matching_number = models.IntegerField()
+    linkToAntismash = models.TextField()
 
     def save_matching(self):
         self.save()

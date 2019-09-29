@@ -13,6 +13,8 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from django.http import HttpResponse
 import datetime
+import os
+from nrpsmatche.settings import ANTISMASH_URL
 
 STATUS_PROGRESS = "in progress..."
 STATUS_COMPLETE = "compete"
@@ -153,6 +155,7 @@ def vis_page(request, pk):
     result.genome_id = result.genome_id.split('/')[-1]
     if (result.genome_id == "ctg1_nrpspredictor2_codes"):
         result.genome_id = get_object_or_404(Request, request_id=result.request_id).genome_file
+    result.linkToAntismash = os.path.join(ANTISMASH_URL, result.linkToAntismash)
     return render(request, 'matching/visualization_page.html', {'result': result})
 
 
