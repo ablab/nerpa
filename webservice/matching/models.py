@@ -11,6 +11,7 @@ class MatchingResult(models.Model):
     date = models.DateTimeField(default=timezone.now)
 
     img = models.ImageField()
+    img_structure = models.ImageField()
     innerTableHTML = models.TextField()
     orfsInfo = models.TextField()
 

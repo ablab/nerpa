@@ -928,6 +928,12 @@ def createTableInnerHTML(predictionList, usedOrfs, predictionInfo, choosePred, c
 #predictionFileName = "/home/olga/bio/NRP/data/bacteria_complete/predictions/" + name2
 
 
+def createStructurePic(smile):
+    from rdkit import Chem
+    from rdkit.Chem import Draw
+    p = Chem.MolFromSmiles(smile)
+    Draw.MolToFile(p, 'tmp_structure.png', size=(1000, 1000))
+
 def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request_id, nrpDB, show_genome_name, antismash, SMILE):
     print("start viz " + molName)
     G = nx.Graph()
@@ -943,6 +949,7 @@ def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request
                                                                    genomeName, color, choosePred,
                                                                    usedOrfs, G, g, nrpDB)
     innerHTML, orfsInfo = createTableInnerHTML(predictionList, usedOrfs, predictionInfo, choosePred, color)
+    createStructurePic(SMILE)
 
     print(score.split('(')[0])
 
@@ -951,5 +958,6 @@ def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request
                                   databases=dbs, genome_id=show_genome_name, score=float(score.split('(')[0]),
                                   AA_number=cntAA, AA_matching_number=cntMatchAA, linkToAntismash=antismash, SMILE=SMILE)
     model_object.img.save('pic.png', File(open('tmp.png', 'rb')))
+    model_object.img_structure.save('pic_structure.png', File(open("tmp_structure.png", "rb")))
     model_object.save()
     print("save")
