@@ -26,6 +26,7 @@ class MatchingResult(models.Model):
     AA_number = models.IntegerField()
     AA_matching_number = models.IntegerField()
     linkToAntismash = models.TextField()
+    SMILE = models.TextField()
 
     def save_matching(self):
         self.save()

@@ -58,6 +58,10 @@ ul {
     cursor: pointer;
 }
 
+.withPointer:hover {
+    cursor: pointer;
+}
+
 .groupby_navigation {
     position: relative;
     padding-left: 15px;

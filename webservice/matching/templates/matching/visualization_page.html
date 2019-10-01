@@ -28,6 +28,7 @@
                     {% endautoescape %}
                 </p>
                  <a href="{{ result.linkToAntismash }}">Antismash Result</a>
+                 <div class="withPointer" onclick="handleSMILECopy('{{ result.SMILE }}')">Copy SMILE</div>
             </div>
         </div>
         <div class="mainResult">
@@ -36,5 +37,6 @@
         {% endautoescape %}
         <img src="{{result.img.url }}" style="max-width: 700px;width:100%;display: block;margin-left: auto;margin-right: auto;margin-top: 50px;">
         </div>
+<script src="{%  static 'JS/SMILECopy.js' %}"></script>
 </body>
 </html>

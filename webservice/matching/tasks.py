@@ -1,5 +1,6 @@
 import os
 import zipfile
+import tempfile
 from .vis_prediction import visualize_prediction
 from celery import shared_task
 from .vis_prediction import DB_NONE
@@ -13,6 +14,25 @@ Nerpa = "nerpa.py"
 
 dbNRPinfo = {DB_PNP: "/home/dereplicator/kolga/data/DB/PNP/library.info"}
 dbPredictionInfo = {'bc': "/home/olga/CAB/NRP/data/DataBase/mibigNF.info"}
+
+class StructureQuery:
+    def __init__(self, mol_id, path_to_mol, res_folder, smile_string=""):
+        self.molId = mol_id
+        self.SMILE = smile_string
+        self.path_to_mol = path_to_mol
+
+        if smile_string == "":
+            smile_file = tempfile.NamedTemporaryFile(dir=res_folder, delete=False)
+            smile_file_name = smile_file.name
+            smile_file.close()
+            cmd = "molconvert smiles " + self.path_to_mol + " -o " + smile_file_name
+            print(cmd)
+            if os.system(cmd) != 0:
+                raise Exception("Convertion MOL to SMILE failed")
+            self.SMILE = open(smile_file_name).read()
+            os.remove(smile_file_name)
+        print(self.molId, self.SMILE)
+
 
 class GenomeQuery:
     def __init__(self, path_to_genome, genome_id, res_folder, genome_name, request_id):
@@ -48,6 +68,7 @@ class Query:
         self.smile_file = os.path.join(self.res_folder, "nrp.sml")
         self.predictionInfo = os.path.join(self.res_folder, "predictions.info")
         self.molInfo = os.path.join(self.res_folder, "mol.info")
+        self.is_smile = False
         with open(self.molInfo, "w") as fw:
             fw.write(self.nrp_file)
         self.output_folder = os.path.join(self.res_folder, "out")
@@ -69,6 +90,32 @@ class Query:
         else:
             self.genomes.append(GenomeQuery(self.genome_file, "g0", self.res_folder, self.load_genome_filename, self.request_id))
 
+    def SMILE_to_MOL(self):
+        # print("molconvert mol:V3+H --smiles \"" + smile_file + "\" -o " + nrp_file)
+        # os.system("molconvert mol:V3+H --smiles \"" + smile_file + "\" -o " + nrp_file)
+        res_mol = []
+        with open(self.smile_file, "r") as f:
+            i = 0
+            self.mol_folder = os.path.join(self.res_folder, "structures_mol")
+            if not os.path.exists(self.mol_folder):
+                os.makedirs(self.mol_folder)
+
+            for line in f:
+                sml = line.split()[0]
+                cmd = "molconvert mol:V3+H --smiles \"" + sml + "\" -o " + os.path.join(self.mol_folder,
+                                                                                        "sml" + str(i) + ".mol")
+                print(cmd)
+                res_mol.append(os.path.join(self.mol_folder, "sml" + str(i) + ".mol"))
+                self.structures.append(StructureQuery("sml" + str(i), os.path.join(self.mol_folder, "sml" + str(i) + ".mol"), self.res_folder, sml))
+                if os.system(cmd) != 0:
+                    raise Exception("Convertion SMAIL to MOL failed")
+                i += 1
+
+        with open(self.molInfo, "w") as fw:
+            for line in res_mol:
+                fw.write(line + "\n")
+
+
     def handle_mols(self):
         if (zipfile.is_zipfile(self.nrp_file)):
             self.zip_mol_folder = os.path.join(self.res_folder, "structures_mol")
@@ -77,11 +124,16 @@ class Query:
 
             with open(self.molInfo, 'w') as fw:
                 for filename in os.listdir(self.zip_mol_folder):
+                    self.structures.append(StructureQuery('.'.join(filename.split('.')[:-1]), os.path.join(self.zip_mol_folder, filename), self.res_folder))
                     fw.write(os.path.join(self.zip_mol_folder, filename) + "\n")
-
+        elif (self.is_smile):
+            self.SMILE_to_MOL()
+        else:
+            self.structures.append(StructureQuery("nrp", self.nrp_file, self.res_folder))
 
     def handle_query(self):
         self.genomes = []
+        self.structures = []
         self.create_genomes_list()
         for genome in self.genomes:
             genome.run_antismash(self.predictionInfo)
@@ -98,6 +150,11 @@ class Query:
             if genome_query.predictionPath == path:
                 return genome_query.genome_id
 
+    def get_SMILE_by_mol_id(self, molid):
+        for structure_query in self.structures:
+            if structure_query.molId == molid:
+                return structure_query.SMILE
+
 
 def run_nrpsMatcher(prinfo, molinfo, query):
     cmd = Nerpa + " -p " + prinfo + " --lib_info " + molinfo + " --predictor NRPSPREDICTOR2 --insertion --deletion --single_match --single_match_coeff 0.2 --modification -o " + query.output_folder
@@ -109,7 +166,7 @@ def run_nrpsMatcher(prinfo, molinfo, query):
 def save_results(query, nrpDB = DB_NONE):
     for filename in os.listdir(query.output_folder + "/details_mols"):
         visualize_prediction(query.output_folder + "/details_mols/" + filename, query.predictionPath, filename, "ctg1_nrpspredictor2_codes", query.request_id, nrpDB, "some_genome",
-                             "res" + str(query.request_id))
+                             "res" + str(query.request_id), query.get_SMILE_by_mol_id(filename))
 
 
 def getAllPath(query, filename):
@@ -134,32 +191,8 @@ def save_results_prediction(query):
                 predpath = predpath[:-1]
             visualize_prediction(query.output_folder + "/details_mols/" + filename, predpath, filename, predpath,
                                  query.request_id, DB_NONE, query.genome_name_by_path(predpath),
-                                 os.path.join("res" + str(query.request_id), query.genome_id_by_path(predpath), "index.html"))
-
-
-def SMILE_to_MOL(query):
-    #print("molconvert mol:V3+H --smiles \"" + smile_file + "\" -o " + nrp_file)
-    #os.system("molconvert mol:V3+H --smiles \"" + smile_file + "\" -o " + nrp_file)
-    res_mol = []
-    with open(query.smile_file, "r") as f:
-        i = 0
-        query.mol_folder = os.path.join(query.res_folder, "structures_mol")
-        if not os.path.exists(query.mol_folder):
-            os.makedirs(query.mol_folder)
-
-        for line in f:
-            sml = line.split()[0]
-            cmd = "molconvert mol:V3+H --smiles \"" + sml + "\" -o " + os.path.join(query.mol_folder, "sml" + str(i) + ".mol")
-            print(cmd)
-            res_mol.append(os.path.join(query.mol_folder, "sml" + str(i) + ".mol"))
-            if os.system(cmd) != 0:
-                raise Exception("Convertion SMAIL to MOL failed")
-            i += 1
-
-    with open(query.molInfo, "w") as fw:
-        for line in res_mol:
-            fw.write(line + "\n")
-
+                                 os.path.join("res" + str(query.request_id), query.genome_id_by_path(predpath), "index.html"),
+                                 query.get_SMILE_by_mol_id(filename))
 
 
 MASS = {' C ': 12.011, ' N ': 14.007, ' O ': 16, ' Cl ': 35.453, ' P ': 30.974, ' S ': 32.065, ' H ': 1.008}
@@ -204,9 +237,9 @@ def handle_genome(requst_id, nrpDB):
 @shared_task
 def handle_nrp(requst_id, predictDB, is_smile=False):
     query = Query(requst_id)
+    query.is_smile = is_smile
+
     print("START HANDLE NRP")
-    if (is_smile):
-        SMILE_to_MOL(query)
     update_mol_info(query.molInfo)
     run_nrpsMatcher(dbPredictionInfo[predictDB], query.molInfo, query)
     save_results_prediction(query)
@@ -216,9 +249,9 @@ def handle_nrp(requst_id, predictDB, is_smile=False):
 def handle_one(requst_id, genome_filename, is_smile=False):
     query = Query(requst_id)
     query.set_load_genome_filename(os.path.splitext(genome_filename)[0])
+    query.is_smile = is_smile
+
     print("START HANDLE ONE")
-    if (is_smile):
-        SMILE_to_MOL(query)
     query.handle_query()
     update_mol_info(query.molInfo)
     #run_antismash(query)
