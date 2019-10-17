@@ -32,29 +32,56 @@
             </div>
         </div>
         <div class="mainResult">
-        {% autoescape off %}
-            {{ result.innerTableHTML}}
-        {% endautoescape %}
-
-
-         <div class="details">
-             <h3>Detailed annotation</h3>
-             <div class="details-svg" id="cluster-1-details-svg">
-
-             </div>
-         </div>
-
-        <div class="StructureImage">
-            <h3>Nerpa alignment and structure:</h3>
-            <div class="row">
-                <div class="column">
-                    <img src="{{result.img.url }}">
+            <h3>Gene cluster description: </h3>
+            <div class="vis-block">
+                <div class="description-text" id="cluster-1-description-text"> {{ result.genome_id }} - Gene Cluster 1. Type = nrps. Location:  </div>
+                <div id="cluster-1-svg"></div>
+            </div>
+            <div class="legend">
+                <h4>Legend:</h4>
+                <div>
+                    <div class="legend-field legend-type-biosynthetic"></div>
+                    <div class="legend-label">biosynthetic genes</div>
                 </div>
-                <div class="column">
-                    <img src="{{result.img_structure.url }}">
+                <div>
+                    <div class="legend-field legend-type-transport"></div>
+                    <div class="legend-label">transport-related genes</div>
+                </div>
+                <div>
+                    <div class="legend-field legend-type-regulatory"></div>
+                    <div class="legend-label">regulatory genes</div>
+                </div>
+                <div>
+                    <div class="legend-field legend-type-other"></div>
+                    <div class="legend-label">other genes</div>
                 </div>
             </div>
-        </div>
+
+
+            <h3>Predictions:</h3>
+            <div class="vis-block">
+                {% autoescape off %}
+                    {{ result.innerTableHTML}}
+                {% endautoescape %}
+            </div>
+
+            <h3>Detailed annotation: </h3>
+            <div class="vis-block">
+                <div class="details-svg" id="cluster-1-details-svg"></div>
+            </div>
+
+
+            <h3>Nerpa alignment and structure:</h3>
+            <div class="vis-block">
+                <div class="row">
+                    <div class="column">
+                        <img src="{{result.img.url }}">
+                    </div>
+                    <div class="column">
+                        <img src="{{result.img_structure.url }}">
+                    </div>
+                </div>
+            </div>
         </div>
 <script src="{%  static 'JS/SMILECopy.js' %}"></script>
 <script src="{%  static 'JS/Antismash/jquery.js' %}"></script>
@@ -65,7 +92,9 @@
 <script src="{%  static 'JS/Antismash/clusterblast.js' %}"></script>
 <script src={{ result.linkToGenecluster }}></script>
 <script type="text/javascript">
-jsdomain.drawDomains("cluster-1-details-svg", details_data["cluster-1"], 40, 700);
+    svgene.drawClusters("cluster-1-svg", [geneclusters["cluster-1"]], 20, 700);
+    jsdomain.drawDomains("cluster-1-details-svg", details_data["cluster-1"], 40, 700);
+    document.getElementById("cluster-1-description-text").innerHTML += geneclusters["cluster-1"]["start"] + " - " +  geneclusters["cluster-1"]["end"] + " nt";
 </script>
 </body>
 </html>

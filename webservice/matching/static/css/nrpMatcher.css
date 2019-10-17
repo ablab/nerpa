@@ -62,27 +62,32 @@ ul {
     cursor: pointer;
 }
 
-.details h3 {
-    padding-top: 10px;
-    padding-left: 10px;
+.mainResult {
+    margin-left: 10px;
 }
 
-.StructureImage h3 {
-    padding-top: 10px;
-    padding-left: 10px;
+.mainResult h3 {
+    padding-top: 20px;
+    margin-block-start: 0;
+    margin-block-end: 0;
 }
 
-.StructureImage img {
+.vis-block {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.vis-block img {
     width:100%;
 }
 
-.StructureImage .column {
+.vis-block .column {
     float: left;
     width: 48%;
     padding: 5px;
 }
 
-.StructureImage .row::after {
+.vis-block .row::after {
     content: "";
     clear: both;
     display: table;
@@ -390,7 +395,7 @@ th, td {
     width: 400px;
     bottom: 0px;
     right: 0px;
-    top:59px;
+    top:39px;
     border: 1px solid#BDBDBD;
 }
 
@@ -399,7 +404,7 @@ th, td {
     position: fixed;
     left:0px;
     bottom:0px;
-    top:60px;
+    top:40px;
     right: 401px;
 }
 
@@ -529,4 +534,137 @@ th, td {
 .jsdomain-line {
     stroke-width: 1px;
     stroke: #888;
+}
+
+
+.tooltip {
+  border: 2px solid slategray;
+  background-color: #dddddd;
+  display: none;
+  position: absolute;
+  font-size: 80%;
+  padding: 0.5em;
+  color: #810e15;
+}
+.svgene-type-other {
+  fill: gray;
+  stroke: black;
+}
+.svgene-type-biosynthetic {
+  fill: #810e15;
+  stroke: black;
+}
+.svgene-type-transport {
+  fill: cornflowerblue;
+  stroke: black;
+}
+.svgene-type-regulatory {
+  fill: seagreen;
+  stroke: black;
+}
+.svgene-line {
+  stroke-width: 1px;
+  stroke: #888;
+}
+.svgene-locustag {
+  fill: #810e15;
+  display: none;
+  font-size: 80%;
+}
+.svgene-tooltip {
+  border: 2px solid slategray;
+  background-color: #dddddd;
+  display: none;
+  position: absolute;
+  font-size: 80%;
+  padding: 0.5em;
+  color: #810e15;
+}
+.svgene-tooltip-bold {
+  font-weight: bold;
+  font-size: 120%;
+}
+.legend-type-other {
+  background-color: gray;
+}
+.legend-type-biosynthetic {
+  background-color: #810e15;
+}
+.legend-type-transport {
+  background-color: cornflowerblue;
+}
+.legend-type-regulatory {
+  background-color: seagreen;
+}
+.legend {
+  font-size: 80%;
+  overflow: hidden;
+  margin-bottom: 0.5em;
+  margin-left: 0.5em;
+}
+.legend h4 {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+.legend-field {
+  float: left;
+  width: 1em;
+  height: 1em;
+  margin-left: 1em;
+  margin-right: 0.25em;
+  border: 1px solid black;
+}
+.legend-label {
+  float: left;
+}
+.details,
+.clusterblast,
+.subclusterblast {
+  margin-left: 0.5em;
+}
+.jsdomain-line {
+  stroke-width: 1px;
+  stroke: #888;
+}
+.jsdomain-orflabel {
+  fill: #810e15;
+}
+.jsdomain-tooltip {
+  border: 2px solid slategray;
+  background-color: #dddddd;
+  display: none;
+  position: absolute;
+  font-size: 80%;
+  padding: 0.5em;
+  color: #810e15;
+}
+.clusterblast-locustag {
+  fill: #810e15;
+  display: none;
+  font-size: 80%;
+  position: absolute;
+}
+.clusterblast-tooltip {
+  border: 2px solid slategray;
+  background-color: #dddddd;
+  display: none;
+  position: absolute;
+  font-size: 80%;
+  padding: 0.5em;
+  color: #810e15;
+}
+.clusterblast-acc {
+  fill: #810e15;
+  font-size: 80%;
+  font-family: Verdana, Tahoma, Sans-Serif;
+}
+.clusterblast-desc {
+  fill: #810e15;
+  font-size: 80%;
+  font-family: Verdana, Tahoma, Sans-Serif;
+  font-size: 75%;
+}
+
+.description-text {
+    font-size: 70%;
 }

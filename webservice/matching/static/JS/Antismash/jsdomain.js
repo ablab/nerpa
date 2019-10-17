@@ -65,13 +65,13 @@ jsdomain.drawDomains = function(id, cluster, height, width) {
             .attr("font-size", jsdomain.text_height)
             .attr("font-weight", "bold");
 
-        /*toolgroup = container.append("div").attr("id", "details-orf-" + idx);
+        toolgroup = container.append("div").attr("id", "details-orf-" + idx);
         toolgroup.selectAll("div")
             .data(orf['domains'])
         .enter().append("div")
             .attr("class", "jsdomain-tooltip")
             .attr("id", function(d, j) { return "details-orf-" + idx + "-" + j + "-tooltip"})
-            .html(function(d) { return jsdomain.generateTooltip(d, orf) } );*/
+            .html(function(d) { return jsdomain.generateTooltip(d, orf) } );
     }
     jsdomain.init();
 };
