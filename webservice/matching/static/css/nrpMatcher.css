@@ -62,7 +62,12 @@ ul {
     cursor: pointer;
 }
 
-.StructureImage h2 {
+.details h3 {
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
+.StructureImage h3 {
     padding-top: 10px;
     padding-left: 10px;
 }
@@ -518,4 +523,10 @@ th, td {
     height: 29px;
     padding: 5px; /* If you add too much padding here, the options won't show in IE */
     width: 260px;
+}
+
+/* Antismah */
+.jsdomain-line {
+    stroke-width: 1px;
+    stroke: #888;
 }

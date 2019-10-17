@@ -36,8 +36,16 @@
             {{ result.innerTableHTML}}
         {% endautoescape %}
 
+
+         <div class="details">
+             <h3>Detailed annotation</h3>
+             <div class="details-svg" id="cluster-1-details-svg">
+
+             </div>
+         </div>
+
         <div class="StructureImage">
-            <h2>Nerpa alignment and structure:</h2>
+            <h3>Nerpa alignment and structure:</h3>
             <div class="row">
                 <div class="column">
                     <img src="{{result.img.url }}">
@@ -49,5 +57,15 @@
         </div>
         </div>
 <script src="{%  static 'JS/SMILECopy.js' %}"></script>
+<script src="{%  static 'JS/Antismash/jquery.js' %}"></script>
+<script src="{%  static 'JS/Antismash/purl.js' %}"></script>
+<script src="{%  static 'JS/Antismash/d3.v2.js' %}"></script>
+<script src="{%  static 'JS/Antismash/svgene.js' %}"></script>
+<script src="{%  static 'JS/Antismash/jsdomain.js' %}"></script>
+<script src="{%  static 'JS/Antismash/clusterblast.js' %}"></script>
+<script src={{ result.linkToGenecluster }}></script>
+<script type="text/javascript">
+jsdomain.drawDomains("cluster-1-details-svg", details_data["cluster-1"], 40, 700);
+</script>
 </body>
 </html>

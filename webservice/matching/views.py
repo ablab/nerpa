@@ -156,6 +156,7 @@ def vis_page(request, pk):
     if (result.genome_id == "ctg1_nrpspredictor2_codes"):
         result.genome_id = get_object_or_404(Request, request_id=result.request_id).genome_file
     result.linkToAntismash = os.path.join(ANTISMASH_URL, result.linkToAntismash)
+    result.linkToGenecluster = os.path.join(ANTISMASH_URL, '/'.join(result.linkToAntismash.split('/')[:-1] + ["geneclusters.js"]))
     return render(request, 'matching/visualization_page.html', {'result': result})
 
 
