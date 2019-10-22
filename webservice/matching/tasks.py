@@ -146,10 +146,33 @@ class Query:
             with zipfile.ZipFile(self.nrp_file) as nrpzip:
                 nrpzip.extractall(path=self.zip_mol_folder)
 
+            info_filename = ""
+
             with open(self.molInfo, 'w') as fw:
                 for filename in os.listdir(self.zip_mol_folder):
+                    if filename[-3:] == 'tsv':
+                        info_filename = filename
+                        continue
                     self.structures.append(StructureQuery('.'.join(filename.split('.')[:-1]), os.path.join(self.zip_mol_folder, filename), self.res_folder))
                     fw.write(os.path.join(self.zip_mol_folder, filename) + "\n")
+
+            if info_filename != "":
+                import re
+                with open(os.path.join(self.zip_mol_folder, info_filename)) as f:
+                    for line in f:
+                        line_parts = re.split(r'\t+', line)
+                        if line_parts[0] == 'NAME':
+                            continue
+
+                        if ".mol" in line_parts[0]:
+                            line_parts[0] = line_parts[0][:-4]
+
+                        for i in range(len(self.structures)):
+                            if self.structures[i].molId == line_parts[0]:
+                                if len(line_parts) > 1:
+                                    self.structures[i].peptide = line_parts[1]
+                                if len(line_parts) > 2:
+                                    self.structures[i].details = line_parts[2]
         elif (self.is_smile):
             self.SMILE_to_MOL()
         else:
