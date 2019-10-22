@@ -16,10 +16,12 @@ dbNRPinfo = {DB_PNP: "/home/dereplicator/kolga/data/DB/PNP/library.info"}
 dbPredictionInfo = {'bc': "/home/olga/CAB/NRP/data/DataBase/mibigNF.info"}
 
 class StructureQuery:
-    def __init__(self, mol_id, path_to_mol, res_folder, smile_string=""):
+    def __init__(self, mol_id, path_to_mol, res_folder, smile_string="", peptide="", details=""):
         self.molId = mol_id
         self.SMILE = smile_string
         self.path_to_mol = path_to_mol
+        self.peptide = peptide
+        self.details = details
 
         if smile_string == "":
             smile_file = tempfile.NamedTemporaryFile(dir=res_folder, delete=False)
@@ -93,6 +95,7 @@ class Query:
     def SMILE_to_MOL(self):
         # print("molconvert mol:V3+H --smiles \"" + smile_file + "\" -o " + nrp_file)
         # os.system("molconvert mol:V3+H --smiles \"" + smile_file + "\" -o " + nrp_file)
+        import re
         res_mol = []
         with open(self.smile_file, "r") as f:
             i = 0
@@ -101,14 +104,35 @@ class Query:
                 os.makedirs(self.mol_folder)
 
             for line in f:
-                sml = line.split()[0]
+                line_parts = re.split(r'\t+', line)
+                if line_parts[0] == "SMILES":
+                    continue
+
+                name = "sml" + str(i)
+                if len(line_parts) > 1:
+                    name = line_parts[1]
+
+                peptide = ""
+                if len(line_parts) > 2:
+                    peptide = line_parts[2]
+
+                details = ""
+                if len(line_parts) > 3:
+                    details = line_parts[3]
+
+
+                sml = line_parts[0]
                 cmd = "molconvert mol:V3+H --smiles \"" + sml + "\" -o " + os.path.join(self.mol_folder,
-                                                                                        "sml" + str(i) + ".mol")
+                                                                                        name + ".mol")
                 print(cmd)
-                res_mol.append(os.path.join(self.mol_folder, "sml" + str(i) + ".mol"))
-                self.structures.append(StructureQuery("sml" + str(i), os.path.join(self.mol_folder, "sml" + str(i) + ".mol"), self.res_folder, sml))
+                res_mol.append(os.path.join(self.mol_folder, name + ".mol"))
+
+
+                self.structures.append(StructureQuery(name,
+                                                      os.path.join(self.mol_folder, name + ".mol"),
+                                                      self.res_folder, sml, peptide=peptide, details=details))
                 if os.system(cmd) != 0:
-                    raise Exception("Convertion SMAIL to MOL failed")
+                    raise Exception("Convertion SMILES to MOL failed")
                 i += 1
 
         with open(self.molInfo, "w") as fw:
@@ -155,6 +179,14 @@ class Query:
             if structure_query.molId == molid:
                 return structure_query.SMILE
 
+    def get_structure_name_by_path(self, path):
+        return path.split('/')[-1][:-3]
+
+    def getStructureQueryByName(self, name):
+        for structure_query in self.structures:
+            if structure_query.molId == name:
+                return structure_query
+
 
 def run_nrpsMatcher(prinfo, molinfo, query):
     cmd = Nerpa + " -p " + prinfo + " --lib_info " + molinfo + " --predictor NRPSPREDICTOR2 --insertion --deletion --single_match --single_match_coeff 0.2 --modification -o " + query.output_folder
@@ -189,10 +221,12 @@ def save_results_prediction(query):
         for predpath in predpaths:
             if (predpath[-1] == '\n'):
                 predpath = predpath[:-1]
+            structure_query = query.getStructureQueryByName(filename)
             visualize_prediction(query.output_folder + "/details_mols/" + filename, predpath, filename, predpath,
                                  query.request_id, DB_NONE, query.genome_name_by_path(predpath),
                                  os.path.join("res" + str(query.request_id), query.genome_id_by_path(predpath), "index.html"),
-                                 query.get_SMILE_by_mol_id(filename))
+                                 query.get_SMILE_by_mol_id(filename), peptide=structure_query.peptide,
+                                 details_structure=structure_query.details)
 
 
 MASS = {' C ': 12.011, ' N ': 14.007, ' O ': 16, ' Cl ': 35.453, ' P ': 30.974, ' S ': 32.065, ' H ': 1.008}

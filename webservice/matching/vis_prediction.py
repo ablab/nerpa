@@ -934,7 +934,8 @@ def createStructurePic(smile):
     p = Chem.MolFromSmiles(smile)
     Draw.MolToFile(p, 'tmp_structure.png', size=(1000, 1000))
 
-def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request_id, nrpDB, show_genome_name, antismash, SMILE):
+def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request_id,
+                         nrpDB, show_genome_name, antismash, SMILE, peptide="", details_structure=""):
     print("start viz " + molName)
     G = nx.Graph()
     g = []
@@ -953,8 +954,12 @@ def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request
 
     print(score.split('(')[0])
 
+    if peptide != "":
+        subName = peptide
+
     model_object = MatchingResult(request_id=request_id, innerTableHTML=innerHTML, orfsInfo=orfsInfo,
-                                  mol_id=molName, product_name=subName, mass=mass, ref=ref,
+                                  mol_id=molName, extra_info=details_structure,
+                                  product_name=subName, mass=mass, ref=ref,
                                   databases=dbs, genome_id=show_genome_name, score=float(score.split('(')[0]),
                                   AA_number=cntAA, AA_matching_number=cntMatchAA, linkToAntismash=antismash, SMILE=SMILE)
     model_object.img.save('pic.png', File(open('tmp.png', 'rb')))
