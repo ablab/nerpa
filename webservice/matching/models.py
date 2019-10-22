@@ -16,12 +16,14 @@ class MatchingResult(models.Model):
     orfsInfo = models.TextField()
 
     mol_id = models.TextField()
-    extra_info = models.TextField()
+    mol_extra_info = models.TextField()
     product_name = models.TextField()
     mass = models.DecimalField(max_digits=10, decimal_places=3)
     ref = models.TextField()
     databases = models.TextField()
     genome_id = models.TextField()
+    organism = models.TextField()
+    genome_extra_info = models.TextField()
 
     score = models.DecimalField(max_digits=10, decimal_places=3)
     AA_number = models.IntegerField()

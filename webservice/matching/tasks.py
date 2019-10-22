@@ -37,11 +37,13 @@ class StructureQuery:
 
 
 class GenomeQuery:
-    def __init__(self, path_to_genome, genome_id, res_folder, genome_name, request_id):
+    def __init__(self, path_to_genome, genome_id, res_folder, genome_name, request_id, organism="", details=""):
         self.path_to_genome = path_to_genome
         self.genome_id = genome_id
         self.genome_name = genome_name
         self.res_folder = res_folder
+        self.organusm = organism
+        self.details = details
         self.antismashRes = os.path.join(ANTISMASH_ROOT, "res" + str(request_id), self.genome_id)
         if not os.path.exists(self.antismashRes):
             os.makedirs(self.antismashRes)
@@ -84,11 +86,36 @@ class Query:
             with zipfile.ZipFile(self.genome_file) as genomezip:
                 genomezip.extractall(path=self.zip_fna_folder)
 
+            info_filename = ""
+
             cur_id = 0
             for filename in os.listdir(self.zip_fna_folder):
+                if filename[-3:] == 'tsv':
+                    info_filename = filename
+                    continue
+
                 self.genomes.append(GenomeQuery(os.path.join(self.zip_fna_folder, filename),
                                                 "g" + str(cur_id), self.res_folder, os.path.splitext(filename)[0], self.request_id))
                 cur_id += 1
+
+            if info_filename != "":
+                import re
+                with open(os.path.join(self.zip_fna_folder, info_filename)) as f:
+                    for line in f:
+                        line_parts = re.split(r'\t+', line)
+                        if line_parts[0] == 'NAME':
+                            continue
+
+                        if line_parts[0].split('.')[-1] in ["fa", "fasta", "fna"]:
+                            line_parts[0] = '.'.join(line_parts.split('.')[:-1])
+
+                        for i in range(len(self.genomes)):
+                            if self.genomes[i].genome_name == line_parts[0]:
+                                if len(line_parts) > 1:
+                                    self.genomes[i].organism = line_parts[1]
+                                if len(line_parts) > 2:
+                                    self.genomes[i].details = line_parts[2]
+
         else:
             self.genomes.append(GenomeQuery(self.genome_file, "g0", self.res_folder, self.load_genome_filename, self.request_id))
 
@@ -205,6 +232,11 @@ class Query:
     def get_structure_name_by_path(self, path):
         return path.split('/')[-1][:-3]
 
+    def getGenomeQueryByPath(self, path):
+        for genome_query in self.genomes:
+            if genome_query.predictionPath == path:
+                return genome_query
+
     def getStructureQueryByName(self, name):
         for structure_query in self.structures:
             if structure_query.molId == name:
@@ -245,11 +277,13 @@ def save_results_prediction(query):
             if (predpath[-1] == '\n'):
                 predpath = predpath[:-1]
             structure_query = query.getStructureQueryByName(filename)
+            genome_query = query.getGenomeQueryByPath(predpath)
             visualize_prediction(query.output_folder + "/details_mols/" + filename, predpath, filename, predpath,
-                                 query.request_id, DB_NONE, query.genome_name_by_path(predpath),
-                                 os.path.join("res" + str(query.request_id), query.genome_id_by_path(predpath), "index.html"),
+                                 query.request_id, DB_NONE, genome_query.genome_name,
+                                 os.path.join("res" + str(query.request_id), genome_query.genome_id, "index.html"),
                                  query.get_SMILE_by_mol_id(filename), peptide=structure_query.peptide,
-                                 details_structure=structure_query.details)
+                                 details_structure=structure_query.details, organism=genome_query.organism,
+                                 details_genome=genome_query.details)
 
 
 MASS = {' C ': 12.011, ' N ': 14.007, ' O ': 16, ' Cl ': 35.453, ' P ': 30.974, ' S ': 32.065, ' H ': 1.008}

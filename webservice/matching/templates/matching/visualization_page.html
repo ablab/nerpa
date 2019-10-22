@@ -15,12 +15,14 @@
         <div class="matchInfo">
             <div style="margin-left: 10px;">
                 <p> <b>Score:</b> {{ result.score }}</br>
-                    <b>NRP ID:</b> {{ result.mol_id }}</br>
                     <b>Genome ID:</b> {{ result.genome_id }}</br>
+                    <b>Orgainsm:</b> {{ result.organism }}</br>
+                    <b>Extra genome info:</b> {{ result.genome_extra_info }}</br>
+                    </br>
+                    <b>Structure ID:</b> {{ result.mol_id }}</br>
                     <b>Product name:</b> {{ result.product_name }} </br>
+                    <b>Extra structure info:</b> {{  result.mol_extra_info }} </br>
                     <b>Mass:</b> {{ result.mass }} </br>
-                    <b>NRP database(s):</b> {{ result.databases }}</br>
-                    <b>Link:</b> <a href={{ result.ref }}> {{ result.ref }} </a> </br>
                     <b>Num AA:</b> {{ result.AA_number }}</br>
                     <b>Num Matched AA:</b> {{  result.AA_matching_number }} </br>
                     {% autoescape off %}
