@@ -42,7 +42,7 @@ class GenomeQuery:
         self.genome_id = genome_id
         self.genome_name = genome_name
         self.res_folder = res_folder
-        self.organusm = organism
+        self.organism = organism
         self.details = details
         self.antismashRes = os.path.join(ANTISMASH_ROOT, "res" + str(request_id), self.genome_id)
         if not os.path.exists(self.antismashRes):

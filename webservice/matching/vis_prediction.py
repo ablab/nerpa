@@ -958,6 +958,15 @@ def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request
     if peptide != "":
         subName = peptide
 
+    if details_structure == "":
+        details_structure = "N/A"
+    if details_genome == "":
+        details_genome = "N/A"
+    if organism == "":
+        organism = "N/A"
+    if subName == "":
+        subName = "N/A"
+
     model_object = MatchingResult(request_id=request_id, innerTableHTML=innerHTML, orfsInfo=orfsInfo,
                                   mol_id=molName, mol_extra_info=details_structure,
                                   genome_extra_info=details_genome, organism=organism,
