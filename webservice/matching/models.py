@@ -30,6 +30,7 @@ class MatchingResult(models.Model):
     AA_matching_number = models.IntegerField()
     linkToAntismash = models.TextField()
     SMILE = models.TextField()
+    alignment_text_format = models.TextField()
 
     def save_matching(self):
         self.save()

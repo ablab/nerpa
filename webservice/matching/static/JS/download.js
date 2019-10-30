@@ -18,3 +18,23 @@ function download_csv() {
         }
     });
 }
+
+function download_one_result() {
+    var data_query = {};
+    data_query["DOWNLOAD"] = "ONE_RESULT";
+
+    $.ajax({
+        type: "GET",
+        url: this.href,
+        data: data_query,
+        success: function (data) {
+            console.log(data);
+
+            var hiddenElement = document.createElement('a');
+            hiddenElement.href = 'data:text;charset=utf-8,' + data;
+            hiddenElement.target = '_blank';
+            hiddenElement.download = 'nerpa_result';
+            hiddenElement.click();
+        }
+    });
+}

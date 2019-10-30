@@ -29,11 +29,37 @@
                         {{ result.orfsInfo}}
                     {% endautoescape %}
                 </p>
+                 </br>
                  <a href="{{ result.linkToAntismash }}">Antismash Result</a>
-                 <div class="withPointer" onclick="handleSMILECopy('{{ result.SMILE }}')">Copy SMILE</div>
+                 <div class="withPointer" onclick="handleSMILECopy('{{ result.SMILE }}')">Copy SMILES</div>
+                 <div class="withPointer" onclick="download_one_result()">Download Result</div>
             </div>
         </div>
         <div class="mainResult">
+            <h3>Nerpa alignment and structure:</h3>
+            <div class="vis-block">
+                <div class="row">
+                    <div class="column">
+                        <img src="{{result.img.url }}">
+                    </div>
+                    <div class="column">
+                        <img src="{{result.img_structure.url }}">
+                    </div>
+                </div>
+            </div>
+
+            <h3>Predictions:</h3>
+            <div class="vis-block">
+                {% autoescape off %}
+                    {{ result.innerTableHTML}}
+                {% endautoescape %}
+            </div>
+
+            <h3>Detailed annotation: </h3>
+            <div class="vis-block">
+                <div class="details-svg" id="cluster-1-details-svg"></div>
+            </div>
+
             <h3>Gene cluster description: </h3>
             <div class="vis-block">
                 <div class="description-text" id="cluster-1-description-text"> {{ result.genome_id }} - Gene Cluster 1. Type = nrps. Location:  </div>
@@ -59,33 +85,9 @@
                 </div>
             </div>
 
-
-            <h3>Predictions:</h3>
-            <div class="vis-block">
-                {% autoescape off %}
-                    {{ result.innerTableHTML}}
-                {% endautoescape %}
-            </div>
-
-            <h3>Detailed annotation: </h3>
-            <div class="vis-block">
-                <div class="details-svg" id="cluster-1-details-svg"></div>
-            </div>
-
-
-            <h3>Nerpa alignment and structure:</h3>
-            <div class="vis-block">
-                <div class="row">
-                    <div class="column">
-                        <img src="{{result.img.url }}">
-                    </div>
-                    <div class="column">
-                        <img src="{{result.img_structure.url }}">
-                    </div>
-                </div>
-            </div>
         </div>
 <script src="{%  static 'JS/SMILECopy.js' %}"></script>
+<script src="{%  static 'JS/download.js' %}"></script>
 <script src="{%  static 'JS/Antismash/jquery.js' %}"></script>
 <script src="{%  static 'JS/Antismash/purl.js' %}"></script>
 <script src="{%  static 'JS/Antismash/d3.v2.js' %}"></script>

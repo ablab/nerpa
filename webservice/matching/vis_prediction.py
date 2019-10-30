@@ -718,9 +718,11 @@ def isAA(s):
         return True
     return False
 
+
 def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G, g, nrpDB):
     cntAA = 0
     cntMatchAA = 0
+    str_graph = ""
     with open(detailMolFN) as f:
         lines = f.readlines()
         cur = 0
@@ -738,6 +740,7 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
         score = ParseScore(lines[cur + 2])
         cur += 3  # cnt prefix line
         n = int(lines[cur].split(' ')[-1])
+        str_graph += lines[cur]
         cur += 1
         vertInfo = []
         nodecolor = [0] * n
@@ -746,6 +749,7 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
         for i in range(n):
             g.append([])
             vertInfo.append(lines[cur].split(' '))
+            str_graph += lines[cur]
             if (vertInfo[-1][-1] == '-\n'):
                 vertInfo[-1].append('-')
                 vertInfo[-1].append('-')
@@ -782,9 +786,11 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
             cur += 1
 
         m = int(lines[cur].split(' ')[-1])
+        str_graph += lines[cur]
         cur += 1
         for i in range(m):
             G.add_edge(int(lines[cur].split(' ')[0]), int(lines[cur].split(' ')[-1]))
+            str_graph += lines[cur]
             g[int(lines[cur].split(' ')[0])].append(int(lines[cur].split(' ')[-1]))
             g[int(lines[cur].split(' ')[-1])].append(int(lines[cur].split(' ')[0]))
             cur += 1
@@ -833,7 +839,7 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
         plt.savefig('tmp.png')
         plt.close()
 
-        return sub_name, mass, ref, dbs, score, cntAA, cntMatchAA
+        return sub_name, mass, ref, dbs, score, cntAA, cntMatchAA, str_graph
 
 
 def parsePrediction(predictionFN, predictionInfo, predictionList, color):
@@ -947,7 +953,7 @@ def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request
     predictionList = []
 
     parsePrediction(predictionFN, predictionInfo, predictionList, color)
-    subName, mass, ref, dbs, score, cntAA, cntMatchAA = parseGraph(detailMolFN, molName,
+    subName, mass, ref, dbs, score, cntAA, cntMatchAA, str_graph = parseGraph(detailMolFN, molName,
                                                                    genomeName, color, choosePred,
                                                                    usedOrfs, G, g, nrpDB)
     innerHTML, orfsInfo = createTableInnerHTML(predictionList, usedOrfs, predictionInfo, choosePred, color)
@@ -972,7 +978,8 @@ def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request
                                   genome_extra_info=details_genome, organism=organism,
                                   product_name=subName, mass=mass, ref=ref,
                                   databases=dbs, genome_id=show_genome_name, score=float(score.split('(')[0]),
-                                  AA_number=cntAA, AA_matching_number=cntMatchAA, linkToAntismash=antismash, SMILE=SMILE)
+                                  AA_number=cntAA, AA_matching_number=cntMatchAA, linkToAntismash=antismash, SMILE=SMILE,
+                                  alignment_text_format=str_graph)
     model_object.img.save('pic.png', File(open('tmp.png', 'rb')))
     model_object.img_structure.save('pic_structure.png', File(open("tmp_structure.png", "rb")))
     model_object.save()

@@ -150,6 +150,23 @@ def reports_page(request):
     return render(request, 'matching/reports_page.html', {'requests': requests})
 
 
+def result_to_str(result):
+    res = ""
+    res += "Score: " + str(result.score) + "\n"
+    res += "Genome ID: " + str(result.genome_id) + "\n"
+    res += "Organism: " + str(result.organism) + "\n"
+    res += "Extra genome info: " + str(result.genome_extra_info) + "\n\n"
+    res += "Structure ID: " +  str(result.mol_id) + "\n"
+    res += "Product name: " + str(result.product_name) + "\n"
+    res += "Extra structure info: " + str(result.mol_extra_info) + "\n"
+    res += "Mass: " + str(result.mass) + "\n"
+    res += "Num AA: " + str(result.AA_number) + "\n"
+    res += "Num Matched AA: " + str(result.AA_matching_number) + "\n"
+    res += "\n"
+    res += result.alignment_text_format
+    return res
+
+
 def vis_page(request, pk):
     result = get_object_or_404(MatchingResult, pk=pk)
     result.genome_id = result.genome_id.split('/')[-1]
@@ -157,6 +174,14 @@ def vis_page(request, pk):
         result.genome_id = get_object_or_404(Request, request_id=result.request_id).genome_file
     result.linkToAntismash = os.path.join(ANTISMASH_URL, result.linkToAntismash)
     result.linkToGenecluster = os.path.join(ANTISMASH_URL, '/'.join(result.linkToAntismash.split('/')[:-1] + ["geneclusters.js"]))
+    if request.method == "GET":
+        download_value = request.GET.get("DOWNLOAD", None)
+        if download_value is not None:
+            response = HttpResponse(content_type='text')
+            response['Content-Disposition'] = 'attachment; filename="nerpa_result"'
+            text_info_result = result_to_str(result)
+            response.write(text_info_result)
+            return response
     return render(request, 'matching/visualization_page.html', {'result': result})
 
 

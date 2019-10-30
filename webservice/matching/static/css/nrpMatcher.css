@@ -58,6 +58,10 @@ ul {
     cursor: pointer;
 }
 
+.withPointer {
+    text-decoration: underline;
+}
+
 .withPointer:hover {
     cursor: pointer;
 }
