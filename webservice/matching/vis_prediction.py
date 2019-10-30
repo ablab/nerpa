@@ -942,7 +942,7 @@ def createStructurePic(smile):
 
 def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request_id,
                          nrpDB, show_genome_name, antismash, SMILE, peptide="",
-                         details_structure="", details_genome="", organism=""):
+                         details_structure="", details_genome="", organism="", cluster=1):
     print("start viz " + molName)
     G = nx.Graph()
     g = []
@@ -979,7 +979,7 @@ def visualize_prediction(detailMolFN, predictionFN, molName, genomeName, request
                                   product_name=subName, mass=mass, ref=ref,
                                   databases=dbs, genome_id=show_genome_name, score=float(score.split('(')[0]),
                                   AA_number=cntAA, AA_matching_number=cntMatchAA, linkToAntismash=antismash, SMILE=SMILE,
-                                  alignment_text_format=str_graph)
+                                  alignment_text_format=str_graph, cluster=cluster)
     model_object.img.save('pic.png', File(open('tmp.png', 'rb')))
     model_object.img_structure.save('pic_structure.png', File(open("tmp_structure.png", "rb")))
     model_object.save()

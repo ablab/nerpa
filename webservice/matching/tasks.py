@@ -49,14 +49,30 @@ class GenomeQuery:
             os.makedirs(self.antismashRes)
         self.predictionPath = os.path.join(self.antismashRes, "nrpspks_predictions_txt/ctg1_nrpspredictor2_codes.txt")
 
+    def generate_genome_cluster_list(self):
+        import copy
+
+        genome_cluster_list = []
+        res_folder = os.path.join(self.antismashRes, "nrpspks_predictions_txt")
+        for file in os.listdir(res_folder):
+            if "nrpspredictor2_codes.txt" in file:
+                genome_cluster_list.append(copy.copy(self))
+                genome_cluster_list[-1].predictionPath = os.path.join(res_folder, file)
+                genome_cluster_list[-1].cluster = int(file.split('_')[0][3:])
+        return genome_cluster_list
+
     def run_antismash(self, predictionInfo):
         cmdline = "python2 " + pathToAntismash + " " + self.path_to_genome + " --outputfolder " + self.antismashRes
         print(cmdline)
         if os.system(cmdline) != 0:
             raise Exception("Running antismash failed")
 
+        genome_cluster_list = self.generate_genome_cluster_list()
+
         with open(predictionInfo, "a+") as fw:
-            fw.write(self.predictionPath + "\n")
+            for genome_cluster in genome_cluster_list:
+                fw.write(genome_cluster.predictionPath + "\n")
+        return genome_cluster_list
 
 
 class Query:
@@ -209,9 +225,11 @@ class Query:
         self.genomes = []
         self.structures = []
         self.create_genomes_list()
+        cluster_genomes_list = []
         for genome in self.genomes:
-            genome.run_antismash(self.predictionInfo)
+            cluster_genomes_list += genome.run_antismash(self.predictionInfo)
 
+        self.genomes = cluster_genomes_list
         self.handle_mols()
 
     def genome_name_by_path(self, path):
@@ -283,7 +301,7 @@ def save_results_prediction(query):
                                  os.path.join("res" + str(query.request_id), genome_query.genome_id, "index.html"),
                                  query.get_SMILE_by_mol_id(filename), peptide=structure_query.peptide,
                                  details_structure=structure_query.details, organism=genome_query.organism,
-                                 details_genome=genome_query.details)
+                                 details_genome=genome_query.details, cluster=genome_query.cluster)
 
 
 MASS = {' C ': 12.011, ' N ': 14.007, ' O ': 16, ' Cl ': 35.453, ' P ': 30.974, ' S ': 32.065, ' H ': 1.008}

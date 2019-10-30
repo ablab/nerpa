@@ -14,6 +14,7 @@ class MatchingResult(models.Model):
     img_structure = models.ImageField()
     innerTableHTML = models.TextField()
     orfsInfo = models.TextField()
+    cluster = models.IntegerField()
 
     mol_id = models.TextField()
     mol_extra_info = models.TextField()

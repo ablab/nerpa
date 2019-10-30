@@ -16,6 +16,7 @@
             <div style="margin-left: 10px;">
                 <p> <b>Score:</b> {{ result.score }}</br>
                     <b>Genome ID:</b> {{ result.genome_id }}</br>
+                    <b>Cluster: </b> {{ result.cluster }} </br>
                     <b>Orgainsm:</b> {{ result.organism }}</br>
                     <b>Extra genome info:</b> {{ result.genome_extra_info }}</br>
                     </br>
@@ -30,7 +31,7 @@
                     {% endautoescape %}
                 </p>
                  </br>
-                 <a href="{{ result.linkToAntismash }}">Antismash Result</a>
+                 <a href="{{ result.linkToAntismash }}#cluster-{{ result.cluster }}">Antismash Result</a>
                  <div class="withPointer" onclick="handleSMILECopy('{{ result.SMILE }}')">Copy SMILES</div>
                  <div class="withPointer" onclick="download_one_result()">Download Result</div>
             </div>
@@ -57,13 +58,13 @@
 
             <h3>Detailed annotation: </h3>
             <div class="vis-block">
-                <div class="details-svg" id="cluster-1-details-svg"></div>
+                <div class="details-svg" id="cluster-{{ result.cluster }}-details-svg"></div>
             </div>
 
             <h3>Gene cluster description: </h3>
             <div class="vis-block">
-                <div class="description-text" id="cluster-1-description-text"> {{ result.genome_id }} - Gene Cluster 1. Type = nrps. Location:  </div>
-                <div id="cluster-1-svg"></div>
+                <div class="description-text" id="cluster-1-description-text"> {{ result.genome_id }} - Gene Cluster {{ result.cluster }}. Type = nrps. Location:  </div>
+                <div id="cluster-{{ result.cluster }}-svg"></div>
             </div>
             <div class="legend">
                 <h4>Legend:</h4>
@@ -96,9 +97,9 @@
 <script src="{%  static 'JS/Antismash/clusterblast.js' %}"></script>
 <script src={{ result.linkToGenecluster }}></script>
 <script type="text/javascript">
-    svgene.drawClusters("cluster-1-svg", [geneclusters["cluster-1"]], 20, 700);
-    jsdomain.drawDomains("cluster-1-details-svg", details_data["cluster-1"], 40, 700);
-    document.getElementById("cluster-1-description-text").innerHTML += geneclusters["cluster-1"]["start"] + " - " +  geneclusters["cluster-1"]["end"] + " nt";
+    svgene.drawClusters("cluster-{{ result.cluster }}-svg", [geneclusters["cluster-{{ result.cluster }}"]], 20, 700);
+    jsdomain.drawDomains("cluster-{{ result.cluster }}-details-svg", details_data["cluster-{{ result.cluster }}"], 40, 700);
+    document.getElementById("cluster-{{ result.cluster }}-description-text").innerHTML += geneclusters["cluster-{{ result.cluster }}"]["start"] + " - " +  geneclusters["cluster-{{ result.cluster }}"]["end"] + " nt";
 </script>
 </body>
 </html>
