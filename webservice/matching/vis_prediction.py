@@ -762,8 +762,7 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
                 vertInfo[-1] = ['-', '-'] + vertInfo[-1]
 
             if (vertInfo[-1][4] != "-\n"):
-                labels[i] = vertInfo[-1][4].split('(')[0] + "\n" + "(" + vertInfo[-1][4].split('(')[1] + " " + \
-                            vertInfo[-1][5] + "\n"
+                labels[i] = (vertInfo[-1][4].split('(')[0])[:min(8, len(vertInfo[-1][4].split('(')[0]))] + "\n"
             else:
                 node_size[i] = 400
 
@@ -773,11 +772,14 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
                     cntAA += 1
                 else:
                     node_size[i] = 60
+
             if (vertInfo[-1][-2] != "-"):
-                labels[i] += vertInfo[-1][-2] + " " + vertInfo[-1][-1] + "\n"
+                labels[i] += "\n" + vertInfo[-1][-1] + "\n\n\n"
                 usedOrfs.add(vertInfo[-1][-2])
                 cntMatchAA += 1
-            labels[i] += "\n\n\n\n"
+            else:
+                labels[i] += "\n\n\n\n"
+
             if vertInfo[-1][4] != "-\n" and vertInfo[-1][0] != "-":
                 if (vertInfo[-1][-2] not in choosePred):
                     choosePred[vertInfo[-1][-2]] = dict()
@@ -835,7 +837,7 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
                 node_size[i] = 0
                 labels[i] = ""
 
-        nx.draw(G, pos=pos, node_color=nodecolor, labels=labels, node_size=node_size)
+        nx.draw(G, pos=pos, node_color=nodecolor, labels=labels, node_size=node_size, font_size=8)
         plt.savefig('tmp.png')
         plt.close()
 
