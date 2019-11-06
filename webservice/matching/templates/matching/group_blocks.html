@@ -3,14 +3,14 @@
 {% block results_block %}
     <div class="overflowdiva">
             {% for result in results %}
-                <div class="group_block" onclick="choose_group('{{ result.genome_id }}')">
+                <div class="group_block" onclick="choose_group('{{ result.group_by_type }}', '{{ result.group_by_value }}')">
                     <div class="clearfix">
                         <p><b>The number of matches in the group:</b> {{ result.elem_cnt }}</p>
                         <p><b>The best result:</b></p>
                         <a><img src="{{result.img.url }}" height="150" style="float: left; margin-right: 15px; margin-left: 30px"></a>
                         <div >
                             <p> <b>Score:</b> {{ result.score }}</br>
-                                <b>NRP ID:</b> {{ result.mol_id }}</br>
+                                <b>Structure ID:</b> {{ result.mol_id }}</br>
                                 <b>Genome ID:</b> {{ result.genome_id }}</br>
                                 <b>Cluster: </b> {{ result.cluster }} </br>
                                 <b>Product name:</b> {{ result.product_name }} </br>

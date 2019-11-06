@@ -6,6 +6,8 @@ function Groups(name, type, title) {
 
 var groups = [new Groups("All results", "none", "All results")];
 
+var title_prefix = {"genome_id": "Genome id: ", "structure_id": "Structure id: "};
+
 function group_by_update() {
     var selector = document.getElementById('select_group_by');
     var choose_option = selector.options[selector.selectedIndex].value;
@@ -65,8 +67,16 @@ function change_group(eid) {
 }
 
 
-function choose_group(genome_id) {
-    groups.push(new Groups(genome_id, "genome_id", "Genome id: " + genome_id));
+function choose_group(type, value) {
+    var title = "";
+    if (type == "BGC") {
+        var res = value.split("__ctg");
+        title = "BGC: " + res[0] + " cluster #" + res[1];
+    } else {
+        title = title_prefix[type] + value;
+    }
+
+    groups.push(new Groups(value, type, title));
     document.getElementById('select_group_by').value = "none";
 
     update_navigation();

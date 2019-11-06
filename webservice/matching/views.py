@@ -188,7 +188,7 @@ def vis_page(request, pk):
 def update_results_for_group_by(group_by_value, results):
     if group_by_value == "none":
         return results
-    else:
+    elif group_by_value == "genome_id":
         elem_cnt_genome_id = {}
         output_results = []
         for result in results:
@@ -199,6 +199,38 @@ def update_results_for_group_by(group_by_value, results):
 
         for i in range(len(output_results)):
             output_results[i].elem_cnt = elem_cnt_genome_id[output_results[i].genome_id]
+            output_results[i].group_by_type = "genome_id"
+            output_results[i].group_by_value = output_results[i].genome_id
+        return output_results
+    elif group_by_value == "structure_id":
+        elem_cnt_mol_id = {}
+        output_results = []
+        for result in results:
+            if result.mol_id not in elem_cnt_mol_id:
+                elem_cnt_mol_id[result.mol_id] = 0
+                output_results.append(result)
+            elem_cnt_mol_id[result.mol_id] += 1
+
+        for i in range(len(output_results)):
+            output_results[i].elem_cnt = elem_cnt_mol_id[output_results[i].mol_id]
+            output_results[i].group_by_type = "structure_id"
+            output_results[i].group_by_value = output_results[i].mol_id
+        return output_results
+    elif group_by_value == "BGC":
+        elem_cnt_BGC = {}
+        output_results = []
+        get_BGC = lambda result: result.genome_id + "__ctg" + str(result.cluster)
+
+        for result in results:
+            if get_BGC(result) not in elem_cnt_BGC:
+                elem_cnt_BGC[get_BGC(result)] = 0
+                output_results.append(result)
+            elem_cnt_BGC[get_BGC(result)] += 1
+
+        for i in range(len(output_results)):
+            output_results[i].elem_cnt = elem_cnt_BGC[get_BGC(output_results[i])]
+            output_results[i].group_by_type = "BGC"
+            output_results[i].group_by_value = get_BGC(output_results[i])
         return output_results
 
 
@@ -208,6 +240,20 @@ class ResultFilter:
         self.inner_filter = ifilter
 
     def is_good(self, result):
+        return True
+
+
+class StructureIdResultFilter(ResultFilter):
+    def __init__(self, structure_id, ifilter=None):
+        self.structure_id = structure_id
+        ResultFilter.__init__(self, ifilter)
+
+    def is_good(self, result):
+        if result.mol_id != self.structure_id:
+            return False
+
+        if self.inner_filter is not None:
+            return self.inner_filter.is_good(result)
         return True
 
 
@@ -223,6 +269,31 @@ class GenomeIdResultFilter(ResultFilter):
         if self.inner_filter is not None:
             return self.inner_filter.is_good(result)
         return True
+
+
+class ClusterNumFilter(ResultFilter):
+    def __init__(self, cluster_num, ifilter=None):
+        self.cluster_num = cluster_num
+        ResultFilter.__init__(self, ifilter)
+
+    def is_good(self, result):
+        if str(result.cluster) != self.cluster_num:
+            return False
+
+        if self.inner_filter is not None:
+            return self.inner_filter.is_good(result)
+        return True
+
+
+class BGCResultFilter(ResultFilter):
+    def __init__(self, BGC, ifilter=None):
+        genome_id, cluster_num = BGC.split("__ctg")
+        ifilter = GenomeIdResultFilter(genome_id, ifilter)
+        ifilter = ClusterNumFilter(cluster_num, ifilter)
+        ResultFilter.__init__(self, ifilter)
+
+    def is_good(self, result):
+        return self.inner_filter.is_good(result)
 
 
 class MinScoreResultFilter(ResultFilter):
@@ -286,6 +357,16 @@ def apply_filters(request, results):
     if genome_id is not None:
         blocks_only = True
         current_filter = GenomeIdResultFilter(genome_id, current_filter)
+
+    structure_id = request.GET.get("structure_id", None)
+    if structure_id is not None:
+        blocks_only = True
+        current_filter = StructureIdResultFilter(structure_id, current_filter)
+
+    BGC = request.GET.get("BGC", None)
+    if BGC is not None:
+        blocks_only = True
+        current_filter = BGCResultFilter(BGC, current_filter)
 
     min_score = request.GET.get("min_score", None)
     if min_score is not None:
