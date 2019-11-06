@@ -31,8 +31,8 @@ function update_navigation() {
 function generate_data_query() {
     var data_query = {};
     for (var elem in groups) {
-        if (elem.type != "none") {
-            data_query[elem.type] = elem.name;
+        if (groups[elem].type != "none") {
+            data_query[groups[elem].type] = groups[elem].name;
         }
     }
 
