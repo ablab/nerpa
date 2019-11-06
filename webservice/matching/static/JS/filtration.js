@@ -6,7 +6,7 @@ function Groups(name, type, title) {
 
 var groups = [new Groups("All results", "none", "All results")];
 
-var title_prefix = {"genome_id": "Genome id: ", "structure_id": "Structure id: "};
+var title_prefix = {"genome_id": "Genome id: ", "structure_id": "Structure id: ", "product": "Product: "};
 
 function group_by_update() {
     var selector = document.getElementById('select_group_by');

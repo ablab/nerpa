@@ -232,6 +232,22 @@ def update_results_for_group_by(group_by_value, results):
             output_results[i].group_by_type = "BGC"
             output_results[i].group_by_value = get_BGC(output_results[i])
         return output_results
+    elif group_by_value == "product":
+        elem_cnt = {}
+        output_results = []
+        get_product = lambda result: result.product_name.split()[0].lower()
+
+        for result in results:
+            if get_product(result) not in elem_cnt:
+                elem_cnt[get_product(result)] = 0
+                output_results.append(result)
+            elem_cnt[get_product(result)] += 1
+
+        for i in range(len(output_results)):
+            output_results[i].elem_cnt = elem_cnt[get_product(output_results[i])]
+            output_results[i].group_by_type = "product"
+            output_results[i].group_by_value = get_product(output_results[i])
+        return output_results
 
 
 class ResultFilter:
@@ -240,6 +256,20 @@ class ResultFilter:
         self.inner_filter = ifilter
 
     def is_good(self, result):
+        return True
+
+
+class ProductResultFilter(ResultFilter):
+    def __init__(self, product, ifilter=None):
+        self.product = product
+        ResultFilter.__init__(self, ifilter)
+
+    def is_good(self, result):
+        if result.product_name.split()[0].lower() != self.product:
+            return False
+
+        if self.inner_filter is not None:
+            return self.inner_filter.is_good(result)
         return True
 
 
@@ -367,6 +397,11 @@ def apply_filters(request, results):
     if BGC is not None:
         blocks_only = True
         current_filter = BGCResultFilter(BGC, current_filter)
+
+    Product = request.GET.get("product", None)
+    if Product is not None:
+        blocks_only = True
+        current_filter = ProductResultFilter(Product, current_filter)
 
     min_score = request.GET.get("min_score", None)
     if min_score is not None:
