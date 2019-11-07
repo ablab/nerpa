@@ -879,6 +879,13 @@ def createTableInnerHTML(predictionList, usedOrfs, predictionInfo, choosePred, c
             continue
         innerHTML += "        <tr>\n"
         innerHTML += "        <th rowspan=\"3\" style = \"padding: 10px\">" + orf + "</th>\n"
+
+        for i in range(len(predictionInfo[orf])):
+            for j in range(len(predictionInfo[orf][i])):
+                if (orf in choosePred) and (i in choosePred[orf]) and (choosePred[orf][i].split('-')[-1] == predictionInfo[orf][i][j].split('(')[0]):
+                    if j > 2:
+                        predictionInfo[orf][i][j], predictionInfo[orf][i][2] = predictionInfo[orf][i][2], predictionInfo[orf][i][j]
+
         for j in range(3):
             for i in range(len(predictionInfo[orf])):
                 if (j == 0):
@@ -907,6 +914,8 @@ def createTableInnerHTML(predictionList, usedOrfs, predictionInfo, choosePred, c
                 innerHTML += "        <tr>\n"
 
     innerHTML += "        </table>\n"
+
+
     orfsInfo = "<div class=\"orfcntTb\">\n<b>Number of prediction orfs:</b>\n<table>\n"
     orfsInfo += "<tr>\n"
     orfsInfo += "<th>Length(in AA)</th>\n"
