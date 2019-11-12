@@ -89,6 +89,7 @@
         </div>
 <script src="{%  static 'JS/SMILECopy.js' %}"></script>
 <script src="{%  static 'JS/download.js' %}"></script>
+<script src="{%  static 'JS/TabChoose.js' %}"></script>
 <script src="{%  static 'JS/Antismash/jquery.js' %}"></script>
 <script src="{%  static 'JS/Antismash/purl.js' %}"></script>
 <script src="{%  static 'JS/Antismash/d3.v2.js' %}"></script>
@@ -97,6 +98,7 @@
 <script src="{%  static 'JS/Antismash/clusterblast.js' %}"></script>
 <script src={{ result.linkToGenecluster }}></script>
 <script type="text/javascript">
+    changeActive("none");
     svgene.drawClusters("cluster-{{ result.cluster }}-svg", [geneclusters["cluster-{{ result.cluster }}"]], 20, 700);
     jsdomain.drawDomains("cluster-{{ result.cluster }}-details-svg", details_data["cluster-{{ result.cluster }}"], 40, 700);
     document.getElementById("cluster-{{ result.cluster }}-description-text").innerHTML += geneclusters["cluster-{{ result.cluster }}"]["start"] + " - " +  geneclusters["cluster-{{ result.cluster }}"]["end"] + " nt";
