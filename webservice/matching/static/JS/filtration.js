@@ -5,7 +5,7 @@ function Groups(name, type, title) {
 }
 
 var groups = [new Groups("All results", "none", "All results")];
-var last_elements_cnt = (document.getElementById('result_container').match(/<div class="block">/g) || []).length;
+var last_elements_cnt = 0;
 
 var title_prefix = {"genome_id": "Genome id: ", "structure_id": "Structure id: ", "product": "Product: ", "BGC": "BGC: "};
 var select_option_text = {"genome_id": "Genome id", "structure_id": "Structure id", "BGC": "BGC", "product": "Product"};
