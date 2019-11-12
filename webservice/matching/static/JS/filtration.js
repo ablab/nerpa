@@ -23,21 +23,14 @@ function updtae_group_by_list() {
         return false;
     }
 
-    var used_val = [];
-
     for (var i = 0; i < selectobject.length; ++i) {
-        used_val.push(selectobject.options[i].value);
-        if (type_in_groups(selectobject.options[i].value)) {
-            selectobject.remove(i);
-            --i;
-        }
+        selectobject.options[i].disabled = false;
     }
 
-    for (var key in select_option_text) {
-        if (!type_in_groups(key) && !(key in used_val)) {
-            var option = document.createElement(key);
-            option.text = select_option_text[key];
-            selectobject.appendChild(option);
+
+    for (i = 0; i < selectobject.length; ++i) {
+        if (type_in_groups(selectobject.options[i].value)) {
+            selectobject.options[i].disabled = true;
         }
     }
 }
