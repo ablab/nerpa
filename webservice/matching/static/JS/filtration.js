@@ -6,7 +6,41 @@ function Groups(name, type, title) {
 
 var groups = [new Groups("All results", "none", "All results")];
 
-var title_prefix = {"genome_id": "Genome id: ", "structure_id": "Structure id: ", "product": "Product: "};
+var title_prefix = {"genome_id": "Genome id: ", "structure_id": "Structure id: ", "product": "Product: ", "BGC": "BGC: "};
+var select_option_text = {"genome_id": "Genome id", "structure_id": "Structure id", "BGC": "BGC", "product": "Product"};
+function updtae_group_by_list() {
+    var selectobject = document.getElementById("select_group_by");
+
+    function type_in_groups(type_value) {
+        if (type_value == "none") {
+            return false;
+        }
+        for (var i = 0; i < groups.length; ++i) {
+            if (groups[i].type == type_value) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    var used_val = [];
+
+    for (var i = 0; i < selectobject.length; ++i) {
+        used_val.push(selectobject.options[i].value);
+        if (type_in_groups(selectobject.options[i].value)) {
+            selectobject.remove(i);
+            --i;
+        }
+    }
+
+    for (var key in select_option_text) {
+        if (!type_in_groups(key) && !(key in used_val)) {
+            var option = document.createElement(key);
+            option.text = select_option_text[key];
+            selectobject.appendChild(option);
+        }
+    }
+}
 
 function group_by_update() {
     var selector = document.getElementById('select_group_by');
@@ -64,6 +98,7 @@ function change_group(eid) {
     groups = groups.slice(0, eid + 1);
     update_navigation();
     generate_query();
+    updtae_group_by_list();
 }
 
 
@@ -81,4 +116,5 @@ function choose_group(type, value) {
 
     update_navigation();
     generate_query();
+    updtae_group_by_list();
 }
