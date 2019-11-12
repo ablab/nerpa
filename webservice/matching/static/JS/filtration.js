@@ -35,19 +35,6 @@ function updtae_group_by_list() {
     }
 }
 
-function group_by_update() {
-    var selector = document.getElementById('select_group_by');
-    var choose_option = selector.options[selector.selectedIndex].value;
-    $.ajax({
-        type: "GET",
-        url: this.href,
-        data: {"request_type": "group_by", "value": choose_option},
-        success: function (data) {
-            document.getElementById('result_container').innerHTML = data;
-        }
-    });
-}
-
 function update_navigation() {
     var groupby_ul = document.getElementById('groupby_list');
     groupby_ul.innerHTML = "";
@@ -76,6 +63,24 @@ function generate_data_query() {
 
 function generate_query() {
     var data_query = generate_data_query();
+
+    $.ajax({
+        type: "GET",
+        url: this.href,
+        data: data_query,
+        success: function (data) {
+            document.getElementById('result_container').innerHTML = data;
+        }
+    });
+}
+
+function group_by_update() {
+    var data_query = generate_data_query();
+    var selector = document.getElementById('select_group_by');
+    var choose_option = selector.options[selector.selectedIndex].value;
+
+    data_query["request_type"] = "group_by";
+    data_query["value"] = choose_option;
 
     $.ajax({
         type: "GET",

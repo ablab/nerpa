@@ -377,10 +377,6 @@ def check_download(request, results):
 
 def apply_filters(request, results):
     blocks_only = False
-    group_by_value = request.GET.get("value", None)
-    if group_by_value:
-        blocks_only = True
-        results = update_results_for_group_by(group_by_value, results)
 
     current_filter = ResultFilter()
     genome_id = request.GET.get("genome_id", None)
@@ -417,6 +413,11 @@ def apply_filters(request, results):
     for result in results:
         if current_filter.is_good(result):
             output_res.append(result)
+
+    group_by_value = request.GET.get("value", None)
+    if group_by_value:
+        blocks_only = True
+        output_res = update_results_for_group_by(group_by_value, output_res)
 
     return (blocks_only, output_res)
 
