@@ -5,6 +5,7 @@ function Groups(name, type, title) {
 }
 
 var groups = [new Groups("All results", "none", "All results")];
+var last_elements_cnt = (document.getElementById('result_container').match(/<div class="block">/g) || []).length;
 
 var title_prefix = {"genome_id": "Genome id: ", "structure_id": "Structure id: ", "product": "Product: ", "BGC": "BGC: "};
 var select_option_text = {"genome_id": "Genome id", "structure_id": "Structure id", "BGC": "BGC", "product": "Product"};
@@ -69,6 +70,8 @@ function generate_query() {
         url: this.href,
         data: data_query,
         success: function (data) {
+            last_elements_cnt = (data.match(/<div class="block">/g) || []).length;
+            document.getElementById("number_of_found_matches").innerHTML = "<b>Number of found matches:</b> " + last_elements_cnt.toString();
             document.getElementById('result_container').innerHTML = data;
         }
     });
@@ -87,6 +90,8 @@ function group_by_update() {
         url: this.href,
         data: data_query,
         success: function (data) {
+            var group_count = (data.match(/<div class="group_block"/g) || []).length;
+            document.getElementById("number_of_found_matches").innerHTML = "<b>Number of found matches:</b> " + last_elements_cnt.toString() + " (" + group_count.toString() + " groups)";
             document.getElementById('result_container').innerHTML = data;
         }
     });
