@@ -23,6 +23,8 @@ set(SOURCE_FILES main.cpp
         NRP/NRPtail.cpp
         Matcher/Matcher.h
         Matcher/Matcher.cpp
+        Matcher/OrderedGenesMatcher.h
+        Matcher/OrderedGenesMatcher.cpp
         Matcher/MatcherBase.h
         Matcher/InDelMatcher.h
         Matcher/InDelMatcher.cpp
@@ -69,6 +71,7 @@ set(SOURCE_FILES main.cpp
         Matcher/Score/Base/ScoreNormalize.h
         Matcher/Score/Base/ScoreOpenContinueGap.h
         Matcher/Score/Base/ScoreSingleUnit.h
+        Matcher/Score/OrderedGenes/OrderedGenesScoreBase.h
         Json/json.hpp
         ArgParse/Args.cpp
         ArgParse/Args.h)

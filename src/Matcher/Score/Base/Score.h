@@ -89,6 +89,23 @@ namespace matcher {
             return score - 1./len;
         }
 
+
+        virtual double InDelScore() const {
+            if (baseScore != nullptr) {
+                return baseScore->InDelScore();
+            } else {
+                return -1;
+            }
+        }
+
+        virtual double SkipSegment() const {
+            if (baseScore != nullptr) {
+                return baseScore->SkipSegment();
+            } else {
+                return -1;
+            }
+        }
+
     protected:
         std::unique_ptr<Score> baseScore;
         double posscore[100];

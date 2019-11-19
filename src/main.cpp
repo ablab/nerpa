@@ -26,6 +26,8 @@
 #include <Matcher/SingleUnitMatcher.h>
 #include <Aminoacid/ModificationInfo.h>
 #include <omp.h>
+#include <Matcher/OrderedGenesMatcher.h>
+#include <Matcher/Score/OrderedGenes/OrderedGenesScoreBase.h>
 #include "Matcher/Matcher.h"
 #include "Matcher/InDelMatcher.h"
 
@@ -120,6 +122,8 @@ void getScoreFunction(Args args, matcher::Score*& score) {
         score = new Score;
     }
 
+    score = new OrderedGenesScoreBase(std::unique_ptr<Score>(std::move(score)));
+
     score = new ScoreNormalize(std::unique_ptr<Score>(std::move(score)));
     score = new ScoreOpenContinueGap(args.open_gap, args.continue_gap,
                                      std::unique_ptr<Score>(std::move(score)));
@@ -132,6 +136,8 @@ void getScoreFunction(Args args, matcher::Score*& score) {
 }
 
 matcher::MatcherBase* getMatcher(Args args) {
+    return new matcher::OrderedGenesMatcher();
+
     matcher::MatcherBase* matcherBase;
     if (args.single_match) {
         matcherBase = new matcher::SingleUnitMatcher();
