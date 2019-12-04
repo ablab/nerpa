@@ -44,11 +44,11 @@ namespace matcher {
         aminoacid::Formula formula = (nrpAA - predAA);
         aminoacid::Modification modification(formula);
         if (modification.getId() == aminoacid::ModificationInfo::MODIFICATION_CNT) {
-            return -1;
+            return Mismatch();
         } else {
             double modCoeff = modification.getScore(predAA.get_id());
             if (modCoeff < 0) {
-                return -1;
+                return Mismatch();
             }
 
             return baseScore->getScore(nrpAA, predAA, prob, pos) * modCoeff;

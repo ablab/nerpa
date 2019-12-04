@@ -89,7 +89,7 @@ double matcher::Score::getScore(const aminoacid::Aminoacid &nrpAA, const aminoac
         return baseScore->getScore(nrpAA, predAA, prob, pos);
     } else {
         if (pos.first == -1) {
-            return -1;
+            return Mismatch();
         } else {
             int mdpos = (pos.first + pos.second) / 2;
             if (mdpos >= 10) {

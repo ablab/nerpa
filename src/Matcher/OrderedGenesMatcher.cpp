@@ -141,71 +141,78 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(bool ca
     auto nrplen = size_t(nrp_iterator->getLen());
 
     //dp[nrp_pos][pred_pos] = score for prefix
-    std::vector< std::vector<double> > dp(nrplen + 1, std::vector<double>(plen + 1,  score->minScore(nrplen)));
-    std::vector< std::vector<int> > px(nrplen + 1, std::vector<int>(plen + 1,  0));
-    std::vector< std::vector<int> > py(nrplen + 1, std::vector<int>(plen + 1,  0));
+    std::vector<std::vector< std::vector<double> > > dp(2,
+                                                        std::vector<std::vector<double>>(nrplen + 1,
+                                                        std::vector<double>(plen + 1,  score->minScore(nrplen))));
+    std::vector<std::vector< std::vector<int> > > pgap(2,
+                                                       std::vector<std::vector<int> >(nrplen + 1,
+                                                       std::vector<int>(plen + 1,  0)));
+    std::vector<std::vector< std::vector<int> > > px(2, std::vector<std::vector<int> >(nrplen + 1,
+                                                        std::vector<int>(plen + 1,  0)));
+    std::vector<std::vector< std::vector<int> > > py(2, std::vector<std::vector<int> >(nrplen + 1,
+                                                        std::vector<int>(plen + 1,  0)));
 
-    dp[0][0] = 0;
+    dp[0][0][0] = 0;
     for (int npos = 1; npos <= nrplen; ++npos) {
-        dp[npos][0] = dp[npos - 1][0] + score->InDelScore();
-        px[npos][0] = npos - 1;
-        py[npos][0] = 0;
+        dp[0][npos][0] = dp[0][npos - 1][0] + score->InsertionScore();
+        px[0][npos][0] = npos - 1;
+        py[0][npos][0] = 0;
     }
 
     for (int ppos = 1; ppos <= plen; ++ppos) {
-        dp[0][ppos] = dp[0][ppos - 1] + score->InDelScore();
-        px[0][ppos] = 0;
-        py[0][ppos] = ppos - 1;
+        dp[0][0][ppos] = dp[0][0][ppos - 1] + score->DeletionScore();
+        px[0][0][ppos] = 0;
+        py[0][0][ppos] = ppos - 1;
 
-        if (dp[0][ppos - pos_id[ppos - 1] - 1] > dp[0][ppos]) {
-            dp[0][ppos] = dp[0][ppos - pos_id[ppos - 1] - 1];
-            px[0][ppos] = 0;
-            py[0][ppos] = ppos - pos_id[ppos - 1] - 1;
+        if (dp[0][0][ppos - pos_id[ppos - 1] - 1] > dp[0][0][ppos]) {
+            dp[0][0][ppos] = dp[0][0][ppos - pos_id[ppos - 1] - 1];
+            px[0][0][ppos] = 0;
+            py[0][0][ppos] = ppos - pos_id[ppos - 1] - 1;
         }
     }
 
     for (int npos = 1; npos <= nrplen; ++npos) {
         for (int ppos = 1; ppos <= plen; ++ppos) {
-            dp[npos][ppos] = dp[npos - 1][ppos - 1] + score->aaScore(get_aapred(ppos - 1), nrp_iterator->getAA(npos - 1));
-            px[npos][ppos] = npos - 1;
-            py[npos][ppos] = ppos - 1;
+            dp[0][npos][ppos] = dp[0][npos - 1][ppos - 1] + score->aaScore(get_aapred(ppos - 1), nrp_iterator->getAA(npos - 1));
+            px[0][npos][ppos] = npos - 1;
+            py[0][npos][ppos] = ppos - 1;
 
-            if (dp[npos][ppos - pos_id[ppos - 1] - 1] + score->SkipSegment() > dp[npos][ppos]) {
-                dp[npos][ppos] = dp[npos][ppos - pos_id[ppos - 1] - 1] + score->SkipSegment();
-                px[npos][ppos] = npos;
-                py[npos][ppos] = ppos - pos_id[ppos - 1] - 1;
+            if (dp[0][npos][ppos - pos_id[ppos - 1] - 1] + score->SkipSegment() > dp[0][npos][ppos]) {
+                dp[0][npos][ppos] = dp[0][npos][ppos - pos_id[ppos - 1] - 1] + score->SkipSegment();
+                px[0][npos][ppos] = npos;
+                py[0][npos][ppos] = ppos - pos_id[ppos - 1] - 1;
             }
 
-            if (dp[npos][ppos - 1] + score->InDelScore() > dp[npos][ppos]) {
-                dp[npos][ppos] = dp[npos][ppos - 1] + score->InDelScore();
-                px[npos][ppos] = npos;
-                py[npos][ppos] = ppos - 1;
+            if (dp[0][npos][ppos - 1] + score->DeletionScore() > dp[0][npos][ppos]) {
+                dp[0][npos][ppos] = dp[0][npos][ppos - 1] + score->DeletionScore();
+                px[0][npos][ppos] = npos;
+                py[0][npos][ppos] = ppos - 1;
             }
 
-            if (dp[npos - 1][ppos] + score->InDelScore() > dp[npos][ppos]) {
-                dp[npos][ppos] = std::max(dp[npos - 1][ppos] + score->InDelScore(), dp[npos][ppos]);
-                px[npos][ppos] = npos - 1;
-                py[npos][ppos] = ppos;
+            if (dp[0][npos - 1][ppos] + score->InsertionScore() > dp[0][npos][ppos]) {
+                dp[0][npos][ppos] = std::max(dp[0][npos - 1][ppos] + score->InsertionScore(), dp[0][npos][ppos]);
+                px[0][npos][ppos] = npos - 1;
+                py[0][npos][ppos] = ppos;
             }
 
         }
     }
 
-    matcher::MatcherBase::Match nrPsMatch(nrp_iterator->getNRP(), nrp_parts, dp[nrplen][plen], score);
+    matcher::MatcherBase::Match nrPsMatch(nrp_iterator->getNRP(), nrp_parts, dp[0][nrplen][plen], score);
 
     int curx = int(nrplen), cury = int(plen);
     while (curx != 0 || cury != 0) {
-        if (px[curx][cury] == curx - 1 &&
-            py[curx][cury] == cury - 1) {
+        if (px[0][curx][cury] == curx - 1 &&
+            py[0][curx][cury] == cury - 1) {
             nrPsMatch.match(nrp_iterator->getID(curx - 1), part_id[cury - 1], pos_id[cury - 1]);
         }
 
         int ocurx = curx;
         int ocury = cury;
-        curx = px[ocurx][ocury];
-        cury = py[ocurx][ocury];
+        curx = px[0][ocurx][ocury];
+        cury = py[0][ocurx][ocury];
     }
 
-    nrPsMatch.setScore(score->resultScore(dp[nrplen][plen], nrplen));
+    nrPsMatch.setScore(score->resultScore(dp[0][nrplen][plen], nrplen));
     return nrPsMatch;
 }

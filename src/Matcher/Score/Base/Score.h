@@ -98,9 +98,17 @@ namespace matcher {
         }
 
 
-        virtual double InDelScore() const {
+        virtual double InsertionScore() const {
             if (baseScore != nullptr) {
-                return baseScore->InDelScore();
+                return baseScore->InsertionScore();
+            } else {
+                return -1;
+            }
+        }
+
+        virtual double DeletionScore() const {
+            if (baseScore != nullptr) {
+                return baseScore->DeletionScore();
             } else {
                 return -1;
             }
@@ -109,6 +117,14 @@ namespace matcher {
         virtual double SkipSegment() const {
             if (baseScore != nullptr) {
                 return baseScore->SkipSegment();
+            } else {
+                return -1;
+            }
+        }
+
+        virtual double Mismatch() const {
+            if (baseScore != nullptr) {
+                return baseScore->Mismatch();
             } else {
                 return -1;
             }
