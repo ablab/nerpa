@@ -45,12 +45,12 @@ def parse_args():
                         choices=["NRPSPREDICTOR2", "MINOWA", "PRISM", "SANDPUMA"],
                         help="AA domain predictor name [default=MINOWA]",
                         action='store')
-    parser.add_argument("--insertion", help="allow insertion to NRP structure", action="store_true")
-    parser.add_argument("--deletion", help="allow deletion to NRP structure", action="store_true")
-    parser.add_argument("--open_gap", default=0, type=float, help="score for opening gap in NRP structure", action="store")
-    parser.add_argument("--continue_gap", default=0, type=float, help="score for continue gap in NRP structure", action="store")
-    parser.add_argument("--single_match", help="allow match prediction for single unit prediction", action="store_true")
-    parser.add_argument("--single_match_coeff", default=0.1, type=float, help="coefficient for single unit match", action="store")
+    parser.add_argument("--insertion", help="insertion score [default=-1]", default=-1, action="store")
+    parser.add_argument("--deletion", help="deletion score [default=-1]", default=-1, action="store")
+    parser.add_argument("--open_gap", default=-1, type=float, help="score for opening gap in NRP structure [default=-1]", action="store")
+    parser.add_argument("--continue_gap", default=-0.1, type=float, help="score for continue gap in NRP structure [default=-0.1]", action="store")
+    parser.add_argument("--mismatch", default=-1, type=float, help="mismatche score [default=-1]", action="store")
+    parser.add_argument("--skip_segment", default=-1, type=float, help="score for skip orf in prediction [default=-1]", action="store")
     parser.add_argument("--modification", help="allow modification", action="store_true")
     parser.add_argument("--modification_cfg", help="path to file with modification description", action="store", type=str)
     parser.add_argument("--AAmod_cfg", help="path to file with modification for specific AA description", action="store", type=str)
@@ -62,25 +62,13 @@ def print_cfg(args, output_dir):
     cfg_file = os.path.join(output_dir, "nerpa.cfg")
     with open(cfg_file, "w") as f:
         f.write(args.predictor + "\n")
-        if args.insertion:
-            f.write("insertion on\n")
-        else:
-            f.write("insertion off\n")
-
-        if args.deletion:
-            f.write("deletion on\n")
-        else:
-            f.write("deletion off\n")
-
+        f.write("insertion " + str(args.insertion) + "\n")
+        f.write("deletion " + str(args.deletion) + "\n")
         f.write("open_gap " + str(args.open_gap) + "\n")
         f.write("continue_gap " + str(args.continue_gap) + "\n")
+        f.write("mismatch " + str(args.mismatch) + "\n")
+        f.write("skip_segment " + str(args.skip_segment) + "\n")
 
-        if args.single_match:
-            f.write("single_match on\n")
-        else:
-            f.write("single_match off\n")
-
-        f.write("single_match_coeff " + str(args.single_match_coeff) + "\n")
         if args.modification:
             f.write("modification on\n")
         else:

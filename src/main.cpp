@@ -123,13 +123,7 @@ void getScoreFunction(Args args, matcher::Score*& score) {
     }
 
     score = new OrderedGenesScoreBase(std::unique_ptr<Score>(std::move(score)));
-
-    score = new ScoreNormalize(std::unique_ptr<Score>(std::move(score)));
-    score = new ScoreOpenContinueGap(args.open_gap, args.continue_gap,
-                                     std::unique_ptr<Score>(std::move(score)));
-    if (args.single_match) {
-        score = new ScoreSingleUnit(args.single_match_coeff, std::unique_ptr<Score>(std::move(score)));
-    }
+    
     if (args.modification) {
         score = new ScoreWithModification(std::unique_ptr<Score>(std::move(score)));
     }
@@ -137,18 +131,6 @@ void getScoreFunction(Args args, matcher::Score*& score) {
 
 matcher::MatcherBase* getMatcher(Args args) {
     return new matcher::OrderedGenesMatcher();
-
-    matcher::MatcherBase* matcherBase;
-    if (args.single_match) {
-        matcherBase = new matcher::SingleUnitMatcher();
-    } else {
-        matcherBase = new matcher::Matcher();
-    }
-    if (args.deletion || args.insertion) {
-        return new matcher::InDelMatcher(matcherBase, args.insertion, args.deletion);
-    } else {
-        return matcherBase;
-    }
 }
 
 
