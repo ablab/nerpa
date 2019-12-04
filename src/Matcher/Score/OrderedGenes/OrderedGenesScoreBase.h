@@ -19,6 +19,10 @@ namespace matcher {
         double maxScore(const int len) const override {
             return len;
         }
+
+        double resultScore(double score, const int len) const override {
+            return score/maxScore(len);
+        }
     };
 }
 

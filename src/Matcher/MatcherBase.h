@@ -32,7 +32,7 @@ namespace matcher {
             }
 
             void match(int pos, int part_id, int part_pos);
-            void print(std::ofstream& out);
+            void print(std::ostream& out);
             void print_short(std::ofstream& out);
             void print_short_prediction(std::ofstream& out);
             void print_csv(std::ofstream& out);

@@ -42,6 +42,14 @@ namespace matcher {
             }
         }
 
+        virtual double resultScore(double score, const int len) const {
+            if (baseScore != nullptr) {
+                return baseScore->resultScore(score, len);
+            } else {
+                return score;
+            }
+        }
+
         virtual double openGap() const {
             if (baseScore != nullptr) {
                 return  baseScore->openGap();

@@ -206,5 +206,6 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(bool ca
         cury = py[ocurx][ocury];
     }
 
+    nrPsMatch.setScore(score->resultScore(dp[nrplen][plen], nrplen));
     return nrPsMatch;
 }

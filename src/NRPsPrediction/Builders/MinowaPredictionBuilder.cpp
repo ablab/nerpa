@@ -36,10 +36,11 @@ namespace nrpsprediction {
             }
         }
 
-        if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
+        /*if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
             short_parts.push_back(nrpparts.back());
             nrpparts.pop_back();
-        }
+        }*/
+        
         /*std::cerr << nrpparts.size() << "\n";
         for (int i = 0; i < nrpparts.size(); ++i) {
             auto predictions = nrpparts[i].getAminoacidsPrediction();

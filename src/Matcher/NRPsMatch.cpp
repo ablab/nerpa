@@ -31,7 +31,7 @@ bool matcher::MatcherBase::Match::isMatched(int i) {
 }
 
 
-void matcher::MatcherBase::Match::print(std::ofstream &out) {
+void matcher::MatcherBase::Match::print(std::ostream &out) {
     out << nrp->get_file_name() << " " << nrp->get_extra_info() << "\n";
     if (nrpParts.size() > 0) {
         out << nrpParts[0].get_file_name() << "\n";
