@@ -27,10 +27,10 @@ namespace nrpsprediction {
                 nrpparts[nrpparts.size() - 1].add_prediction(orf_name_num.second,
                                                              AminoacidPrediction(orf_name_num.second, prediction));
             } else {
-                if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
+                /*if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
                     short_parts.push_back(nrpparts.back());
                     nrpparts.pop_back();
-                }
+                }*/
                 nrpparts.push_back(NRPsPart(file_name, orf_name_num.first, orf_name_num.second,
                                             AminoacidPrediction(orf_name_num.second, prediction)));
             }
