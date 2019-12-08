@@ -15,22 +15,26 @@ namespace matcher {
         ScoreForUntrustedPred(std::unique_ptr<Score> base) : Score(std::move(base)) {}
         ScoreForUntrustedPred(std::unique_ptr<Score> base, const std::string& predictor) : Score(std::move(base)) {
             if (predictor == "MINOWA") {
-                prob_threshold = 300.;
+                prob_threshold = 250.;
             } else if (predictor == "NRPSPREDICTOR2") {
-                prob_threshold = 80.;
+                prob_threshold = 70.;
             } else if (predictor == "SANDPUMA") {
-                prob_threshold = 80.;
+                prob_threshold = 70.;
             } else if (predictor == "PRISM") {
-                prob_threshold = 400.;
+                prob_threshold = 300.;
             }
         }
 
         double
         aaScore(const nrpsprediction::AminoacidPrediction &apred, const aminoacid::Aminoacid &aminoacid) const override {
+            if (aminoacid.get_possible_name() == "none") {
+                return 0;
+            }
+
             auto AAprobs = apred.getAAPrediction();
             assert(baseScore != nullptr);
             auto aa_score = baseScore->aaScore(apred, aminoacid);
-            if (AAprobs[0].prob < 300) {
+            if (AAprobs[0].prob < prob_threshold) {
                 return std::max(0., aa_score);
             }
 
@@ -41,11 +45,15 @@ namespace matcher {
                                                                    const aminoacid::Aminoacid &aminoacid,
                                                                    nrpsprediction::AminoacidPrediction::AminoacidProb &probRes,
                                                                    std::pair<int, int> &posRes) const override {
+            if (aminoacid.get_possible_name() == "none") {
+                return std::make_pair(0., aminoacid::Aminoacid("none"));
+            }
+
             auto AAprobs = apred.getAAPrediction();
             assert(baseScore != nullptr);
             auto best_aa = baseScore->getTheBestAAInPred(apred, aminoacid, probRes, posRes);
 
-            if (AAprobs[0].prob < 300) {
+            if (AAprobs[0].prob < prob_threshold) {
                 if (best_aa.first < 0) {
                     return std::make_pair(0., aminoacid::Aminoacid("none"));
                 }
