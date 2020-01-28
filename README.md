@@ -1,4 +1,4 @@
-# NRP Matcher
+# Nerpa
 
 NRP Matcher is a tool which links gene cluster to known natural products.
 
