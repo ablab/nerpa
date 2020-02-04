@@ -47,10 +47,12 @@ with open('mibig_base.csv', 'r') as f:
 result_match = {}
 cnt_all = 0
 cnt_found = 0
+cnt_08per = 0
+cnt_05per = 0
 score_iswrong = [] 
 with open("result/" + dirname + ".csv", 'w' ) as fw:
     csv_writer = csv.writer(fw, delimiter=',', quotechar='"')
-    csv_writer.writerow(['Accession', 'Main Product', 'Organism', 'Structure type', 'Molecule Length', 'Has Match', 'Score', 'Matched Length'])
+    csv_writer.writerow(['Accession', 'Main Product', 'Organism', 'Structure type', 'Molecule Length', 'Has Match', 'Score', 'Matched Length', 'Matched Percentage'])
     with open("result/" + dirname + "/report.csv", 'r') as f:
         csv_reader = csv.reader(f, delimiter=',')
         for row in csv_reader:
@@ -64,13 +66,21 @@ with open("result/" + dirname + ".csv", 'w' ) as fw:
         cnt_all += 1
         if mol_name in result_match:
             cnt_found += 1
-            csv_writer.writerow([mol_name, AA_info[mol_name][0], AA_info[mol_name][1], AA_info[mol_name][2], AA_info[mol_name][3], 'True', result_match[mol_name][0], result_match[mol_name][1]])
+            matched_percentage=round(float(result_match[mol_name][1])/float(AA_info[mol_name][3]), 2)
+            if (matched_percentage > 0.79):
+                cnt_08per += 1
+            if (matched_percentage > 0.49):
+                cnt_05per += 1
+
+            csv_writer.writerow([mol_name, AA_info[mol_name][0], AA_info[mol_name][1], AA_info[mol_name][2], AA_info[mol_name][3], 'True', result_match[mol_name][0], result_match[mol_name][1], matched_percentage])
         else:
-            csv_writer.writerow([mol_name] + AA_info[mol_name] + ['False', '0', '0'])
+            csv_writer.writerow([mol_name] + AA_info[mol_name] + ['False', '0', '0', '0'])
 
 score_iswrong.sort(key=lambda x: (-x[0], x[1]))
 calcFDR(score_iswrong)
 
 
-print("Find " + str(cnt_found) + " out of " + str(cnt_all))
+print("Find " + str(cnt_found) + " (out of " + str(cnt_all) + ")")
+print("Find " + str(cnt_05per) + " (out of " + str(cnt_all) + ") half matched")
+print("Find " + str(cnt_08per) + " (out of " + str(cnt_all) + ") almost completely matched")
 print("The result can be found: " + "result/" + dirname)
