@@ -69,7 +69,7 @@ cnt_found = 0
 cnt_08per = 0
 cnt_05per = 0
 score_iswrong = [] 
-with open("result/" + dirname + ".csv", 'w' ) as fw:
+with open("result/" + dirname + "/mibig_cmp.csv", 'w' ) as fw:
     csv_writer = csv.writer(fw, delimiter=',', quotechar='"')
     csv_writer.writerow(['Accession', 'Main Product', 'Organism', 'Structure type', 'Molecule Length', 'Has Match', 'Score', 'Matched Length', 'Matched Percentage', 'Rank for Genome', 'Rank for Structure'])
     with open("result/" + dirname + "/report.csv", 'r') as f:
