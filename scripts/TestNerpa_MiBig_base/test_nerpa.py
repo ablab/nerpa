@@ -1,3 +1,5 @@
+import garlic_res_utils
+
 import sys
 import csv
 import matplotlib
@@ -21,19 +23,37 @@ def calcFDR(score_iswrong):
         scores.append(x[0])
         FDR.append(cnt_wrong/cnt_all)
 
+    return cnt, scores, FDR
+
+def showFDR(cnt, scores, FDR):
     import matplotlib
     import matplotlib.pyplot as plt
+    
+    plt.clf()
     plt.plot(cnt[:200], FDR[:200])
     plt.xlabel('number of elements')
     plt.ylabel('FDR')
-    plt.savefig('result/' + dirname + "/FDR_cnt.png")
-  
+    plt.savefig('result/' + dirname + "/FDR_cnt.png") 
     plt.clf()
+
     plt.gca().invert_xaxis()
     plt.plot(scores[:200], FDR[:200])
     plt.xlabel('scores')
     plt.ylabel('FDR')
     plt.savefig('result/' + dirname + "/FDR_scores.png")
+    plt.clf()
+
+def showFDRwithGARLIC(cnt_nerpa, cnt_garlic, FDR_nerpa, FDR_garlic):
+    import matplotlib
+    import matplotlib.pyplot as plt
+
+    plt.plot(cnt_nerpa[:200], FDR_nerpa[:200], label="nerpa")
+    plt.plot(cnt_garlic[:200], FDR_garlic[:200], label="garlic")
+    plt.xlabel('number of elements')
+    plt.ylabel('FDR')
+    plt.legend()
+    plt.savefig('result/' + dirname + "/FDR_with_garlic.png")
+    plt.clf()
 
 #all_res[0] = genome id, all_res[1] = structure id, all_res[2] = score
 def getRank(all_res, BGC, score, for_structure=False):
@@ -96,8 +116,11 @@ with open("result/" + dirname + "/mibig_cmp.csv", 'w' ) as fw:
             csv_writer.writerow([mol_name] + AA_info[mol_name] + ['False', '0', '0', '0', '-1', '-1'])
 
 score_iswrong.sort(key=lambda x: (-x[0], x[1]))
-calcFDR(score_iswrong)
+cnt, scores, FDR = calcFDR(score_iswrong)
+cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong("./base_line/GARLIC/report.csv"))
 
+showFDR(cnt, scores, FDR)
+showFDRwithGARLIC(cnt, cntg, FDR, FDRg)
 
 print("Find " + str(cnt_found) + " (out of " + str(cnt_all) + ")")
 print("Find " + str(cnt_05per) + " (out of " + str(cnt_all) + ") half matched")
