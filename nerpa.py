@@ -54,6 +54,7 @@ def parse_args():
     parser.add_argument("--modification", help="allow modification", action="store_true")
     parser.add_argument("--modification_cfg", help="path to file with modification description", action="store", type=str)
     parser.add_argument("--AAmod_cfg", help="path to file with modification for specific AA description", action="store", type=str)
+    parser.add_argument("--threads", default=1, type=int, help="number of threads for running Nerpa", action="store")
     parser.add_argument("--local_output_dir", "-o", nargs=1, help="use this output dir", type=str)
     args = parser.parse_args()
     return args
@@ -76,6 +77,7 @@ def print_cfg(args, output_dir):
 
         f.write(os.path.abspath(os.path.join(output_dir, "modifications.tsv")) + "\n")
         f.write(os.path.abspath(os.path.join(output_dir, "AAmod.tsv")) + "\n")
+        f.write("threads " + str(args.threads) + "\n")
 
     return cfg_file
 

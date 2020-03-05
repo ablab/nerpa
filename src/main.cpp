@@ -233,7 +233,11 @@ int main(int argc, char* argv[]) {
 
     INFO("Processing matching for NRPs structurs")
     INFO("Start from: " << start_from)
-    unsigned nthreads = omp_get_max_threads();
+    unsigned nthreads = args.threads;
+
+    omp_set_dynamic(0);
+    omp_set_num_threads(nthreads);
+
     INFO("THREADS #" << nthreads);
 #   pragma omp parallel for
     for (int i = start_from; i < mols.size(); ++i) {
