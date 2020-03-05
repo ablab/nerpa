@@ -34,7 +34,8 @@ namespace matcher {
             auto AAprobs = apred.getAAPrediction();
             assert(baseScore != nullptr);
             auto aa_score = baseScore->aaScore(apred, aminoacid);
-            if (AAprobs[0].prob < prob_threshold) {
+
+            if (AAprobs.size() == 0 || AAprobs[0].prob < prob_threshold) {
                 return std::max(0., aa_score);
             }
 
@@ -53,7 +54,7 @@ namespace matcher {
             assert(baseScore != nullptr);
             auto best_aa = baseScore->getTheBestAAInPred(apred, aminoacid, probRes, posRes);
 
-            if (AAprobs[0].prob < prob_threshold) {
+            if (AAprobs.size() == 0 || AAprobs[0].prob < prob_threshold) {
                 if (best_aa.first < 0) {
                     return std::make_pair(0., aminoacid::Aminoacid("none"));
                 }

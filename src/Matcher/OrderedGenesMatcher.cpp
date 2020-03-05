@@ -46,6 +46,7 @@ public:
 matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getMatch(const std::shared_ptr<nrp::NRP> nrp,
                                                                    const nrpsprediction::NRPsPrediction *prediction,
                                                                    const matcher::Score *score) {
+
     if (nrp->getType() == nrp::NRP::line) {
         return getLineMatch(false, false, nrp, prediction, score);
     } else if (nrp->getType() == nrp::NRP::cycle) {

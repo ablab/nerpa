@@ -156,6 +156,7 @@ void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, std:
             std::ofstream out(output_filename);
             match.print(out);
         }
+
     }
 
     INFO("Found: " << nrpsMatchs.size() << " predictions");

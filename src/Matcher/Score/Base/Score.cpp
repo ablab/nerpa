@@ -2,6 +2,7 @@
 // Created by olga on 22.01.19.
 //
 
+#include <Logger/logger.hpp>
 #include "Score.h"
 
 bool matcher::Score::getScoreForSegment(const std::vector<aminoacid::Aminoacid>& amns,

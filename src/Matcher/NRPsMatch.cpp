@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <Logger/logger.hpp>
 #include "NRP/NRP.h"
 #include "Matcher.h"
 
@@ -55,8 +56,6 @@ void matcher::MatcherBase::Match::print(std::ostream &out) {
             out << "-\n";
         } else {
             nrpsprediction::AminoacidPrediction amn_pred = nrpParts[parts_id[ri]].getAminoacidsPrediction()[parts_pos[ri]];
-
-
             nrpsprediction::AminoacidPrediction::AminoacidProb amprob;
             std::pair<int, int> pos;
             auto res = scoreFun->getTheBestAAInPred(amn_pred, nrp->getAminoacid(ri), amprob, pos);
