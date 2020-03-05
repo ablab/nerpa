@@ -179,7 +179,7 @@ namespace nrp {
                 score += scoring.addSegment(curseg);
             }
 
-            ASSERT_LE(abs(score - match.score()), EPS);
+            ASSERT_LE(fabs(score - match.score()), EPS);
         }
 
         void check_correct_seq(matcher::Matcher::Match match, std::vector< nrpsprediction::NRPsPart> nrpParts) {
@@ -644,7 +644,7 @@ namespace nrp {
         auto match = matcher1.getMatch();
 
         //compare score
-        ASSERT_LE(abs(score - match.score()), EPS);
+        ASSERT_LE(fabs(score - match.score()), EPS);
     }
 }
 
