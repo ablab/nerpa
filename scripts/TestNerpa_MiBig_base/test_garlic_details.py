@@ -84,6 +84,7 @@ def processDir(cdir, csv_writer, csv_writer_per):
     scrs.sort(reverse=True)
 
     if (len(scrs) == 0):
+        csv_writer_per.writerow([mol, 0, 0, 0, 0, 0])
         return
 
     print(scrs[0])
