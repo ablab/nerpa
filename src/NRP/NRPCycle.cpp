@@ -26,3 +26,7 @@ bool nrp::NRPCycle::is_valid_seg(int l, int r, int stp) const {
 nrp::NRPCycle::NRPCycle(const nrp::NRP &refNrp) : NRP(refNrp) {
 
 }
+
+std::string nrp::NRPCycle::structure_to_string() const {
+    return NRP::structure_to_string() + "*";
+}

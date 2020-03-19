@@ -173,7 +173,7 @@ std::shared_ptr<nrp::NRP> nrp::NRPBuilder::build(std::string fragment_graph, std
         std::shared_ptr<NRP> ver1 = std::make_shared<NRPLine>(fragment_graph, strformula, resaacid1, pos1, graph, extra_info),
                 ver2 = std::make_shared<NRPLine>(fragment_graph, strformula, resaacid2, pos2, graph, extra_info);
 
-        return std::make_shared<nrp::NRPtail>(ver1, ver2);
+        return std::make_shared<nrp::NRPtail>(ver1, ver2, pos_tail.size());
     }
 
     return nullptr;

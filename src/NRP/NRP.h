@@ -51,6 +51,8 @@ namespace nrp {
 
         virtual void print() const;
 
+        virtual std::string structure_to_string() const;
+
         virtual std::string getGraphInString() const;
 
         virtual std::string get_file_name() const;

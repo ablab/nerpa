@@ -91,6 +91,9 @@ std::vector<std::shared_ptr<nrp::NRP>> save_mols(char* file_name) {
     std::vector<std::shared_ptr<nrp::NRP>> mols;
 
     std::ifstream in_nrps_files(file_name);
+    std::ofstream out_csv("structure_details.csv", std::ofstream::out);
+    out_csv << "Accession\tSTRUCTURE\tVERTEX\tFORMULA\tAA\n";
+
     std::string cur_nrp_file;
     std::string cur_line;
 
@@ -105,9 +108,15 @@ std::vector<std::shared_ptr<nrp::NRP>> save_mols(char* file_name) {
             continue;
         }
         nrp_from_fragment_graph->print();
+        for (int i = 0; i < nrp_from_fragment_graph->getFullLen(); ++i) {
+            out_csv << cur_line << "\t" << nrp_from_fragment_graph->structure_to_string() << "\t" << i
+            << "\t" << nrp_from_fragment_graph->getFormula(i) << "\t"
+            << nrp_from_fragment_graph->getAminoacid(i).get_possible_name() << "\n";
+        }
         mols.push_back(nrp_from_fragment_graph);
     }
 
+    out_csv.close();
     return mols;
 }
 

@@ -11,13 +11,16 @@ namespace nrp {
     private:
         std::shared_ptr<nrp::NRP> v1;
         std::shared_ptr<nrp::NRP> v2;
+        int tail_size = 0;
     public:
-        NRPtail(std::shared_ptr<nrp::NRP> v1, std::shared_ptr<nrp::NRP> v2): v1(v1), v2(v2) {
+        NRPtail(std::shared_ptr<nrp::NRP> v1, std::shared_ptr<nrp::NRP> v2, int tail_size): v1(v1), v2(v2), tail_size(tail_size) {
         }
 
         NRPType getType() const override;
 
         int getLen() const override;
+
+        int getFullLen() const override;
 
         int getInd(int i) const override;
 
@@ -38,6 +41,8 @@ namespace nrp {
         bool is_valid_seg(int l, int r, int stp) const override;
 
         NRPtail(const NRP &refNrp);
+
+        std::string structure_to_string() const override;
     };
 }
 

@@ -54,3 +54,25 @@ nrp::NRPtail::NRPtail(const nrp::NRP &refNrp) {
     this->v1 = lines[0];
     this->v2 = lines[1];
 }
+
+std::string nrp::NRPtail::structure_to_string() const {
+    std::stringstream structure_str;
+    int full_len = v1->getFullLen();
+    for (int i = (int)full_len - 1; i >= tail_size; --i) {
+        structure_str << i;
+        if (i != tail_size) {
+            structure_str << ",";
+        }
+    }
+
+    structure_str << "*";
+    for (int i = tail_size - 1; i >= 0; --i) {
+        structure_str <<"," << i;
+    }
+
+    return structure_str.str();
+}
+
+int nrp::NRPtail::getFullLen() const {
+    return v1->getFullLen();
+}

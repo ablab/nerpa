@@ -596,7 +596,7 @@ namespace nrp {
 
         std::shared_ptr<NRP> nrp1 = std::make_shared<NRPLine>("", strformula, aa_sum1, pos1, "", "");
         std::shared_ptr<NRP> nrp2 = std::make_shared<NRPLine>("", strformula, aa_sum2, pos2, "", "");
-        std::shared_ptr<NRP> nrp = std::make_shared<NRPtail>(nrp1, nrp2);
+        std::shared_ptr<NRP> nrp = std::make_shared<NRPtail>(nrp1, nrp2, first_part.size());
 
         nrpsprediction::NRPsPart nrps_part("", "");
 

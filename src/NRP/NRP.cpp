@@ -70,3 +70,14 @@ void nrp::NRP::insertAA(int i) {
 
     len += 1;
 }
+
+std::string nrp::NRP::structure_to_string() const {
+    std::stringstream structure_str;
+    for (int i = 0; i < aminoacids.size(); ++i) {
+        structure_str << i;
+        if (i != (int)aminoacids.size() - 1) {
+            structure_str << ",";
+        }
+    }
+    return structure_str.str();
+}

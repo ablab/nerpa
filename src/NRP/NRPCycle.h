@@ -18,6 +18,8 @@ namespace nrp {
 
         bool is_valid_seg(int l, int r, int stp) const override;
 
+        std::string structure_to_string() const override;
+
         explicit NRPCycle(const NRP &refNrp);
     };
 }
