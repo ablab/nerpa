@@ -146,11 +146,11 @@ showFDR(cntg, scoresg, FDRg, "FDR_top3_mol_garlic_")
 showFDRwithGARLIC(cnt, cntg, FDR, FDRg, "FDR_top3_mol_")
 
 for i in range(len(score_iswrong)):
-    score_iswrong[i]  = (score_iswrong[i][0], score_iswrong[i][1], score_iswrong[i][2], score_iswrong[i][3]) 
+    score_iswrong[i]  = (score_iswrong[i][0], score_iswrong[i][1], score_iswrong[i][3], score_iswrong[i][2]) 
 
 garlic_score = garlic_res_utils.get_score_iswrong("./base_line/GARLIC/report.csv")
 for i in range(len(garlic_score)):
-    garlic_score[i] = (garlic_score[i][0], garlic_score[i][1], garlic_score[i][2], garlic_score[i][3])
+    garlic_score[i] = (garlic_score[i][0], garlic_score[i][1], garlic_score[i][3], garlic_score[i][2])
 
 cnt, scores, FDR = calcFDR(score_iswrong, 1)
 cntg, scoresg, FDRg = calcFDR(garlic_score, 1)
