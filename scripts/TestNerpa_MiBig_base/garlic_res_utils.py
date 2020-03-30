@@ -7,8 +7,8 @@ def get_score_iswrong(path_to_report):
         csv_reader = csv.reader(f, delimiter='\t')
         for row in csv_reader:
             if (row[0] in row[1]):
-                score_iswrong.append((float(row[2]), False))
+                score_iswrong.append((float(row[2]), False, row[1], row[0]))
             elif row[0] != 'genome':
-                score_iswrong.append((float(row[2]), True))
+                score_iswrong.append((float(row[2]), True, row[1], row[0]))
         score_iswrong.sort(key=lambda x: (-x[0], x[1]))
     return score_iswrong
