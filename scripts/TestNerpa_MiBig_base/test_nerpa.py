@@ -45,12 +45,22 @@ def showFDR(cnt, scores, FDR, out_prefix="FDR_"):
     plt.savefig('result/' + dirname + "/" + out_prefix + "cnt.png") 
     plt.clf()
 
+    with open("result/" + dirname + "/" + out_prefix + "cnt.csv", "w") as fw:
+        fw.write("CNT, FDR\n")
+        for i in range(len(cnt[:200])):
+            fw.write(str(cnt[i]) + ", " + str(FDR[i]) + "\n")
+
     plt.gca().invert_xaxis()
     plt.plot(scores[:200], FDR[:200])
     plt.xlabel('scores')
     plt.ylabel('FDR')
     plt.savefig('result/' + dirname + "/" + out_prefix + "scores.png")
     plt.clf()
+
+    with open("result/" + dirname + "/" + out_prefix + "scores.csv", "w") as fw:
+        fw.write("SCORES, FDR\n")
+        for i in range(len(scores[:200])):
+            fw.write(str(scores[i]) + ", " + str(FDR[i]) + "\n")
 
 def showFDRwithGARLIC(cnt_nerpa, cnt_garlic, FDR_nerpa, FDR_garlic, out_prefix="FDR_"):
     import matplotlib
