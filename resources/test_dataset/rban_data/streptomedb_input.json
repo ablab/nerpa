@@ -1,0 +1,46 @@
+[
+  {
+    "id": "streptomedb/streptomedb.3000.mol",
+    "smiles": "CCC[C@H]1O[C@@H]1C(=O)N[C@@H](CO)C(=O)N[C@H]1C(=O)N[C@H](Cc2c[nH]c3ccccc23)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@H](c2ccc(O)cc2)C(=O)N[C@@H](CC(=O)O)C(=O)NCC(=O)N[C@H]([C@H](O)CON)C(=O)N[C@@H](CCC(=O)O)C(=O)N/C(=C/c2c[nH]c3ccccc23)C(=O)O[C@H]1C"
+  },
+  {
+    "id": "streptomedb/streptomedb.3001.mol",
+    "smiles": "CCC[C@H]1O[C@@H]1C(=O)N[C@@H](CO)C(=O)N[C@@H]1C(=O)N[C@H](Cc2c[nH]c3ccccc23)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@H](c2ccc(O)cc2)C(=O)N[C@@H](CC(=O)O)C(=O)NCC(=O)N[C@H]([C@@H](CON)OP(=O)(O)O)C(=O)N[C@@H]([C@H](C)CC(=O)O)C(=O)N[C@@H](Cc2c[nH]c3ccccc23)C(=O)O[C@@H]1C"
+  },
+  {
+    "id": "streptomedb/streptomedb.3002.mol",
+    "smiles": "CC(C)C(=O)O[C@H]1[C@@H](C)C[C@H]2[C@@H]1C=C[C@H]1C[C@@H](O)C[C@H]3CC(=O)/C(=C/[C@H]12)C(=O)O3"
+  },
+  {
+    "id": "streptomedb/streptomedb.3003.mol",
+    "smiles": "O=C(O)[C@H]1CN2C(=O)C[C@@H]2O1"
+  },
+  {
+    "id": "streptomedb/streptomedb.3004.mol",
+    "smiles": "COC(=O)CCc1cc(NC(=O)/C=C/C=C/CC(C)C)c(O)cc1O"
+  },
+  {
+    "id": "streptomedb/streptomedb.3005.mol",
+    "smiles": "COc1ccc2oc3c4c(c(O)c(O)c3c(=O)c2c1O)CCc1cc2c(c(O)c1-4)C(=O)N1[C@@](C)(C2)OC(=O)[C@@]1(C)CO"
+  },
+  {
+    "id": "streptomedb/streptomedb.3006.mol",
+    "smiles": "COc1ccc2oc3c4c(c(O)c(O)c3c(=O)c2c1O)CCc1cc2c(c(O)c1-4)C(=O)N1[C@](C)(C2)OC(=O)[C@]1(C)CO"
+  },
+  {
+    "id": "streptomedb/streptomedb.3007.mol",
+    "smiles": "COC1(C)Cc2cc3c(c(O)c2C(=O)O1)-c1c(c(O)c2oc4ccc(C(=O)O)c(O)c4c(=O)c2c1O)CC3"
+  },
+  {
+    "id": "streptomedb/streptomedb.3008.mol",
+    "smiles": "C[C@@]1(C(=O)O)[C@@H](O)CC[C@@]2(C)c3cc4c([nH]c5ccccc54)c(Cl)c3CC[C@@H]12"
+  },
+  {
+    "id": "streptomedb/streptomedb.3009.mol",
+    "smiles": "CO[C@H]1[C@@H](OC)[C@@H](C)O[C@H](OC(=O)C[C@@H](C)CC(=O)O[C@@H](CCCCCCCCC(C)C)CC(=O)O[C@H]2CN(C)[C@@H]([C@H](O[C@@H]3O[C@H](CN)[C@@H](O)[C@H]3O)[C@H]3O[C@@H](n4ccc(=O)[nH]c4=O)[C@H](O)[C@@H]3O)C(=O)N(C)[C@@H]2C(=O)O)[C@H]1OC"
+  },
+  {
+    "id": "streptomedb/streptomedb.3010.mol",
+    "smiles": "Cc1c(O)cc2c(c1O)C(=O)[C@H]1C[C@@H](Cl)C(C)(C)O[C@@]1(C[C@@H]1[C@@H](C)CC[C@H](Cl)C1(C)C)C2=O"
+  }
+]
