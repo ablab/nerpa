@@ -139,6 +139,7 @@ cnt, scores, FDR = calcFDR(score_iswrong)
 cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong("./base_line/GARLIC/report.csv"))
 
 showFDR(cnt, scores, FDR)
+showFDR(cntg, scoresg, FDR, "FDR_garlic_")
 showFDRwithGARLIC(cnt, cntg, FDR, FDRg)
 
 cnt, scores, FDR = calcFDR(score_iswrong, 1)
@@ -174,12 +175,8 @@ cnt, scores, FDR = calcFDR(score_iswrong, 3)
 cntg, scoresg, FDRg = calcFDR(garlic_score, 3)
 
 showFDR(cnt, scores, FDR, "FDR_top3_genome_")
-showFDR(cntg, scoresg, FDRg, "FDR_top3_genome_")
+showFDR(cntg, scoresg, FDRg, "FDR_top3_genome_garlic_")
 showFDRwithGARLIC(cnt, cntg, FDR, FDRg, "FDR_top3_genome_")
-
-
-
-
 
 
 print("Find " + str(cnt_found) + " (out of " + str(cnt_all) + ")")
