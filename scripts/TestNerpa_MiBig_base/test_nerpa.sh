@@ -1,6 +1,6 @@
 DATE=`date +"%d-%b-%Y_%H:%M"`
 START_TIME=$(date +%s)
-nerpa.py -p prediction.info -l structure.info --predictor NRPSPREDICTOR2 --insertion --deletion --modification -o ./result/res_$DATE
+nerpa.py -p prediction.info -l structure.info --predictor NRPSPREDICTOR2 --modification -o ./result/res_$DATE
 END_TIME=$(date +%s)
 DIFF_TIME=$(($END_TIME - $START_TIME))
 
