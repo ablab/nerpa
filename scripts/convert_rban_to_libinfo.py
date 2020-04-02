@@ -12,15 +12,14 @@ def monomericgraph_to_string(g):
 
 def main():
     graphs = json.load(open(sys.argv[1]))
-    extras = None
-    if len(sys.argv) > 2:
-        extras = open(sys.argv[2]).read().strip().split()
+    rban_input_json = json.load(open(sys.argv[2])) if len(sys.argv) > 2 else None
+
     out = []
     for i, g in enumerate(graphs):
         gr = monomericgraph_to_string(g['monomericGraph']['monomericGraph'])
-        extra = '' if extras is None else extras[i]
-        idx = g['id']
-        out.append(f'{idx} {gr} {extra}')
+        out.append(f'{g["id"]} {gr}')
+        if rban_input_json and 'extra' in rban_input_json[i].keys():
+            out[-1] += f' {rban_input_json[i]["extra"]}'
 
     print('\n'.join(out))
 
