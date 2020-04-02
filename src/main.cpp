@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <NRP/NRPBuilder.h>
+#include <NRP/MonomericNRPBuilder.h>
 #include <algorithm>
 #include <sstream>
 #include <cstring>
@@ -29,6 +30,7 @@
 #include <omp.h>
 #include <Matcher/OrderedGenesMatcher.h>
 #include <Matcher/Score/OrderedGenes/OrderedGenesScoreBase.h>
+#include <Aminoacid/MonomerInfo.h>
 #include "Matcher/Matcher.h"
 #include "Matcher/InDelMatcher.h"
 
@@ -109,6 +111,28 @@ std::vector<std::shared_ptr<nrp::NRP>> save_mols(char* file_name) {
     }
 
     return mols;
+}
+
+std::vector<std::shared_ptr<nrp::NRP>> load_nrps_from_monomeric_info(char* file_name) {
+    std::vector<std::shared_ptr<nrp::NRP>> nrps;
+    std::ifstream in_nrps_files(file_name);
+    std::string cur_line;
+    std::string cur_id;
+
+    while(getline(in_nrps_files, cur_line)) {
+        INFO(cur_line);
+        std::stringstream ss(cur_line);
+        std::string extra;
+        ss >> cur_id;
+        getline(ss, extra);
+        std::shared_ptr<nrp::NRP> nrp_from_fragment_graph = nrp::MonomericNRPBuilder::build(cur_id, extra);
+        if (nrp_from_fragment_graph == nullptr) {
+            continue;
+        }
+        nrp_from_fragment_graph->print();
+        nrps.push_back(nrp_from_fragment_graph);
+    }
+    return nrps;
 }
 
 void getScoreFunction(Args args, matcher::Score*& score) {
