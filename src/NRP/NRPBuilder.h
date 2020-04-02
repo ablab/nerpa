@@ -7,7 +7,7 @@
 
 namespace nrp {
     class NRPBuilder {
-    private:
+    protected:
         static std::vector<aminoacid::Aminoacid> aminoacids_by_pos(
                 const std::vector<aminoacid::Aminoacid> &aminoacids, const std::vector<int> &pos);
 
