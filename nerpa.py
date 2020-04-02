@@ -170,9 +170,9 @@ def run(args):
         log.err("None NRP structure info file provide")
         parser.print_help()
         sys.exit()
-    # if (which("print_structure") is None):
-    #     log.err("dereplicator not found. Please install dereplicator and add it to PATH.")
-    #     sys.exit()
+    if not args.monomer and which("print_structure") is None:
+        log.err("dereplicator not found. Please install dereplicator and add it to PATH.")
+        sys.exit()
 
     main_out_dir = os.path.abspath(".") + "/"
     if args.local_output_dir is not None:
