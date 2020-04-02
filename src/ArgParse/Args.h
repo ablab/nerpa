@@ -19,6 +19,7 @@ public:
     bool modification;
     std::string modification_cfg;
     std::string AAmod_cfg;
+    std::string monomer_cfg;
     unsigned int threads;
 
     Args(std::string cfg_filename);

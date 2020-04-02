@@ -27,7 +27,12 @@ namespace aminoacid {
     }
 
     bool Aminoacid::operator==(const Aminoacid &b) const {
-        return formula == b.formula;
+//        return formula == b.formula;
+        if (aa >= AminoacidInfo::AMINOACID_CNT - 1
+        || b.aa >= AminoacidInfo::AMINOACID_CNT - 1) {
+            return false;
+        }
+        return aa == b.aa;
     }
 
     std::string Aminoacid::get_name() const {
@@ -57,7 +62,9 @@ namespace aminoacid {
     }
 
     void Aminoacid::addModification(Modification m) {
-        formula += m.getFormula();
+        if (!(formula == Formula())) {
+            formula += m.getFormula();
+        }
         modifications.push_back(m);
     }
 

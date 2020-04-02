@@ -147,6 +147,7 @@ namespace aminoacid {
 
         FORMULS.push_back(Formula());
         AMINOACID_NAMES.push_back("none");
+        NAME_ID.push_back("none");
 
         AMINOACID_CNT = AMINOACID_NAMES.size();
         in.close();

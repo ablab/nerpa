@@ -215,17 +215,13 @@ void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, std:
 
 std::string gen_filename(std::string ifile, std::string prefix) {
     int pos_sl = -1;
-    int pos_pt = -1;
     for (int i = 0; i < ifile.size(); ++i) {
         if (ifile[i] == '/') {
             pos_sl = i;
         }
-        if (ifile[i] == '.') {
-            pos_pt = i;
-        }
     }
 
-    return (prefix + ifile.substr(pos_sl + 1,  pos_pt - pos_sl - 1));
+    return (prefix + ifile.substr(pos_sl + 1));
 }
 
 int main(int argc, char* argv[]) {
@@ -243,12 +239,13 @@ int main(int argc, char* argv[]) {
     aminoacid::AminoacidInfo::init(AA_file_name, args.predictor_name);
     aminoacid::ModificationInfo::init(args.modification_cfg);
     aminoacid::ModificationInfo::init_AAMod(args.AAmod_cfg);
+    aminoacid::MonomerInfo::init(args.monomer_cfg);
 
     INFO("NRPs Matcher START");
     INFO("Saving predictions");
     std::vector<nrpsprediction::NRPsPrediction> preds = save_predictions(argv[1], args.predictor_name);
     INFO("Saving NRPs structures");
-    std::vector<std::shared_ptr<nrp::NRP>> mols = save_mols(argv[2]);
+    std::vector<std::shared_ptr<nrp::NRP>> mols = load_nrps_from_monomeric_info(argv[2]);
 
     if (start_from == 0) {
         std::ofstream out_csv("report.csv");
