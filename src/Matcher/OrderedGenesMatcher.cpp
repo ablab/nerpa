@@ -181,7 +181,8 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(bool ca
         px[0][0][ppos] = 0;
         py[0][0][ppos] = ppos - 1;
 
-        if (dp[0][0][ppos - pos_id[ppos - 1] - 1] + score->SkipSegment() > dp[0][0][ppos]) {
+        if ((ppos == plen || part_id[ppos] != part_id[ppos - 1]) &&
+        dp[0][0][ppos - pos_id[ppos - 1] - 1] + score->SkipSegment() > dp[0][0][ppos]) {
             dp[0][0][ppos] = dp[0][0][ppos - pos_id[ppos - 1] - 1] + score->SkipSegment();
             pgap[0][0][ppos] = 0;
             px[0][0][ppos] = 0;
@@ -196,7 +197,8 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(bool ca
             px[0][npos][ppos] = npos - 1;
             py[0][npos][ppos] = ppos - 1;
 
-            if (dp[0][npos][ppos - pos_id[ppos - 1] - 1] + score->SkipSegment() > dp[0][npos][ppos]) {
+            if ((ppos == plen || part_id[ppos] != part_id[ppos - 1]) &&
+            dp[0][npos][ppos - pos_id[ppos - 1] - 1] + score->SkipSegment() > dp[0][npos][ppos]) {
                 dp[0][npos][ppos] = dp[0][npos][ppos - pos_id[ppos - 1] - 1] + score->SkipSegment();
                 pgap[0][npos][ppos] = 0;
                 px[0][npos][ppos] = npos;
