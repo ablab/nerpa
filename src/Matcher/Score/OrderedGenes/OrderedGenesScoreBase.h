@@ -58,6 +58,14 @@ namespace matcher {
         double continueGap() const override {
             return continue_gap;
         }
+
+        double InsertionScore() const override {
+            return insertion;
+        }
+
+        double DeletionScore() const override {
+            return deletion;
+        }
     };
 }
 
