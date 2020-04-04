@@ -38,20 +38,25 @@ namespace matcher {
         return getTheBestAAInPred(apred, aminoacid, probRes, posRes).first;
     }
 
-    double ScoreWithModification::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
+    bool ScoreWithModification::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
                                            const nrpsprediction::AAdomainPrediction::AminoacidProb &prob,
-                                           const std::pair<int, int> &pos) const {
+                                           const std::pair<int, int> &pos,
+                                           double& score) const {
         aminoacid::Formula formula = (nrpAA - predAA);
         aminoacid::Modification modification(formula);
         if (modification.getId() == aminoacid::ModificationInfo::MODIFICATION_CNT) {
-            return Mismatch();
+            return false;
         } else {
             double modCoeff = modification.getScore(predAA.get_id());
             if (modCoeff < 0) {
-                return Mismatch();
+                return false;
             }
-
-            return baseScore->getScore(nrpAA, predAA, prob, pos) * modCoeff;
+            if (baseScore->getScore(nrpAA, predAA, prob, pos, score)) {
+                score *= modCoeff;
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
@@ -65,6 +70,7 @@ namespace matcher {
         int bg = 0;
         int ed = 0;
         double maxScore = -1;
+        bool has_match = false;
         for (int i = 0; i < AAprobs.size(); ++i) {
             if (i == 0 || fabs(AAprobs[i].prob - AAprobs[bg].prob) > EPS) {
                 bg = i;
@@ -73,8 +79,11 @@ namespace matcher {
                     ed += 1;
                 }
             }
-            double curScore = getScore(aminoacid, AAprobs[i].aminoacid, AAprobs[i], std::make_pair(bg, ed - 1));
-            if (maxScore < curScore) {
+
+            double curScore;
+            bool is_match = getScore(aminoacid, AAprobs[i].aminoacid, AAprobs[i], std::make_pair(bg, ed - 1), curScore);
+            if (is_match && maxScore < curScore) {
+                has_match = true;
                 maxScore = curScore;
                 theBest = AAprobs[i].aminoacid;
                 probRes = AAprobs[i];
@@ -85,6 +94,11 @@ namespace matcher {
                 auto cur = std::make_pair(bg, ed - 1);
                 posRes.swap(cur);
             }
+        }
+
+        if (has_match == false) {
+            posRes = std::make_pair(-1, -1);
+            return std::make_pair(Mismatch(), aminoacid::Aminoacid("none"));
         }
 
         return std::make_pair(maxScore, theBest);

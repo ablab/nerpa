@@ -41,7 +41,12 @@ double matcher::Score::aaScore(const nrpsprediction::AAdomainPrediction &apred,
     } else {
         std::pair<int, int> position = apred.getAmnAcidPos(aminoacid);
         nrpsprediction::AAdomainPrediction::AminoacidProb prob = apred.getAminoacid(aminoacid);
-        return getScore(aminoacid, aminoacid, prob, position);
+        double score = 0;
+        if (getScore(aminoacid, aminoacid, prob, position, score)) {
+            return score;
+        } else {
+            return Mismatch();
+        }
     }
 }
 
@@ -83,20 +88,24 @@ double matcher::Score::singleUnitScore(const nrpsprediction::AAdomainPrediction 
     }
 }
 
-double matcher::Score::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
+bool matcher::Score::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
                                 const nrpsprediction::AAdomainPrediction::AminoacidProb &prob,
-                                const std::pair<int, int> &pos) const {
+                                const std::pair<int, int> &pos,
+                                double& score) const {
     if (baseScore != nullptr) {
-        return baseScore->getScore(nrpAA, predAA, prob, pos);
+        return baseScore->getScore(nrpAA, predAA, prob, pos, score);
     } else {
         if (pos.first == -1) {
-            return Mismatch();
+            return false;
         } else {
             int mdpos = (pos.first + pos.second) / 2;
             if (mdpos >= 10) {
-                return 0;
+                score = 0;
+                return true;
             }
-            return prob.prob / 100. * posscore[mdpos];
+            score = prob.prob / 100. * posscore[mdpos];
         }
     }
+
+    return true;
 }

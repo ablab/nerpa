@@ -25,10 +25,11 @@ namespace matcher {
                                                                    nrpsprediction::AAdomainPrediction::AminoacidProb &probRes,
                                                                    std::pair<int, int> &posRes) const override;
 
-        virtual double getScore(const aminoacid::Aminoacid& nrpAA,
+        virtual bool getScore(const aminoacid::Aminoacid& nrpAA,
                         const aminoacid::Aminoacid& predAA,
                         const nrpsprediction::AAdomainPrediction::AminoacidProb& prob,
-                        const std::pair<int, int>& pos) const;
+                        const std::pair<int, int>& pos,
+                        double& score) const override;
 
         double EPS = 1e-5;
     };

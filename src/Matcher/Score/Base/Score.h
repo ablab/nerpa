@@ -88,10 +88,12 @@ namespace matcher {
         virtual double singleUnitScore(const nrpsprediction::AAdomainPrediction &apred,
                                        const aminoacid::Aminoacid &aminoacid) const;
 
-        virtual double getScore(const aminoacid::Aminoacid& nrpAA,
+        //return true if match is possible, false for mismatch
+        virtual bool getScore(const aminoacid::Aminoacid& nrpAA,
                                 const aminoacid::Aminoacid& predAA,
                                 const nrpsprediction::AAdomainPrediction::AminoacidProb& prob,
-                                const std::pair<int, int>& pos) const;
+                                const std::pair<int, int>& pos,
+                                double& score) const;
 
         virtual double InDelScore(double score, const int len) const {
             return score - 1./len;
