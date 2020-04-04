@@ -23,6 +23,7 @@
 #include <Matcher/Score/Base/ScoreOpenContinueGap.h>
 #include <Matcher/Score/Base/ScoreNormalize.h>
 #include <Matcher/Score/Base/ScoreForUntrustedPred.h>
+#include <Matcher/Score/NrpsPredictor2/MismatchScoreDependOnPredictionScore.h>
 #include <ArgParse/Args.h>
 #include <Matcher/SingleUnitMatcher.h>
 #include <Aminoacid/ModificationInfo.h>
@@ -132,6 +133,7 @@ void getScoreFunction(Args args, matcher::Score*& score) {
         score = new Score;
     }
 
+    score = new MismatchScoreDependOnPredictionScore(std::unique_ptr<Score>(std::move(score)));
     score = new OrderedGenesScoreBase(std::unique_ptr<Score>(std::move(score)), args.skip_segment,
                                       args.insertion, args.deletion, args.mismatch);
 
@@ -139,7 +141,7 @@ void getScoreFunction(Args args, matcher::Score*& score) {
         score = new ScoreWithModification(std::unique_ptr<Score>(std::move(score)));
     }
 
-    score = new ScoreForUntrustedPred(std::unique_ptr<Score>(std::move(score)), args.predictor_name);
+    //score = new ScoreForUntrustedPred(std::unique_ptr<Score>(std::move(score)), args.predictor_name);
 }
 
 matcher::MatcherBase* getMatcher(Args args) {
