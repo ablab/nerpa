@@ -13,7 +13,6 @@ namespace matcher {
         double skip_segment_score = -1;
         double insertion = -1;
         double deletion = -1;
-        double mismatch = -1;
         double open_gap = -1;
         double continue_gap = -1;
 
@@ -28,7 +27,6 @@ namespace matcher {
                                        double continue_gap = -1) :
                 Score(std::move(base)), skip_segment_score(skip_segment_score),
                 insertion(insertion), deletion(deletion),
-                mismatch(mismatch),
                 open_gap(open_gap), continue_gap(continue_gap) {}
 
         double minScore(const int len) const override {
@@ -46,11 +44,6 @@ namespace matcher {
         double SkipSegment() const override {
             return skip_segment_score;
         }
-
-        /*double Mismatch(const aminoacid::Aminoacid& structure_aa, const nrpsprediction::AAdomainPrediction& aa_prediction) const override {
-            INFO("ORDERED GENE MISMATCH")
-            return mismatch;
-        }*/
 
         double openGap() const override {
             return open_gap;

@@ -11,9 +11,16 @@
 
 namespace matcher {
     class Score {
+    protected:
+        double mismatch = -1;
     public:
         Score();
+        explicit Score(double mismatch) : Score() {
+            mismatch = mismatch;
+        }
+
         explicit Score(std::unique_ptr<Score> base);
+
         virtual double minScore(const int len) const {
             if (baseScore != nullptr) {
                 return baseScore->minScore(len);
@@ -128,7 +135,17 @@ namespace matcher {
             if (baseScore != nullptr) {
                 return baseScore->Mismatch(structure_aa, aa_prediction);
             } else {
-                return -1;
+                if (aa_prediction.getAAPrediction().empty()) {
+                    return 0.0;
+                }
+
+                double mismatch_score[11];
+                mismatch_score[10] = mismatch;
+                for (int i = 9; i >= 0; --i) {
+                    mismatch_score[i] = mismatch_score[i + 1]/2;
+                }
+
+                return mismatch_score[int(aa_prediction.getAAPrediction()[0].prob/10)];
             }
         }
 

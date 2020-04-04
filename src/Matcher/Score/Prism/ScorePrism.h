@@ -14,6 +14,11 @@ namespace matcher {
                         const nrpsprediction::AAdomainPrediction::AminoacidProb &prob,
                         const std::pair<int, int> &pos,
                         double& score) const override;
+
+        explicit ScorePrism(double mismatch);
+
+        double Mismatch(const aminoacid::Aminoacid &structure_aa,
+                        const nrpsprediction::AAdomainPrediction &aa_prediction) const override;
     };
 }
 

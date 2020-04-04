@@ -23,7 +23,6 @@
 #include <Matcher/Score/Base/ScoreOpenContinueGap.h>
 #include <Matcher/Score/Base/ScoreNormalize.h>
 #include <Matcher/Score/Base/ScoreForUntrustedPred.h>
-#include <Matcher/Score/NrpsPredictor2/MismatchScoreDependOnPredictionScore.h>
 #include <ArgParse/Args.h>
 #include <Matcher/SingleUnitMatcher.h>
 #include <Aminoacid/ModificationInfo.h>
@@ -124,24 +123,19 @@ std::vector<std::shared_ptr<nrp::NRP>> save_mols(char* file_name) {
 void getScoreFunction(Args args, matcher::Score*& score) {
     using namespace matcher;
     if (args.predictor_name == "MINOWA") {
-        score = new ScoreMinowa;
+        score = new ScoreMinowa(args.mismatch);
     } else if (args.predictor_name == "PRISM") {
-        score = new ScorePrism;
+        score = new ScorePrism(args.mismatch);
     } else if (args.predictor_name == "SANDPUMA") {
-        score = new ScoreSandpuma;
+        score = new ScoreSandpuma(args.mismatch);
     } else {
-        score = new Score;
+        score = new Score(args.mismatch);
     }
-
-    score = new MismatchScoreDependOnPredictionScore(std::unique_ptr<Score>(std::move(score)));
-    score = new OrderedGenesScoreBase(std::unique_ptr<Score>(std::move(score)), args.skip_segment,
-                                      args.insertion, args.deletion, args.mismatch);
+    score = new OrderedGenesScoreBase(std::unique_ptr<Score>(std::move(score)), args.skip_segment, args.insertion, args.deletion);
 
     if (args.modification) {
         score = new ScoreWithModification(std::unique_ptr<Score>(std::move(score)));
     }
-
-    //score = new ScoreForUntrustedPred(std::unique_ptr<Score>(std::move(score)), args.predictor_name);
 }
 
 matcher::MatcherBase* getMatcher(Args args) {

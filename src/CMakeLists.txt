@@ -72,7 +72,6 @@ set(SOURCE_FILES main.cpp
         Matcher/Score/Base/ScoreOpenContinueGap.h
         Matcher/Score/Base/ScoreSingleUnit.h
         Matcher/Score/OrderedGenes/OrderedGenesScoreBase.h
-        Matcher/Score/NrpsPredictor2/MismatchScoreDependOnPredictionScore.h
         Matcher/Score/Base/ScoreForUntrustedPred.h
         Json/json.hpp
         ArgParse/Args.cpp

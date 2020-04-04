@@ -16,4 +16,25 @@ namespace matcher {
         }
         return true;
     }
+
+    double ScorePrism::Mismatch(const aminoacid::Aminoacid &structure_aa,
+                                const nrpsprediction::AAdomainPrediction &aa_prediction) const {
+        if (baseScore != nullptr) {
+            return baseScore->Mismatch(structure_aa, aa_prediction);
+        } else {
+            double mismatch_score[11];
+            mismatch_score[10] = mismatch;
+            for (int i = 9; i >= 0; --i) {
+                mismatch_score[i] = mismatch_score[i + 1]/2;
+            }
+
+            if (int(aa_prediction.getAAPrediction()[0].prob/50) > 10) {
+                return mismatch;
+            }
+
+            return mismatch_score[int(aa_prediction.getAAPrediction()[0].prob/50)];
+        }
+    }
+
+    ScorePrism::ScorePrism(double mismatch) : Score(mismatch) {}
 }
