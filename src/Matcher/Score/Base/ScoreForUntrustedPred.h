@@ -26,7 +26,7 @@ namespace matcher {
         }
 
         double
-        aaScore(const nrpsprediction::AAdomain_Prediction &apred, const aminoacid::Aminoacid &aminoacid) const override {
+        aaScore(const nrpsprediction::AAdomainPrediction &apred, const aminoacid::Aminoacid &aminoacid) const override {
             if (aminoacid.get_possible_name() == "none") {
                 return 0;
             }
@@ -42,9 +42,9 @@ namespace matcher {
             return aa_score;
         }
 
-        std::pair<double, aminoacid::Aminoacid> getTheBestAAInPred(const nrpsprediction::AAdomain_Prediction &apred,
+        std::pair<double, aminoacid::Aminoacid> getTheBestAAInPred(const nrpsprediction::AAdomainPrediction &apred,
                                                                    const aminoacid::Aminoacid &aminoacid,
-                                                                   nrpsprediction::AAdomain_Prediction::AminoacidProb &probRes,
+                                                                   nrpsprediction::AAdomainPrediction::AminoacidProb &probRes,
                                                                    std::pair<int, int> &posRes) const override {
             if (aminoacid.get_possible_name() == "none") {
                 return std::make_pair(0., aminoacid::Aminoacid("none"));

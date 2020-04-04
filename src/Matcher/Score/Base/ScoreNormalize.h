@@ -14,7 +14,7 @@ namespace matcher {
 
         double resultScore(double score, const int len,
                            const std::vector<Segment>& matched_parts,
-                           const nrpsprediction::BGC_Prediction& prediction,
+                           const nrpsprediction::BgcPrediction& prediction,
                            const nrp::NRP& nrp) const override;
     };
 }

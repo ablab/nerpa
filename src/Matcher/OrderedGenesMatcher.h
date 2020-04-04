@@ -36,18 +36,18 @@ namespace matcher {
     private:
         matcher::MatcherBase::Match getSimpleMatch(bool can_skip_first, bool can_skip_last,
                                                    NRP_iterator* nrp_iterator,
-                                                   const nrpsprediction::BGC_Prediction *prediction,
+                                                   const nrpsprediction::BgcPrediction *prediction,
                                                    const matcher::Score *score) const;
 
         matcher::MatcherBase::Match getLineMatch(bool can_skip_first, bool can_skip_last,
-                                                 std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BGC_Prediction *prediction,
+                                                 std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BgcPrediction *prediction,
                                                  const matcher::Score *score) const;
-        matcher::MatcherBase::Match getCycleMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BGC_Prediction *prediction,
+        matcher::MatcherBase::Match getCycleMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BgcPrediction *prediction,
                                                   const matcher::Score *score) const;
-        matcher::MatcherBase::Match getBranchMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BGC_Prediction *prediction,
+        matcher::MatcherBase::Match getBranchMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BgcPrediction *prediction,
                                                    const matcher::Score *score) const;
     public:
-        Match getMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BGC_Prediction *prediction,
+        Match getMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BgcPrediction *prediction,
                        const matcher::Score *score) override;
 
     };

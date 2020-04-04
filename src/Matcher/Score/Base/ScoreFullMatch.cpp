@@ -5,10 +5,10 @@
 #include "ScoreFullMatch.h"
 
 bool matcher::ScoreFullMatch::getScoreForSegment(const std::vector<aminoacid::Aminoacid> &amns,
-                                                 const nrpsprediction::BGC_Prediction& prediction, int part_id,
+                                                 const nrpsprediction::BgcPrediction& prediction, int part_id,
                                                  double &score) const {
-    nrpsprediction::ORF_Prediction part = prediction.getNrpsParts()[part_id];
-    std::vector<nrpsprediction::AAdomain_Prediction> aminoacid_predictions = part.getAminoacidsPrediction();
+    nrpsprediction::OrfPrediction part = prediction.getOrfs()[part_id];
+    std::vector<nrpsprediction::AAdomainPrediction> aminoacid_predictions = part.getAAdomainPrediction();
     double segscor = 0;
     for (int j = 0; j < (int)aminoacid_predictions.size(); ++j) {
         if (!aminoacid_predictions[j].contain(amns[j])) {

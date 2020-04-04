@@ -8,7 +8,7 @@
 
 namespace  matcher {
     matcher::MatcherBase::Match
-    matcher::InDelMatcher::getMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BGC_Prediction *prediction,
+    matcher::InDelMatcher::getMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BgcPrediction *prediction,
                                     const matcher::Score *score) {
         MatcherBase::Match theBestMatch = innerMatcher->getMatch(nrp, prediction, score);
         if (deletion) {
@@ -30,7 +30,7 @@ namespace  matcher {
     }
 
     MatcherBase::Match
-    InDelMatcher::getDeleteMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BGC_Prediction *prediction,
+    InDelMatcher::getDeleteMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BgcPrediction *prediction,
                                  const matcher::Score *score) {
         if (nrp->getType() == nrp::NRP::cycle) {
             MatcherBase::Match res = innerMatcher->getMatch(nrp, prediction, score);
@@ -68,7 +68,7 @@ namespace  matcher {
     }
 
     MatcherBase::Match
-    InDelMatcher::getInsertMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BGC_Prediction *prediction,
+    InDelMatcher::getInsertMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BgcPrediction *prediction,
                                  const matcher::Score *score) {
         if (nrp->getType() == nrp::NRP::cycle) {
             MatcherBase::Match res = innerMatcher->getMatch(nrp, prediction, score);

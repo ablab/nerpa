@@ -11,7 +11,7 @@ namespace matcher {
     class ScorePrism : public Score {
     public:
         double getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
-                        const nrpsprediction::AAdomain_Prediction::AminoacidProb &prob,
+                        const nrpsprediction::AAdomainPrediction::AminoacidProb &prob,
                         const std::pair<int, int> &pos) const override;
     };
 }

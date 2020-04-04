@@ -22,7 +22,7 @@ namespace nrpsprediction {
 
         bool parse_token(std::ifstream& in, Token& t);
 
-        std::vector<AAdomain_Prediction::AminoacidProb> parse_predictions(Token& t);
+        std::vector<AAdomainPrediction::AminoacidProb> parse_predictions(Token& t);
     public:
         //parse ctg1_minowa_nrpspredoutput.txt file
         //expected groupded by orfs and sorted by num in one group

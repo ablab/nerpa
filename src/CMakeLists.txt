@@ -4,12 +4,12 @@ add_subdirectory(Logger)
 set(SOURCE_FILES main.cpp
         Aminoacid/Aminoacid.cpp
         Aminoacid/Aminoacid.h
-        NRPsPrediction/AAdomain_Prediction.cpp
-        NRPsPrediction/AAdomain_Prediction.h
-        NRPsPrediction/ORF_Prediction.cpp
-        NRPsPrediction/ORF_Prediction.h
-        NRPsPrediction/BGC_Prediction.cpp
-        NRPsPrediction/BGC_Prediction.h
+        NRPsPrediction/AAdomainPrediction.cpp
+        NRPsPrediction/AAdomainPrediction.h
+        NRPsPrediction/OrfPrediction.cpp
+        NRPsPrediction/OrfPrediction.h
+        NRPsPrediction/BgcPrediction.cpp
+        NRPsPrediction/BgcPrediction.h
         NRP/NRP.cpp
         NRP/NRP.h
         Matcher/NRPsMatch.cpp

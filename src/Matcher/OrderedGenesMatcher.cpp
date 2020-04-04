@@ -44,7 +44,7 @@ public:
 
 
 matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getMatch(const std::shared_ptr<nrp::NRP> nrp,
-                                                                   const nrpsprediction::BGC_Prediction *prediction,
+                                                                   const nrpsprediction::BgcPrediction *prediction,
                                                                    const matcher::Score *score) {
 
     if (nrp->getType() == nrp::NRP::line) {
@@ -59,7 +59,7 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getMatch(const std::sh
 
 matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getLineMatch(bool can_skip_first, bool can_skip_last,
                                                                        const std::shared_ptr<nrp::NRP> nrp,
-                                                                       const nrpsprediction::BGC_Prediction *prediction,
+                                                                       const nrpsprediction::BgcPrediction *prediction,
                                                                        const matcher::Score *score) const {
     NRP_iterator* nrp_iterator = new NRP_iterator(nrp);
     matcher::MatcherBase::Match matche1 = getSimpleMatch(can_skip_first, can_skip_last, nrp_iterator, prediction, score);
@@ -77,9 +77,9 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getLineMatch(bool can_
 }
 
 matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getCycleMatch(const std::shared_ptr<nrp::NRP> nrp,
-                                                                        const nrpsprediction::BGC_Prediction *prediction,
+                                                                        const nrpsprediction::BgcPrediction *prediction,
                                                                         const matcher::Score *score) const {
-    matcher::MatcherBase::Match resMatche(nrp, prediction->getNrpsParts(), score->minScore(nrp->getLen()), score);
+    matcher::MatcherBase::Match resMatche(nrp, prediction->getOrfs(), score->minScore(nrp->getLen()), score);
 
     for (int i = 0; i < nrp->getLen(); ++i) {
         NRP_iterator* nrp_iterator = new NRP_iterator_cycle(nrp, i);
@@ -104,7 +104,7 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getCycleMatch(const st
 }
 
 matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getBranchMatch(const std::shared_ptr<nrp::NRP> nrp,
-                                                                         const nrpsprediction::BGC_Prediction *prediction,
+                                                                         const nrpsprediction::BgcPrediction *prediction,
                                                                          const matcher::Score *score) const {
 
     auto matche1 = getLineMatch(true, false, nrp->getLines()[0], prediction, score);
@@ -118,15 +118,15 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getBranchMatch(const s
 
 matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(bool can_skip_first, bool can_skip_last,
                                                                          matcher::OrderedGenesMatcher::NRP_iterator *nrp_iterator,
-                                                                         const nrpsprediction::BGC_Prediction *prediction,
+                                                                         const nrpsprediction::BgcPrediction *prediction,
                                                                          const matcher::Score *score) const {
-    const auto &nrp_parts = prediction->getNrpsParts();
+    const auto &nrp_parts = prediction->getOrfs();
     std::vector<int> part_id;
     std::vector<int> pos_id;
     size_t plen = 0;
 
     for (int pid = 0; pid < nrp_parts.size(); ++pid) {
-        size_t cur_len = nrp_parts[pid].getAminoacidsPrediction().size();
+        size_t cur_len = nrp_parts[pid].getAAdomainPrediction().size();
         for (int i = 0; i < cur_len; ++i) {
             part_id.push_back(pid);
             pos_id.push_back(i);
@@ -136,7 +136,7 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(bool ca
     }
 
     auto get_aapred = [&nrp_parts, &part_id, &pos_id](int ppos) {
-        return nrp_parts[part_id[ppos]].getAminoacidsPrediction()[pos_id[ppos]];
+        return nrp_parts[part_id[ppos]].getAAdomainPrediction()[pos_id[ppos]];
     };
 
     auto nrplen = size_t(nrp_iterator->getLen());

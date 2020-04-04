@@ -5,7 +5,7 @@
 #include <sstream>
 #include <cstring>
 #include "NRP/NRP.h"
-#include "NRPsPrediction/BGC_Prediction.h"
+#include "NRPsPrediction/BgcPrediction.h"
 #include <Logger/log_writers.hpp>
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
 #include <Matcher/Score/Base/ScoreWithModification.h>
@@ -57,8 +57,8 @@ std::string get_file_name(std::string cur_line) {
     return res;
 }
 
-std::vector<nrpsprediction::BGC_Prediction>  save_predictions(char* file_name, std::string predictor_name) {
-    std::vector<nrpsprediction::BGC_Prediction> preds;
+std::vector<nrpsprediction::BgcPrediction>  save_predictions(char* file_name, std::string predictor_name) {
+    std::vector<nrpsprediction::BgcPrediction> preds;
     std::ifstream in_predictions_files(file_name);
 
     INFO(file_name);
@@ -80,7 +80,7 @@ std::vector<nrpsprediction::BGC_Prediction>  save_predictions(char* file_name, s
         nrPsPredictionBuilder->read_file(info_file_name);
 
         preds.push_back(nrPsPredictionBuilder->getPrediction());
-        INFO("Parts in prediction: " << preds.back().getNrpsParts().size());
+        INFO("Parts in prediction: " << preds.back().getOrfs().size());
         delete(nrPsPredictionBuilder);
     }
 
@@ -147,14 +147,14 @@ matcher::MatcherBase* getMatcher(Args args) {
 }
 
 
-void run_mol_predictions(std::vector<nrpsprediction::BGC_Prediction> preds, std::shared_ptr<nrp::NRP> mol, std::string output_filename,
+void run_mol_predictions(std::vector<nrpsprediction::BgcPrediction> preds, std::shared_ptr<nrp::NRP> mol, std::string output_filename,
                          Args args) {
     matcher::Score* score;
     getScoreFunction(args, score);
     std::vector<matcher::MatcherBase::Match> nrpsMatchs;
     for (int i = 0; i < preds.size(); ++i) {
-        if (preds[i].getNrpsParts().size() == 0) continue;
-        //std::cerr << mol->get_file_name() << " " << preds[i].getNrpsParts()[0].get_file_name() << "\n";
+        if (preds[i].getOrfs().size() == 0) continue;
+        //std::cerr << mol->get_file_name() << " " << preds[i].getOrfs()[0].get_file_name() << "\n";
         matcher::MatcherBase* matcher = getMatcher(args);
         matcher::MatcherBase::Match match = matcher->getMatch(mol, &preds[i], score);
         delete matcher;
@@ -231,7 +231,7 @@ int main(int argc, char* argv[]) {
 
     INFO("NRPs Matcher START");
     INFO("Saving predictions");
-    std::vector<nrpsprediction::BGC_Prediction> preds = save_predictions(argv[1], args.predictor_name);
+    std::vector<nrpsprediction::BgcPrediction> preds = save_predictions(argv[1], args.predictor_name);
     INFO("Saving NRPs structures");
     std::vector<std::shared_ptr<nrp::NRP>> mols = save_mols(argv[2]);
 

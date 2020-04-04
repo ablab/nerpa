@@ -12,7 +12,7 @@ namespace nrpsprediction {
     private:
         static std::pair<std::string, double> parse_token(std::string token);
     public:
-        static std::vector<AAdomain_Prediction::AminoacidProb> parse_predictions(std::string predictions);
+        static std::vector<AAdomainPrediction::AminoacidProb> parse_predictions(std::string predictions);
 
         //parse ctg1_nrpspredictor2_codes.txt file
         //expected groupded by orfs and sorted by num in one group

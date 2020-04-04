@@ -3,7 +3,7 @@
 
 
 #include <vector>
-#include <NRPsPrediction/BGC_Prediction.h>
+#include <NRPsPrediction/BgcPrediction.h>
 
 namespace nrp_generator {
     class NRPsPredictionGenerator {

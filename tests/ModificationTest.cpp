@@ -36,7 +36,7 @@ namespace nrp {
             }
         }
 
-        void genRandNrpPart(int partlen, nrpsprediction::ORF_Prediction &nrps_part,
+        void genRandNrpPart(int partlen, nrpsprediction::OrfPrediction &nrps_part,
                             std::vector<std::vector<aminoacid::Aminoacid>> &predict) {
             predict.resize(partlen);
             for (int j = 0; j < partlen; ++j) {
@@ -59,8 +59,8 @@ namespace nrp {
                 }
 
                 using namespace nrpsprediction;
-                nrps_part.add_prediction(j + 1, AAdomain_Prediction(j + 1,
-                                                                    Nrpspredictor2Builder::parse_predictions(ss.str())));
+                nrps_part.add_prediction(j + 1, AAdomainPrediction(j + 1,
+                                                                   Nrpspredictor2Builder::parse_predictions(ss.str())));
             }
         }
 
@@ -101,8 +101,8 @@ namespace nrp {
             return res;
         }
 
-        nrpsprediction::ORF_Prediction getSubPart(int bg, int sz, int delta, double &score) {
-            nrpsprediction::ORF_Prediction nrps_part("filename", "orf");
+        nrpsprediction::OrfPrediction getSubPart(int bg, int sz, int delta, double &score) {
+            nrpsprediction::OrfPrediction nrps_part("filename", "orf");
             std::vector<aminoacid::Aminoacid> aas;
             int len = amnacid.size();
             int j = 0;
@@ -125,9 +125,9 @@ namespace nrp {
                     }
                 }
                 using namespace nrpsprediction;
-                nrps_part.add_prediction(j + 1, AAdomain_Prediction(j + 1,
-                                                                    Nrpspredictor2Builder::parse_predictions(ss.str())));
-                auto predictions = nrps_part.getAminoacidsPrediction();
+                nrps_part.add_prediction(j + 1, AAdomainPrediction(j + 1,
+                                                                   Nrpspredictor2Builder::parse_predictions(ss.str())));
+                auto predictions = nrps_part.getAAdomainPrediction();
                 aas.push_back(amnacid[i]);
             }
 
@@ -135,7 +135,7 @@ namespace nrp {
             matcher::Score* score1 = new matcher::Score;
             matcher::ScoreWithModification scoring(std::unique_ptr<matcher::Score>(std::move(score1)));
             double curs = 0;
-            nrpsprediction::BGC_Prediction preidction({nrps_part});
+            nrpsprediction::BgcPrediction preidction({nrps_part});
             bool found_seg = scoring.getScoreForSegment(aas, preidction, 0, curs);
             double curs2 = 0;
             bool found_seg2 = scoring2.getScoreForSegment(aas, preidction, 0, curs2);
@@ -144,7 +144,7 @@ namespace nrp {
             return nrps_part;
         }
 
-        void checkSubPart(int bg, int sz, int delta, nrpsprediction::ORF_Prediction nrps_part) {
+        void checkSubPart(int bg, int sz, int delta, nrpsprediction::OrfPrediction nrps_part) {
             std::vector<aminoacid::Aminoacid> aas;
             int len = amnacid.size();
             int j = 0;
@@ -155,7 +155,7 @@ namespace nrp {
             matcher::Score* score1 = new matcher::Score;
             matcher::ScoreWithModification scoring(std::unique_ptr<matcher::Score>(std::move(score1)));;
             double curs = 0;
-            nrpsprediction::BGC_Prediction preidction({nrps_part});
+            nrpsprediction::BgcPrediction preidction({nrps_part});
             ASSERT_TRUE(scoring.getScoreForSegment(aas, preidction, 0, curs));
         }
     };
@@ -178,7 +178,7 @@ namespace nrp {
 
             std::sort(bps.begin(), bps.end());
 
-            std::vector<nrpsprediction::ORF_Prediction> nrpParts;
+            std::vector<nrpsprediction::OrfPrediction> nrpParts;
             double res_score = 0;
             for (int i = 1; i < bps.size(); ++i) {
                 if (bps[i] != bps[i - 1]) {
@@ -197,7 +197,7 @@ namespace nrp {
 
             for (int i = 0; i < 10; ++i) {
                 int partlen = rand() % 10 + 1;
-                nrpsprediction::ORF_Prediction nrps_part("filename", "orf");
+                nrpsprediction::OrfPrediction nrps_part("filename", "orf");
                 std::vector<std::vector<aminoacid::Aminoacid>> predict(partlen);
 
                 genRandNrpPart(partlen, nrps_part, predict);
@@ -205,7 +205,7 @@ namespace nrp {
             }
 
             std::random_shuffle(nrpParts.begin(), nrpParts.end());
-            nrpsprediction::BGC_Prediction nrpsPrediction(nrpParts);
+            nrpsprediction::BgcPrediction nrpsPrediction(nrpParts);
             matcher::Matcher matcher(nrp, &nrpsPrediction, &swm);
             matcher::Matcher::Match match = matcher.getMatch();
 
@@ -229,7 +229,7 @@ namespace nrp {
 
             std::sort(bps.begin(), bps.end());
 
-            std::vector<nrpsprediction::ORF_Prediction> nrpParts;
+            std::vector<nrpsprediction::OrfPrediction> nrpParts;
             double res_score = 0;
             for (int i = 0; i < bps.size(); ++i) {
                 int pi = (i - 1 + bps.size()) % bps.size();
@@ -250,7 +250,7 @@ namespace nrp {
 
             for (int i = 0; i < 10; ++i) {
                 int partlen = rand() % 10 + 1;
-                nrpsprediction::ORF_Prediction nrps_part("filename", "orf");
+                nrpsprediction::OrfPrediction nrps_part("filename", "orf");
                 std::vector<std::vector<aminoacid::Aminoacid>> predict(partlen);
 
                 genRandNrpPart(partlen, nrps_part, predict);
@@ -258,7 +258,7 @@ namespace nrp {
             }
 
             std::random_shuffle(nrpParts.begin(), nrpParts.end());
-            nrpsprediction::BGC_Prediction nrpsPrediction(nrpParts);
+            nrpsprediction::BgcPrediction nrpsPrediction(nrpParts);
 
             matcher::Matcher matcher(nrp, &nrpsPrediction, &swm);
             matcher::Matcher::Match match = matcher.getMatch();
@@ -275,7 +275,7 @@ namespace nrp {
                 amnacid.push_back(aminoacid::Aminoacid(rand() % (aminoacid::AminoacidInfo::AMINOACID_CNT - 1)));
             }
 
-            nrpsprediction::ORF_Prediction nrps_part("filename", "orf");
+            nrpsprediction::OrfPrediction nrps_part("filename", "orf");
             int j = 0;
             for (int i = 0; j < len; i += 1, ++j) {
                 std::vector<double> prob;
@@ -295,15 +295,15 @@ namespace nrp {
                     }
                 }
                 using namespace nrpsprediction;
-                nrps_part.add_prediction(j + 1, AAdomain_Prediction(j + 1,
-                                                                    Nrpspredictor2Builder::parse_predictions(ss.str())));
-                auto predictions = nrps_part.getAminoacidsPrediction();
+                nrps_part.add_prediction(j + 1, AAdomainPrediction(j + 1,
+                                                                   Nrpspredictor2Builder::parse_predictions(ss.str())));
+                auto predictions = nrps_part.getAAdomainPrediction();
             }
             matcher::Score* score1 = new matcher::Score;
             matcher::ScoreWithModification scoring(std::unique_ptr<matcher::Score>(std::move(score1)));
 
             double curs = 0;
-            nrpsprediction::BGC_Prediction preidction({nrps_part});
+            nrpsprediction::BgcPrediction preidction({nrps_part});
             bool found_seg = scoring.getScoreForSegment(amnacid, preidction, 0, curs);
             matcher::Score scoring2;
             double curs2 = 0;

@@ -26,16 +26,16 @@ namespace nrpsprediction {
                     if (orf["domains"][i]["name"] == "A") {
                         if (curId > 0) {
                             nrpparts.back().add_prediction(curId + 1,
-                                                           AAdomain_Prediction(curId + 1,
-                                                                               parse_predictions(
+                                                           AAdomainPrediction(curId + 1,
+                                                                              parse_predictions(
                                                                                        orf["domains"][i]["substrates"])));
                         } else {
-                            if (nrpparts.size() > 0 && nrpparts.back().getAminoacidsPrediction().size() < 2) {
+                            if (nrpparts.size() > 0 && nrpparts.back().getAAdomainPrediction().size() < 2) {
                                 nrpparts.pop_back();
                             }
-                            nrpparts.push_back(ORF_Prediction(file_name, name, curId + 1,
-                                                              AAdomain_Prediction(curId + 1,
-                                                                                  parse_predictions(
+                            nrpparts.push_back(OrfPrediction(file_name, name, curId + 1,
+                                                             AAdomainPrediction(curId + 1,
+                                                                                 parse_predictions(
                                                                                     orf["domains"][i]["substrates"]))));
 
                         }
@@ -46,18 +46,18 @@ namespace nrpsprediction {
             }
         }
 
-        if (nrpparts.size() > 0 && nrpparts.back().getAminoacidsPrediction().size() < 2) {
+        if (nrpparts.size() > 0 && nrpparts.back().getAAdomainPrediction().size() < 2) {
             nrpparts.pop_back();
         }
         in.close();
     }
 
-    std::vector<AAdomain_Prediction::AminoacidProb>
+    std::vector<AAdomainPrediction::AminoacidProb>
     PrismPredictionBuilder::parse_predictions(nlohmann::json predictions) {
-        std::vector<AAdomain_Prediction::AminoacidProb> aminoacid_prediction;
+        std::vector<AAdomainPrediction::AminoacidProb> aminoacid_prediction;
 
         for (auto aa : predictions) {
-            aminoacid_prediction.push_back(AAdomain_Prediction::AminoacidProb(
+            aminoacid_prediction.push_back(AAdomainPrediction::AminoacidProb(
                     aminoacid::Aminoacid(getAAbyName(aa["name"])), aa["score"]));
         }
 

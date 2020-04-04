@@ -23,22 +23,22 @@ namespace nrpsprediction {
         for (Token token : tokens) {
             if (!nrpparts.empty() && nrpparts.back().get_orf_name() == token.orf_id) {
                 nrpparts[nrpparts.size() - 1].add_prediction(cur_id,
-                                                             AAdomain_Prediction(cur_id, parse_predictions(
+                                                             AAdomainPrediction(cur_id, parse_predictions(
                                                                      token)));
                 ++cur_id;
             } else {
                 cur_id = 1;
-                if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
+                if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAAdomainPrediction().size() < 2) {
                     short_parts.push_back(nrpparts.back());
                     nrpparts.pop_back();
                 }
-                nrpparts.push_back(ORF_Prediction(file_name, token.orf_id, cur_id,
-                                                  AAdomain_Prediction(cur_id,
-                                                                      parse_predictions(token))));
+                nrpparts.push_back(OrfPrediction(file_name, token.orf_id, cur_id,
+                                                 AAdomainPrediction(cur_id,
+                                                                     parse_predictions(token))));
                 ++cur_id;
             }
         }
-        if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
+        if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAAdomainPrediction().size() < 2) {
             short_parts.push_back(nrpparts.back());
             nrpparts.pop_back();
         }
@@ -82,7 +82,7 @@ namespace nrpsprediction {
         return std::make_pair(split[split.size() - 3] + "_" + split[split.size() - 2], id);
     }
 
-    std::vector<AAdomain_Prediction::AminoacidProb>
+    std::vector<AAdomainPrediction::AminoacidProb>
     SandpumaPredictionBuilder::parse_predictions(SandpumaPredictionBuilder::Token &t) {
         std::map<std::string, int> aa_score;
         for (std::string sres : t.res) {
@@ -96,17 +96,17 @@ namespace nrpsprediction {
             }
         }
 
-        std::vector<AAdomain_Prediction::AminoacidProb> aminoacid_prediction;
+        std::vector<AAdomainPrediction::AminoacidProb> aminoacid_prediction;
 
         for (auto& item : aa_score) {
             if (getAAbyName(item.first) != aminoacid::AminoacidInfo::AMINOACID_CNT - 1) {
-                aminoacid_prediction.push_back(AAdomain_Prediction::AminoacidProb(
+                aminoacid_prediction.push_back(AAdomainPrediction::AminoacidProb(
                         aminoacid::Aminoacid(getAAbyName(item.first)), item.second));
             }
         }
 
-        std::sort(aminoacid_prediction.begin(), aminoacid_prediction.end(), [](AAdomain_Prediction::AminoacidProb a,
-                                                                               AAdomain_Prediction::AminoacidProb b) {
+        std::sort(aminoacid_prediction.begin(), aminoacid_prediction.end(), [](AAdomainPrediction::AminoacidProb a,
+                                                                               AAdomainPrediction::AminoacidProb b) {
             return a.prob > b.prob;
         });
 

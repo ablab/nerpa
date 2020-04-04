@@ -11,7 +11,7 @@ namespace matcher {
     class ScoreMinowaScoreOnly : public Score {
     public:
         double
-        aaScore(const nrpsprediction::AAdomain_Prediction &apred, const aminoacid::Aminoacid &aminoacid) const override;
+        aaScore(const nrpsprediction::AAdomainPrediction &apred, const aminoacid::Aminoacid &aminoacid) const override;
     };
 }
 
