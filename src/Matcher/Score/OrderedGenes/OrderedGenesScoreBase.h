@@ -47,7 +47,7 @@ namespace matcher {
             return skip_segment_score;
         }
 
-        double Mismatch() const override {
+        double Mismatch(const aminoacid::Aminoacid& structure_aa, const nrpsprediction::AAdomainPrediction& aa_prediction) const override {
             return mismatch;
         }
 

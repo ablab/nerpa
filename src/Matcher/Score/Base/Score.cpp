@@ -45,7 +45,7 @@ double matcher::Score::aaScore(const nrpsprediction::AAdomainPrediction &apred,
         if (getScore(aminoacid, aminoacid, prob, position, score)) {
             return score;
         } else {
-            return Mismatch();
+            return Mismatch(aminoacid, apred);
         }
     }
 }

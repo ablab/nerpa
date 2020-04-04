@@ -124,9 +124,9 @@ namespace matcher {
             }
         }
 
-        virtual double Mismatch() const {
+        virtual double Mismatch(const aminoacid::Aminoacid& structure_aa, const nrpsprediction::AAdomainPrediction& aa_prediction) const {
             if (baseScore != nullptr) {
-                return baseScore->Mismatch();
+                return baseScore->Mismatch(structure_aa, aa_prediction);
             } else {
                 return -1;
             }

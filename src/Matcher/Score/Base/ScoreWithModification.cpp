@@ -98,7 +98,7 @@ namespace matcher {
 
         if (has_match == false) {
             posRes = std::make_pair(-1, -1);
-            return std::make_pair(Mismatch(), aminoacid::Aminoacid("none"));
+            return std::make_pair(Mismatch(aminoacid, apred), aminoacid::Aminoacid("none"));
         }
 
         return std::make_pair(maxScore, theBest);
