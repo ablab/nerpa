@@ -15,7 +15,7 @@ namespace matcher {
         double positional_coefficient = 2;
 
         double getScoreForSubseg(const Segment& seg, const nrp::NRP& nrp,
-                                 const nrpsprediction::NRPsPrediction &prediction, int part_id) const {
+                                 const nrpsprediction::BGC_Prediction &prediction, int part_id) const {
             double score = 0;
             std::vector<aminoacid::Aminoacid> amns;
             if (seg.rev) {
@@ -55,7 +55,7 @@ namespace matcher {
         }
 
         bool getScoreForSegment(const std::vector<aminoacid::Aminoacid> &amns,
-                                const nrpsprediction::NRPsPrediction &prediction, int part_id,
+                                const nrpsprediction::BGC_Prediction &prediction, int part_id,
                                 double &score) const override {
             bool isSeg = Score::getScoreForSegment(amns, prediction, part_id, score);
             if (!isSeg) {
@@ -63,11 +63,11 @@ namespace matcher {
             }
             auto parts = prediction.getNrpsParts();
             int len = parts[part_id].getAminoacidsPrediction().size();
-            auto cmp = [](nrpsprediction::NRPsPart a ,nrpsprediction::NRPsPart b) -> bool {
+            auto cmp = [](nrpsprediction::ORF_Prediction a , nrpsprediction::ORF_Prediction b) -> bool {
                 return a.getAminoacidsPrediction().size() > b.getAminoacidsPrediction().size();
             };
             std::sort(parts.begin(), parts.end(), cmp);
-            auto eq = [](nrpsprediction::NRPsPart a ,nrpsprediction::NRPsPart b) -> bool {
+            auto eq = [](nrpsprediction::ORF_Prediction a , nrpsprediction::ORF_Prediction b) -> bool {
                 return a.getAminoacidsPrediction().size() == b.getAminoacidsPrediction().size();
             };
             parts.resize(std::unique(parts.begin(), parts.end(), eq) - parts.begin());
@@ -87,16 +87,16 @@ namespace matcher {
 
         double resultScore(double score, const int len,
                            const std::vector<Segment>& matched_parts,
-                           const nrpsprediction::NRPsPrediction& prediction,
+                           const nrpsprediction::BGC_Prediction& prediction,
                            const nrp::NRP& nrp) const override;
     };
 
     double ScoreMinowaPositionalCoefficient::resultScore(double score, const int len,
                                                          const std::vector<Segment>& matched_parts,
-                                                         const nrpsprediction::NRPsPrediction& prediction,
+                                                         const nrpsprediction::BGC_Prediction& prediction,
                                                          const nrp::NRP& nrp) const {
         auto parts = prediction.getNrpsParts();
-        std::vector<nrpsprediction::NRPsPart> not_matched_parts;
+        std::vector<nrpsprediction::ORF_Prediction> not_matched_parts;
         int mi = 0, pi = 0;
         while (mi < matched_parts.size() && pi < parts.size()) {
             while (mi < matched_parts.size() && matched_parts[mi].part_id < pi) {
@@ -113,11 +113,11 @@ namespace matcher {
         }
 
         double resScore = 0;
-        auto cmp = [](nrpsprediction::NRPsPart a ,nrpsprediction::NRPsPart b) -> bool {
+        auto cmp = [](nrpsprediction::ORF_Prediction a , nrpsprediction::ORF_Prediction b) -> bool {
             return a.getAminoacidsPrediction().size() > b.getAminoacidsPrediction().size();
         };
         std::sort(not_matched_parts.begin(), not_matched_parts.end(), cmp);
-        auto eq = [](nrpsprediction::NRPsPart a ,nrpsprediction::NRPsPart b) -> bool {
+        auto eq = [](nrpsprediction::ORF_Prediction a , nrpsprediction::ORF_Prediction b) -> bool {
             return a.getAminoacidsPrediction().size() == b.getAminoacidsPrediction().size();
         };
         not_matched_parts.resize(std::unique(not_matched_parts.begin(), not_matched_parts.end(), eq) -

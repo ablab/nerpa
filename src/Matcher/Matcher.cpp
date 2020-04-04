@@ -105,7 +105,7 @@ matcher::MatcherBase::Match matcher::Matcher::getBranchMatch() const {
 }
 
 
-matcher::MatcherBase::Match matcher::Matcher::setUpdateMatch(const nrpsprediction::NRPsPrediction &nrPsPrediction,
+matcher::MatcherBase::Match matcher::Matcher::setUpdateMatch(const nrpsprediction::BGC_Prediction &nrPsPrediction,
                                                              matcher::MatcherBase::Match match, int bg,
                                                              std::vector<matcher::Segment> &matched_parts_id) const {
     auto parts = nrPsPrediction.getNrpsParts();
@@ -136,7 +136,7 @@ matcher::MatcherBase::Match matcher::Matcher::setUpdateMatch(const nrpspredictio
 }
 
 matcher::MatcherBase::Match
-matcher::Matcher::updateMatch(const nrpsprediction::NRPsPrediction &nrPsPrediction, matcher::MatcherBase::Match match,
+matcher::Matcher::updateMatch(const nrpsprediction::BGC_Prediction &nrPsPrediction, matcher::MatcherBase::Match match,
                               int bg, std::vector<Segment>& matched_parts_id) const {
     auto nmatch = setUpdateMatch(nrPsPrediction, match, bg, matched_parts_id);
     nmatch.setScore(score->resultScore(nmatch.score(), nrp->getLen(), matched_parts_id, *prediction, *nrp));
@@ -273,7 +273,7 @@ matcher::Matcher::isCoverLine(std::vector<Segment> &segments,
 
 std::vector<matcher::Segment> matcher::Matcher::matche_seg(const int part_id) const {
     auto parts = prediction->getNrpsParts();
-    nrpsprediction::NRPsPart predict_part = prediction->getNrpsParts()[part_id];
+    nrpsprediction::ORF_Prediction predict_part = prediction->getNrpsParts()[part_id];
     std::vector<Segment> segs;
     std::vector<aacid> amns = nrp->getAminoacids();
     amns.resize(nrp->getLen());
@@ -330,7 +330,7 @@ int matcher::Matcher::addSegments(const std::vector<matcher::Segment> &part_seg,
 
 
 matcher::MatcherBase::Match
-matcher::Matcher::getMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::NRPsPrediction *prediction,
+matcher::Matcher::getMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BGC_Prediction *prediction,
                            const matcher::Score *score) {
     this->nrp = nrp;
     this->prediction = prediction;

@@ -6,7 +6,7 @@
 
 namespace matcher {
     double ScorePrism::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
-                                const nrpsprediction::AminoacidPrediction::AminoacidProb &prob,
+                                const nrpsprediction::AAdomain_Prediction::AminoacidProb &prob,
                                 const std::pair<int, int> &pos) const {
         if (pos.first == -1) {
             return -1;

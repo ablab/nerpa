@@ -2,9 +2,9 @@
 #define NRPSMATCHER_NRP_H
 
 #include <vector>
-#include "../NRPsPrediction/NRPsPrediction.h"
+#include "NRPsPrediction/BGC_Prediction.h"
 #include "Aminoacid/Aminoacid.h"
-#include "../NRPsPrediction/NRPsPart.h"
+#include "NRPsPrediction/ORF_Prediction.h"
 #include <iostream>
 #include <memory>
 #include "assert.h"

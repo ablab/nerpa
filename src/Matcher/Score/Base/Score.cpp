@@ -6,13 +6,13 @@
 #include "Score.h"
 
 bool matcher::Score::getScoreForSegment(const std::vector<aminoacid::Aminoacid>& amns,
-                                        const nrpsprediction::NRPsPrediction& prediction, int part_id,
+                                        const nrpsprediction::BGC_Prediction& prediction, int part_id,
                                         double& score) const {
     if (baseScore != nullptr) {
         return baseScore->getScoreForSegment(amns, prediction, part_id, score);
     } else {
-        nrpsprediction::NRPsPart part = prediction.getNrpsParts()[part_id];
-        std::vector<nrpsprediction::AminoacidPrediction> aminoacid_predictions = part.getAminoacidsPrediction();
+        nrpsprediction::ORF_Prediction part = prediction.getNrpsParts()[part_id];
+        std::vector<nrpsprediction::AAdomain_Prediction> aminoacid_predictions = part.getAminoacidsPrediction();
         int cnt_mismatch = 0;
         int g = 0;
         double segscor = 0;
@@ -34,13 +34,13 @@ bool matcher::Score::getScoreForSegment(const std::vector<aminoacid::Aminoacid>&
     }
 }
 
-double matcher::Score::aaScore(const nrpsprediction::AminoacidPrediction &apred,
+double matcher::Score::aaScore(const nrpsprediction::AAdomain_Prediction &apred,
                                const aminoacid::Aminoacid &aminoacid) const {
     if (baseScore != nullptr) {
         return baseScore->aaScore(apred, aminoacid);
     } else {
         std::pair<int, int> position = apred.getAmnAcidPos(aminoacid);
-        nrpsprediction::AminoacidPrediction::AminoacidProb prob = apred.getAminoacid(aminoacid);
+        nrpsprediction::AAdomain_Prediction::AminoacidProb prob = apred.getAminoacid(aminoacid);
         return getScore(aminoacid, aminoacid, prob, position);
     }
 }
@@ -59,9 +59,9 @@ matcher::Score::Score(std::unique_ptr<Score> base) : Score() {
 }
 
 std::pair<double, aminoacid::Aminoacid>
-matcher::Score::getTheBestAAInPred(const nrpsprediction::AminoacidPrediction &apred,
+matcher::Score::getTheBestAAInPred(const nrpsprediction::AAdomain_Prediction &apred,
                                    const aminoacid::Aminoacid &aminoacid,
-                                   nrpsprediction::AminoacidPrediction::AminoacidProb &probRes,
+                                   nrpsprediction::AAdomain_Prediction::AminoacidProb &probRes,
                                    std::pair<int, int> &posRes) const {
     if (baseScore != nullptr) {
         return baseScore->getTheBestAAInPred(apred, aminoacid, probRes, posRes);
@@ -74,7 +74,7 @@ matcher::Score::getTheBestAAInPred(const nrpsprediction::AminoacidPrediction &ap
     }
 }
 
-double matcher::Score::singleUnitScore(const nrpsprediction::AminoacidPrediction &apred,
+double matcher::Score::singleUnitScore(const nrpsprediction::AAdomain_Prediction &apred,
                                        const aminoacid::Aminoacid &aminoacid) const {
     if (baseScore != nullptr) {
         return baseScore->singleUnitScore(apred, aminoacid);
@@ -84,7 +84,7 @@ double matcher::Score::singleUnitScore(const nrpsprediction::AminoacidPrediction
 }
 
 double matcher::Score::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
-                                const nrpsprediction::AminoacidPrediction::AminoacidProb &prob,
+                                const nrpsprediction::AAdomain_Prediction::AminoacidProb &prob,
                                 const std::pair<int, int> &pos) const {
     if (baseScore != nullptr) {
         return baseScore->getScore(nrpAA, predAA, prob, pos);

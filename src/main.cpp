@@ -5,7 +5,7 @@
 #include <sstream>
 #include <cstring>
 #include "NRP/NRP.h"
-#include "NRPsPrediction/NRPsPrediction.h"
+#include "NRPsPrediction/BGC_Prediction.h"
 #include <Logger/log_writers.hpp>
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
 #include <Matcher/Score/Base/ScoreWithModification.h>
@@ -57,8 +57,8 @@ std::string get_file_name(std::string cur_line) {
     return res;
 }
 
-std::vector<nrpsprediction::NRPsPrediction>  save_predictions(char* file_name, std::string predictor_name) {
-    std::vector<nrpsprediction::NRPsPrediction> preds;
+std::vector<nrpsprediction::BGC_Prediction>  save_predictions(char* file_name, std::string predictor_name) {
+    std::vector<nrpsprediction::BGC_Prediction> preds;
     std::ifstream in_predictions_files(file_name);
 
     INFO(file_name);
@@ -147,7 +147,7 @@ matcher::MatcherBase* getMatcher(Args args) {
 }
 
 
-void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, std::shared_ptr<nrp::NRP> mol, std::string output_filename,
+void run_mol_predictions(std::vector<nrpsprediction::BGC_Prediction> preds, std::shared_ptr<nrp::NRP> mol, std::string output_filename,
                          Args args) {
     matcher::Score* score;
     getScoreFunction(args, score);
@@ -231,7 +231,7 @@ int main(int argc, char* argv[]) {
 
     INFO("NRPs Matcher START");
     INFO("Saving predictions");
-    std::vector<nrpsprediction::NRPsPrediction> preds = save_predictions(argv[1], args.predictor_name);
+    std::vector<nrpsprediction::BGC_Prediction> preds = save_predictions(argv[1], args.predictor_name);
     INFO("Saving NRPs structures");
     std::vector<std::shared_ptr<nrp::NRP>> mols = save_mols(argv[2]);
 

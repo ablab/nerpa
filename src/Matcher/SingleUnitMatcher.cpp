@@ -6,7 +6,7 @@
 
 namespace matcher {
     matcher::SingleUnitMatcher::SingleUnitMatcher(const std::shared_ptr<nrp::NRP> &nrp,
-                                                  const nrpsprediction::NRPsPrediction *prediction,
+                                                  const nrpsprediction::BGC_Prediction *prediction,
                                                   const matcher::Score *score) : Matcher(nrp, prediction, score) {}
 
     matcher::SingleUnitMatcher::SingleUnitMatcher() {}
@@ -105,7 +105,7 @@ namespace matcher {
         match.setScore(newScore);
     }
 
-    MatcherBase::Match SingleUnitMatcher::updateMatch(const nrpsprediction::NRPsPrediction &nrPsPrediction,
+    MatcherBase::Match SingleUnitMatcher::updateMatch(const nrpsprediction::BGC_Prediction &nrPsPrediction,
                                                       matcher::MatcherBase::Match match, int bg,
                                                       std::vector<Segment> &matched_parts_id) const {
         auto nmatch = setUpdateMatch(nrPsPrediction, match, bg, matched_parts_id);

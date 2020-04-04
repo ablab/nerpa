@@ -14,20 +14,20 @@ namespace matcher {
 
     public:
         bool getScoreForSegment(const std::vector<aminoacid::Aminoacid> &amns,
-                                const nrpsprediction::NRPsPrediction& prediction, int part_id,
+                                const nrpsprediction::BGC_Prediction& prediction, int part_id,
                                 double &score) const override;
 
         double
-        aaScore(const nrpsprediction::AminoacidPrediction &apred, const aminoacid::Aminoacid &aminoacid) const override;
+        aaScore(const nrpsprediction::AAdomain_Prediction &apred, const aminoacid::Aminoacid &aminoacid) const override;
 
-        std::pair<double, aminoacid::Aminoacid> getTheBestAAInPred(const nrpsprediction::AminoacidPrediction &apred,
+        std::pair<double, aminoacid::Aminoacid> getTheBestAAInPred(const nrpsprediction::AAdomain_Prediction &apred,
                                                                    const aminoacid::Aminoacid &aminoacid,
-                                                                   nrpsprediction::AminoacidPrediction::AminoacidProb &probRes,
+                                                                   nrpsprediction::AAdomain_Prediction::AminoacidProb &probRes,
                                                                    std::pair<int, int> &posRes) const override;
 
         virtual double getScore(const aminoacid::Aminoacid& nrpAA,
                         const aminoacid::Aminoacid& predAA,
-                        const nrpsprediction::AminoacidPrediction::AminoacidProb& prob,
+                        const nrpsprediction::AAdomain_Prediction::AminoacidProb& prob,
                         const std::pair<int, int>& pos) const;
 
         double EPS = 1e-5;

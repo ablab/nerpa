@@ -19,10 +19,10 @@ namespace matcher {
             delete innerMatcher;
         }
 
-        Match getDeleteMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::NRPsPrediction *prediction,
+        Match getDeleteMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BGC_Prediction *prediction,
                              const matcher::Score *score);
 
-        Match getInsertMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::NRPsPrediction *prediction,
+        Match getInsertMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BGC_Prediction *prediction,
                              const matcher::Score *score);
     public:
         InDelMatcher() {
@@ -46,7 +46,7 @@ namespace matcher {
             this->deletion = deletion;
         }
 
-        Match getMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::NRPsPrediction *prediction,
+        Match getMatch(std::shared_ptr<nrp::NRP> nrp, const nrpsprediction::BGC_Prediction *prediction,
                        const matcher::Score *score) override;
     };
 }

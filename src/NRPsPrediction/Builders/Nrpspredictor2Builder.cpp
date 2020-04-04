@@ -21,13 +21,13 @@ namespace nrpsprediction {
 
             if (!nrpparts.empty() && nrpparts[nrpparts.size() - 1].get_orf_name() == orf_name_num.first) {
                 nrpparts[nrpparts.size() - 1].add_prediction(orf_name_num.second,
-                                                             AminoacidPrediction(orf_name_num.second, parse_predictions(predict_aminoacids)));
+                                                             AAdomain_Prediction(orf_name_num.second, parse_predictions(predict_aminoacids)));
             } else {
                 if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
                     nrpparts.pop_back();
                 }
-                nrpparts.push_back(NRPsPart(file_name, orf_name_num.first, orf_name_num.second,
-                                            AminoacidPrediction(orf_name_num.second, parse_predictions(predict_aminoacids))));
+                nrpparts.push_back(ORF_Prediction(file_name, orf_name_num.first, orf_name_num.second,
+                                                  AAdomain_Prediction(orf_name_num.second, parse_predictions(predict_aminoacids))));
             }
         }
         if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
@@ -36,8 +36,8 @@ namespace nrpsprediction {
         in.close();
     }
 
-    std::vector<AminoacidPrediction::AminoacidProb> Nrpspredictor2Builder::parse_predictions(std::string predictions) {
-        std::vector<AminoacidPrediction::AminoacidProb> aminoacid_prediction;
+    std::vector<AAdomain_Prediction::AminoacidProb> Nrpspredictor2Builder::parse_predictions(std::string predictions) {
+        std::vector<AAdomain_Prediction::AminoacidProb> aminoacid_prediction;
         std::stringstream ss(predictions);
 
         std::vector<std::string> tokens;
@@ -63,7 +63,7 @@ namespace nrpsprediction {
         for (int i = 0; i < aacids.size(); ++i) {
             if (aacids[i].second >= val - EPS) {
                 aminoacid_prediction.push_back(
-                        AminoacidPrediction::AminoacidProb(
+                        AAdomain_Prediction::AminoacidProb(
                                 aminoacid::Aminoacid(getAAbyName(aacids[i].first)), aacids[i].second));
             }
         }

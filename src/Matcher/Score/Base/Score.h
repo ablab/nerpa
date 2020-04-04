@@ -33,7 +33,7 @@ namespace matcher {
 
         virtual double resultScore(double score, const int len,
                                    const std::vector<Segment>& matched_parts,
-                                   const nrpsprediction::NRPsPrediction& prediction,
+                                   const nrpsprediction::BGC_Prediction& prediction,
                                    const nrp::NRP& nrp) const {
             if (baseScore != nullptr) {
                 return baseScore->resultScore(score, len, matched_parts, prediction, nrp);
@@ -75,22 +75,22 @@ namespace matcher {
         }
 
         virtual bool getScoreForSegment(const std::vector<aminoacid::Aminoacid>& amns,
-                                const nrpsprediction::NRPsPrediction& prediction, int part_id, double& score) const;
+                                        const nrpsprediction::BGC_Prediction& prediction, int part_id, double& score) const;
 
-        virtual double aaScore(const nrpsprediction::AminoacidPrediction &apred,
+        virtual double aaScore(const nrpsprediction::AAdomain_Prediction &apred,
                        const aminoacid::Aminoacid &aminoacid) const;
 
-        virtual std::pair<double, aminoacid::Aminoacid> getTheBestAAInPred(const nrpsprediction::AminoacidPrediction &apred,
+        virtual std::pair<double, aminoacid::Aminoacid> getTheBestAAInPred(const nrpsprediction::AAdomain_Prediction &apred,
                                                                            const aminoacid::Aminoacid &aminoacid,
-                                                                           nrpsprediction::AminoacidPrediction::AminoacidProb &probRes,
+                                                                           nrpsprediction::AAdomain_Prediction::AminoacidProb &probRes,
                                                                            std::pair<int, int> &posRes) const;
 
-        virtual double singleUnitScore(const nrpsprediction::AminoacidPrediction &apred,
+        virtual double singleUnitScore(const nrpsprediction::AAdomain_Prediction &apred,
                                        const aminoacid::Aminoacid &aminoacid) const;
 
         virtual double getScore(const aminoacid::Aminoacid& nrpAA,
                                 const aminoacid::Aminoacid& predAA,
-                                const nrpsprediction::AminoacidPrediction::AminoacidProb& prob,
+                                const nrpsprediction::AAdomain_Prediction::AminoacidProb& prob,
                                 const std::pair<int, int>& pos) const;
 
         virtual double InDelScore(double score, const int len) const {

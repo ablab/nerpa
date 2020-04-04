@@ -11,7 +11,7 @@ namespace matcher {
     class ScorePositionOnly : public Score {
     public:
         double
-        aaScore(const nrpsprediction::AminoacidPrediction &apred, const aminoacid::Aminoacid &aminoacid) const override;
+        aaScore(const nrpsprediction::AAdomain_Prediction &apred, const aminoacid::Aminoacid &aminoacid) const override;
     };
 }
 

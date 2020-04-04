@@ -3,18 +3,18 @@
 #include <iostream>
 #include <algorithm>
 #include <Logger/logger.hpp>
-#include "NRPsPrediction.h"
+#include "BGC_Prediction.h"
 
 namespace nrpsprediction {
-    const std::vector<NRPsPart>& NRPsPrediction::getNrpsParts() const {
+    const std::vector<ORF_Prediction>& BGC_Prediction::getNrpsParts() const {
         return nrpparts;
     }
 
-    const std::vector<NRPsPart>& NRPsPrediction::getShortParts() const {
+    const std::vector<ORF_Prediction>& BGC_Prediction::getShortParts() const {
         return short_parts;
     }
 
-    int NRPsPrediction::getSumPredictionLen() const {
+    int BGC_Prediction::getSumPredictionLen() const {
         int len = 0;
         for (int i = 0; i < nrpparts.size(); ++i) {
             len += nrpparts[i].getAminoacidsPrediction().size();
