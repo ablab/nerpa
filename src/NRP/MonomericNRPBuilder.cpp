@@ -25,7 +25,17 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
     ss = std::stringstream(monomers);
     std::string code;
     while (std::getline(ss, code, ',')) {
-        aminoacids.emplace_back(aminoacid::MonomerInfo::getAAByCode(code));
+        aminoacid::Aminoacid aa;
+        if (code[0] == '*') {
+            std::string code_ = code.substr(1);
+            aa = aminoacid::MonomerInfo::getAAByCode(code_);
+            // TODO: consider introducing a special modification type
+            aminoacid::Modification mod(aminoacid::ModificationInfo::MODIFICATION_CNT - 1);
+            aa.addModification(mod);
+        } else {
+            aa = aminoacid::MonomerInfo::getAAByCode(code);
+        }
+        aminoacids.push_back(aa);
     }
 
     std::vector<std::vector<int> > g(aminoacids.size());
