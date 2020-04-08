@@ -14,7 +14,8 @@ def main():
             molfile = spl[0]
             if dbpath:
                 molfile = os.path.join(dbpath, molfile)
-            idx = os.path.basename(molfile)
+            idx, _ = os.path.splitext(os.path.basename(molfile))
+            idx = f'{idx}.gr'
             extra = ' '.join(spl[1:]) if len(spl) > 1 else None
             mol = rdc.MolFromMolBlock(open(molfile).read())
             if mol is None:
