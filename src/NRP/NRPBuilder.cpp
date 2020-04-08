@@ -11,7 +11,7 @@
 using namespace aminoacid;
 typedef Formula::Elem Elem;
 
-std::string graphToString(const std::vector<std::vector<int> >& g) {
+std::string nrp::NRPBuilder::graphToString(const std::vector<std::vector<int> >& g) {
     std::stringstream ss;
     int m = 0;
     for (int i = 0; i < g.size(); ++i) {

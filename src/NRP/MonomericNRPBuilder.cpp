@@ -22,8 +22,10 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
     std::string monomers = graph.substr(0, pos);
     std::string bonds = graph.substr(pos + 1);
 
+    std::vector<std::string> strnodes;
     ss = std::stringstream(monomers);
     std::string code;
+    size_t node_idx = 0;
     while (std::getline(ss, code, ',')) {
         aminoacid::Aminoacid aa;
         if (code[0] == '*') {
@@ -36,11 +38,14 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
             aa = aminoacid::MonomerInfo::getAAByCode(code);
         }
         aminoacids.push_back(aa);
+
+        std::stringstream ssnode;
+        ssnode << node_idx++ << " " << code << " " << 0;
+        strnodes.push_back(ssnode.str());
     }
 
     std::vector<std::vector<int> > g(aminoacids.size());
     std::vector<std::vector<int> > gr(aminoacids.size());
-    std::vector<std::string> strformula(aminoacids.size());
 
     ss = std::stringstream(bonds);
     std::string bond;
@@ -57,6 +62,8 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
         gr[e].push_back(b);
     }
 
+    std::string strgraph = graphToString(g);
+
     if (!isConnected(g, gr)) {
         return nullptr;
     }
@@ -65,12 +72,12 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
         std::vector<int> pos = parseCycle(g, gr);
         std::vector<aminoacid::Aminoacid> resaacid = aminoacids_by_pos(aminoacids, pos);
 
-        return std::make_shared<nrp::NRPCycle>(nrp_id, strformula, resaacid, pos, graph, extra_info);
+        return std::make_shared<nrp::NRPCycle>(nrp_id, strnodes, resaacid, pos, strgraph, extra_info);
     } else if (isLine(g, gr)) {
         std::vector<int> pos = parseLine(g, gr);
         std::vector<aminoacid::Aminoacid> resaacid = aminoacids_by_pos(aminoacids, pos);
 
-        return std::make_shared<nrp::NRPLine>(nrp_id, strformula, resaacid, pos, graph, extra_info);
+        return std::make_shared<nrp::NRPLine>(nrp_id, strnodes, resaacid, pos, strgraph, extra_info);
     } else if (isTail(g, gr)) {
         std::vector<int> pos_tail, pos_cycle;
         parseTail(g, gr, pos_tail, pos_cycle);
@@ -87,8 +94,8 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
         std::vector<aminoacid::Aminoacid> resaacid1 = aminoacids_by_pos(aminoacids, pos1);
         std::vector<aminoacid::Aminoacid> resaacid2 = aminoacids_by_pos(aminoacids, pos2);
 
-        std::shared_ptr<NRP> ver1 = std::make_shared<NRPLine>(nrp_id, strformula, resaacid1, pos1, graph, extra_info),
-                ver2 = std::make_shared<NRPLine>(nrp_id, strformula, resaacid2, pos2, graph, extra_info);
+        std::shared_ptr<NRP> ver1 = std::make_shared<NRPLine>(nrp_id, strnodes, resaacid1, pos1, strgraph, extra_info),
+                ver2 = std::make_shared<NRPLine>(nrp_id, strnodes, resaacid2, pos2, strgraph, extra_info);
 
         return std::make_shared<nrp::NRPtail>(ver1, ver2);
     }

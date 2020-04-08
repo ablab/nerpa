@@ -35,6 +35,8 @@ namespace nrp {
                                std::vector<std::vector<int> >& gr,
                                std::vector<std::vector<int> >& formuls);
 
+        static std::string graphToString(const std::vector<std::vector<int> >& g);
+
     public:
         static std::shared_ptr<nrp::NRP> build(std::string fragment_graph, std::string extra_info);
 
