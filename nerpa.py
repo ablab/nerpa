@@ -178,7 +178,9 @@ def run(args):
     if args.local_output_dir is not None:
         main_out_dir = os.path.abspath(args.local_output_dir[0]) + "/"
 
-    # path_to_graphs = None
+    if not os.path.exists(main_out_dir):
+        os.makedirs(main_out_dir)
+
     if args.monomer:
         path_to_graphs = os.path.join(main_out_dir, 'path_to_graphs')
         copyfile(args.lib_info[0], path_to_graphs)
