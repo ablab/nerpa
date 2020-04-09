@@ -6,12 +6,87 @@
 #include "OrderedGenesMatcher.h"
 
 
+class NRP_iterator_skip_first : public matcher::OrderedGenesMatcher::NRP_iterator {
+public:
+    explicit NRP_iterator_skip_first(std::shared_ptr<nrp::NRP> nrp) : NRP_iterator(nrp) {}
+
+    int getID(int i) override {
+        return i + 1;
+    }
+
+    int getLen() override {
+        return nrp_->getLen() - 1;
+    }
+};
+
+class NRP_iterator_skip_last : public matcher::OrderedGenesMatcher::NRP_iterator {
+public:
+    explicit NRP_iterator_skip_last(std::shared_ptr<nrp::NRP> nrp) : NRP_iterator(nrp) {}
+
+    int getLen() override {
+        return nrp_->getLen() - 1;
+    }
+};
+
+class NRP_iterator_skip_tails : public matcher::OrderedGenesMatcher::NRP_iterator {
+public:
+    explicit NRP_iterator_skip_tails(std::shared_ptr<nrp::NRP> nrp) : NRP_iterator(nrp) {}
+
+    int getID(int i) override {
+        return i + 1;
+    }
+
+    int getLen() override {
+        return nrp_->getLen() - 2;
+    }
+};
+
 class NRP_iterator_rev : public matcher::OrderedGenesMatcher::NRP_iterator {
 public:
     explicit NRP_iterator_rev(std::shared_ptr<nrp::NRP> nrp):NRP_iterator(nrp){}
 
     int getID(int i) override {
         return nrp_->getLen() - i - 1;
+    }
+};
+
+
+class NRP_iterator_rev_skip_first : public matcher::OrderedGenesMatcher::NRP_iterator {
+public:
+    explicit NRP_iterator_rev_skip_first(std::shared_ptr<nrp::NRP> nrp) : NRP_iterator(nrp) {}
+
+    int getID(int i) override {
+        return nrp_->getLen() - i - 1;
+    }
+
+    int getLen() override {
+        return nrp_->getLen() - 1;
+    }
+};
+
+class NRP_iterator_rev_skip_last : public matcher::OrderedGenesMatcher::NRP_iterator {
+public:
+    explicit NRP_iterator_rev_skip_last(std::shared_ptr<nrp::NRP> nrp) : NRP_iterator(nrp) {}
+
+    int getID(int i) override {
+        return nrp_->getLen() - i - 2;
+    }
+
+    int getLen() override {
+        return nrp_->getLen() - 1;
+    }
+};
+
+class NRP_iterator_rev_skip_tails : public matcher::OrderedGenesMatcher::NRP_iterator {
+public:
+    explicit NRP_iterator_rev_skip_tails(std::shared_ptr<nrp::NRP> nrp) : NRP_iterator(nrp) {}
+
+    int getID(int i) override {
+        return nrp_->getLen() - i - 2;
+    }
+
+    int getLen() override {
+        return nrp_->getLen() - 2;
     }
 };
 
@@ -48,7 +123,7 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getMatch(const std::sh
                                                                    const matcher::Score *score) {
 
     if (nrp->getType() == nrp::NRP::line) {
-        return getLineMatch(false, false, nrp, prediction, score);
+        return getLineMatch(true, true, nrp, prediction, score);
     } else if (nrp->getType() == nrp::NRP::cycle) {
         return getCycleMatch(nrp, prediction, score);
     } else {
@@ -61,11 +136,25 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getLineMatch(bool can_
                                                                        const std::shared_ptr<nrp::NRP> nrp,
                                                                        const nrpsprediction::BgcPrediction *prediction,
                                                                        const matcher::Score *score) const {
-    NRP_iterator* nrp_iterator = new NRP_iterator(nrp);
-    matcher::MatcherBase::Match matche1 = getSimpleMatch(can_skip_first, can_skip_last, nrp_iterator, prediction, score);
+    NRP_iterator* nrp_iterator;
+    NRP_iterator* nrp_iterator_rev;
+    if (can_skip_first && can_skip_last &&
+    !nrp->getAminoacid(0).is_AA() && !nrp->getAminoacid(nrp->getLen() - 1).is_AA()) {
+        nrp_iterator = new NRP_iterator_skip_tails(nrp);
+        nrp_iterator_rev = new NRP_iterator_rev_skip_tails(nrp);
+    } else if (can_skip_first && !nrp->getAminoacid(0).is_AA()) {
+        nrp_iterator = new NRP_iterator_skip_first(nrp);
+        nrp_iterator_rev = new NRP_iterator_rev_skip_first(nrp);
+    } else if (can_skip_last && !nrp->getAminoacid(nrp->getLen() - 1).is_AA()) {
+        nrp_iterator = new NRP_iterator_skip_last(nrp);
+        nrp_iterator_rev = new NRP_iterator_rev_skip_last(nrp);
+    } else {
+        nrp_iterator = new NRP_iterator(nrp);
+        nrp_iterator_rev = new NRP_iterator_rev(nrp);
+    }
 
-    NRP_iterator* nrp_iterator_rev = new NRP_iterator_rev(nrp);
-    matcher::MatcherBase::Match matche2 = getSimpleMatch(can_skip_first, can_skip_last, nrp_iterator_rev, prediction, score);
+    matcher::MatcherBase::Match matche1 = getSimpleMatch(nrp_iterator, prediction, score);
+    matcher::MatcherBase::Match matche2 = getSimpleMatch(nrp_iterator_rev, prediction, score);
 
     delete nrp_iterator;
     delete nrp_iterator_rev;
@@ -85,8 +174,8 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getCycleMatch(const st
         NRP_iterator* nrp_iterator = new NRP_iterator_cycle(nrp, i);
         NRP_iterator* nrp_iterator_rev = new NRP_iterator_cycle_rev(nrp, i);
 
-        matcher::MatcherBase::Match matche1 = getSimpleMatch(false, false, nrp_iterator, prediction, score);
-        matcher::MatcherBase::Match matche2 = getSimpleMatch(false, false, nrp_iterator_rev, prediction, score);
+        matcher::MatcherBase::Match matche1 = getSimpleMatch(nrp_iterator, prediction, score);
+        matcher::MatcherBase::Match matche2 = getSimpleMatch(nrp_iterator_rev, prediction, score);
 
         delete nrp_iterator;
         delete nrp_iterator_rev;
@@ -116,8 +205,7 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getBranchMatch(const s
     return matche2;
 }
 
-matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(bool can_skip_first, bool can_skip_last,
-                                                                         matcher::OrderedGenesMatcher::NRP_iterator *nrp_iterator,
+matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher::OrderedGenesMatcher::NRP_iterator *nrp_iterator,
                                                                          const nrpsprediction::BgcPrediction *prediction,
                                                                          const matcher::Score *score) const {
     const auto &nrp_parts = prediction->getOrfs();

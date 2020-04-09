@@ -24,7 +24,7 @@ namespace matcher {
                 return i;
             }
 
-            int getLen() {
+            virtual int getLen() {
                 return nrp_->getLen();
             }
 
@@ -34,8 +34,7 @@ namespace matcher {
         };
 
     private:
-        matcher::MatcherBase::Match getSimpleMatch(bool can_skip_first, bool can_skip_last,
-                                                   NRP_iterator* nrp_iterator,
+        matcher::MatcherBase::Match getSimpleMatch(NRP_iterator* nrp_iterator,
                                                    const nrpsprediction::BgcPrediction *prediction,
                                                    const matcher::Score *score) const;
 
