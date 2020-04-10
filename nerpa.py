@@ -174,6 +174,10 @@ def run(args):
         log.err("dereplicator not found. Please install dereplicator and add it to PATH.")
         sys.exit()
 
+    if args.monomer and args.modification:
+        log.err("Modification inference is not supported in monomer mode.")
+        sys.exit()
+
     main_out_dir = os.path.abspath(".") + "/"
     if args.local_output_dir is not None:
         main_out_dir = os.path.abspath(args.local_output_dir[0]) + "/"
