@@ -16,11 +16,11 @@ namespace matcher {
         void matchSingleUnits(Match& match, std::vector<bool>& used_pos) const;
 
         Match
-        updateMatch(const nrpsprediction::NRPsPrediction &nrPsPrediction, matcher::MatcherBase::Match match, int bg,
+        updateMatch(const nrpsprediction::BgcPrediction &nrPsPrediction, matcher::MatcherBase::Match match, int bg,
                     std::vector<Segment> &matched_parts_id) const override;
 
     public:
-        SingleUnitMatcher(const std::shared_ptr<nrp::NRP> &nrp, const nrpsprediction::NRPsPrediction *prediction,
+        SingleUnitMatcher(const std::shared_ptr<nrp::NRP> &nrp, const nrpsprediction::BgcPrediction *prediction,
                           const Score *score);
 
         SingleUnitMatcher();

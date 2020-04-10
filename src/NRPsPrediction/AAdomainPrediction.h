@@ -6,7 +6,7 @@
 #include "Aminoacid/Aminoacid.h"
 
 namespace nrpsprediction {
-    class AminoacidPrediction {
+    class AAdomainPrediction {
     public:
         struct AminoacidProb {
             AminoacidProb() {}
@@ -23,8 +23,8 @@ namespace nrpsprediction {
         int pos;
         std::vector<AminoacidProb> aminoacid_prediction;
     public:
-        AminoacidPrediction(int pos, std::vector<AminoacidProb> aminoacid_prediction): pos(pos),
-                                                                                       aminoacid_prediction(std::move(
+        AAdomainPrediction(int pos, std::vector<AminoacidProb> aminoacid_prediction): pos(pos),
+                                                                                      aminoacid_prediction(std::move(
                                                                                                aminoacid_prediction)) {}
         bool contain(aminoacid::Aminoacid aminoacid) const;
         AminoacidProb getAminoacid(aminoacid::Aminoacid aminoacid) const;

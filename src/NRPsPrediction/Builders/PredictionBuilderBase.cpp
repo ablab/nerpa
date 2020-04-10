@@ -38,7 +38,7 @@ namespace nrpsprediction {
         return aminoacid::AminoacidInfo::AMINOACID_CNT - 1;
     }
 
-    NRPsPrediction PredictionBuilderBase::getPrediction() {
-        return NRPsPrediction(nrpparts, short_parts);
+    BgcPrediction PredictionBuilderBase::getPrediction() {
+        return BgcPrediction(nrpparts, short_parts);
     }
 }

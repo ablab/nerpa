@@ -93,4 +93,11 @@ namespace aminoacid {
 
         return AminoacidInfo::AMINOACID_NAMES[aa];
     }
+
+    bool Aminoacid::is_AA() const {
+        if (get_name() != "none" || get_possible_name() != "none") {
+            return true;
+        }
+        return formula.get(formula.N) > 0;
+    }
 }

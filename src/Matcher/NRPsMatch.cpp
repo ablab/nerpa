@@ -55,8 +55,8 @@ void matcher::MatcherBase::Match::print(std::ostream &out) {
         if (!isMatched(ri)) {
             out << "-\n";
         } else {
-            nrpsprediction::AminoacidPrediction amn_pred = nrpParts[parts_id[ri]].getAminoacidsPrediction()[parts_pos[ri]];
-            nrpsprediction::AminoacidPrediction::AminoacidProb amprob;
+            nrpsprediction::AAdomainPrediction amn_pred = nrpParts[parts_id[ri]].getAAdomainPrediction()[parts_pos[ri]];
+            nrpsprediction::AAdomainPrediction::AminoacidProb amprob;
             std::pair<int, int> pos;
             auto res = scoreFun->getTheBestAAInPred(amn_pred, nrp->getAminoacid(ri), amprob, pos);
 

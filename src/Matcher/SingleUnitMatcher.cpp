@@ -6,15 +6,15 @@
 
 namespace matcher {
     matcher::SingleUnitMatcher::SingleUnitMatcher(const std::shared_ptr<nrp::NRP> &nrp,
-                                                  const nrpsprediction::NRPsPrediction *prediction,
+                                                  const nrpsprediction::BgcPrediction *prediction,
                                                   const matcher::Score *score) : Matcher(nrp, prediction, score) {}
 
     matcher::SingleUnitMatcher::SingleUnitMatcher() {}
 
     void matcher::SingleUnitMatcher::matchSingleUnits(matcher::MatcherBase::Match &match, std::vector<bool> &used_pos) const {
         const double INF = 1e9;
-        auto short_parts = prediction->getShortParts();
-        int cnt_big_parts = prediction->getNrpsParts().size();
+        auto short_parts = prediction->getShortOrfs();
+        int cnt_big_parts = prediction->getOrfs().size();
         int n = nrp->getLen();
         int m = short_parts.size();
         bool isSwap = false;
@@ -28,13 +28,13 @@ namespace matcher {
         for (int i = 1; i <= n; ++i) {
             for (int j = 1; j <= m; ++j) {
                 if (!isSwap) {
-                    a[i][j] = -score->singleUnitScore(short_parts[j - 1].getAminoacidsPrediction()[0],
+                    a[i][j] = -score->singleUnitScore(short_parts[j - 1].getAAdomainPrediction()[0],
                                                       nrp->getAminoacid(i - 1));
                     if (used_pos[i - 1] == true) {
                         a[i][j] = 1;
                     }
                 } else {
-                    a[i][j] = -score->singleUnitScore(short_parts[i - 1].getAminoacidsPrediction()[0],
+                    a[i][j] = -score->singleUnitScore(short_parts[i - 1].getAAdomainPrediction()[0],
                                                       nrp->getAminoacid(j - 1));
                     if (used_pos[j - 1] == true) {
                         a[i][j] = 1;
@@ -93,7 +93,7 @@ namespace matcher {
                 std::swap(npos, part_pos);
             }
             if (used_pos[npos - 1] == false) {
-                double curs = score->singleUnitScore(short_parts[part_pos - 1].getAminoacidsPrediction()[0],
+                double curs = score->singleUnitScore(short_parts[part_pos - 1].getAAdomainPrediction()[0],
                                                      nrp->getAminoacid(npos - 1));
                 if (curs >= 0) {
                     match.match(npos - 1, cnt_big_parts + part_pos - 1, 0);
@@ -105,7 +105,7 @@ namespace matcher {
         match.setScore(newScore);
     }
 
-    MatcherBase::Match SingleUnitMatcher::updateMatch(const nrpsprediction::NRPsPrediction &nrPsPrediction,
+    MatcherBase::Match SingleUnitMatcher::updateMatch(const nrpsprediction::BgcPrediction &nrPsPrediction,
                                                       matcher::MatcherBase::Match match, int bg,
                                                       std::vector<Segment> &matched_parts_id) const {
         auto nmatch = setUpdateMatch(nrPsPrediction, match, bg, matched_parts_id);

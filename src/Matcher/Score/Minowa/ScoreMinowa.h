@@ -10,9 +10,15 @@
 namespace matcher {
     class ScoreMinowa : public Score {
     public:
-        double getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
-                        const nrpsprediction::AminoacidPrediction::AminoacidProb &prob,
-                        const std::pair<int, int> &pos) const override;
+        explicit ScoreMinowa(double mismatch);
+
+        bool getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
+                        const nrpsprediction::AAdomainPrediction::AminoacidProb &prob,
+                        const std::pair<int, int> &pos,
+                        double& score) const override;
+
+        double Mismatch(const aminoacid::Aminoacid &structure_aa,
+                        const nrpsprediction::AAdomainPrediction &aa_prediction) const override;
     };
 }
 

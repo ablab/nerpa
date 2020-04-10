@@ -6,7 +6,7 @@
 namespace matcher {
     class ScoreFullMatch : public Score {
     public:
-        bool getScoreForSegment(const std::vector<aminoacid::Aminoacid> &amns, const nrpsprediction::NRPsPrediction& prediction, int part_id,
+        bool getScoreForSegment(const std::vector<aminoacid::Aminoacid> &amns, const nrpsprediction::BgcPrediction& prediction, int part_id,
                                 double &score) const override;
 
     };

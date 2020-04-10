@@ -148,6 +148,10 @@ namespace aminoacid {
             }
             return res;
         }
+
+        int get(Elem elem) const {
+            return formula.find(ELEM_NAME[int(elem)])->second;
+        }
     };
 }
 

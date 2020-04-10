@@ -25,25 +25,25 @@ namespace nrpsprediction {
 
             if (!nrpparts.empty() && nrpparts[nrpparts.size() - 1].get_orf_name() == orf_name_num.first) {
                 nrpparts[nrpparts.size() - 1].add_prediction(orf_name_num.second,
-                                                             AminoacidPrediction(orf_name_num.second, prediction));
+                                                             AAdomainPrediction(orf_name_num.second, prediction));
             } else {
-                /*if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
+                /*if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAAdomainPrediction().size() < 2) {
                     short_parts.push_back(nrpparts.back());
                     nrpparts.pop_back();
                 }*/
-                nrpparts.push_back(NRPsPart(file_name, orf_name_num.first, orf_name_num.second,
-                                            AminoacidPrediction(orf_name_num.second, prediction)));
+                nrpparts.push_back(OrfPrediction(file_name, orf_name_num.first, orf_name_num.second,
+                                                 AAdomainPrediction(orf_name_num.second, prediction)));
             }
         }
 
-        /*if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
+        /*if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAAdomainPrediction().size() < 2) {
             short_parts.push_back(nrpparts.back());
             nrpparts.pop_back();
         }*/
         
         /*std::cerr << nrpparts.size() << "\n";
         for (int i = 0; i < nrpparts.size(); ++i) {
-            auto predictions = nrpparts[i].getAminoacidsPrediction();
+            auto predictions = nrpparts[i].getAAdomainPrediction();
             std::cerr << i << " size:" << predictions.size() << "\n";
             for (int j = 0; j < predictions.size(); ++j) {
                 auto probs = predictions[j].getAAPrediction();
@@ -56,7 +56,7 @@ namespace nrpsprediction {
         in.close();
     }
 
-    std::vector<AminoacidPrediction::AminoacidProb>
+    std::vector<AAdomainPrediction::AminoacidProb>
     MinowaPredictionBuilder::parse_predictions(std::ifstream &in) {
         std::string name;
         double score;
@@ -72,14 +72,14 @@ namespace nrpsprediction {
         }
         while (s != "\\\\" && getline(in, s)) {}
 
-        std::vector<AminoacidPrediction::AminoacidProb> aminoacid_prediction;
+        std::vector<AAdomainPrediction::AminoacidProb> aminoacid_prediction;
 
 
         double val = std::min(aacids[0].second, std::max(aacids[2].second, 100.));
 
         for (int i = 0; i < aacids.size(); ++i) {
             if (aacids[i].second >= val - EPS) {
-                aminoacid_prediction.push_back(AminoacidPrediction::AminoacidProb(
+                aminoacid_prediction.push_back(AAdomainPrediction::AminoacidProb(
                         aminoacid::Aminoacid(getAAbyName(aacids[i].first)), aacids[i].second));
             }
         }

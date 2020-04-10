@@ -5,7 +5,7 @@
 #ifndef NRPSMATCHER_MATCHERBASE_H
 #define NRPSMATCHER_MATCHERBASE_H
 
-#include <NRPsPrediction/AminoacidPrediction.h>
+#include <NRPsPrediction/AAdomainPrediction.h>
 #include <NRP/NRP.h>
 #include <Matcher/Score/Base/Score.h>
 
@@ -21,11 +21,11 @@ namespace matcher {
             std::shared_ptr<nrp::NRP> nrp;
             const Score* scoreFun;
             double scr;
-            std::vector<nrpsprediction::NRPsPart> nrpParts;
+            std::vector<nrpsprediction::OrfPrediction> nrpParts;
             std::vector<int> parts_id;
             std::vector<int> parts_pos;
         public:
-            Match(std::shared_ptr<nrp::NRP> nrp, std::vector<nrpsprediction::NRPsPart> nrpParts, double scr, const Score* score):
+            Match(std::shared_ptr<nrp::NRP> nrp, std::vector<nrpsprediction::OrfPrediction> nrpParts, double scr, const Score* score):
                     nrp(nrp), nrpParts(std::move(nrpParts)), scr(scr), scoreFun(score) {
                 parts_id.resize(nrp->getFullLen(), -1);
                 parts_pos.resize(nrp->getFullLen(), -1);
@@ -48,7 +48,7 @@ namespace matcher {
         MatcherBase() = default;
 
         virtual matcher::MatcherBase::Match getMatch(const std::shared_ptr<nrp::NRP> nrp,
-                                                     const nrpsprediction::NRPsPrediction *prediction,
+                                                     const nrpsprediction::BgcPrediction *prediction,
                                                      const matcher::Score *score) = 0;
     };
 }

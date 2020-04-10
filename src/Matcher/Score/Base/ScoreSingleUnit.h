@@ -19,7 +19,7 @@ namespace matcher {
         ScoreSingleUnit(std::unique_ptr<Score> base) : Score(std::move(base)) {}
 
     public:
-        double singleUnitScore(const nrpsprediction::AminoacidPrediction &apred,
+        double singleUnitScore(const nrpsprediction::AAdomainPrediction &apred,
                                const aminoacid::Aminoacid &aminoacid) const override {
             return baseScore->aaScore(apred, aminoacid) * coeff;
         }

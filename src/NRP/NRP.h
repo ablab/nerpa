@@ -2,9 +2,9 @@
 #define NRPSMATCHER_NRP_H
 
 #include <vector>
-#include "../NRPsPrediction/NRPsPrediction.h"
+#include "NRPsPrediction/BgcPrediction.h"
 #include "Aminoacid/Aminoacid.h"
-#include "../NRPsPrediction/NRPsPart.h"
+#include "NRPsPrediction/OrfPrediction.h"
 #include <iostream>
 #include <memory>
 #include "assert.h"
@@ -50,6 +50,8 @@ namespace nrp {
         virtual std::vector<aminoacid::Aminoacid> getAminoacids() const;
 
         virtual void print() const;
+
+        virtual std::string structure_to_string() const;
 
         virtual std::string getGraphInString() const;
 

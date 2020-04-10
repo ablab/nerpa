@@ -10,7 +10,7 @@
 namespace nrpsprediction {
     class MinowaPredictionBuilder : public PredictionBuilderBase {
     private:
-        std::vector<AminoacidPrediction::AminoacidProb> parse_predictions(std::ifstream& in);
+        std::vector<AAdomainPrediction::AminoacidProb> parse_predictions(std::ifstream& in);
     public:
 
         //parse ctg1_minowa_nrpspredoutput.txt file

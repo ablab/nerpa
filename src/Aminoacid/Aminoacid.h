@@ -31,6 +31,7 @@ namespace aminoacid {
         std::string get_name() const;
         std::string get_possible_name() const;
         int get_id() const;
+        bool is_AA() const;
         void addModification(Modification m);
 
     private:
