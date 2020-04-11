@@ -220,13 +220,17 @@ void run_mol_predictions(std::vector<nrpsprediction::BgcPrediction> preds, std::
 
 std::string gen_filename(std::string ifile, std::string prefix) {
     int pos_sl = -1;
+    int pos_pt = -1;
     for (int i = 0; i < ifile.size(); ++i) {
         if (ifile[i] == '/') {
             pos_sl = i;
         }
+        if (ifile[i] == '.') {
+            pos_pt = i;
+        }
     }
 
-    return (prefix + ifile.substr(pos_sl + 1));
+    return (prefix + ifile.substr(pos_sl + 1,  pos_pt - pos_sl - 1));
 }
 
 int main(int argc, char* argv[]) {
