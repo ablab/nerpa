@@ -45,6 +45,7 @@ def parse_args():
                         choices=["NRPSPREDICTOR2", "MINOWA", "PRISM", "SANDPUMA"],
                         help="AA domain predictor name [default=MINOWA]",
                         action='store')
+    parser.add_argument("--antismash_output_list", dest="antismash_out", help="path to file with list of paths to antiSMASH output folders", type=str)
     parser.add_argument("--insertion", help="insertion score [default=-1]", default=-1, action="store")
     parser.add_argument("--deletion", help="deletion score [default=-1]", default=-1, action="store")
     parser.add_argument("--open_gap", default=-1, type=float, help="score for opening gap in NRP structure [default=-1]", action="store")
@@ -158,8 +159,13 @@ def run(args):
         parser.print_help()
         sys.exit()
 
-    if (args.predictions == None):
+    if (args.predictions is None) and (args.antismash_out is None):
         log.err("None prediction info file provide")
+        parser.print_help()
+        sys.exit()
+
+    if (args.predictions is not None) and (args.antismash_out is not None):
+        log.err("You cann't use --predictions and --antismash_output_list simultaneously")
         parser.print_help()
         sys.exit()
 
