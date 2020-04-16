@@ -4,6 +4,11 @@ import os
 import argparse
 from shutil import copyfile
 
+import nerpa_init
+
+nerpa_init.init()
+import handle_TE
+
 #Log class, use it, not print
 class Log:
     text = ""
