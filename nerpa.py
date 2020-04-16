@@ -8,34 +8,7 @@ import nerpa_init
 
 nerpa_init.init()
 import handle_TE
-
-#Log class, use it, not print
-class Log:
-    text = ""
-
-    def log(self, s):
-        self.text += s + "\n"
-        print(s)
-
-    def warn(self, s):
-        msg = "WARNING: " + s
-        self.text += msg + "\n"
-        sys.stdout.write(msg)
-        sys.stdout.flush()
-
-    def err(self, s):
-        msg = "ERROR: " + s + "\n"
-        self.text += msg
-        sys.stdout.write(msg)
-        sys.stdout.flush()
-
-    def print_log(self):
-        print(self.text)
-
-    def get_log(self):
-        return self.text
-
-log = Log()
+from logger import log
 
 path_to_exec_dir = os.path.dirname(os.path.abspath(__file__)) + "/"
 
@@ -187,7 +160,10 @@ def run(args):
         main_out_dir = os.path.abspath(args.local_output_dir[0]) + "/"
 
     path_to_graphs, files_list = gen_graphs_by_mol(args, main_out_dir)
-    path_predictions = os.path.abspath(copy_prediction_list(args, main_out_dir))
+    if (args.predictions is not None):
+        path_predictions = os.path.abspath(copy_prediction_list(args, main_out_dir))
+    else:
+        path_predictions = handle_TE.create_predictions_by_antiSAMSHout(args.antismash_out, main_out_dir, args.predictor)
 
     directory = os.path.dirname(main_out_dir)
     if not os.path.exists(directory):
