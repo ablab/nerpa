@@ -31,6 +31,9 @@ namespace nrpsprediction {
         bool contain(aminoacid::Aminoacid aminoacid) const;
         AminoacidProb getAminoacid(aminoacid::Aminoacid aminoacid) const;
         std::pair<int, int> getAmnAcidPos(aminoacid::Aminoacid aminoacid) const;
+        bool is_rep() const {
+            return is_repeatable;
+        }
         std::vector<AminoacidProb> getAAPrediction() const {
             return aminoacid_prediction;
         }

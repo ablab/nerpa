@@ -227,6 +227,18 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
         return nrp_parts[part_id[ppos]].getAAdomainPrediction()[pos_id[ppos]];
     };
 
+    auto is_rep_aa = [&nrp_parts, &part_id, &pos_id](int ppos) {
+        return nrp_parts[part_id[ppos]].getAAdomainPrediction()[pos_id[ppos]].is_rep();
+    };
+
+    auto is_rep_orf = [&nrp_parts, &part_id, &pos_id](int ppos) {
+        return nrp_parts[part_id[ppos]].is_rep();
+    };
+
+    auto orf_len = [&nrp_parts, &part_id, &pos_id](int ppos) {
+        return nrp_parts[part_id[ppos]].getAAdomainPrediction().size();
+    };
+
     auto nrplen = size_t(nrp_iterator->getLen());
 
     //dp[nrp_pos][pred_pos] = score for prefix
@@ -240,6 +252,8 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
                                                         std::vector<int>(plen + 1,  0)));
     std::vector<std::vector< std::vector<int> > > py(2, std::vector<std::vector<int> >(nrplen + 1,
                                                         std::vector<int>(plen + 1,  0)));
+    std::vector<std::vector< std::vector<int> > > pmtc(2, std::vector<std::vector<int> >(nrplen + 1,
+                                                                                       std::vector<int>(plen + 1,  0)));
 
     dp[0][0][0] = 0;
     dp[1][0][0] = -1;
@@ -280,10 +294,32 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
 
     for (int npos = 1; npos <= nrplen; ++npos) {
         for (int ppos = 1; ppos <= plen; ++ppos) {
-            dp[0][npos][ppos] = dp[0][npos - 1][ppos - 1] + score->aaScore(get_aapred(ppos - 1), nrp_iterator->getAA(npos - 1));
+            double match_score =  score->aaScore(get_aapred(ppos - 1), nrp_iterator->getAA(npos - 1));
+            //std::cerr << npos << " " << ppos << "\n";
+            dp[0][npos][ppos] = dp[0][npos - 1][ppos - 1] + match_score;
             pgap[0][npos][ppos] = 0;
             px[0][npos][ppos] = npos - 1;
             py[0][npos][ppos] = ppos - 1;
+            pmtc[0][npos][ppos] = 1;
+
+            if (is_rep_aa(ppos - 1) &&
+                dp[0][npos - 1][ppos] + match_score > dp[0][npos][ppos]) {
+                dp[0][npos][ppos] = dp[0][npos - 1][ppos] + match_score;
+                pgap[0][npos][ppos] = 0;
+                px[0][npos][ppos] = npos - 1;
+                py[0][npos][ppos] = ppos;
+                pmtc[0][npos][ppos] = 1;
+            }
+
+            if (is_rep_orf(ppos - 1) && pos_id[ppos - 1] == 0 &&
+            dp[0][npos - 1][ppos + orf_len(ppos - 1) - 1] + match_score > dp[0][npos][ppos]
+            ) {
+                dp[0][npos][ppos] = dp[0][npos - 1][ppos + orf_len(ppos - 1) - 1] + match_score;
+                pgap[0][npos][ppos] = 0;
+                px[0][npos][ppos] = npos - 1;
+                py[0][npos][ppos] = ppos + orf_len(ppos - 1) - 1 ;
+                pmtc[0][npos][ppos] = 1;
+            }
 
             if ((ppos == plen || part_id[ppos] != part_id[ppos - 1]) &&
             dp[0][npos][ppos - pos_id[ppos - 1] - 1] + score->SkipSegment() > dp[0][npos][ppos]) {
@@ -291,6 +327,7 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
                 pgap[0][npos][ppos] = 0;
                 px[0][npos][ppos] = npos;
                 py[0][npos][ppos] = ppos - pos_id[ppos - 1] - 1;
+                pmtc[0][npos][ppos] = 0;
             }
 
             if (dp[0][npos][ppos - 1] + score->DeletionScore() > dp[0][npos][ppos]) {
@@ -298,6 +335,7 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
                 pgap[0][npos][ppos] = 0;
                 px[0][npos][ppos] = npos;
                 py[0][npos][ppos] = ppos - 1;
+                pmtc[0][npos][ppos] = 0;
             }
 
             if (dp[0][npos - 1][ppos] + score->InsertionScore() > dp[0][npos][ppos]) {
@@ -305,6 +343,7 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
                 pgap[0][npos][ppos] = 0;
                 px[0][npos][ppos] = npos - 1;
                 py[0][npos][ppos] = ppos;
+                pmtc[0][npos][ppos] = 0;
             }
 
             if (ppos == plen || pos_id[ppos] == 0) {
@@ -323,18 +362,23 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
                     pgap[0][npos][ppos] = 1;
                     px[0][npos][ppos] = npos;
                     py[0][npos][ppos] = ppos;
+                    pmtc[0][npos][ppos] = 0;
                 }
             }
+
+            //std::cerr << npos << " " << ppos << " " << dp[0][npos][ppos] << " " << nrp_iterator->getAA(npos - 1).get_possible_name() <<  "\n";
 
         }
     }
 
+    //std::cerr << nrp_iterator->getNRP()->get_file_name() << "\n";
+    //std::cerr << nrp_parts[0].get_file_name() << "\n";
+    //std::cerr << dp[0][nrplen][plen] << "\n";
     matcher::MatcherBase::Match nrPsMatch(nrp_iterator->getNRP(), nrp_parts, dp[0][nrplen][plen], score);
 
     int curx = int(nrplen), cury = int(plen), curgap = 0;
     while (curx != 0 || cury != 0) {
-        if (px[curgap][curx][cury] == curx - 1 &&
-            py[curgap][curx][cury] == cury - 1) {
+        if (pmtc[curgap][curx][cury]) {
             nrPsMatch.match(nrp_iterator->getID(curx - 1), part_id[cury - 1], pos_id[cury - 1]);
         }
 

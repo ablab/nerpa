@@ -33,16 +33,16 @@ namespace nrpsprediction {
                 nrpparts[nrpparts.size() - 1].add_prediction(orf_name_num.second,
                                                              AAdomainPrediction(orf_name_num.second, parse_predictions(predict_aminoacids), aa_is_rep));
             } else {
-                if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAAdomainPrediction().size() < 2) {
-                    nrpparts.pop_back();
-                }
+                //if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAAdomainPrediction().size() < 2) {
+                //    nrpparts.pop_back();
+                //}
                 nrpparts.push_back(OrfPrediction(file_name, orf_name_num.first, orf_name_num.second,
                                                  AAdomainPrediction(orf_name_num.second, parse_predictions(predict_aminoacids), aa_is_rep), orf_is_rep));
             }
         }
-        if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAAdomainPrediction().size() < 2) {
-            nrpparts.pop_back();
-        }
+        //if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAAdomainPrediction().size() < 2) {
+        //    nrpparts.pop_back();
+        //}
         in.close();
     }
 

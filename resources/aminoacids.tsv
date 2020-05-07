@@ -172,7 +172,7 @@ DVal	-	-	-	-	d-val	-	-
 DeOxyThr	-	-	-	-	deoxy-thr	-	-
 Dhabdht	-	-	-	-	dhab-dht	-	-
 DHabu	-	-	-	-	dhabu	-	-
-Dht	-	-	-	dht	dht	-	-
+Dht	-	-	-	dht	dht	-	C4H7NO2
 DnbSal	-	-	-	-	dnb-sal	-	-
 Dpg	-	-	-	dpg	dpg	-	-
 glyPhe	-	-	-	-	gly-ph	-	-
@@ -196,7 +196,7 @@ Apa	-	-	-	apa	-	-	-
 Apc	-	-	-	apc	-	-	-
 Cha	-	-	-	cha	-	-	-
 End	-	-	-	end	-	-	-
-hyv	-	-	-	hyv	-	-	-
+hyv	-	-	4-Hydroxy-D-valine	hyv	-	-	C5H11NO3
 phg	-	-	-	phg	-	-	-
 uda	-	-	-	uda	-	-	-
 vol	-	-	-	vol	-	-	-

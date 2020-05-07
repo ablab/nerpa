@@ -19,6 +19,9 @@ namespace nrpsprediction {
         std::string get_file_name() const;
         void add_prediction(int num, const AAdomainPrediction& prediction);
         std::vector<AAdomainPrediction> getAAdomainPrediction() const;
+        bool is_rep() const  {
+            return is_repeatable;
+        }
     };
 }
 

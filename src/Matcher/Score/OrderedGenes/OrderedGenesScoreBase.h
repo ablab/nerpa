@@ -34,9 +34,9 @@ namespace matcher {
         }
 
         double maxScore(const int len) const override {
-            if (len <= 7) {
-                return 1;
-            }
+            //if (len <= 7) {
+            //    return 1;
+            //}
             return len;
         }
 
