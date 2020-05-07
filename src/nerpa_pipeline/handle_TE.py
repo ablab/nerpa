@@ -65,8 +65,6 @@ def gen_predictions(bgc_orfs_parts, input_file_name, output_prefix, current_part
         for line in rf:
             ctgorf = '_'.join(line.split('_')[:2])
 
-            print(line.split("\t")[0])
-            print(double_aa)
             if line.split("\t")[0] in double_aa:
                 line = line.split("\t")[0] + "*\t" + '\t'.join(line.split("\t")[1:])
 

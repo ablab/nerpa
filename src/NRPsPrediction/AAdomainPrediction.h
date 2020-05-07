@@ -20,12 +20,14 @@ namespace nrpsprediction {
         };
         static const double EPS;
     private:
+        bool is_repeatable=false;
         int pos;
         std::vector<AminoacidProb> aminoacid_prediction;
     public:
-        AAdomainPrediction(int pos, std::vector<AminoacidProb> aminoacid_prediction): pos(pos),
+        AAdomainPrediction(int pos, std::vector<AminoacidProb> aminoacid_prediction, bool is_repeatable=false): pos(pos),
                                                                                       aminoacid_prediction(std::move(
-                                                                                               aminoacid_prediction)) {}
+                                                                                               aminoacid_prediction)),
+                                                                                               is_repeatable(is_repeatable) {}
         bool contain(aminoacid::Aminoacid aminoacid) const;
         AminoacidProb getAminoacid(aminoacid::Aminoacid aminoacid) const;
         std::pair<int, int> getAmnAcidPos(aminoacid::Aminoacid aminoacid) const;

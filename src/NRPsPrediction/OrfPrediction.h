@@ -7,12 +7,13 @@
 namespace nrpsprediction {
     class OrfPrediction {
     private:
+        bool is_repeatable = false;
         std::string file_name = "";
         std::string orf = "";
         std::vector<AAdomainPrediction> aminoacids;
     public:
-        OrfPrediction(std::string file_name, std::string orf_name, int num, const AAdomainPrediction& prediction);
-        OrfPrediction(std::string file_name, std::string orf_name);
+        OrfPrediction(std::string file_name, std::string orf_name, int num, const AAdomainPrediction& prediction, bool is_repeatable=false);
+        OrfPrediction(std::string file_name, std::string orf_name, bool is_repeatable=false);
         OrfPrediction();
         std::string get_orf_name() const;
         std::string get_file_name() const;

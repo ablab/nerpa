@@ -11,9 +11,10 @@ std::vector<nrpsprediction::AAdomainPrediction> nrpsprediction::OrfPrediction::g
     return aminoacids;
 }
 
-nrpsprediction::OrfPrediction::OrfPrediction(std::string file_name, std::string orf_name) {
+nrpsprediction::OrfPrediction::OrfPrediction(std::string file_name, std::string orf_name, bool is_repeatable) {
     this->file_name = file_name;
     this->orf = orf_name;
+    this->is_repeatable = is_repeatable;
 }
 
 std::string nrpsprediction::OrfPrediction::get_file_name() const {
@@ -21,9 +22,11 @@ std::string nrpsprediction::OrfPrediction::get_file_name() const {
 }
 
 nrpsprediction::OrfPrediction::OrfPrediction(std::string file_name, std::string orf_name, int num,
-                                             const nrpsprediction::AAdomainPrediction &prediction) {
+                                             const nrpsprediction::AAdomainPrediction &prediction,
+                                             bool is_repeatable) {
     this->file_name = file_name;
     this->orf = orf_name;
+    this->is_repeatable = is_repeatable;
     aminoacids.push_back(prediction);
 }
 
