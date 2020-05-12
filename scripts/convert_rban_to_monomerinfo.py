@@ -1,5 +1,6 @@
 import json
 import sys
+import os
 from collections import defaultdict
 
 
@@ -77,7 +78,11 @@ def main():
     graphs = json.load(open(sys.argv[1]))
     rban_input_json = json.load(open(sys.argv[2])) if len(sys.argv) > 2 else None
 
-    nerpa_monomers = [x.split()[0] for x in open(MONOMERS_TSV)]
+    monomers_tsv = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../resources/monomers.tsv')
+    if not os.path.exists(monomers_tsv):
+        monomers_tsv = MONOMERS_TSV
+
+    nerpa_monomers = [x.split()[0] for x in open(monomers_tsv)]
     nerpa_monomers = nerpa_monomers[1:]
 
     out = []
