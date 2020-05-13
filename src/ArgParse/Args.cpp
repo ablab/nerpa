@@ -26,5 +26,6 @@ Args::Args(std::string cfg_filename) {
     modification = (val == "on");
     in >> modification_cfg;
     in >> AAmod_cfg;
+    in >> monomer_cfg;
     in >> tmp >> threads;
 }

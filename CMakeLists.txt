@@ -48,6 +48,7 @@ install(FILES
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/prediction.info"
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/aminoacids.tsv"
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/modifications.tsv"
+        "${CMAKE_CURRENT_SOURCE_DIR}/resources/monomers.tsv"
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/AAmod.tsv"
         DESTINATION share/nerpa
         COMPONENT runtime)
