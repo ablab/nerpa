@@ -55,7 +55,7 @@ with open('mibig_base.csv', 'r') as f:
         list_AA.append(row[0])
         
 all_res = []
-with open("/Bmo/kolga/runs/Nerpa/Mibig2019/GARLIC/report_unique.csv", 'r') as f:
+with open("/Bmo/kolga/runs/Nerpa/Mibig2019/GARLIC/report.csv", 'r') as f:
     csv_reader = csv.reader(f, delimiter='\t')
     for row in csv_reader:
         if row[0] != 'genome':
@@ -84,11 +84,11 @@ def get_score_iswrong(path_to_report):
 with open("base_line/GARLIC/garlic_res.csv", 'w' ) as fw:
     csv_writer = csv.writer(fw, delimiter=',', quotechar='"')
     csv_writer.writerow(['Accession', 'Main Product', 'Organism', 'Structure type', 'Molecule Length', 'Has Match', 'Score', 'Matched Length', 'Matched Percentage', 'Rank for Genome', 'Rank for Structure'])
-    with open("/Bmo/kolga/runs/Nerpa/Mibig2019/GARLIC/report_unique.csv", 'r') as f:
+    with open("/Bmo/kolga/runs/Nerpa/Mibig2019/GARLIC/report.csv", 'r') as f:
         csv_reader = csv.reader(f, delimiter='\t')
         for row in csv_reader:
             if (row[0] in row[1]):
-                result_match[row[1]] = [row[2], row[-1]]
+                result_match[row[0]] = [row[2], row[-1]]
 
     for mol_name in list_AA:
         cnt_all += 1
@@ -104,7 +104,7 @@ with open("base_line/GARLIC/garlic_res.csv", 'w' ) as fw:
         else:
             csv_writer.writerow([mol_name] + AA_info[mol_name] + ['False', '0', '0', '0', '-1', '-1'])
 
-calcFDR(get_score_iswrong("/Bmo/kolga/runs/Nerpa/Mibig2019/GARLIC/report_unique.csv"))
+calcFDR(get_score_iswrong("/Bmo/kolga/runs/Nerpa/Mibig2019/GARLIC/report.csv"))
 
 print("Find " + str(cnt_found) + " (out of " + str(cnt_all) + ")")
 print("Find " + str(cnt_05per) + " (out of " + str(cnt_all) + ") half matched")

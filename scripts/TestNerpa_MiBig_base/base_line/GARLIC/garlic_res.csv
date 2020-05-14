@@ -1,11 +1,10 @@
 Accession,Main Product,Organism,Structure type,Molecule Length,Has Match,Score,Matched Length,Matched Percentage,Rank for Genome,Rank for Structure
-BGC0000300,amychelin,Streptomyces sp. AA4,LINE,6,True,0.00455716267089357,0,0.0,11,3
+BGC0000300,amychelin,Streptomyces sp. AA4,LINE,6,True,0.00455716267089357,0,0.0,5,3
 BGC0000305,Arthrofactin A,Pseudomonas sp. MIS38,BRANCH,12,True,1.0,11,0.92,0,0
 BGC0000306,Arylomycin,Streptomyces filamentosus NRRL 11379,BRANCH,6,True,0.5306521739130435,6,1.0,0,0
 BGC0000307,aureobasidin A1,Aureobasidium pullulans,CYCLE,9,True,0.4727442149402081,0,0.0,1,0
 BGC0000310,bacitracin,Bacillus licheniformis,BRANCH,11,True,0.9345549738219895,5,0.45,0,0
 BGC0000312,bassianolide,Beauveria bassiana,CYCLE,8,True,0.4198473282442748,1,0.12,0,2
-BGC0000323,"cichofactin A, cichofactin B",Pseudomonas cichorii,LINE,10,True,0.45690524193548376,9,0.9,1,0
 BGC0000323,"cichofactin A, cichofactin B",Pseudomonas cichorii,LINE,10,True,0.45690524193548376,9,0.9,1,0
 BGC0000330,cupriachelin,Cupriavidus necator H16,LINE,6,True,0.26840317100792754,2,0.33,0,0
 BGC0000332,cyanopeptolin,Microcystis sp. NIVA-CYA 172/5,BRANCH,7,True,0.25706033376123233,0,0.0,0,0
@@ -13,106 +12,69 @@ BGC0000333,cyclomarin D,Salinispora arenicola CNS-205,CYCLE,7,False,0,0,0,-1,-1
 BGC0000336,daptomycin,Streptomyces filamentosus NRRL 11379,BRANCH,14,True,0.5526225180764376,13,0.93,0,0
 BGC0000342,enniatin,Fusarium equiseti,CYCLE,6,True,0.5295801526717557,1,0.17,0,2
 BGC0000367,gramicidin,Brevibacillus brevis NBRC 100599,LINE,17,True,0.6649836244541483,15,0.88,0,0
-BGC0000374.1,"hormaomycin, hormaomycin A1, hormaomycin A2, hormaomycin A3, hormaomycin A4, hormaomycin A5, hormaomycin A6",Streptomyces griseoflavus,BRANCH,8,False,0,0,0,-1,-1
-BGC0000374.2,"hormaomycin, hormaomycin A1, hormaomycin A2, hormaomycin A3, hormaomycin A4, hormaomycin A5, hormaomycin A6",Streptomyces griseoflavus,BRANCH,8,False,0,0,0,-1,-1
-BGC0000374.3,"hormaomycin, hormaomycin A1, hormaomycin A2, hormaomycin A3, hormaomycin A4, hormaomycin A5, hormaomycin A6",Streptomyces griseoflavus,BRANCH,8,False,0,0,0,-1,-1
-BGC0000374.5,"hormaomycin, hormaomycin A1, hormaomycin A2, hormaomycin A3, hormaomycin A4, hormaomycin A5, hormaomycin A6",Streptomyces griseoflavus,BRANCH,8,False,0,0,0,-1,-1
-BGC0000374.6,"hormaomycin, hormaomycin A1, hormaomycin A2, hormaomycin A3, hormaomycin A4, hormaomycin A5, hormaomycin A6",Streptomyces griseoflavus,BRANCH,8,False,0,0,0,-1,-1
+BGC0000374.1,"hormaomycin, hormaomycin A1, hormaomycin A2, hormaomycin A3, hormaomycin A4, hormaomycin A5, hormaomycin A6",Streptomyces griseoflavus,BRANCH,8,True,0.2843477055316789,6,0.75,0,0
 BGC0000378,kutznerides,Kutzneria sp. 744,CYCLE,6,True,0.09658293025432983,4,0.67,4,4
 BGC0000379,laspartomycin,Streptomyces viridochromogenes,BRANCH,12,True,0.6191687871077183,1,0.08,0,0
 BGC0000385,lysobactin,Lysobacter sp. ATCC 53042,BRANCH,11,True,0.5313578826237053,11,1.0,0,0
 BGC0000386.1,"Malleobactin A, malleobactin B, malleobactin C, malleobactin D",Burkholderia thailandensis E264,LINE,6,False,0,0,0,-1,-1
-BGC0000386.3,"Malleobactin A, malleobactin B, malleobactin C, malleobactin D",Burkholderia thailandensis E264,LINE,6,False,0,0,0,-1,-1
-BGC0000386.4,"Malleobactin A, malleobactin B, malleobactin C, malleobactin D",Burkholderia thailandensis E264,LINE,6,False,0,0,0,-1,-1
 BGC0000388,mannopeptimycin,Streptomyces hygroscopicus,BRANCH,7,False,0,0,0,-1,-1
 BGC0000389,massetolide A,Pseudomonas fluorescens SS101,BRANCH,10,True,0.7766120777891505,9,0.9,1,0
 BGC0000396,nodularin,Nostoc sp. 73.1,CYCLE,5,True,0.43966501712980594,9,1.8,0,0
 BGC0000397,nostocyclopeptide,Nostoc sp. ATCC 53789,CYCLE,6,True,0.9079152731326645,7,1.17,0,0
-BGC0000399.1,"Orfamide A, Orfamide B, Orfamide C",Pseudomonas protegens Pf-5,BRANCH,11,False,0,0,0,-1,-1
-BGC0000399.2,"Orfamide A, Orfamide B, Orfamide C",Pseudomonas protegens Pf-5,BRANCH,11,False,0,0,0,-1,-1
-BGC0000399.3,"Orfamide A, Orfamide B, Orfamide C",Pseudomonas protegens Pf-5,BRANCH,11,False,0,0,0,-1,-1
+BGC0000399.1,"Orfamide A, Orfamide B, Orfamide C",Pseudomonas protegens Pf-5,BRANCH,11,True,0.8497017892644135,10,0.91,0,0
 BGC0000407,plipastatin,Bacillus subtilis subsp. subtilis,BRANCH,11,True,0.8526841448189763,10,0.91,0,0
-BGC0000413,pyoverdine,Pseudomonas protegens Pf-5,LINE,8,True,0.0986060918946825,4,0.5,5,2
-BGC0000416.2,"Rhabdopeptide 1, Rhabdopeptide 2, Rhabdopeptide 3, Rhabdopeptide 4",Xenorhabdus nematophila ATCC 19061,LINE,6,False,0,0,0,-1,-1
-BGC0000416.3,"Rhabdopeptide 1, Rhabdopeptide 2, Rhabdopeptide 3, Rhabdopeptide 4",Xenorhabdus nematophila ATCC 19061,LINE,6,False,0,0,0,-1,-1
-BGC0000416.4,"Rhabdopeptide 1, Rhabdopeptide 2, Rhabdopeptide 3, Rhabdopeptide 4",Xenorhabdus nematophila ATCC 19061,LINE,5,False,0,0,0,-1,-1
-BGC0000424.1,"Serobactin C, Serobactin B, Serobactin A",Herbaspirillum seropedicae SmR1,LINE,7,False,0,0,0,-1,-1
-BGC0000424.2,"Serobactin C, Serobactin B, Serobactin A",Herbaspirillum seropedicae SmR1,LINE,7,False,0,0,0,-1,-1
-BGC0000424.3,"Serobactin C, Serobactin B, Serobactin A",Herbaspirillum seropedicae SmR1,LINE,7,False,0,0,0,-1,-1
-BGC0000425,sessilin A,Pseudomonas sp. CMR12a,LINE,18,True,0.5732252364619063,22,1.22,3,1
+BGC0000413,pyoverdine,Pseudomonas protegens Pf-5,LINE,8,True,0.0986060918946825,4,0.5,3,2
+BGC0000416.2,"Rhabdopeptide 1, Rhabdopeptide 2, Rhabdopeptide 3, Rhabdopeptide 4",Xenorhabdus nematophila ATCC 19061,LINE,6,True,0.15295735900962865,5,0.83,3,11
+BGC0000424.1,"Serobactin C, Serobactin B, Serobactin A",Herbaspirillum seropedicae SmR1,LINE,7,True,0.5918200408997956,6,0.86,0,0
+BGC0000425,sessilin A,Pseudomonas sp. CMR12a,LINE,18,True,0.5732252364619063,22,1.22,1,0
 BGC0000433,surfactin,Bacillus velezensis FZB42,CYCLE,8,True,1.0,7,0.88,0,0
-BGC0000437,syringomycin,Pseudomonas syringae pv. syringae B728a,BRANCH,10,True,0.04565381708238855,0,0.0,5,5
+BGC0000437,syringomycin,Pseudomonas syringae pv. syringae B728a,BRANCH,10,True,0.04565381708238855,0,0.0,3,5
 BGC0000438,syringopeptin,Pseudomonas syringae pv. syringae,BRANCH,26,True,0.812550637106872,25,0.96,0,0
 BGC0000439,Taromycin A,Saccharomonospora sp. CNQ490,BRANCH,14,True,0.26010293556995806,17,1.21,1,1
 BGC0000443,thanamycin,Pseudomonas sp. SHC52,BRANCH,9,True,0.0848961484170195,17,1.89,1,0
-BGC0000447.1,"tolaasin I, tolaasin F",Pseudomonas costantinii,BRANCH,19,False,0,0,0,-1,-1
-BGC0000447.2,"tolaasin I, tolaasin F",Pseudomonas costantinii,BRANCH,19,False,0,0,0,-1,-1
+BGC0000447.1,"tolaasin I, tolaasin F",Pseudomonas costantinii,BRANCH,19,True,0.7213387381769046,18,0.95,0,1
 BGC0000452,tyrocidine,Brevibacillus brevis NBRC 100599,CYCLE,10,True,0.9345690747782002,10,1.0,0,0
 BGC0000453,Valinomycin,Streptomyces tsusimaensis,CYCLE,12,True,0.807959922070693,2,0.17,1,0
 BGC0000461,WAP-8294A2 (lotilibcin),Lysobacter enzymogenes,CYCLE,13,True,0.6188217673489764,16,1.23,0,0
-BGC0000463.1,"xantholysin A, xantholysin B, xantholysin C",Pseudomonas putida,BRANCH,15,False,0,0,0,-1,-1
-BGC0000463.2,"xantholysin A, xantholysin B, xantholysin C",Pseudomonas putida,BRANCH,15,False,0,0,0,-1,-1
-BGC0000463.3,"xantholysin A, xantholysin B, xantholysin C",Pseudomonas putida,BRANCH,15,False,0,0,0,-1,-1
-BGC0000464.1,"Xenoamicin A, Xenoamicin B",Xenorhabdus doucetiae,BRANCH,14,False,0,0,0,-1,-1
-BGC0000464.2,"Xenoamicin A, Xenoamicin B",Xenorhabdus doucetiae,BRANCH,14,False,0,0,0,-1,-1
+BGC0000463.1,"xantholysin A, xantholysin B, xantholysin C",Pseudomonas putida,BRANCH,15,True,0.46914520798415343,14,0.93,0,0
+BGC0000464.1,"Xenoamicin A, Xenoamicin B",Xenorhabdus doucetiae,BRANCH,14,True,0.08362270569059599,14,1.0,1,0
 BGC0001127,jagaricin,Janthinobacterium agaricidamnosum,BRANCH,10,True,0.5401668129938542,9,0.9,0,0
 BGC0001131,Ambactin,Xenorhabdus miraniensis,CYCLE,6,True,0.06697195191757298,6,1.0,1,10
 BGC0001133,Taxlllaid,Xenorhabdus bovienii SS-2004,BRANCH,8,False,0,0,0,-1,-1
 BGC0001135.1,"Bicornutin A1, Bicornutin A2",Xenorhabdus budapestensis,LINE,6,False,0,0,0,-1,-1
-BGC0001135.2,"Bicornutin A1, Bicornutin A2",Xenorhabdus budapestensis,LINE,6,False,0,0,0,-1,-1
 BGC0001153,polymyxin B,Paenibacillus polymyxa,BRANCH,11,True,1.0,10,0.91,0,0
 BGC0001189,taiwachelin,Cupriavidus taiwanensis LMG 19424,LINE,7,True,0.6095929677049494,2,0.29,0,0
-BGC0001192.1,"colistin A, colistin B",Paenibacillus alvei,BRANCH,11,False,0,0,0,-1,-1
-BGC0001192.2,"colistin A, colistin B",Paenibacillus alvei,BRANCH,11,False,0,0,0,-1,-1
+BGC0001192.1,"colistin A, colistin B",Paenibacillus alvei,BRANCH,11,True,0.8215128383067315,10,0.91,1,1
 BGC0001196,desotamide,Streptomyces scopuliridis,CYCLE,6,True,0.4208690987124464,6,1.0,0,0
 BGC0001207,teixobactin,Eleftheria terrae,BRANCH,11,True,0.4104376597984658,11,1.0,0,0
-BGC0001214.1,marformycins,Streptomyces drozdowiczii,BRANCH,8,False,0,0,0,-1,-1
-BGC0001214.2,marformycins,Streptomyces drozdowiczii,BRANCH,8,False,0,0,0,-1,-1
-BGC0001214.3,marformycins,Streptomyces drozdowiczii,BRANCH,8,False,0,0,0,-1,-1
-BGC0001214.4,marformycins,Streptomyces drozdowiczii,BRANCH,8,False,0,0,0,-1,-1
-BGC0001214.5,marformycins,Streptomyces drozdowiczii,BRANCH,8,False,0,0,0,-1,-1
-BGC0001214.6,marformycins,Streptomyces drozdowiczii,BRANCH,8,False,0,0,0,-1,-1
-BGC0001220,aculeacin A,Aspergillus japonicus,BRANCH,7,True,0.11196267910696432,0,0.0,4,1
+BGC0001214.1,marformycins,Streptomyces drozdowiczii,BRANCH,8,True,0.46171227717800645,7,0.88,0,0
+BGC0001220,aculeacin A,Aspergillus japonicus,BRANCH,7,True,0.11196267910696432,0,0.0,3,1
 BGC0001233,feglymycin,Streptomyces sp. DSM 11171,LINE,13,True,0.2498961362692148,0,0.0,0,0
 BGC0001240.1,"serinocyclin A, serinocyclin B",Chaetomium globosum CBS 148.51,CYCLE,7,False,0,0,0,-1,-1
-BGC0001240.2,"serinocyclin A, serinocyclin B",Chaetomium globosum CBS 148.51,CYCLE,7,False,0,0,0,-1,-1
-BGC0001250,epichloenin A,Epichloe festucae,CYCLE,8,True,0.10706278026905829,1,0.12,5,2
+BGC0001250,epichloenin A,Epichloe festucae,CYCLE,8,True,0.10706278026905829,1,0.12,4,2
 BGC0001290.1,"emericellamide A, emericellamide B",Aspergillus nidulans FGSC A4,CYCLE,6,False,0,0,0,-1,-1
-BGC0001290.2,"emericellamide A, emericellamide B",Aspergillus nidulans FGSC A4,CYCLE,6,False,0,0,0,-1,-1
 BGC0001312,viscosin,Pseudomonas fluorescens SBW25,BRANCH,10,True,0.8822927328556806,9,0.9,0,0
 BGC0001341,valinomycin,Rothia nasimurium,CYCLE,12,True,0.807959922070693,2,0.17,1,0
-BGC0001346.1,"Bananamide 1, Bananamide 2, Bananamide 3",Pseudomonas fluorescens,BRANCH,9,False,0,0,0,-1,-1
-BGC0001346.2,"Bananamide 1, Bananamide 2, Bananamide 3",Pseudomonas fluorescens,BRANCH,9,False,0,0,0,-1,-1
-BGC0001346.3,"Bananamide 1, Bananamide 2, Bananamide 3",Pseudomonas fluorescens,BRANCH,9,False,0,0,0,-1,-1
+BGC0001346.1,"Bananamide 1, Bananamide 2, Bananamide 3",Pseudomonas fluorescens,BRANCH,9,True,0.6013104838709676,8,0.89,3,0
 BGC0001370.1,"lipopeptide 8D1-1, lipopeptide 8D1-2",Streptomyces rochei,LINE,12,False,0,0,0,-1,-1
-BGC0001370.2,"lipopeptide 8D1-1, lipopeptide 8D1-2",Streptomyces rochei,LINE,12,False,0,0,0,-1,-1
-BGC0001371,echinocandin B,Aspergillus nidulans NRRL 8112,BRANCH,7,True,0.11196267910696432,0,0.0,4,1
+BGC0001371,echinocandin B,Aspergillus nidulans NRRL 8112,BRANCH,7,True,0.11196267910696432,0,0.0,3,1
 BGC0001393,lugdunin,Staphylococcus lugdunensis N920143,CYCLE,6,True,0.8383696416022487,7,1.17,0,0
 BGC0001402.1,"cyclochlorotine, Hydroxy-cyclochlorotine, Cyclotine, Cyclochlorotine B, Deoxy-Cyclochlorotine",Talaromyces islandicus,CYCLE,5,False,0,0,0,-1,-1
-BGC0001402.2,"cyclochlorotine, Hydroxy-cyclochlorotine, Cyclotine, Cyclochlorotine B, Deoxy-Cyclochlorotine",Talaromyces islandicus,CYCLE,5,False,0,0,0,-1,-1
-BGC0001402.3,"cyclochlorotine, Hydroxy-cyclochlorotine, Cyclotine, Cyclochlorotine B, Deoxy-Cyclochlorotine",Talaromyces islandicus,CYCLE,5,False,0,0,0,-1,-1
-BGC0001402.4,"cyclochlorotine, Hydroxy-cyclochlorotine, Cyclotine, Cyclochlorotine B, Deoxy-Cyclochlorotine",Talaromyces islandicus,CYCLE,5,False,0,0,0,-1,-1
-BGC0001402.5,"cyclochlorotine, Hydroxy-cyclochlorotine, Cyclotine, Cyclochlorotine B, Deoxy-Cyclochlorotine",Talaromyces islandicus,CYCLE,5,False,0,0,0,-1,-1
 BGC0001406,telomycin,Streptomyces canus,BRANCH,11,True,0.5940065681444993,11,1.0,0,0
 BGC0001414,griselimycin,Streptomyces muensis,BRANCH,11,True,0.3394039735099338,11,1.0,0,0
 BGC0001448,"Malacidin A, Malacidin B",uncultured bacterium,BRANCH,11,True,0.23380772582050524,5,0.45,1,0
-BGC0001448,"Malacidin A, Malacidin B",uncultured bacterium,BRANCH,11,True,0.23380772582050524,5,0.45,1,0
 BGC0001469,marthiapeptide A,Brevibacillus sp. Leaf182,CYCLE,6,True,0.11846754695927096,6,1.0,0,1
 BGC0001532,bogorol,Brevibacillus laterosporus,LINE,14,True,0.46389270976616226,13,0.93,0,0
-BGC0001561,curacomycin,Streptomyces curacoi,CYCLE,6,True,0.10437956204379559,6,1.0,4,10
-BGC0001562,curacomycin,Streptomyces curacoi,CYCLE,6,True,0.2754909873553941,6,1.0,0,1
+BGC0001561,curacomycin,Streptomyces curacoi,CYCLE,6,True,0.10437956204379559,6,1.0,4,9
 BGC0001565,cyclosporin C,Beauveria felina,CYCLE,11,True,0.8397974683544305,11,1.0,0,0
 BGC0001569,dechlorocuracomycin,Streptomyces noursei ATCC 11455,CYCLE,6,True,0.4067460317460318,6,1.0,0,0
 BGC0001582,ecumicin,Nonomuraea sp. MJM5123,BRANCH,13,True,0.19652101884448128,12,0.92,0,5
 BGC0001614,hassallidin E,Planktothrix serta PCC 8927,BRANCH,10,True,0.46755277560594194,17,1.7,0,1
 BGC0001628.1,"JBIR-78, JBIR-95",Kibdelosporangium sp. AK-AA56,LINE,8,False,0,0,0,-1,-1
-BGC0001628.2,"JBIR-78, JBIR-95",Kibdelosporangium sp. AK-AA56,LINE,8,False,0,0,0,-1,-1
 BGC0001657,lysocin,Lysobacter sp. RH2180-5,BRANCH,13,True,0.31996329794206313,15,1.15,0,0
 BGC0001695,neoantimycin,Streptomyces conglobatus,BRANCH,6,True,0.5014956888967096,2,0.33,0,0
-BGC0001768,sansalvamide,[Nectria] haematococca mpVI 77-13-4,CYCLE,5,True,0.1763879128601546,4,0.8,7,6
+BGC0001768,sansalvamide,[Nectria] haematococca mpVI 77-13-4,CYCLE,5,True,0.1763879128601546,4,0.8,3,6
 BGC0001792.1,"surugamide A, surugamide D",Streptomyces albidoflavus,CYCLE,8,False,0,0,0,-1,-1
-BGC0001792.2,"surugamide A, surugamide D",Streptomyces albidoflavus,CYCLE,8,False,0,0,0,-1,-1
 BGC0001796,tauramamide,Brevibacillus laterosporus DSM 25,LINE,6,True,0.37674247982391784,5,0.83,1,0
-BGC0001806,Tolaasin A,Pseudomonas tolaasii,BRANCH,19,True,0.8439871115268682,20,1.05,0,0
 BGC0001822,vioprolide,Cystobacter sp.,CYCLE,8,True,0.4351580319322254,8,1.0,0,0
 BGC0001825,xenematides,Xenorhabdus nematophila AN6/1,BRANCH,5,True,0.3546679499518768,5,1.0,1,0

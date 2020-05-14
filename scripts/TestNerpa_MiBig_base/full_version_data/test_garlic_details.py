@@ -72,9 +72,6 @@ def processDir(cdir, csv_writer, csv_writer_per):
         return
    
     genome, mol = cdir.split('_')[0], cdir.split('_')[1]
-    if ("." in mol) and (mol.split(".")[-1] != "1") and ("00416" not in mol):
-        return
-
     if genome not in mol:
         return
 
