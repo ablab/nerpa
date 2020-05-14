@@ -1,0 +1,322 @@
+[
+  {
+    "id": "BGC0000300.gr",
+    "smiles": "CC(O)[C@@H](NC(=O)C[C@@H](O)C[C@@H](O)[C@@H](CO)NC(=O)c1ccccc1O)C(=O)N[C@@H](CO)C(=O)N[C@@H](CO)C(=O)N[C@H]1Cc2cc(O)c(O)cc2[N+](C)(C)C1"
+  },
+  {
+    "id": "BGC0000305.gr",
+    "smiles": "CCCCCCC[C@H](O)CC(=O)N[C@H](CC(C)C)C(=O)N[C@H](CC(=O)O)C(=O)N[C@H]1C(=O)N[C@H](CC(C)C)C(=O)N[C@H](CC(C)C)C(=O)N[C@H](CO)C(=O)NC(CC(C)C)C(=O)N[C@H](CO)C(=O)N[C@@H]([C@@H](C)CC)C(=O)N[C@@H]([C@@H](C)CC)C(=O)N[C@@H](CC(=O)O)C(=O)O[C@@H]1C"
+  },
+  {
+    "id": "BGC0000306.gr",
+    "smiles": "CCCCCCCCCCCCCCCC(=O)N(C)[C@H](CO)C(=O)N[C@H](C)C(=O)NCC(=O)N(C)[C@@H]1C(=O)N[C@@H](C)C(=O)N[C@H](C(=O)O)Cc2ccc(O)c(c2)-c2cc1ccc2O"
+  },
+  {
+    "id": "BGC0000307.gr",
+    "smiles": "CC[C@@H](C)[C@@H]1OC(=O)[C@H](C(C)(C)O)N(C)C(=O)[C@H](CC(C)C)NC(=O)[C@H](C(C)C)N(C)C(=O)[C@@H]([C@H](C)CC)NC(=O)[C@@H]2CCCN2C(=O)[C@H](Cc2ccccc2)N(C)C(=O)[C@H](Cc2ccccc2)NC(=O)[C@H](C(C)C)N(C)C1=O"
+  },
+  {
+    "id": "BGC0000310.gr",
+    "smiles": "CCC(C)C(N)C1=NC(C(=O)NC(CC(C)C)C(=O)NC(CCC(=O)O)C(=O)NC(C(=O)NC2CCCCNC(=O)C(CC(N)=O)NC(=O)C(CC(=O)O)NC(=O)C(Cc3cnc[nH]3)NC(=O)C(Cc3ccccc3)NC(=O)C(C(C)CC)NC(=O)C(CCCN)NC2=O)C(C)CC)CS1"
+  },
+  {
+    "id": "BGC0000312.gr",
+    "smiles": "CC(C)CC1C(=O)OC(C(C)C)C(=O)N(C)C(CC(C)C)C(=O)OC(C(C)C)C(=O)N(C)C(CC(C)C)C(=O)OC(C(C)C)C(=O)N(C)C(CC(C)C)C(=O)OC(C(C)C)C(=O)N1C"
+  },
+  {
+    "id": "BGC0000323.gr",
+    "smiles": "CCCCCCCCCC(O)CC(=O)N[C@@H](Cc1c[nH]cn1)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@H](C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CC(C)C)C(=O)O)C(C)C"
+  },
+  {
+    "id": "BGC0000330.gr",
+    "smiles": "CCCCCCCCCC(=O)N[C@H](C(=O)N[C@@H](CCN)C(=O)N[C@H](C(=O)NCC(=O)N[C@@H](CCCN(O)C(=O)C[C@H](C)O)C(=O)O)[C@H](O)C(=O)O)[C@H](O)C(=O)O"
+  },
+  {
+    "id": "BGC0000332.gr",
+    "smiles": "CC[C@H](C)[C@@H]1NC(=O)[C@H](Cc2ccccc2)N(C)C(=O)[C@H]([C@@H](C)CC)N2C(=O)[C@H](CC[C@H]2O)NC(=O)[C@H](CCCN=C(N)N)NC(=O)[C@@H](NC(=O)[C@H](O)COS(=O)(=O)O)[C@@H](C)OC1=O"
+  },
+  {
+    "id": "BGC0000333.gr",
+    "smiles": "C=CC(C)(C)n1cc([C@@H](O)[C@@H]2NC(=O)[C@H]([C@H](C)C=C(C)C)NC(=O)[C@H](CC(C)C)N(C)C(=O)[C@H](C(C)C)NC(=O)[C@H]([C@H](OC)c3ccccc3)NC(=O)[C@H](C)NC(=O)[C@H](C[C@@H](C)CO)NC2=O)c2ccccc21"
+  },
+  {
+    "id": "BGC0000336.gr",
+    "smiles": "CCCCCCCCCC(=O)N[C@@H](Cc1c[nH]c2ccccc12)C(=O)N[C@H](CC(N)=O)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@@H]1C(=O)NCC(=O)N[C@@H](CCCN)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@H](C)C(=O)N[C@@H](CC(=O)O)C(=O)NCC(=O)N[C@H](CO)C(=O)N[C@@H]([C@H](C)CC(=O)O)C(=O)N[C@@H](CC(=O)c2ccccc2N)C(=O)O[C@H]1C"
+  },
+  {
+    "id": "BGC0000342.gr",
+    "smiles": "CCCC[C@H]1C(=O)O[C@H](C(C)C)C(=O)N(C)[C@@H](C(C)C)C(=O)O[C@H](C(C)C)C(=O)N(C)[C@@H](C(C)CC)C(=O)O[C@H](C(C)C)C(=O)N1C"
+  },
+  {
+    "id": "BGC0000367.gr",
+    "smiles": "CC(C)C[C@@H](NC(=O)[C@H](C)NC(=O)CNC(=O)[C@@H](NC=O)C(C)C)C(=O)N[C@@H](C)C(=O)N[C@@H](C(=O)N[C@H](C(=O)N[C@H](C(=O)N[C@@H](Cc1c[nH]c2ccccc12)C(=O)N[C@H](CC(C)C)C(=O)N[C@@H](Cc1c[nH]c2ccccc12)C(=O)N[C@H](CC(C)C)C(=O)N[C@@H](Cc1c[nH]c2ccccc12)C(=O)N[C@H](CC(C)C)C(=O)N[C@@H](Cc1c[nH]c2ccccc12)C(=O)NCCO)C(C)C)C(C)C)C(C)C"
+  },
+  {
+    "id": "BGC0000374.1.gr",
+    "smiles": "C/C=C\\[C@H]1C[C@H]2C(=O)O[C@H](C)[C@@H](NC(=O)[C@H](C[C@@H]3C[C@H]3[N+](=O)[O-])NC(=O)c3ccc(Cl)n3O)C(=O)N[C@@H]([C@H](C)c3ccccc3)C(=O)N[C@H](C[C@@H]3C[C@H]3[N+](=O)[O-])C(=O)N[C@@H]([C@H](C)c3ccccc3)C(=O)N[C@@H]([C@@H](C)CC)C(=O)N2C1"
+  },
+  {
+    "id": "BGC0000378.gr",
+    "smiles": "COC[C@@H]1NC(=O)[C@@H]2C[C@@H](Cl)CNN2C(=O)[C@H](C(C)(C)C)OC(=O)[C@@H](C2(C)CC2)NC(=O)[C@@H]2C[C@@]3(O)c4ccc(Cl)c(Cl)c4N[C@H]3N2C(=O)[C@@H]([C@H](O)CC(=O)O)NC1=O"
+  },
+  {
+    "id": "BGC0000379.gr",
+    "smiles": "CC[C@@H](C)[C@@H]1NC(=O)[C@H]([C@@H](C)O)NC(=O)CNC(=O)[C@H](CC(=O)O)NC(=O)CNC(=O)[C@H](CC(=O)O)NC(=O)CNC(=O)[C@@H]2CCCCN2C(=O)[C@@H](NC(=O)[C@H](CC(=O)O)NC(=O)/C=C/CCCCCCCCCC(C)C)CNC(=O)[C@@H]2CCCN2C1=O"
+  },
+  {
+    "id": "BGC0000385.gr",
+    "smiles": "CCC(C)C1NC(=O)C(CCCN=C(N)N)NC(=O)C(CC(C)C)NC(=O)C(C(O)C(C)C)NC(=O)C(NC(=O)C(CC(C)C)NC(=O)C(N)CC(C)C)C(c2ccccc2)OC(=O)C(CO)NC(=O)C(C(O)C(N)=O)NC(=O)CNC(=O)C(C(C)O)NC1=O"
+  },
+  {
+    "id": "BGC0000386.1.gr",
+    "smiles": "NCCCCNC(=O)[C@H](CCCN(O)C=O)NC(=O)[C@H](CO)NC(=O)[C@H](NC(=O)[C@H](CCC[N+](=O)[O-])NC=O)[C@@H](O)C(=O)O"
+  },
+  {
+    "id": "BGC0000388.gr",
+    "smiles": "CC(C)CC(=O)O[C@@H]1[C@H](O)[C@@H](O[C@@H]2[C@@H](CO)O[C@H](Oc3ccc(C[C@H]4NC(=O)[C@H]([C@@H](C)c5ccccc5)NC(=O)CNC(=O)[C@H](CO)NC(=O)[C@@H]([C@@H](O)[C@@H]5CNC(N)=[N+]5[C@H]5O[C@H](O)[C@@H](O)[C@H](O)[C@@H]5O)NC(=O)[C@H]([C@@H](O)[C@@H]5C[NH+]=C(N)N5)NC4=O)cc3)[C@@H](O)[C@H]2O)O[C@H](CO)[C@H]1O"
+  },
+  {
+    "id": "BGC0000389.gr",
+    "smiles": "CCCCCCC[C@H](O)CC(=O)N[C@@H](CC(C)C)C(=O)N[C@H](CCC(=O)O)C(=O)N[C@H]1C(=O)N[C@H]([C@H](C)CC)C(=O)N[C@@H](CC(C)C)C(=O)N[C@H](CO)C(=O)N[C@@H](CC(C)C)C(=O)N[C@H](CO)C(=O)N[C@@H]([C@H](C)CC)C(=O)O[C@@H]1C"
+  },
+  {
+    "id": "BGC0000396.gr",
+    "smiles": "C/C=C1/C(=O)N[C@@H](C(=O)O)[C@H](C)C(=O)N[C@@H](CCCN=C(N)N)C(=O)N[C@@H](/C=C/C(C)=C/[C@H](C)[C@H](Cc2ccccc2)OC)[C@H](C)C(=O)N[C@@H](C(=O)O)CCC(=O)N1C"
+  },
+  {
+    "id": "BGC0000397.gr",
+    "smiles": "CC[C@H](C)[C@@H]1NC(=O)[C@@H](CCC(N)=O)NC(=O)CNC(=O)[C@H](Cc2ccc(O)cc2)N=C[C@H](Cc2ccccc2)NC(=O)[C@@H]2C[C@H](C)CN2C(=O)[C@H](CO)NC1=O"
+  },
+  {
+    "id": "BGC0000399.1.gr",
+    "smiles": "CCCCCCCCCCC[C@H](O)CC(=O)N[C@@H](CC(C)C)C(=O)N[C@H](CCC(=O)O)C(=O)N[C@H]1C(=O)N[C@H]([C@@H](C)CC)C(=O)N[C@@H](CC(C)C)C(=O)N[C@H](CO)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CC(C)C)C(=O)N[C@H](CO)C(=O)N[C@@H](C(C)C)C(=O)O[C@@H]1C"
+  },
+  {
+    "id": "BGC0000407.gr",
+    "smiles": "CCCCCCCCCCCCCC(O)CC(=O)NC(CCC(=O)O)C(=O)NC(CCCN)C(=O)NC1Cc2ccc(cc2)OC(=O)C(C(C)CC)NC(=O)C(Cc2ccc(O)cc2)NC(=O)C(CCC(N)=O)NC(=O)C2CCCN2C(=O)C(C)NC(=O)C(CCC(=O)O)NC(=O)C(C(C)O)NC1=O"
+  },
+  {
+    "id": "BGC0000413.gr",
+    "smiles": "NC(=O)CCC(NC(=O)C(CCC(N)=O)NC(=O)C(CCCN(O)C=O)NC(=O)C1CCN=C(C(CO)NC(=O)[C@@H]2CCNc3c(NC(=O)CCC(=O)O)cc4cc(O)c(O)cc4[n+]32)N1)C(=O)NC(CCCN(O)C=O)C(=O)NCC(=O)O"
+  },
+  {
+    "id": "BGC0000416.2.gr",
+    "smiles": "CN[C@@H](C(=O)N(C)[C@H](CC(C)C)C(=O)N(C)[C@@H](C(=O)N(C)[C@@H](C(=O)N(C)[C@@H](C(=O)NCCc1ccccc1)C(C)C)C(C)C)C(C)C)C(C)C"
+  },
+  {
+    "id": "BGC0000424.1.gr",
+    "smiles": "CCCCCCCCCCCCCC(=O)NC(C(=O)NC(CO)C(=O)NC(C(=O)NC(C(=O)NC(CO)C(=O)NC1CCCN(O)C1=O)C(C)O)C(O)C(=O)O)C(O)C(=O)O"
+  },
+  {
+    "id": "BGC0000425.gr",
+    "smiles": "C/C=C(\\N)C(=O)N1CCC[C@]1(C(=O)CC(O)CCCCC)C(=O)N[C@H](CO)C(=O)N[C@H](CC(C)C)C(=O)N[C@@H](C(=O)N[C@H](CCC(N)=O)C(=O)N[C@H](CC(C)C)C(=O)N[C@@H](C(=O)N[C@H](C(=O)N[C@H](CCC(N)=O)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](C(=O)N/C(=C/C)C(=O)N[C@@H](C(=O)N[C@H](C(=O)N[C@@H](CCO)C(=O)N[C@H](CCN)C(=O)N[C@@H](CCCCN)C(=O)O)[C@@H](C)CC)[C@@H](C)O)C(C)C)C(C)C)C(C)C)C(C)C"
+  },
+  {
+    "id": "BGC0000433.gr",
+    "smiles": "CCCCCCCCCCCC1CC(=O)N[C@@H](CCC(=O)O)C(=O)N[C@@H](CC(C)C)C(=O)N[C@H](CC(C)C)C(=O)N[C@@H](C(C)C)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@H](CC(C)C)C(=O)N[C@@H](CC(C)C)C(=O)O1"
+  },
+  {
+    "id": "BGC0000437.gr",
+    "smiles": "C/C=C1\\NC(=O)[C@H](Cc2ccccc2)NC(=O)[C@H](CCCN=C(N)N)NC(=O)[C@H](CCN)NC(=O)[C@@H](CCN)NC(=O)[C@@H](CO)NC(=O)[C@@H](NC(=O)C[C@@H](O)CCCCCCCCC)COC(=O)[C@H]([C@H](O)CCl)NC(=O)[C@H]([C@H](O)C(=O)O)NC1=O"
+  },
+  {
+    "id": "BGC0000438.gr",
+    "smiles": "CC=C(N=C(O)CC(O)CCCCCCC)C(=O)N1CCC[C@H]1C(O)=N[C@H](C(O)=N[C@@H](C)C(O)=N[C@@H](C)C(O)=N[C@H](C(O)=N[C@@H](CC(C)C)C(O)=N[C@@H](C)C(O)=N[C@@H](C)C(O)=NC(=CC)C(O)=N[C@H](C(O)=NC(=CC)C(O)=N[C@@H](C)C(O)=N[C@H](C(O)=N[C@@H](C)C(O)=N[C@@H](C)C(O)=NC(=CC)C(O)=N[C@@H]1C(O)=N[C@@H](CO)C(O)=N[C@@H](C)C(O)=N[C@@H](C(C)C)C(O)=N[C@@H](C)C(O)=N[C@@H](CCN)C(O)=N[C@@H](CCN)C(O)=N[C@@H](Cc2ccc(O)cc2)C(=O)OC1C)C(C)C)C(C)C)C(C)C)C(C)C"
+  },
+  {
+    "id": "BGC0000439.gr",
+    "smiles": "CCC/C=C/C=C/C(=O)N[C@@H](Cc1c[nH]c2cc(Cl)ccc12)C(=O)N[C@H](CC(N)=O)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@@H]1C(=O)NCC(=O)N[C@@H](CCCN)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@H](C)C(=O)N[C@@H](CC(=O)O)C(=O)NCC(=O)N[C@H](C)C(=O)N[C@@H]([C@H](C)CC(=O)O)C(=O)N[C@@H](CC(=O)c2ccc(Cl)cc2N)C(=O)O[C@@H]1C"
+  },
+  {
+    "id": "BGC0000443.gr",
+    "smiles": "C/C=C1/NC(=O)C(C(C)O)CC(=O)C(Cc2cccc3[nH]ccc23)NC(=O)C(CCO)NC(=O)C(CC(=O)O)NC(=O)C(O)(CCCN)NC(=O)C(NC(=O)CC(O)C(O)CCCCCCCCCCCC)COC(=O)C(C(O)CCl)NC(=O)C(C(O)C(=O)O)NC1=O"
+  },
+  {
+    "id": "BGC0000447.1.gr",
+    "smiles": "C/C=C(\\NC(=O)[C@H](NC(=O)[C@H](CC(C)C)NC(=O)[C@@H](CCC(N)=O)NC(=O)[C@@H](NC(=O)[C@H](NC(=O)[C@@H](CC(C)C)NC(=O)[C@@H](CO)NC(=O)[C@H](NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CO)NC(=O)[C@H]1CCCN1C(=O)/C(=C/C)NC(=O)CC(O)CCCCC)C(C)C)C(C)C)C(C)C)C(C)C)C(=O)N[C@H]1C(=O)N[C@@H]([C@@H](C)CC)C(=O)N[C@@H](CCO)C(=O)N[C@H](CCN)C(=O)N[C@@H](CCCCN)C(=O)O[C@@H]1C"
+  },
+  {
+    "id": "BGC0000452.gr",
+    "smiles": "CC(C)C[C@@H]1NC(=O)[C@H](CCCN)NC(=O)[C@H](C(C)C)NC(=O)[C@H](Cc2ccc(O)cc2)NC(=O)[C@H](CCC(N)=O)NC(=O)[C@H](CC(N)=O)NC(=O)[C@@H](Cc2ccccc2)NC(=O)[C@H](Cc2ccccc2)NC(=O)[C@@H]2CCCN2C(=O)[C@@H](Cc2ccccc2)NC1=O"
+  },
+  {
+    "id": "BGC0000453.gr",
+    "smiles": "CC1OC(=O)[C@@H](C(C)C)NC(=O)[C@@H](C(C)C)OC(=O)[C@H](C(C)C)NC(=O)[C@H](C)OC(=O)[C@@H](C(C)C)NC(=O)[C@@H](C(C)C)OC(=O)[C@H](C(C)C)NC(=O)[C@H](C)OC(=O)[C@@H](C(C)C)NC(=O)[C@@H](C(C)C)OC(=O)[C@H](C(C)C)NC1=O"
+  },
+  {
+    "id": "BGC0000461.gr",
+    "smiles": "CC(C)CCCC1CC(=O)NC(CO)C(=O)NC(C(O)C(N)=O)C(=O)NC(CO)C(=O)NCC(=O)N(C)C(Cc2ccccc2)C(=O)NC(CC(C)C)C(=O)NC(CCCN)C(=O)NC(CCC(=O)O)C(=O)NC(CC(N)=O)C(=O)NC(Cc2c[nH]c3ccccc23)C(=O)NC(CCCN)C(=O)N(C)C(C(C)C)C(=O)O1"
+  },
+  {
+    "id": "BGC0000463.1.gr",
+    "smiles": "CCCCCCCC(O)CC(=O)NC(CC(C)C)C(=O)NC(CCC(=O)O)C(=O)NC(CCC(N)=O)C(=O)NC(C(=O)NC(CC(C)C)C(=O)NC(CCC(N)=O)C(=O)NC1COC(=O)C(C(C)CC)NC(=O)C(CCC(N)=O)NC(=O)C(CC(C)C)NC(=O)C(CC(C)C)NC(=O)C(CCC(N)=O)NC(=O)C(CC(C)C)NC(=O)C(C(C)C)NC1=O)C(C)C"
+  },
+  {
+    "id": "BGC0000464.1.gr",
+    "smiles": "CCCC(=O)N1CCC[C@H]1C(=O)N[C@H](C)C(=O)N[C@H](C(=O)N[C@H](CC(C)C)C(=O)N[C@H](C(=O)N[C@H]1C(=O)N[C@@H](C(C)C)C(=O)N[C@H](C(C)C)C(=O)N[C@@H](C(C)C)C(=O)N[C@H](C)C(=O)NCCC(=O)N2CCC[C@@H]2C(=O)N[C@@H](C(C)C)C(=O)O[C@@H]1C)[C@H](C)CC)C(C)C"
+  },
+  {
+    "id": "BGC0001127.gr",
+    "smiles": "C/C=C1\\NC(=O)CNC(=O)[C@@H](CCC(N)=O)NC(=O)[C@@H](Cc2ccc(O)cc2)NC(=O)[C@@H]([C@@H](C)O)NC(=O)[C@@H](NC(=O)/C(=C/C)NC(=O)C[C@H](O)CCCCCCCCCCC)[C@@H](C)OC(=O)[C@H](Cc2cnc[nH]2)NC(=O)[C@H]([C@H](C)O)NC1=O"
+  },
+  {
+    "id": "BGC0001131.gr",
+    "smiles": "CC(C)C[C@@H]1NC(=O)[C@@H](Cc2ccccc2)NC(=O)[C@H](CCC(N)=O)NC(=O)[C@@H](CO)NC(=O)[C@H](CCCCN)NC(=O)[C@@H](Cc2ccccc2)NC1=O"
+  },
+  {
+    "id": "BGC0001133.gr",
+    "smiles": "CC(C)CCCC(=O)N[C@@H]1C(=O)N[C@@H](C)C(=O)N[C@@H](CC(C)C)C(=O)N[C@H](CC(C)C)C(=O)N[C@H](CC(C)C)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](C)C(=O)O[C@@H]1C"
+  },
+  {
+    "id": "BGC0001135.1.gr",
+    "smiles": "CC(C)C[C@@H](NC(=O)[C@@H](N)CCCNC(=N)N)C(=O)N[C@@H](CCCNC(=N)N)C(=O)N[C@@H](CCCNC(=N)N)C(=O)N[C@H](CCCNC(=N)N)C(=O)NCCCCN"
+  },
+  {
+    "id": "BGC0001153.gr",
+    "smiles": "CCC(C)CCCCC(=O)N[C@@H](CCN)C(=O)N[C@H](C(=O)N[C@@H](CCN)C(=O)N[C@H]1CCNC(=O)[C@H]([C@@H](C)O)NC(=O)[C@H](CCN)NC(=O)[C@H](CCN)NC(=O)[C@H](CC(C)C)NC(=O)[C@@H](Cc2ccccc2)NC(=O)[C@H](CCN)NC1=O)[C@@H](C)O"
+  },
+  {
+    "id": "BGC0001189.gr",
+    "smiles": "CCCCCCCCCCCC(=O)N[C@H](C(=O)N[C@@H](C(=O)N[C@@H](CC(=O)O)C(=O)N[C@H](CCCN(O)C(=O)C[C@H](C)O)C(=O)N[C@@H](CO)C(=O)N[C@H]1CCCN(O)C1=O)[C@@H](C)O)[C@H](O)C(=O)O"
+  },
+  {
+    "id": "BGC0001192.1.gr",
+    "smiles": "CC[C@@H](C)CCCCC(=O)N[C@@H](CCN)C(=O)N[C@H](C(=O)N[C@@H](CCN)C(=O)N[C@H]1CCNC(=O)[C@H]([C@@H](C)O)NC(=O)[C@H](CCN)NC(=O)[C@H](CCN)NC(=O)[C@H](CC(C)C)NC(=O)[C@@H](CC(C)C)NC(=O)[C@H](CCN)NC1=O)[C@@H](C)O"
+  },
+  {
+    "id": "BGC0001196.gr",
+    "smiles": "CC[C@@H](C)[C@@H]1NC(=O)[C@@H](CC(C)C)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](Cc2c[nH]c3ccccc23)NC(=O)CNC(=O)[C@H](CC(N)=O)NC1=O"
+  },
+  {
+    "id": "BGC0001207.gr",
+    "smiles": "CC[C@H](C)[C@H](NC(=O)[C@@H](Cc1ccccc1)NC)C(=O)N[C@@H](CO)C(=O)N[C@H](CCC(N)=O)C(=O)N[C@@H](C(=O)N[C@H](C(=O)N[C@@H](CO)C(=O)N[C@H]1C(=O)N[C@@H](C)C(=O)N[C@@H](C[C@H]2CN=C(N)N2)C(=O)N[C@@H]([C@@H](C)CC)C(=O)O[C@H]1C)[C@@H](C)CC)[C@H](C)CC"
+  },
+  {
+    "id": "BGC0001214.1.gr",
+    "smiles": "CC[C@H](C)[C@H]1NC(=O)[C@@H](Cc2ccc(OC)cc2)NC(=O)[C@@H](NC(=O)[C@@H](NC=O)C(C)C)[C@@H](C)OC(=O)[C@H](C(C)C)N(C)C(=O)[C@H](CC(C)C)NC(=O)[C@@H]2CCCNN2C1=O"
+  },
+  {
+    "id": "BGC0001220.gr",
+    "smiles": "CCCCCCCCCCCCCCCC(=O)N[C@H]1C[C@@H](O)[C@@H](O)NC(=O)[C@@H]2[C@@H](O)[C@@H](C)CN2C(=O)[C@H]([C@@H](C)O)NC(=O)[C@H]([C@H](O)[C@@H](O)c2ccc(O)cc2)NC(=O)[C@@H]2C[C@@H](O)CN2C(=O)[C@H]([C@@H](C)O)NC1=O"
+  },
+  {
+    "id": "BGC0001233.gr",
+    "smiles": "CC(C)C(NC(=O)C(NC(=O)C(N)c1ccc(O)cc1)c1cc(O)cc(O)c1)C(=O)NC(C(=O)NC(C(=O)NC(C(=O)NC(C(=O)NC(C(=O)NC(C(=O)NC(C(=O)NC(C(=O)NC(Cc1ccccc1)C(=O)NC(CC(=O)O)C(=O)O)c1ccc(O)cc1)c1cc(O)cc(O)c1)C(C)C)c1cc(O)cc(O)c1)c1ccc(O)cc1)c1cc(O)cc(O)c1)c1ccc(O)cc1)c1cc(O)cc(O)c1"
+  },
+  {
+    "id": "BGC0001240.1.gr",
+    "smiles": "NCC[C@H](O)C[C@H]1NC(=O)[C@H](CO)NC(=O)[C@@H]2C[C@@H](O)CN2C(=O)C2(CC2)NC(=O)[C@H](CO)NC(=O)[C@@H](CO)NC(=O)CCNC1=O"
+  },
+  {
+    "id": "BGC0001250.gr",
+    "smiles": "C/C(=C\\C(=O)N(O)CCC[C@@H]1NC(=O)[C@H](CCCN(O)C(=O)/C=C(\\C)CCO)NC(=O)[C@H](CCCN(O)C(=O)/C=C(\\C)CCO)NC(=O)[C@H](CCC(N)=O)NC(=O)CNC(=O)CNC(=O)CNC(=O)CNC1=O)CCO"
+  },
+  {
+    "id": "BGC0001290.1.gr",
+    "smiles": "CCCCCC[C@H](C)[C@H]1OC(=O)[C@H](C)NC(=O)[C@H](C)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](C(C)C)NC(=O)CNC(=O)[C@@H]1C"
+  },
+  {
+    "id": "BGC0001312.gr",
+    "smiles": "CCCCCCCC(O)CC(=O)N[C@@H](CC(C)C)C(=O)N[C@H](CCC(=O)O)C(=O)N[C@H]1C(=O)N[C@H](C(C)C)C(=O)N[C@@H](CC(C)C)C(=O)N[C@H](CO)C(=O)N[C@@H](CC(C)C)C(=O)N[C@H](CO)C(=O)N[C@@H]([C@@H](C)CC)C(=O)OC1C"
+  },
+  {
+    "id": "BGC0001341.gr",
+    "smiles": "CC1OC(=O)[C@@H](C(C)C)NC(=O)[C@@H](C(C)C)OC(=O)[C@H](C(C)C)NC(=O)[C@H](C)OC(=O)[C@@H](C(C)C)NC(=O)[C@@H](C(C)C)OC(=O)[C@H](C(C)C)NC(=O)[C@H](C)OC(=O)[C@@H](C(C)C)NC(=O)[C@@H](C(C)C)OC(=O)[C@H](C(C)C)NC1=O"
+  },
+  {
+    "id": "BGC0001346.1.gr",
+    "smiles": "CCCCCCCCCC(O)CC(=O)NC(CC(C)C)C(=O)NC(CC(=O)O)C(=O)NC1C(=O)NC(C(C)CC)C(=O)NC(CC(C)C)C(=O)NC(CCC(N)=O)C(=O)NC(CC(C)C)C(=O)NC(CC(C)C)C(=O)OC1C"
+  },
+  {
+    "id": "BGC0001370.1.gr",
+    "smiles": "CCCC1OC1C(=O)N[C@@H](CO)C(=O)N[C@H](C(=O)N[C@@H](Cc1c[nH]c2ccccc12)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@@H](C(=O)N[C@@H](CC(=O)O)C(=O)NCC(=O)N[C@@H](C(=O)N[C@@H](CCC(=O)O)C(=O)N[C@@H](Cc1c[nH]c2ccccc12)C(=O)O)C(O)CON)c1ccc(O)cc1)[C@@H](C)O"
+  },
+  {
+    "id": "BGC0001371.gr",
+    "smiles": "CCCCC/C=C\\C/C=C\\CCCCCCCC(=O)N[C@H]1C[C@@H](O)[C@@H](O)NC(=O)[C@@H]2[C@@H](O)[C@@H](C)CN2C(=O)[C@H]([C@@H](C)O)NC(=O)[C@H]([C@H](O)[C@@H](O)c2ccc(O)cc2)NC(=O)[C@@H]2C[C@@H](O)CN2C(=O)[C@H]([C@@H](C)O)NC1=O"
+  },
+  {
+    "id": "BGC0001393.gr",
+    "smiles": "CC(C)C[C@H]1NC(=O)[C@H](Cc2c[nH]c3ccccc23)NC(=O)[C@@H](C(C)C)NC(=O)[C@@H]2CSC(N2)[C@H](C(C)C)NC(=O)[C@@H](C(C)C)NC(=O)[C@H](C(C)C)NC1=O"
+  },
+  {
+    "id": "BGC0001402.1.gr",
+    "smiles": "CC[C@@H]1NC(=O)[C@@H]2[C@H](Cl)[C@H](Cl)CN2C(=O)[C@H](CO)NC(=O)C[C@H](c2ccccc2)NC(=O)[C@H](CO)NC1=O"
+  },
+  {
+    "id": "BGC0001406.gr",
+    "smiles": "CC(C)[C@H](O)[C@@H]1NC(=O)[C@H]([C@H](C)c2c[nH]c3ccccc23)NC(=O)/C(=C\\c2c[nH]c3ccccc23)NC(=O)[C@@H]2[C@@H](O)CCN2C(=O)CNC(=O)[C@H](C)NC(=O)[C@H]([C@H](C)O)NC(=O)[C@@H](NC(=O)[C@H](CO)NC(=O)C[C@H](N)C(=O)O)[C@@H](C)OC(=O)[C@@H]2[C@H](O)CCN2C1=O"
+  },
+  {
+    "id": "BGC0001414.gr",
+    "smiles": "CC(=O)N(C)[C@H](C(=O)N1C[C@H](C)C[C@H]1C(=O)N(C)[C@@H]1C(=O)N[C@@H](CC(C)C)C(=O)N2C[C@H](C)C[C@H]2C(=O)N[C@@H](CC(C)C)C(=O)N(C)[C@@H](C(C)C)C(=O)N2CCC[C@H]2C(=O)N(C)[C@@H](CC(C)C)C(=O)NCC(=O)OC1C)C(C)C"
+  },
+  {
+    "id": "BGC0001448.gr",
+    "smiles": "CCC(C)CC/C=C\\C=C\\C(=O)N[C@H](C(=O)N[C@@H]1C(=O)N[C@H](C(C)C)C(=O)N[C@@H](CCCCN)C(=O)N[C@@H](C(O)C(=O)O)C(=O)N[C@@H](CC(=O)O)C(=O)NCC(=O)N[C@H](C(C)C(=O)O)C(=O)N[C@@H](C(C)C)C(=O)N2C[C@H](C)C[C@H]2C(=O)NC1C)C(C)C(=O)O"
+  },
+  {
+    "id": "BGC0001448.gr",
+    "smiles": "CCC(C)CC/C=C\\C=C\\C(=O)N[C@H](C(=O)N[C@@H]1C(=O)N[C@H](C(C)C)C(=O)N[C@@H](CCCCN)C(=O)N[C@@H](C(O)C(=O)O)C(=O)N[C@@H](CC(=O)O)C(=O)NCC(=O)N[C@H](C(C)C(=O)O)C(=O)N[C@@H](C(C)C)C(=O)N2C[C@H](C)C[C@H]2C(=O)NC1C)C(C)C(=O)O"
+  },
+  {
+    "id": "BGC0001469.gr",
+    "smiles": "CC[C@H](C)[C@@H]1NC(=O)[C@@H](Cc2ccccc2)NC(=O)[C@@H]2CSC(=N2)c2csc(n2)-c2csc(n2)-c2csc(n2)[C@@H](C)NC1=O"
+  },
+  {
+    "id": "BGC0001532.gr",
+    "smiles": "C/C=C(/NC(=O)[C@@H](O)[C@@H](C)CC)C(=O)NC(CC(C)C)C(=O)N[C@H](CCCN)C(=O)N[C@H](C(=O)N[C@H](C(=O)N[C@H](C(=O)NC(CCCCN)C(=O)N[C@H](C(=O)NC(CC(C)C)C(=O)NC(CCCCN)C(=O)N[C@H](Cc1ccc(O)cc1)C(=O)NC(CC(C)C)C(=O)N[C@H](CO)C(C)C)C(C)C)C(C)C)C(C)C)[C@@H](C)CC"
+  },
+  {
+    "id": "BGC0001561.gr",
+    "smiles": "CC[C@H](C)[C@@H]1NC(=O)[C@@H](CC(C)C)NC(=O)[C@@H](C(C)C)NC(=O)[C@H](Cc2c[nH]c3ccc(Cl)cc23)NC(=O)C(C(O)C(N)=O)NC(=O)[C@H](CCCN)NC1=O"
+  },
+  {
+    "id": "BGC0001565.gr",
+    "smiles": "C/C=C/C[C@@H](C)[C@@H](O)[C@H]1C(=O)N[C@@H]([C@@H](C)O)C(=O)N(C)CC(=O)N(C)[C@@H](CC(C)C)C(=O)N[C@@H](C(C)C)C(=O)N(C)[C@@H](CC(C)C)C(=O)N[C@@H](C)C(=O)N[C@H](C)C(=O)N(C)[C@@H](CC(C)C)C(=O)N(C)[C@@H](CC(C)C)C(=O)N(C)[C@@H](C(C)C)C(=O)N1C"
+  },
+  {
+    "id": "BGC0001569.gr",
+    "smiles": "CC[C@H](C)[C@@H]1NC(=O)[C@@H](CC(C)C)NC(=O)[C@@H](C(C)C)NC(=O)[C@H](Cc2c[nH]c3ccccc23)NC(=O)C(C(O)C(N)=O)NC(=O)[C@H](CCCN)NC1=O"
+  },
+  {
+    "id": "BGC0001582.gr",
+    "smiles": "CC[C@@H](C)[C@@H](C(=O)N[C@@H]1C(=O)N(C)[C@@H]([C@@H](C)O)C(=O)N[C@@H](C(C)C)C(=O)N(C)[C@@H](CC(C)C)C(=O)N[C@@H](C(C)C)C(=O)N(C)[C@@H](C(C)C)C(=O)N(C)[C@@H](Cc2c[nH]c3cccc(OC)c23)C(=O)N[C@@H](C(C)C)C(=O)N[C@@H]([C@H](O)c2ccccc2)C(=O)N[C@@H](C(C)C)C(=O)O[C@@H]1C)N(C)C(=O)[C@@H](NC(=O)[C@H](C(C)C)N(C)C)C(C)C"
+  },
+  {
+    "id": "BGC0001614.gr",
+    "smiles": "C/C=C1\\NC(=O)C(Cc2ccc(O)cc2)NC(=O)C(C(C)O)NC(=O)C(NC(=O)C(NC(=O)C(O)C(O)CCCCCCCCCCCCC)C(C)O)C(C)OC(=O)C(CCC(N)=O)NC(=O)C(C(C)OC2OC(CO)C(O)C(O)C2O)N(C)C(=O)CNC(=O)C(CCC(N)=O)NC1=O"
+  },
+  {
+    "id": "BGC0001628.1.gr",
+    "smiles": "CC(C)[C@H](NC(=O)Cc1ccccc1)C(=O)N[C@H](CC(=O)O)C(=O)N[C@@H](C)C(=O)N[C@@H](C(=O)NCC(=O)N[C@H](C)C(=O)N[C@@H](Cc1ccccc1)C(=O)O)[C@@H](O)C(C)C"
+  },
+  {
+    "id": "BGC0001657.gr",
+    "smiles": "CC[C@H](C)[C@@H]1NC(=O)[C@@H](Cc2c[nH]c3ccccc23)NC(=O)[C@@H](CCC(N)=O)NC(=O)[C@H](CCC(=O)O)NC(=O)[C@@H](CCCN=C(N)N)NC(=O)[C@H](CC(C)C)NC(=O)[C@@H](Cc2ccccc2)N(C)C(=O)CNC(=O)[C@H](CO)NC(=O)[C@@H](CCCN=C(N)N)NC(=O)[C@@H](NC(=O)C[C@H](O)CC(C)C)[C@@H](C)OC(=O)[C@H]([C@@H](C)O)NC1=O"
+  },
+  {
+    "id": "BGC0001695.gr",
+    "smiles": "CC[C@H](C)[C@@H]1OC(=O)C(C)(C)[C@@H](O)[C@@H](Cc2ccccc2)OC(=O)[C@H](C(C)C)OC(=O)[C@@H](NC(=O)c2cccc(NC=O)c2O)[C@H](C)OC1=O"
+  },
+  {
+    "id": "BGC0001768.gr",
+    "smiles": "CC(C)C[C@@H]1NC(=O)[C@H](C(C)C)NC(=O)[C@H](CC(C)C)OC(=O)[C@H](CC(C)C)NC(=O)[C@H](Cc2ccccc2)NC1=O"
+  },
+  {
+    "id": "BGC0001792.1.gr",
+    "smiles": "CC[C@H](C)[C@@H]1NC(=O)[C@H](CCCCN)NC(=O)[C@@H]([C@H](C)CC)NC(=O)[C@H]([C@@H](C)CC)NC(=O)[C@@H](C)NC(=O)[C@H]([C@@H](C)CC)NC(=O)[C@@H](CC(C)C)NC(=O)[C@@H](Cc2ccccc2)NC1=O"
+  },
+  {
+    "id": "BGC0001796.gr",
+    "smiles": "CC(C)CCCCCC(=O)N[C@H](Cc1ccc(O)cc1)C(=O)N[C@@H](CO)C(=O)N[C@H](CC(C)C)C(=O)N[C@@H](Cc1c[nH]c2ccccc12)C(=O)N[C@@H](CCCNC(=N)N)C(=O)O"
+  },
+  {
+    "id": "BGC0001822.gr",
+    "smiles": "C/C=C1\\NC(=O)C2CSC(=N2)C2CC(C)N2C(=O)C(CC(C)C)NC(=O)C(C)NC(=O)C(O)COC(=O)C(C(C)C)N(C)C(=O)C(C(C)O)NC(=O)C2CCCCN2C1=O"
+  },
+  {
+    "id": "BGC0001825.gr",
+    "smiles": "C[C@H]1OC(=O)CCNC(=O)C(Cc2c[nH]c3ccccc23)NC(=O)C(Cc2c[nH]c3ccccc23)NC(=O)[C@H]1NC(=O)Cc1ccccc1"
+  }
+]

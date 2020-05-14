@@ -1,6 +1,10 @@
 DATE=`date +"%d-%b-%Y_%H:%M"`
+
+mkdir -p ./result/res_$DATE
+
 START_TIME=$(date +%s)
-nerpa.py -p prediction.info -l structure.info --predictor NRPSPREDICTOR2 --modification -o ./result/res_$DATE
+#nerpa.py -p prediction.info -l structure.info.monomers --predictor NRPSPREDICTOR2 --monomer -o ./result/res_$DATE 2>./result/res_$DATE/debug.txt
+nerpa.py --antismash_output_list antismashOUTlist.info -l structure.info.monomers --skip_segment -10 --predictor NRPSPREDICTOR2 --monomer -o ./result/res_$DATE 2>./result/res_$DATE/debug.txt
 END_TIME=$(date +%s)
 DIFF_TIME=$(($END_TIME - $START_TIME))
 
