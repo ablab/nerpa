@@ -9,6 +9,8 @@
 
 namespace matcher {
     class ScoreSandpuma : public Score {
+    public:
+        explicit ScoreSandpuma(double mismatch);
     };
 }
 

@@ -35,11 +35,20 @@ install(PROGRAMS "${CMAKE_CURRENT_SOURCE_DIR}/nerpa.py"
         DESTINATION bin
         COMPONENT runtime)
 
+install(PROGRAMS "${CMAKE_CURRENT_SOURCE_DIR}/nerpa_init.py"
+        DESTINATION bin
+        COMPONENT runtime)
+
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/nerpa_pipeline"
+        DESTINATION share/nerpa
+        COMPONENT runtime)
+
 install(FILES
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/library.info.streptomedb"
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/prediction.info"
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/aminoacids.tsv"
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/modifications.tsv"
+        "${CMAKE_CURRENT_SOURCE_DIR}/resources/monomers.tsv"
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/AAmod.tsv"
         DESTINATION share/nerpa
         COMPONENT runtime)

@@ -10,15 +10,17 @@
 class Args {
 public:
     std::string predictor_name;
-    bool insertion;
-    bool deletion;
+    double insertion;
+    double deletion;
     double open_gap;
     double continue_gap;
-    bool single_match;
-    double single_match_coeff;
+    double mismatch;
+    double skip_segment;
     bool modification;
     std::string modification_cfg;
     std::string AAmod_cfg;
+    std::string monomer_cfg;
+    unsigned int threads;
 
     Args(std::string cfg_filename);
 };

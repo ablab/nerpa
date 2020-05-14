@@ -4,33 +4,11 @@ import os
 import argparse
 from shutil import copyfile
 
-#Log class, use it, not print
-class Log:
-    text = ""
+import nerpa_init
 
-    def log(self, s):
-        self.text += s + "\n"
-        print(s)
-
-    def warn(self, s):
-        msg = "WARNING: " + s
-        self.text += msg + "\n"
-        sys.stdout.write(msg)
-        sys.stdout.flush()
-
-    def err(self, s):
-        msg = "ERROR: " + s + "\n"
-        self.text += msg
-        sys.stdout.write(msg)
-        sys.stdout.flush()
-
-    def print_log(self):
-        print(self.text)
-
-    def get_log(self):
-        return self.text
-
-log = Log()
+nerpa_init.init()
+import handle_TE
+from logger import log
 
 path_to_exec_dir = os.path.dirname(os.path.abspath(__file__)) + "/"
 
@@ -45,15 +23,19 @@ def parse_args():
                         choices=["NRPSPREDICTOR2", "MINOWA", "PRISM", "SANDPUMA"],
                         help="AA domain predictor name [default=MINOWA]",
                         action='store')
-    parser.add_argument("--insertion", help="allow insertion to NRP structure", action="store_true")
-    parser.add_argument("--deletion", help="allow deletion to NRP structure", action="store_true")
-    parser.add_argument("--open_gap", default=0, type=float, help="score for opening gap in NRP structure", action="store")
-    parser.add_argument("--continue_gap", default=0, type=float, help="score for continue gap in NRP structure", action="store")
-    parser.add_argument("--single_match", help="allow match prediction for single unit prediction", action="store_true")
-    parser.add_argument("--single_match_coeff", default=0.1, type=float, help="coefficient for single unit match", action="store")
+    parser.add_argument("--antismash_output_list", dest="antismash_out", help="path to file with list of paths to antiSMASH output folders", type=str)
+    parser.add_argument("--insertion", help="insertion score [default=-1]", default=-1, action="store")
+    parser.add_argument("--deletion", help="deletion score [default=-1]", default=-1, action="store")
+    parser.add_argument("--open_gap", default=-1, type=float, help="score for opening gap in NRP structure [default=-1]", action="store")
+    parser.add_argument("--continue_gap", default=-0.1, type=float, help="score for continue gap in NRP structure [default=-0.1]", action="store")
+    parser.add_argument("--mismatch", default=-1, type=float, help="mismatche score [default=-1]", action="store")
+    parser.add_argument("--skip_segment", default=-1, type=float, help="score for skip orf in prediction [default=-1]", action="store")
     parser.add_argument("--modification", help="allow modification", action="store_true")
     parser.add_argument("--modification_cfg", help="path to file with modification description", action="store", type=str)
+    parser.add_argument("--monomer", help="interpret lib_info as monomeric graphs library", action="store_true")
+    parser.add_argument("--monomer_cfg", help="path to file with monomer description", action="store", type=str)
     parser.add_argument("--AAmod_cfg", help="path to file with modification for specific AA description", action="store", type=str)
+    parser.add_argument("--threads", default=1, type=int, help="number of threads for running Nerpa", action="store")
     parser.add_argument("--local_output_dir", "-o", nargs=1, help="use this output dir", type=str)
     args = parser.parse_args()
     return args
@@ -62,25 +44,13 @@ def print_cfg(args, output_dir):
     cfg_file = os.path.join(output_dir, "nerpa.cfg")
     with open(cfg_file, "w") as f:
         f.write(args.predictor + "\n")
-        if args.insertion:
-            f.write("insertion on\n")
-        else:
-            f.write("insertion off\n")
-
-        if args.deletion:
-            f.write("deletion on\n")
-        else:
-            f.write("deletion off\n")
-
+        f.write("insertion " + str(args.insertion) + "\n")
+        f.write("deletion " + str(args.deletion) + "\n")
         f.write("open_gap " + str(args.open_gap) + "\n")
         f.write("continue_gap " + str(args.continue_gap) + "\n")
+        f.write("mismatch " + str(args.mismatch) + "\n")
+        f.write("skip_segment " + str(args.skip_segment) + "\n")
 
-        if args.single_match:
-            f.write("single_match on\n")
-        else:
-            f.write("single_match off\n")
-
-        f.write("single_match_coeff " + str(args.single_match_coeff) + "\n")
         if args.modification:
             f.write("modification on\n")
         else:
@@ -88,6 +58,8 @@ def print_cfg(args, output_dir):
 
         f.write(os.path.abspath(os.path.join(output_dir, "modifications.tsv")) + "\n")
         f.write(os.path.abspath(os.path.join(output_dir, "AAmod.tsv")) + "\n")
+        f.write(os.path.abspath(os.path.join(output_dir, "monomers.tsv")) + "\n")
+        f.write("threads " + str(args.threads) + "\n")
 
     return cfg_file
 
@@ -168,25 +140,45 @@ def run(args):
         parser.print_help()
         sys.exit()
 
-    if (args.predictions == None):
+    if (args.predictions is None) and (args.antismash_out is None):
         log.err("None prediction info file provide")
         parser.print_help()
         sys.exit()
 
-    if (args.lib_info == None):
+    if (args.predictions is not None) and (args.antismash_out is not None):
+        log.err("You cann't use --predictions and --antismash_output_list simultaneously")
+        parser.print_help()
+        sys.exit()
+
+    if (args.lib_info is None):
         log.err("None NRP structure info file provide")
         parser.print_help()
         sys.exit()
-    if (which("print_structure") == None):
+    if not args.monomer and which("print_structure") is None:
         log.err("dereplicator not found. Please install dereplicator and add it to PATH.")
+        sys.exit()
+
+    if args.monomer and args.modification:
+        log.err("Modification inference is not supported in monomer mode.")
         sys.exit()
 
     main_out_dir = os.path.abspath(".") + "/"
     if args.local_output_dir is not None:
         main_out_dir = os.path.abspath(args.local_output_dir[0]) + "/"
 
-    path_to_graphs, files_list = gen_graphs_by_mol(args, main_out_dir)
-    path_predictions = os.path.abspath(copy_prediction_list(args, main_out_dir))
+    if not os.path.exists(main_out_dir):
+        os.makedirs(main_out_dir)
+
+    if args.monomer:
+        path_to_graphs = os.path.join(main_out_dir, 'path_to_graphs')
+        copyfile(args.lib_info[0], path_to_graphs)
+    else:
+        path_to_graphs, files_list = gen_graphs_by_mol(args, main_out_dir)
+
+    if (args.predictions is not None):
+        path_predictions = os.path.abspath(copy_prediction_list(args, main_out_dir))
+    else:
+        path_predictions = handle_TE.create_predictions_by_antiSAMSHout(args.antismash_out, main_out_dir, args.predictor)
 
     directory = os.path.dirname(main_out_dir)
     if not os.path.exists(directory):
@@ -222,6 +214,17 @@ def run(args):
 
     local_AAmod_cfg = os.path.join(main_out_dir, "AAmod.tsv")
     copyfile(path_to_AAmod_cfg, local_AAmod_cfg)
+
+    if args.monomer:
+        path_to_monomer_cfg = "./resources/monomers.tsv"
+        if (os.path.exists(os.path.join(path_to_cur, 'NRPsMatcher'))):
+            path_to_monomer_cfg = "../share/nerpa/monomers.tsv"
+        path_to_monomer_cfg = os.path.join(path_to_cur, path_to_monomer_cfg)
+        if args.monomer_cfg is not None:
+            path_to_monomer_cfg = os.path.abspath(args.monomer_cfg)
+
+        local_monomers_cfg = os.path.join(main_out_dir, "monomers.tsv")
+        copyfile(path_to_monomer_cfg, local_monomers_cfg)
 
     comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_predictions + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" \"" + path_to_cfg + "\"\n"
     print(comand)

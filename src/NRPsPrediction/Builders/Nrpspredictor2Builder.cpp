@@ -17,27 +17,37 @@ namespace nrpsprediction {
             std::string predict_aminoacids;
 
             ss >> orf_name >> predict_aminoacid >> predict_aminoacids;
+            bool aa_is_rep = false;
+            if (orf_name.back() == '*') {
+                aa_is_rep = true;
+                orf_name.pop_back();
+            }
             std::pair <std::string, int> orf_name_num = get_orf_name_and_order(orf_name);
+            bool orf_is_rep = false;
+            if (orf_name_num.first.back() == '*') {
+                orf_is_rep = true;
+                orf_name_num.first.pop_back();
+            }
 
             if (!nrpparts.empty() && nrpparts[nrpparts.size() - 1].get_orf_name() == orf_name_num.first) {
                 nrpparts[nrpparts.size() - 1].add_prediction(orf_name_num.second,
-                                                             AminoacidPrediction(orf_name_num.second, parse_predictions(predict_aminoacids)));
+                                                             AAdomainPrediction(orf_name_num.second, parse_predictions(predict_aminoacids), aa_is_rep));
             } else {
-                if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
-                    nrpparts.pop_back();
-                }
-                nrpparts.push_back(NRPsPart(file_name, orf_name_num.first, orf_name_num.second,
-                                            AminoacidPrediction(orf_name_num.second, parse_predictions(predict_aminoacids))));
+                //if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAAdomainPrediction().size() < 2) {
+                //    nrpparts.pop_back();
+                //}
+                nrpparts.push_back(OrfPrediction(file_name, orf_name_num.first, orf_name_num.second,
+                                                 AAdomainPrediction(orf_name_num.second, parse_predictions(predict_aminoacids), aa_is_rep), orf_is_rep));
             }
         }
-        if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAminoacidsPrediction().size() < 2) {
-            nrpparts.pop_back();
-        }
+        //if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAAdomainPrediction().size() < 2) {
+        //    nrpparts.pop_back();
+        //}
         in.close();
     }
 
-    std::vector<AminoacidPrediction::AminoacidProb> Nrpspredictor2Builder::parse_predictions(std::string predictions) {
-        std::vector<AminoacidPrediction::AminoacidProb> aminoacid_prediction;
+    std::vector<AAdomainPrediction::AminoacidProb> Nrpspredictor2Builder::parse_predictions(std::string predictions) {
+        std::vector<AAdomainPrediction::AminoacidProb> aminoacid_prediction;
         std::stringstream ss(predictions);
 
         std::vector<std::string> tokens;
@@ -63,7 +73,7 @@ namespace nrpsprediction {
         for (int i = 0; i < aacids.size(); ++i) {
             if (aacids[i].second >= val - EPS) {
                 aminoacid_prediction.push_back(
-                        AminoacidPrediction::AminoacidProb(
+                        AAdomainPrediction::AminoacidProb(
                                 aminoacid::Aminoacid(getAAbyName(aacids[i].first)), aacids[i].second));
             }
         }

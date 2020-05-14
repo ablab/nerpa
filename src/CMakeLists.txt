@@ -4,12 +4,12 @@ add_subdirectory(Logger)
 set(SOURCE_FILES main.cpp
         Aminoacid/Aminoacid.cpp
         Aminoacid/Aminoacid.h
-        NRPsPrediction/AminoacidPrediction.cpp
-        NRPsPrediction/AminoacidPrediction.h
-        NRPsPrediction/NRPsPart.cpp
-        NRPsPrediction/NRPsPart.h
-        NRPsPrediction/NRPsPrediction.cpp
-        NRPsPrediction/NRPsPrediction.h
+        NRPsPrediction/AAdomainPrediction.cpp
+        NRPsPrediction/AAdomainPrediction.h
+        NRPsPrediction/OrfPrediction.cpp
+        NRPsPrediction/OrfPrediction.h
+        NRPsPrediction/BgcPrediction.cpp
+        NRPsPrediction/BgcPrediction.h
         NRP/NRP.cpp
         NRP/NRP.h
         Matcher/NRPsMatch.cpp
@@ -23,6 +23,8 @@ set(SOURCE_FILES main.cpp
         NRP/NRPtail.cpp
         Matcher/Matcher.h
         Matcher/Matcher.cpp
+        Matcher/OrderedGenesMatcher.h
+        Matcher/OrderedGenesMatcher.cpp
         Matcher/MatcherBase.h
         Matcher/InDelMatcher.h
         Matcher/InDelMatcher.cpp
@@ -69,9 +71,11 @@ set(SOURCE_FILES main.cpp
         Matcher/Score/Base/ScoreNormalize.h
         Matcher/Score/Base/ScoreOpenContinueGap.h
         Matcher/Score/Base/ScoreSingleUnit.h
+        Matcher/Score/OrderedGenes/OrderedGenesScoreBase.h
+        Matcher/Score/Base/ScoreForUntrustedPred.h
         Json/json.hpp
         ArgParse/Args.cpp
-        ArgParse/Args.h)
+        ArgParse/Args.h Aminoacid/MonomerInfo.h Aminoacid/MonomerInfo.cpp NRP/MonomericNRPBuilder.h NRP/MonomericNRPBuilder.cpp)
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})
 add_executable(NRPsMatcher main.cpp)

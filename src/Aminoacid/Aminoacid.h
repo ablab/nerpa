@@ -12,6 +12,7 @@ namespace aminoacid {
     class Aminoacid {
     private:
         friend class ModificationTest;
+        std::string findAAname() const;
     public:
         explicit Aminoacid(std::string aminoacid_name);
         explicit Aminoacid(Formula formula);
@@ -30,6 +31,7 @@ namespace aminoacid {
         std::string get_name() const;
         std::string get_possible_name() const;
         int get_id() const;
+        bool is_AA() const;
         void addModification(Modification m);
 
     private:
@@ -39,6 +41,7 @@ namespace aminoacid {
     private:
         int aa;
         std::vector<Modification> modifications;
+        std::string possible_name = "";
     };
 }
 

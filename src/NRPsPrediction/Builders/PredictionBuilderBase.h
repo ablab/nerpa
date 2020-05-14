@@ -5,14 +5,14 @@
 #ifndef NRPSMATCHER_PREDICTIONBUILDERBASE_H
 #define NRPSMATCHER_PREDICTIONBUILDERBASE_H
 
-#include <NRPsPrediction/NRPsPrediction.h>
+#include <NRPsPrediction/BgcPrediction.h>
 
 namespace nrpsprediction {
     class PredictionBuilderBase {
     protected:
         static const double EPS;
-        std::vector<NRPsPart> nrpparts;
-        std::vector<NRPsPart> short_parts;
+        std::vector<OrfPrediction> nrpparts;
+        std::vector<OrfPrediction> short_parts;
         static int getAAbyName(std::string s);
 
         //orf = <prefix>_<orfname>_A<num>
@@ -21,7 +21,7 @@ namespace nrpsprediction {
     public:
         virtual void read_file(std::string file_name) = 0;
 
-        virtual NRPsPrediction getPrediction();
+        virtual BgcPrediction getPrediction();
     };
 }
 

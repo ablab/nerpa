@@ -7,7 +7,7 @@
 
 namespace nrp {
     class NRPBuilder {
-    private:
+    protected:
         static std::vector<aminoacid::Aminoacid> aminoacids_by_pos(
                 const std::vector<aminoacid::Aminoacid> &aminoacids, const std::vector<int> &pos);
 
@@ -34,6 +34,8 @@ namespace nrp {
         static void handleLoop(int v, std::vector<std::vector<int> >& g,
                                std::vector<std::vector<int> >& gr,
                                std::vector<std::vector<int> >& formuls);
+
+        static std::string graphToString(const std::vector<std::vector<int> >& g);
 
     public:
         static std::shared_ptr<nrp::NRP> build(std::string fragment_graph, std::string extra_info);

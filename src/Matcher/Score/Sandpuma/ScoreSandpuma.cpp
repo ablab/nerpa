@@ -3,3 +3,5 @@
 //
 
 #include "ScoreSandpuma.h"
+
+matcher::ScoreSandpuma::ScoreSandpuma(double mismatch) : Score(mismatch) {}

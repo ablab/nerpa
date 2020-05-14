@@ -23,10 +23,16 @@ namespace aminoacid {
     Aminoacid::Aminoacid(Formula formula) {
         this->formula = formula;
         this->aa =  AminoacidInfo::AMINOACID_CNT - 1;
+        this->possible_name = findAAname();
     }
 
     bool Aminoacid::operator==(const Aminoacid &b) const {
-        return formula == b.formula;
+//        return formula == b.formula;
+        if (aa >= AminoacidInfo::AMINOACID_CNT - 1
+        || b.aa >= AminoacidInfo::AMINOACID_CNT - 1) {
+            return false;
+        }
+        return aa == b.aa;
     }
 
     std::string Aminoacid::get_name() const {
@@ -34,22 +40,11 @@ namespace aminoacid {
     }
 
     std::string Aminoacid::get_possible_name() const {
-        for (int i = 0; i < AminoacidInfo::AMINOACID_CNT; ++i) {
-            if (this->formula == AminoacidInfo::FORMULS[i]) {
-                return AminoacidInfo::AMINOACID_NAMES[i];
-            }
+        if (!possible_name.empty()) {
+            return possible_name;
         }
 
-        for (int i = 0; i < AminoacidInfo::AMINOACID_CNT; ++i) {
-            for (int j = 0; j < ModificationInfo::MODIFICATION_CNT; ++j) {
-                if (this->formula - AminoacidInfo::FORMULS[i] == ModificationInfo::FORMULS[j]) {
-                    return AminoacidInfo::AMINOACID_NAMES[i] + "+" + ModificationInfo::NAMES[j];
-                }
-            }
-        }
-
-
-        return  AminoacidInfo::AMINOACID_NAMES[aa];
+        return findAAname();
     }
 
     Aminoacid::Aminoacid(int aid) {
@@ -67,7 +62,9 @@ namespace aminoacid {
     }
 
     void Aminoacid::addModification(Modification m) {
-        formula += m.getFormula();
+        if (!(formula == Formula())) {
+            formula += m.getFormula();
+        }
         modifications.push_back(m);
     }
 
@@ -77,5 +74,30 @@ namespace aminoacid {
 
     int Aminoacid::get_id() const {
         return aa;
+    }
+
+    std::string Aminoacid::findAAname() const {
+        for (int i = 0; i < AminoacidInfo::AMINOACID_CNT; ++i) {
+            if (this->formula == AminoacidInfo::FORMULS[i]) {
+                return AminoacidInfo::AMINOACID_NAMES[i];
+            }
+        }
+
+        for (int i = 0; i < AminoacidInfo::AMINOACID_CNT; ++i) {
+            for (int j = 0; j < ModificationInfo::MODIFICATION_CNT; ++j) {
+                if (this->formula - AminoacidInfo::FORMULS[i] == ModificationInfo::FORMULS[j]) {
+                    return AminoacidInfo::AMINOACID_NAMES[i] + "+" + ModificationInfo::NAMES[j];
+                }
+            }
+        }
+
+        return AminoacidInfo::AMINOACID_NAMES[aa];
+    }
+
+    bool Aminoacid::is_AA() const {
+        if (get_name() != "none" || get_possible_name() != "none") {
+            return true;
+        }
+        return formula.get(formula.N) > 0;
     }
 }

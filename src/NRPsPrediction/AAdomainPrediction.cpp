@@ -2,12 +2,12 @@
 #include <cmath>
 #include <iostream>
 #include <assert.h>
-#include "AminoacidPrediction.h"
+#include "AAdomainPrediction.h"
 
 
-const double nrpsprediction::AminoacidPrediction::EPS = 1e-4;
+const double nrpsprediction::AAdomainPrediction::EPS = 1e-4;
 
-bool nrpsprediction::AminoacidPrediction::contain(aminoacid::Aminoacid aminoacid) const {
+bool nrpsprediction::AAdomainPrediction::contain(aminoacid::Aminoacid aminoacid) const {
     for (int i = 0; i < (int)aminoacid_prediction.size(); ++i) {
         if (aminoacid_prediction[i].aminoacid == aminoacid) {
             return true;
@@ -16,8 +16,8 @@ bool nrpsprediction::AminoacidPrediction::contain(aminoacid::Aminoacid aminoacid
     return false;
 }
 
-nrpsprediction::AminoacidPrediction::AminoacidProb
-nrpsprediction::AminoacidPrediction::getAminoacid(aminoacid::Aminoacid aminoacid) const {
+nrpsprediction::AAdomainPrediction::AminoacidProb
+nrpsprediction::AAdomainPrediction::getAminoacid(aminoacid::Aminoacid aminoacid) const {
     for (int i = 0; i < (int)aminoacid_prediction.size(); ++i) {
         if (aminoacid_prediction[i].aminoacid == aminoacid) {
             return aminoacid_prediction[i];
@@ -27,7 +27,7 @@ nrpsprediction::AminoacidPrediction::getAminoacid(aminoacid::Aminoacid aminoacid
     return AminoacidProb(aminoacid::Aminoacid("none"), 0);
 }
 
-std::pair<int, int> nrpsprediction::AminoacidPrediction::getAmnAcidPos(aminoacid::Aminoacid aminoacid) const {
+std::pair<int, int> nrpsprediction::AAdomainPrediction::getAmnAcidPos(aminoacid::Aminoacid aminoacid) const {
     double  prb = -1;
     for (int i = 0; i < (int)aminoacid_prediction.size(); ++i) {
         if (aminoacid_prediction[i].aminoacid == aminoacid) {

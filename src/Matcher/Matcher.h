@@ -5,7 +5,7 @@
 #ifndef NRPSMATCHER_MATCHER_H
 #define NRPSMATCHER_MATCHER_H
 
-#include <NRPsPrediction/AminoacidPrediction.h>
+#include <NRPsPrediction/AAdomainPrediction.h>
 #include <NRP/NRP.h>
 #include <Matcher/Score/Base/Score.h>
 
@@ -18,11 +18,11 @@ namespace matcher {
     class Matcher : public MatcherBase {
     protected:
         std::shared_ptr<nrp::NRP> nrp;
-        const nrpsprediction::NRPsPrediction* prediction{};
+        const nrpsprediction::BgcPrediction* prediction{};
         const Score* score{};
     public:
         Matcher(std::shared_ptr<nrp::NRP> nrp,
-                const nrpsprediction::NRPsPrediction* prediction,
+                const nrpsprediction::BgcPrediction* prediction,
                 const Score* score):
                 nrp(nrp), prediction(prediction), score(score) {
         }
@@ -31,7 +31,7 @@ namespace matcher {
 
         matcher::MatcherBase::Match getMatch() const;
         matcher::MatcherBase::Match getMatch(std::shared_ptr<nrp::NRP> nrp,
-                                             const nrpsprediction::NRPsPrediction* prediction,
+                                             const nrpsprediction::BgcPrediction* prediction,
                                              const Score* score) override;
         std::vector<Segment> matche_seg(const int part_id) const;
 
@@ -40,10 +40,10 @@ namespace matcher {
         matcher::MatcherBase::Match getCycleMatch() const;
         matcher::MatcherBase::Match getBranchMatch() const;
 
-        virtual matcher::MatcherBase::Match updateMatch(const nrpsprediction::NRPsPrediction& nrPsPrediction,
+        virtual matcher::MatcherBase::Match updateMatch(const nrpsprediction::BgcPrediction& nrPsPrediction,
                                             matcher::MatcherBase::Match match, int bg,
                                             std::vector<Segment>& matched_parts_id) const;
-        matcher::MatcherBase::Match setUpdateMatch(const nrpsprediction::NRPsPrediction& nrPsPrediction,
+        matcher::MatcherBase::Match setUpdateMatch(const nrpsprediction::BgcPrediction& nrPsPrediction,
                                                 matcher::MatcherBase::Match match, int bg,
                                                 std::vector<Segment>& matched_parts_id) const;
         matcher::MatcherBase::Match isCoverLine(std::vector<Segment>& segments,

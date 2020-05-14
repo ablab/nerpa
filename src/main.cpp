@@ -1,11 +1,12 @@
 #include <iostream>
 #include <fstream>
 #include <NRP/NRPBuilder.h>
+#include <NRP/MonomericNRPBuilder.h>
 #include <algorithm>
 #include <sstream>
 #include <cstring>
 #include "NRP/NRP.h"
-#include "NRPsPrediction/NRPsPrediction.h"
+#include "NRPsPrediction/BgcPrediction.h"
 #include <Logger/log_writers.hpp>
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
 #include <Matcher/Score/Base/ScoreWithModification.h>
@@ -22,10 +23,14 @@
 #include <Matcher/Score/Base/ScoreSingleUnit.h>
 #include <Matcher/Score/Base/ScoreOpenContinueGap.h>
 #include <Matcher/Score/Base/ScoreNormalize.h>
+#include <Matcher/Score/Base/ScoreForUntrustedPred.h>
 #include <ArgParse/Args.h>
 #include <Matcher/SingleUnitMatcher.h>
 #include <Aminoacid/ModificationInfo.h>
 #include <omp.h>
+#include <Matcher/OrderedGenesMatcher.h>
+#include <Matcher/Score/OrderedGenes/OrderedGenesScoreBase.h>
+#include <Aminoacid/MonomerInfo.h>
 #include "Matcher/Matcher.h"
 #include "Matcher/InDelMatcher.h"
 
@@ -54,8 +59,8 @@ std::string get_file_name(std::string cur_line) {
     return res;
 }
 
-std::vector<nrpsprediction::NRPsPrediction>  save_predictions(char* file_name, std::string predictor_name) {
-    std::vector<nrpsprediction::NRPsPrediction> preds;
+std::vector<nrpsprediction::BgcPrediction>  save_predictions(char* file_name, std::string predictor_name) {
+    std::vector<nrpsprediction::BgcPrediction> preds;
     std::ifstream in_predictions_files(file_name);
 
     INFO(file_name);
@@ -77,7 +82,7 @@ std::vector<nrpsprediction::NRPsPrediction>  save_predictions(char* file_name, s
         nrPsPredictionBuilder->read_file(info_file_name);
 
         preds.push_back(nrPsPredictionBuilder->getPrediction());
-        INFO("Parts in prediction: " << preds.back().getNrpsParts().size());
+        INFO("Parts in prediction: " << preds.back().getOrfs().size());
         delete(nrPsPredictionBuilder);
     }
 
@@ -88,6 +93,9 @@ std::vector<std::shared_ptr<nrp::NRP>> save_mols(char* file_name) {
     std::vector<std::shared_ptr<nrp::NRP>> mols;
 
     std::ifstream in_nrps_files(file_name);
+    std::ofstream out_csv("structure_details.csv", std::ofstream::out);
+    out_csv << "Accession\tSTRUCTURE\tVERTEX\tFORMULA\tAA\n";
+
     std::string cur_nrp_file;
     std::string cur_line;
 
@@ -102,58 +110,71 @@ std::vector<std::shared_ptr<nrp::NRP>> save_mols(char* file_name) {
             continue;
         }
         nrp_from_fragment_graph->print();
+        for (int i = 0; i < nrp_from_fragment_graph->getFullLen(); ++i) {
+            out_csv << cur_line << "\t" << nrp_from_fragment_graph->structure_to_string() << "\t" << i
+            << "\t" << nrp_from_fragment_graph->getFormula(i) << "\t"
+            << nrp_from_fragment_graph->getAminoacid(i).get_possible_name() << "\n";
+        }
         mols.push_back(nrp_from_fragment_graph);
     }
 
+    out_csv.close();
     return mols;
+}
+
+std::vector<std::shared_ptr<nrp::NRP>> load_nrps_from_monomeric_info(char* file_name) {
+    std::vector<std::shared_ptr<nrp::NRP>> nrps;
+    std::ifstream in_nrps_files(file_name);
+    std::string cur_line;
+    std::string cur_id;
+
+    while(getline(in_nrps_files, cur_line)) {
+        INFO(cur_line);
+        std::stringstream ss(cur_line);
+        std::string extra;
+        ss >> cur_id;
+        getline(ss, extra);
+        std::shared_ptr<nrp::NRP> nrp_from_fragment_graph = nrp::MonomericNRPBuilder::build(cur_id, extra);
+        if (nrp_from_fragment_graph == nullptr) {
+            continue;
+        }
+        nrp_from_fragment_graph->print();
+        nrps.push_back(nrp_from_fragment_graph);
+    }
+    return nrps;
 }
 
 void getScoreFunction(Args args, matcher::Score*& score) {
     using namespace matcher;
     if (args.predictor_name == "MINOWA") {
-        score = new ScoreMinowa;
+        score = new ScoreMinowa(args.mismatch);
     } else if (args.predictor_name == "PRISM") {
-        score = new ScorePrism;
+        score = new ScorePrism(args.mismatch);
     } else if (args.predictor_name == "SANDPUMA") {
-        score = new ScoreSandpuma;
+        score = new ScoreSandpuma(args.mismatch);
     } else {
-        score = new Score;
+        score = new Score(args.mismatch);
     }
+    score = new OrderedGenesScoreBase(std::unique_ptr<Score>(std::move(score)), args.skip_segment, args.insertion, args.deletion);
 
-    score = new ScoreNormalize(std::unique_ptr<Score>(std::move(score)));
-    score = new ScoreOpenContinueGap(args.open_gap, args.continue_gap,
-                                     std::unique_ptr<Score>(std::move(score)));
-    if (args.single_match) {
-        score = new ScoreSingleUnit(args.single_match_coeff, std::unique_ptr<Score>(std::move(score)));
-    }
     if (args.modification) {
         score = new ScoreWithModification(std::unique_ptr<Score>(std::move(score)));
     }
 }
 
 matcher::MatcherBase* getMatcher(Args args) {
-    matcher::MatcherBase* matcherBase;
-    if (args.single_match) {
-        matcherBase = new matcher::SingleUnitMatcher();
-    } else {
-        matcherBase = new matcher::Matcher();
-    }
-    if (args.deletion || args.insertion) {
-        return new matcher::InDelMatcher(matcherBase, args.insertion, args.deletion);
-    } else {
-        return matcherBase;
-    }
+    return new matcher::OrderedGenesMatcher();
 }
 
 
-void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, std::shared_ptr<nrp::NRP> mol, std::string output_filename,
+void run_mol_predictions(std::vector<nrpsprediction::BgcPrediction> preds, std::shared_ptr<nrp::NRP> mol, std::string output_filename,
                          Args args) {
     matcher::Score* score;
     getScoreFunction(args, score);
     std::vector<matcher::MatcherBase::Match> nrpsMatchs;
     for (int i = 0; i < preds.size(); ++i) {
-        if (preds[i].getNrpsParts().size() == 0) continue;
-        //std::cerr << mol->get_file_name() << " " << preds[i].getNrpsParts()[0].get_file_name() << "\n";
+        if (preds[i].getOrfs().size() == 0) continue;
+        //std::cerr << mol->get_file_name() << " " << preds[i].getOrfs()[0].get_file_name() << "\n";
         matcher::MatcherBase* matcher = getMatcher(args);
         matcher::MatcherBase::Match match = matcher->getMatch(mol, &preds[i], score);
         delete matcher;
@@ -164,6 +185,7 @@ void run_mol_predictions(std::vector<nrpsprediction::NRPsPrediction> preds, std:
             std::ofstream out(output_filename);
             match.print(out);
         }
+
     }
 
     INFO("Found: " << nrpsMatchs.size() << " predictions");
@@ -226,12 +248,13 @@ int main(int argc, char* argv[]) {
     aminoacid::AminoacidInfo::init(AA_file_name, args.predictor_name);
     aminoacid::ModificationInfo::init(args.modification_cfg);
     aminoacid::ModificationInfo::init_AAMod(args.AAmod_cfg);
+    aminoacid::MonomerInfo::init(args.monomer_cfg);
 
     INFO("NRPs Matcher START");
     INFO("Saving predictions");
-    std::vector<nrpsprediction::NRPsPrediction> preds = save_predictions(argv[1], args.predictor_name);
+    std::vector<nrpsprediction::BgcPrediction> preds = save_predictions(argv[1], args.predictor_name);
     INFO("Saving NRPs structures");
-    std::vector<std::shared_ptr<nrp::NRP>> mols = save_mols(argv[2]);
+    std::vector<std::shared_ptr<nrp::NRP>> mols = load_nrps_from_monomeric_info(argv[2]);
 
     if (start_from == 0) {
         std::ofstream out_csv("report.csv");
@@ -241,7 +264,11 @@ int main(int argc, char* argv[]) {
 
     INFO("Processing matching for NRPs structurs")
     INFO("Start from: " << start_from)
-    unsigned nthreads = omp_get_max_threads();
+    unsigned nthreads = args.threads;
+
+    omp_set_dynamic(0);
+    omp_set_num_threads(nthreads);
+
     INFO("THREADS #" << nthreads);
 #   pragma omp parallel for
     for (int i = start_from; i < mols.size(); ++i) {
