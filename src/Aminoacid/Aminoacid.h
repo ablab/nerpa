@@ -30,6 +30,10 @@ namespace aminoacid {
         }
         std::string get_name() const;
         std::string get_possible_name() const;
+        std::vector<aminoacid::Modification> getModifications() const {
+            return modifications;
+        }
+
         int get_id() const;
         bool is_AA() const;
         void addModification(Modification m);

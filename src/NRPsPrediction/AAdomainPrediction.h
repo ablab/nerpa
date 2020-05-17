@@ -12,10 +12,9 @@ namespace nrpsprediction {
             AminoacidProb() {}
 
             aminoacid::Aminoacid aminoacid;
+            std::vector<aminoacid::Modification> modificatins;
             double prob;
-
             AminoacidProb(std::string aacid, double prob): aminoacid(aacid), prob(prob) {}
-
             AminoacidProb(aminoacid::Aminoacid aacid, double prob): aminoacid(aacid), prob(prob) {}
         };
         static const double EPS;
@@ -30,6 +29,11 @@ namespace nrpsprediction {
                                                                                                aminoacid_prediction)),
                                                                                                is_repeatable(is_repeatable),
                                                                                                modificatins(std::move(mods)) {
+            for (int i = 0; i < this->modificatins.size(); ++i) {
+                for (int j = 0; j < this->aminoacid_prediction.size(); ++j) {
+                    this->aminoacid_prediction[j].modificatins.push_back(this->modificatins[i]);
+                }
+            }
         }
         bool contain(aminoacid::Aminoacid aminoacid) const;
         AminoacidProb getAminoacid(aminoacid::Aminoacid aminoacid) const;

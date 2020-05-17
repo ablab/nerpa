@@ -88,6 +88,28 @@ double matcher::Score::singleUnitScore(const nrpsprediction::AAdomainPrediction 
     }
 }
 
+double getModificationScore(const aminoacid::Aminoacid &nrpAA, const nrpsprediction::AAdomainPrediction::AminoacidProb &prob) {
+    bool pred_has_met = false;
+    bool nrp_has_met = false;
+    for (int i = 0; i < prob.modificatins.size(); ++i) {
+        if (prob.modificatins[i].getId() == aminoacid::ModificationInfo::getIdByNameId("methylation")) {
+            pred_has_met = true;
+        }
+    }
+
+    auto mds = nrpAA.getModifications();
+    for (int i = 0; i < mds.size(); ++i) {
+        if (mds[i].getId() == aminoacid::ModificationInfo::getIdByNameId("methylation")) {
+            nrp_has_met = true;
+        }
+    }
+    if (nrp_has_met == pred_has_met) {
+        return 0.9;
+    } else {
+        return -0.9;
+    }
+}
+
 bool matcher::Score::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
                                 const nrpsprediction::AAdomainPrediction::AminoacidProb &prob,
                                 const std::pair<int, int> &pos,
@@ -98,12 +120,13 @@ bool matcher::Score::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid
         if (pos.first == -1) {
             return false;
         } else {
+            double md_score = getModificationScore(nrpAA, prob);
             int mdpos = (pos.first + pos.second) / 2;
             if (mdpos >= 10) {
                 score = 0;
                 return true;
             }
-            score = prob.prob / 100. * posscore[mdpos];
+            score = (prob.prob / 100. * posscore[mdpos] + md_score)/1.9;
         }
     }
 
