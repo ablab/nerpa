@@ -1,5 +1,5 @@
 Name	Formula	Coefficient
-methylation	CH2	1
+methylation	CH2	0
 dimethylation	C2H4	0
 demethylation	C-1H-2	0
 hydration	H2O	0

@@ -3,40 +3,15 @@ import sys
 import os
 import shutil
 import csv
+import handle_helper
 
 def get_double_orfs_and_AA(dirname):
     double_orf_list = []
     double_AA_list = []
 
-    domains = []
-    cur_orf = ""
-    txt_folder = os.path.join(dirname, "txt")
-    for filename in os.listdir(txt_folder):
-        if filename.endswith("_NRPS_PKS.txt"):
-            csv_file_with_orf = os.path.join(txt_folder, filename)
-            with open(csv_file_with_orf, 'r') as rf:
-                csv_reader = csv.reader(rf, delimiter='\t')
-                for row in csv_reader:
-                    if row[1] == "NRPSPKS_ID":
-                        continue
-                    if row[1] != cur_orf:
-                        cur_orf = row[1]
-                        domains.append([])
-
-                    domains[-1].append([row[1], row[3], row[6]])
-
-    orf_ori = {}
-    #get orientation of orfs
-    for filename in os.listdir(txt_folder):
-        if filename.endswith("_gene.txt"):
-            csv_file_with_orf = os.path.join(txt_folder, filename)
-            with open(csv_file_with_orf, 'r') as rf:
-                csv_reader = csv.reader(rf, delimiter='\t')
-                for row in csv_reader:
-                    if "gene" in row[0]:
-                        continue
-
-                    orf_ori[row[0]] = row[3]
+    #ctg_orf, ctg_orf_Aid, domain_type(AMP-binding, PCP, MT)
+    domains=handle_helper.get_domains_list(dirname)
+    orf_ori = handle_helper.get_orf_orientation(dirname)
 
     #reverse domains on - strand
     for i in range(len(domains)):

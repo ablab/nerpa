@@ -23,11 +23,14 @@ namespace nrpsprediction {
         bool is_repeatable=false;
         int pos;
         std::vector<AminoacidProb> aminoacid_prediction;
+        std::vector<aminoacid::Modification> modificatins;
     public:
-        AAdomainPrediction(int pos, std::vector<AminoacidProb> aminoacid_prediction, bool is_repeatable=false): pos(pos),
+        AAdomainPrediction(int pos, std::vector<AminoacidProb> aminoacid_prediction, bool is_repeatable=false, std::vector<aminoacid::Modification> mods={}): pos(pos),
                                                                                       aminoacid_prediction(std::move(
                                                                                                aminoacid_prediction)),
-                                                                                               is_repeatable(is_repeatable) {}
+                                                                                               is_repeatable(is_repeatable),
+                                                                                               modificatins(std::move(mods)) {
+        }
         bool contain(aminoacid::Aminoacid aminoacid) const;
         AminoacidProb getAminoacid(aminoacid::Aminoacid aminoacid) const;
         std::pair<int, int> getAmnAcidPos(aminoacid::Aminoacid aminoacid) const;
@@ -36,6 +39,10 @@ namespace nrpsprediction {
         }
         std::vector<AminoacidProb> getAAPrediction() const {
             return aminoacid_prediction;
+        }
+
+        std::vector<aminoacid::Modification> get_modifications() const {
+            return modificatins;
         }
     };
 }

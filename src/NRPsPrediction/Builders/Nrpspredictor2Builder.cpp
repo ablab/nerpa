@@ -7,6 +7,14 @@
 #include "Nrpspredictor2Builder.h"
 
 namespace nrpsprediction {
+    std::vector<aminoacid::Modification> parse_modifications(std::string predict_aa) {
+        std::vector<aminoacid::Modification> res;
+        if (predict_aa.find("+MT") != std::string::npos) {
+            res.emplace_back(aminoacid::Modification(aminoacid::ModificationInfo::getIdByNameId("methylation")));
+        }
+        return res;
+    }
+
     void Nrpspredictor2Builder::read_file(std::string file_name) {
         std::ifstream in(file_name);
         std::string s;
@@ -17,6 +25,7 @@ namespace nrpsprediction {
             std::string predict_aminoacids;
 
             ss >> orf_name >> predict_aminoacid >> predict_aminoacids;
+            std::vector<aminoacid::Modification> modifications = parse_modifications(predict_aminoacid);
             bool aa_is_rep = false;
             if (orf_name.back() == '*') {
                 aa_is_rep = true;
@@ -31,13 +40,15 @@ namespace nrpsprediction {
 
             if (!nrpparts.empty() && nrpparts[nrpparts.size() - 1].get_orf_name() == orf_name_num.first) {
                 nrpparts[nrpparts.size() - 1].add_prediction(orf_name_num.second,
-                                                             AAdomainPrediction(orf_name_num.second, parse_predictions(predict_aminoacids), aa_is_rep));
+                                                             AAdomainPrediction(orf_name_num.second, parse_predictions(predict_aminoacids),
+                                                                     aa_is_rep, modifications));
             } else {
                 //if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAAdomainPrediction().size() < 2) {
                 //    nrpparts.pop_back();
                 //}
                 nrpparts.push_back(OrfPrediction(file_name, orf_name_num.first, orf_name_num.second,
-                                                 AAdomainPrediction(orf_name_num.second, parse_predictions(predict_aminoacids), aa_is_rep), orf_is_rep));
+                                                 AAdomainPrediction(orf_name_num.second, parse_predictions(predict_aminoacids),
+                                                         aa_is_rep, modifications), orf_is_rep));
             }
         }
         //if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAAdomainPrediction().size() < 2) {
