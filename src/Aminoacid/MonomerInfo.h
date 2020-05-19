@@ -13,10 +13,13 @@
 namespace aminoacid {
     class MonomerInfo {
     public:
+        static const double DEFAULT_LOG_P;
         static std::unordered_map<std::string, int> MONOMER_TO_AA;
         static std::unordered_map<std::string, std::vector<int>> MONOMER_TO_MODIFICATIONS;
+        static std::unordered_map<int, double> LogP;
 
-        static void init(std::string& filename);
+        static void init(std::string& filename, std::string& logp_filename);
+        static double getLogP(std::string& code);
         static int getAAIdByCode(std::string& code);
         static Aminoacid getAAByCode(std::string& code);
     };

@@ -59,6 +59,7 @@ def print_cfg(args, output_dir):
         f.write(os.path.abspath(os.path.join(output_dir, "modifications.tsv")) + "\n")
         f.write(os.path.abspath(os.path.join(output_dir, "AAmod.tsv")) + "\n")
         f.write(os.path.abspath(os.path.join(output_dir, "monomers.tsv")) + "\n")
+        f.write(os.path.abspath(os.path.join(output_dir, "monomersLogP.tsv")) + "\n")
         f.write("threads " + str(args.threads) + "\n")
 
     return cfg_file
@@ -216,15 +217,20 @@ def run(args):
     copyfile(path_to_AAmod_cfg, local_AAmod_cfg)
 
     if args.monomer:
+        path_to_monomer_logP = "./resources/monomersLogP.tsv"
         path_to_monomer_cfg = "./resources/monomers.tsv"
         if (os.path.exists(os.path.join(path_to_cur, 'NRPsMatcher'))):
+            path_to_monomer_logP =  "../share/nerpa/monomersLogP.tsv"
             path_to_monomer_cfg = "../share/nerpa/monomers.tsv"
+        path_to_monomer_logP =  os.path.join(path_to_cur, path_to_monomer_logP)
         path_to_monomer_cfg = os.path.join(path_to_cur, path_to_monomer_cfg)
         if args.monomer_cfg is not None:
             path_to_monomer_cfg = os.path.abspath(args.monomer_cfg)
 
+        local_monomers_logP = os.path.join(main_out_dir, "monomersLogP.tsv")
         local_monomers_cfg = os.path.join(main_out_dir, "monomers.tsv")
         copyfile(path_to_monomer_cfg, local_monomers_cfg)
+        copyfile(path_to_monomer_logP, local_monomers_logP)
 
     comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_predictions + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" \"" + path_to_cfg + "\"\n"
     print(comand)

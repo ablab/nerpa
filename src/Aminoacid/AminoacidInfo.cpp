@@ -93,7 +93,10 @@ namespace aminoacid {
                                                                           Formula("C9H16N2O5"), Formula("C5H12N2O2"), Formula("S179"), Formula("C4H9NO2"), Formula("C6H11NO4"),
                                                                           Formula("C6H11NO2"), Formula("C8H9NO4"), Formula()};
 
+    std::vector<double> AminoacidInfo::LogP = {};
+
     int AminoacidInfo::AMINOACID_CNT = int(AMINOACID_NAMES.size());
+    const double AminoacidInfo::DEFAULT_LOG_P = -6.64;
 
     void AminoacidInfo::init(std::string filename, std::string predictor) {
         std::ifstream in(filename);
@@ -104,6 +107,7 @@ namespace aminoacid {
         std::string s;
         int nameid = 0;
         int formulaid = 0;
+        int logpid = 0;
         int i = 0;
         while (getline(ss, s, '\t')) {
             if (s.size() > 0 && (s.back() == '\r' || s.back() == '\b')) {
@@ -117,12 +121,16 @@ namespace aminoacid {
             if (s == predictor) {
                 nameid = i;
             }
+            if (s == "NRPSPred2_LogP") {
+                logpid = i;
+            }
             i += 1;
         }
 
         FORMULS.resize(0);
         AMINOACID_NAMES.resize(0);
         NAME_ID.resize(0);
+        LogP.resize(0);
 
         while (getline(in, buffer)) {
             std::stringstream ss1(buffer);
@@ -142,12 +150,21 @@ namespace aminoacid {
                 } else {
                     FORMULS.push_back(Formula());
                 }
+                if (parts[logpid] != "-") {
+                    std::stringstream ss(parts[logpid]);
+                    double lgp;
+                    ss >> lgp;
+                    LogP.push_back(lgp);
+                } else {
+                    LogP.push_back(DEFAULT_LOG_P);
+                }
             }
         }
 
         FORMULS.push_back(Formula());
         AMINOACID_NAMES.push_back("none");
         NAME_ID.push_back("none");
+        LogP.push_back(DEFAULT_LOG_P);
 
         AMINOACID_CNT = AMINOACID_NAMES.size();
         in.close();

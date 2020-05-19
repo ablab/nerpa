@@ -49,6 +49,7 @@ install(FILES
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/aminoacids.tsv"
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/modifications.tsv"
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/monomers.tsv"
+        "${CMAKE_CURRENT_SOURCE_DIR}/resources/monomersLogP.tsv"
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/AAmod.tsv"
         DESTINATION share/nerpa
         COMPONENT runtime)

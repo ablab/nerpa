@@ -20,6 +20,7 @@ public:
     std::string modification_cfg;
     std::string AAmod_cfg;
     std::string monomer_cfg;
+    std::string monomer_logP_cfg;
     unsigned int threads;
 
     Args(std::string cfg_filename);
