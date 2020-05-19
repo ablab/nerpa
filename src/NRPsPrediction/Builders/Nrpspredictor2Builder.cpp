@@ -77,6 +77,9 @@ namespace nrpsprediction {
 
         for (int i = 0; i < (int)tokens.size(); ++i) {
             aacids.push_back(parse_token(tokens[i]));
+            if (aacids.back().first == "dht") {
+                aacids.push_back(std::make_pair("abu", aacids.back().second));
+            }
         }
 
         double val = std::max(aacids[2].second, 60.);

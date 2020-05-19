@@ -131,23 +131,7 @@ namespace matcher {
             }
         }
 
-        virtual double Mismatch(const aminoacid::Aminoacid& structure_aa, const nrpsprediction::AAdomainPrediction& aa_prediction) const {
-            if (baseScore != nullptr) {
-                return baseScore->Mismatch(structure_aa, aa_prediction);
-            } else {
-                if (aa_prediction.getAAPrediction().empty()) {
-                    return 0.0;
-                }
-
-                double mismatch_score[11];
-                mismatch_score[10] = mismatch;
-                for (int i = 9; i >= 0; --i) {
-                    mismatch_score[i] = mismatch_score[i + 1]/2;
-                }
-
-                return mismatch_score[int(aa_prediction.getAAPrediction()[0].prob/10)];
-            }
-        }
+        virtual double Mismatch(const aminoacid::Aminoacid& structure_aa, const nrpsprediction::AAdomainPrediction& aa_prediction) const;
 
     protected:
         std::unique_ptr<Score> baseScore;

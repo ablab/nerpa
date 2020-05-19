@@ -37,7 +37,8 @@ namespace matcher {
             //if (len <= 7) {
             //    return 1;
             //}
-            return len;
+            // return len;
+            return 1;
         }
 
         double resultScore(double score, const int len) const override {

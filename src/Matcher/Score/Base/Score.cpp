@@ -88,11 +88,12 @@ double matcher::Score::singleUnitScore(const nrpsprediction::AAdomainPrediction 
     }
 }
 
-double getModificationScore(const aminoacid::Aminoacid &nrpAA, const nrpsprediction::AAdomainPrediction::AminoacidProb &prob) {
+double getModificationScore(const aminoacid::Aminoacid &nrpAA,
+        const std::vector<aminoacid::Modification> &mods) {
     bool pred_has_met = false;
     bool nrp_has_met = false;
-    for (int i = 0; i < prob.modificatins.size(); ++i) {
-        if (prob.modificatins[i].getId() == aminoacid::ModificationInfo::getIdByNameId("methylation")) {
+    for (int i = 0; i < mods.size(); ++i) {
+        if (mods[i].getId() == aminoacid::ModificationInfo::getIdByNameId("methylation")) {
             pred_has_met = true;
         }
     }
@@ -103,10 +104,17 @@ double getModificationScore(const aminoacid::Aminoacid &nrpAA, const nrpspredict
             nrp_has_met = true;
         }
     }
-    if (nrp_has_met == pred_has_met) {
-        return 0.9;
-    } else {
-        return -0.9;
+    if (!nrp_has_met && !pred_has_met) {
+        return 0.1;
+    }
+    if (nrp_has_met && pred_has_met) {
+        return 2.2;
+    }
+    if (pred_has_met && !nrp_has_met) {
+        return -2.2;
+    }
+    if (!pred_has_met && nrp_has_met) {
+        return -2.2;
     }
 }
 
@@ -120,15 +128,36 @@ bool matcher::Score::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid
         if (pos.first == -1) {
             return false;
         } else {
-            double md_score = getModificationScore(nrpAA, prob);
+            double md_score = getModificationScore(nrpAA, prob.modificatins) * 0.5;
             int mdpos = (pos.first + pos.second) / 2;
             if (mdpos >= 10) {
                 score = 0;
                 return true;
             }
-            score = (prob.prob / 100. * posscore[mdpos] + md_score)/1.9;
+            score = (prob.prob / 100. * posscore[mdpos] + md_score);
         }
     }
 
     return true;
+}
+
+double matcher::Score::Mismatch(const aminoacid::Aminoacid &structure_aa,
+                                const nrpsprediction::AAdomainPrediction &aa_prediction) const {
+    if (baseScore != nullptr) {
+        return baseScore->Mismatch(structure_aa, aa_prediction);
+    } else {
+        double md_score = getModificationScore(structure_aa, aa_prediction.get_modifications()) * 0.5;
+
+        if (aa_prediction.getAAPrediction().empty()) {
+            return 0.0 + md_score;
+        }
+
+        double mismatch_score[11];
+        mismatch_score[10] = mismatch;
+        for (int i = 9; i >= 0; --i) {
+            mismatch_score[i] = mismatch_score[i + 1]/2;
+        }
+
+        return (mismatch_score[int(aa_prediction.getAAPrediction()[0].prob/10)] + md_score);
+    }
 }
