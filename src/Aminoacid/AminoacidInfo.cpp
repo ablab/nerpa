@@ -150,6 +150,7 @@ namespace aminoacid {
                 } else {
                     FORMULS.push_back(Formula());
                 }
+
                 if (parts[logpid] != "-") {
                     std::stringstream ss(parts[logpid]);
                     double lgp;

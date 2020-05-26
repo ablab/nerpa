@@ -155,7 +155,7 @@ void getScoreFunction(Args args, matcher::Score*& score) {
     } else {
         score = new Score(args.mismatch);
     }
-    score = new OrderedGenesScoreBase(std::unique_ptr<Score>(std::move(score)), args.skip_segment, args.insertion, args.deletion);
+    score = new OrderedGenesScoreBase(std::unique_ptr<Score>(std::move(score)), args.skip_segment, args.insertion, args.deletion, args.mismatch, args.open_gap, args.continue_gap);
 
     if (args.modification) {
         score = new ScoreWithModification(std::unique_ptr<Score>(std::move(score)));

@@ -256,7 +256,7 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
                                                                                        std::vector<int>(plen + 1,  0)));
 
     dp[0][0][0] = 0;
-    dp[1][0][0] = -1;
+    dp[1][0][0] = score->openGap();
     for (int npos = 1; npos <= nrplen; ++npos) {
         dp[0][npos][0] = dp[0][npos - 1][0] + score->InsertionScore();
         pgap[0][npos][0] = 0;
@@ -264,6 +264,7 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
         py[0][npos][0] = 0;
 
         if (dp[1][npos - 1][0] + score->InsertionScore() > dp[0][npos][0]) {
+            dp[0][npos][0] = dp[1][npos - 1][0] + score->InsertionScore();
             pgap[0][npos][0] = 1;
         }
 
@@ -273,6 +274,7 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
         py[1][npos][0] = 0;
 
         if (dp[0][npos - 1][0] + score->openGap() > dp[1][npos][0]) {
+            dp[1][npos][0] = dp[0][npos - 1][0] + score->openGap();
             pgap[1][npos][0] = 0;
         }
     }
@@ -291,6 +293,8 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
             py[0][0][ppos] = ppos - pos_id[ppos - 1] - 1;
         }
     }
+
+    //std::cout << score->DeletionScore() << " " << score->SkipSegment() << " " << score->InsertionScore() <<" " << score->openGap() << " " << score->continueGap() << "\n";
 
     for (int npos = 1; npos <= nrplen; ++npos) {
         for (int ppos = 1; ppos <= plen; ++ppos) {

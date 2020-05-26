@@ -15,6 +15,7 @@ namespace aminoacid {
     std::unordered_map<int, double> MonomerInfo::LogP;
 
     void MonomerInfo::init(std::string& filename, std::string& logp_filename) {
+        std::cout << "INIT\n";
         std::fstream in(filename);
         std::string buffer;
         getline(in, buffer); // skip header
@@ -35,6 +36,7 @@ namespace aminoacid {
             MONOMER_TO_MODIFICATIONS[code] = modificationIds;
         }
 
+        std::cout << logp_filename << "\n";
         std::fstream in_logp(logp_filename);
         getline(in_logp, buffer); // skip header
 
@@ -43,6 +45,7 @@ namespace aminoacid {
             std::string nameId;
             double log_p = 0;
             ss >> nameId >> log_p;
+            std::cout << nameId << " " << log_p << " " << aminoacid::AminoacidInfo::getIdByNameId(nameId) << "\n";
             LogP[aminoacid::AminoacidInfo::getIdByNameId(nameId)] = log_p;
         }
     }
@@ -70,6 +73,14 @@ namespace aminoacid {
         int nameId = MONOMER_TO_AA[code];
         if (LogP.count(nameId)) {
             return LogP[nameId];
+        } else {
+            return DEFAULT_LOG_P;
+        }
+    }
+
+    double MonomerInfo::getLogP(int AAid) {
+        if (LogP.count(AAid)) {
+            return LogP[AAid];
         } else {
             return DEFAULT_LOG_P;
         }

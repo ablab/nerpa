@@ -20,6 +20,7 @@ namespace aminoacid {
 
         static void init(std::string& filename, std::string& logp_filename);
         static double getLogP(std::string& code);
+        static double getLogP(int AAid);
         static int getAAIdByCode(std::string& code);
         static Aminoacid getAAByCode(std::string& code);
     };

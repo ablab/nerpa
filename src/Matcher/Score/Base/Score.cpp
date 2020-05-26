@@ -4,6 +4,8 @@
 
 #include <Logger/logger.hpp>
 #include "Score.h"
+#include <Aminoacid/MonomerInfo.h>
+#include <math.h>
 
 bool matcher::Score::getScoreForSegment(const std::vector<aminoacid::Aminoacid>& amns,
                                         const nrpsprediction::BgcPrediction& prediction, int part_id,
@@ -118,6 +120,31 @@ double getModificationScore(const aminoacid::Aminoacid &nrpAA,
     }
 }
 
+double matcher::Score::probGenAA(const aminoacid::Aminoacid &nrpAA) const {
+    return aminoacid::MonomerInfo::getLogP(nrpAA.get_id());
+
+    std::vector<double> l_list;
+    for (int i = 0; i < ProbGenCorrect.size(); ++i) {
+        double cur_score = ProbGetScore[i] + ProbGenCorrect[i] + aminoacid::AminoacidInfo::LogP[nrpAA.get_id()];
+        //std::cout <<"AA" << nrpAA.get_name() << " " << nrpAA.get_id() << " " << aminoacid::AminoacidInfo::LogP[nrpAA.get_id()] << "\n";
+        l_list.push_back(cur_score);
+        cur_score = ProbGetScore[i]  + ProbGenIncorrect[i] + aminoacid::MonomerInfo::getLogP(nrpAA.get_id());
+        //std::cout << "Mono" << nrpAA.get_name() << " " << nrpAA.get_id() << " " <<  aminoacid::MonomerInfo::getLogP(nrpAA.get_id()) << "\n";
+
+        l_list.push_back(cur_score);
+    }
+
+    double exp_val = 0;
+    for (int i = 0; i < l_list.size(); ++i) {
+        exp_val += exp(l_list[i]);
+    }
+
+    //std::cout << exp_val << "\n";
+    //std::cout << log(exp_val) << "\n";
+
+    return log(exp_val);
+}
+
 bool matcher::Score::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
                                 const nrpsprediction::AAdomainPrediction::AminoacidProb &prob,
                                 const std::pair<int, int> &pos,
@@ -125,16 +152,16 @@ bool matcher::Score::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid
     if (baseScore != nullptr) {
         return baseScore->getScore(nrpAA, predAA, prob, pos, score);
     } else {
-        if (pos.first == -1) {
+        if (pos.first != 0 or prob.prob < 68.) {
             return false;
         } else {
-            double md_score = getModificationScore(nrpAA, prob.modificatins) * 0.5;
-            int mdpos = (pos.first + pos.second) / 2;
-            if (mdpos >= 10) {
-                score = 0;
-                return true;
-            }
-            score = (prob.prob / 100. * posscore[mdpos] + md_score);
+            double md_score = getModificationScore(nrpAA, prob.modificatins);
+            int ind = std::min(int(10 - prob.prob/10), 4);
+            //std::cout << nrpAA.get_name() << " " << ind << " " << Score::ProbGenCorrect[ind] << "\n";
+            score = Score::ProbGenCorrect[ind];
+            score += md_score;
+            score -= probGenAA(nrpAA);
+            //std::cout << probGenAA(nrpAA) << "\n";
         }
     }
 
@@ -146,18 +173,15 @@ double matcher::Score::Mismatch(const aminoacid::Aminoacid &structure_aa,
     if (baseScore != nullptr) {
         return baseScore->Mismatch(structure_aa, aa_prediction);
     } else {
-        double md_score = getModificationScore(structure_aa, aa_prediction.get_modifications()) * 0.5;
+        double md_score = getModificationScore(structure_aa, aa_prediction.get_modifications());
 
-        if (aa_prediction.getAAPrediction().empty()) {
-            return 0.0 + md_score;
+        double cur_prob = 60;
+        if (!aa_prediction.getAAPrediction().empty()) {
+            cur_prob = aa_prediction.getAAPrediction()[0].prob;
         }
-
-        double mismatch_score[11];
-        mismatch_score[10] = mismatch;
-        for (int i = 9; i >= 0; --i) {
-            mismatch_score[i] = mismatch_score[i + 1]/2;
-        }
-
-        return (mismatch_score[int(aa_prediction.getAAPrediction()[0].prob/10)] + md_score);
+        int ind = std::min(int(10 - cur_prob/10), 4);
+        double score = Score::ProbGenIncorrect[ind] + aminoacid::MonomerInfo::getLogP(structure_aa.get_id());
+        score -= probGenAA(structure_aa);
+        return (score + md_score);
     }
 }

@@ -12,7 +12,16 @@
 namespace matcher {
     class Score {
     protected:
+
         double mismatch = -1;
+        //[100, 90, 80, 70, <= 60]
+        std::vector<double> ProbGenCorrect = {-0.07, -0.16, -0.7, -1.6, -1.1};
+        //[100, 90, 80, 70, <= 60]
+        std::vector<double> ProbGenIncorrect = {-2.66, -1.90, -0.7, -0.22, 0.};
+        //[100, 90, 80, 70, <=60]
+        std::vector<double> ProbGetScore = {-0.52, -2.06, -2.35, -2.14, -2.68};
+
+        double probGenAA(const aminoacid::Aminoacid &nrpAA) const;
     public:
         Score();
         explicit Score(double mismatch) : Score() {
