@@ -6,6 +6,7 @@ import csv
 
 import handle_PCP2
 import handle_MT
+import handle_E
 from logger import log
 
 def get_split_BGC(dirname):
@@ -60,7 +61,7 @@ def gen_prediction_for_one_orfs_part(orf_part, prediction_dict, output_prefix, c
     return current_part
 
 def gen_predictions(bgc_orfs_parts, input_file_name, output_prefix, current_part,
-                    predictions_info_list, double_orf, double_aa, mt_aa):
+                    predictions_info_list, double_orf, double_aa, mt_aa, d_aa):
     prediction_dict = {}
     with open(input_file_name, 'r') as rf:
         for line in rf:
@@ -71,6 +72,9 @@ def gen_predictions(bgc_orfs_parts, input_file_name, output_prefix, current_part
 
             if line.split("\t")[0] in mt_aa:
                 line = line.split("\t")[0] + "\t" + line.split("\t")[1] + "+MT\t"  + '\t'.join(line.split("\t")[2:])
+
+            if line.split("\t")[0] in d_aa:
+                line = line.split("\t")[0] + "\td-" + line.split("\t")[1] + "\t"  + '\t'.join(line.split("\t")[2:])
 
             if ctgorf in double_orf:
                 line = ctgorf + "*_" + '_'.join(line.split('_')[2:])
@@ -102,7 +106,8 @@ def create_predictions_by_antiSAMSHout(path_to_antismashouts, outdir, predictor)
 
             double_orf, double_aa = handle_PCP2.get_double_orfs_and_AA(dirname)
             mt_aa = handle_MT.get_MT_AA(dirname)
-            print(mt_aa)
+            d_aa = handle_E.get_D_AA(dirname)
+            print(d_aa)
             bgc_orfs_parts = get_split_BGC(dirname)
 
             nrpspred_dir = os.path.join(dirname, "nrpspks_predictions_txt")
@@ -115,7 +120,7 @@ def create_predictions_by_antiSAMSHout(path_to_antismashouts, outdir, predictor)
                         #shutil.copyfile(os.path.join(nrpspred_dir, filename), os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name))
                         gen_predictions(bgc_orfs_parts, os.path.join(nrpspred_dir, filename),
                                         os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name)[:-4],
-                                        0, predictions_info_list, double_orf, double_aa, mt_aa)
+                                        0, predictions_info_list, double_orf, double_aa, mt_aa, d_aa)
 
     f = open(predictions_info_file, 'w')
     for line in predictions_info_list:

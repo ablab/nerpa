@@ -17,6 +17,8 @@ def get_domains_list(dirname):
                     if row[1] != cur_orf:
                         cur_orf = row[1]
                         domains.append([])
+                    if row[6] == "Condensation":
+                        row[6] = row[7]
 
                     domains[-1].append([row[1], row[3], row[6]])
     return domains
