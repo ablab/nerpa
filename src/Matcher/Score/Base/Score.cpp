@@ -145,6 +145,30 @@ double matcher::Score::probGenAA(const aminoacid::Aminoacid &nrpAA) const {
     return log(exp_val);
 }
 
+
+double getLDScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA) {
+    auto nrpConf = nrpAA.getConfiguration();
+    auto predConf = predAA.getConfiguration();
+
+    if ((nrpConf == aminoacid::Aminoacid::L) && (predConf == aminoacid::Aminoacid::L)) {
+
+    }
+
+    if ((nrpConf == aminoacid::Aminoacid::L) && (predConf == aminoacid::Aminoacid::L)) {
+
+    }
+
+    if ((nrpConf == aminoacid::Aminoacid::L) && (predConf == aminoacid::Aminoacid::L)) {
+
+    }
+
+    if ((nrpConf == aminoacid::Aminoacid::L) && (predConf == aminoacid::Aminoacid::L)) {
+
+    }
+
+    return 0;
+}
+
 bool matcher::Score::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
                                 const nrpsprediction::AAdomainPrediction::AminoacidProb &prob,
                                 const std::pair<int, int> &pos,
@@ -156,10 +180,12 @@ bool matcher::Score::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid
             return false;
         } else {
             double md_score = getModificationScore(nrpAA, prob.modificatins);
+            double dl_score = getLDScore(nrpAA, prob.aminoacid);
             int ind = std::min(int(10 - prob.prob/10), 4);
             //std::cout << nrpAA.get_name() << " " << ind << " " << Score::ProbGenCorrect[ind] << "\n";
             score = Score::ProbGenCorrect[ind];
             score += md_score;
+            score += dl_score;
             score -= probGenAA(nrpAA);
             //std::cout << probGenAA(nrpAA) << "\n";
         }
@@ -174,6 +200,8 @@ double matcher::Score::Mismatch(const aminoacid::Aminoacid &structure_aa,
         return baseScore->Mismatch(structure_aa, aa_prediction);
     } else {
         double md_score = getModificationScore(structure_aa, aa_prediction.get_modifications());
+        double dl_score = getLDScore(structure_aa, aa_prediction.getAAPrediction()[0].aminoacid);
+
 
         double cur_prob = 60;
         if (!aa_prediction.getAAPrediction().empty()) {
@@ -182,6 +210,6 @@ double matcher::Score::Mismatch(const aminoacid::Aminoacid &structure_aa,
         int ind = std::min(int(10 - cur_prob/10), 4);
         double score = Score::ProbGenIncorrect[ind] + aminoacid::MonomerInfo::getLogP(structure_aa.get_id());
         score -= probGenAA(structure_aa);
-        return (score + md_score);
+        return (score + md_score + dl_score);
     }
 }

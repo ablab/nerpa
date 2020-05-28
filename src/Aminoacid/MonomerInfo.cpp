@@ -25,6 +25,8 @@ namespace aminoacid {
             std::string code, nameId, modifications;
             ss >> code >> nameId >> modifications;
             MONOMER_TO_AA[code] = aminoacid::AminoacidInfo::getIdByNameId(nameId);
+            MONOMER_TO_AA["@D-" + code] = aminoacid::AminoacidInfo::getIdByNameId(nameId);
+            MONOMER_TO_AA["@L-" + code] = aminoacid::AminoacidInfo::getIdByNameId(nameId);
             std::vector<int> modificationIds;
             if (modifications != "-") {
                 std::stringstream ss_(modifications);
@@ -34,6 +36,8 @@ namespace aminoacid {
                 }
             }
             MONOMER_TO_MODIFICATIONS[code] = modificationIds;
+            MONOMER_TO_MODIFICATIONS["@D-" + code] = modificationIds;
+            MONOMER_TO_MODIFICATIONS["@L-" + code] = modificationIds;
         }
 
         std::cout << logp_filename << "\n";

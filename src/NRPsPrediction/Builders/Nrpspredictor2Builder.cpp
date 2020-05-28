@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <string>
 #include "Nrpspredictor2Builder.h"
 
 namespace nrpsprediction {
@@ -26,6 +27,11 @@ namespace nrpsprediction {
 
             ss >> orf_name >> predict_aminoacid >> predict_aminoacids;
             std::vector<aminoacid::Modification> modifications = parse_modifications(predict_aminoacid);
+            aminoacid::Aminoacid::Configuation cur_conf = aminoacid::Aminoacid::L;
+            if ((predict_aminoacid[0] == 'd') && (predict_aminoacid[1] == '-')) {
+                cur_conf = aminoacid::Aminoacid::D;
+            }
+
             bool aa_is_rep = false;
             if (orf_name.back() == '*') {
                 aa_is_rep = true;
@@ -41,14 +47,14 @@ namespace nrpsprediction {
             if (!nrpparts.empty() && nrpparts[nrpparts.size() - 1].get_orf_name() == orf_name_num.first) {
                 nrpparts[nrpparts.size() - 1].add_prediction(orf_name_num.second,
                                                              AAdomainPrediction(orf_name_num.second, parse_predictions(predict_aminoacids),
-                                                                     aa_is_rep, modifications));
+                                                                     aa_is_rep, modifications, cur_conf));
             } else {
                 //if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAAdomainPrediction().size() < 2) {
                 //    nrpparts.pop_back();
                 //}
                 nrpparts.push_back(OrfPrediction(file_name, orf_name_num.first, orf_name_num.second,
                                                  AAdomainPrediction(orf_name_num.second, parse_predictions(predict_aminoacids),
-                                                         aa_is_rep, modifications), orf_is_rep));
+                                                         aa_is_rep, modifications, cur_conf), orf_is_rep));
             }
         }
         //if (nrpparts.size() > 0 && nrpparts[nrpparts.size() - 1].getAAdomainPrediction().size() < 2) {
@@ -85,7 +91,7 @@ namespace nrpsprediction {
         double val = std::max(aacids[2].second, 60.);
 
         for (int i = 0; i < aacids.size(); ++i) {
-            if (aacids[i].second >= val - EPS) {
+            if (aacids[i].second >= val - EPS || i == 0) {
                 aminoacid_prediction.push_back(
                         AAdomainPrediction::AminoacidProb(
                                 aminoacid::Aminoacid(getAAbyName(aacids[i].first)), aacids[i].second));

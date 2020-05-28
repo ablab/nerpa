@@ -37,6 +37,19 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
         } else {
             aa = aminoacid::MonomerInfo::getAAByCode(code);
         }
+
+        aminoacid::Aminoacid::Configuation cur_config = aminoacid::Aminoacid::NA;
+        for (int i = 0 ; i < code.size(); ++i) {
+            if (code[i] == '@' && code[i + 1] == 'D') {
+                cur_config = aminoacid::Aminoacid::D;
+            }
+
+            if (code[i] == '@' && code[i + 1] == 'L') {
+                cur_config = aminoacid::Aminoacid::L;
+            }
+        }
+
+        aa.setConfiguration(cur_config);
         aminoacids.push_back(aa);
 
         std::stringstream ssnode;

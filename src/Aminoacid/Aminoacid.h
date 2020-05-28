@@ -14,6 +14,8 @@ namespace aminoacid {
         friend class ModificationTest;
         std::string findAAname() const;
     public:
+        enum Configuation{L, D, NA};
+
         explicit Aminoacid(std::string aminoacid_name);
         explicit Aminoacid(Formula formula);
         explicit Aminoacid(int aid);
@@ -38,12 +40,20 @@ namespace aminoacid {
         bool is_AA() const;
         void addModification(Modification m);
 
+        Configuation getConfiguration() const {
+            return configuation;
+        }
+
+        void setConfiguration(Configuation conf) {
+            configuation = conf;
+        }
     private:
         Formula formula;
     public:
         const Formula &getFormula() const;
     private:
         int aa;
+        Configuation configuation = NA;
         std::vector<Modification> modifications;
         std::string possible_name = "";
     };
