@@ -251,7 +251,7 @@ def monomericgraph_components_to_string(rban_record, nerpa_monomers, allowed_bon
     registered_set = set(nerpa_monomers)
     def get_comp_name(comp):
         name = na
-        for _name, idx in sorted([(nodes[n], j) for j, n in enumerate(comp)]):
+        for _name, idx in sorted([(nodes[n], n) for n in comp]):
             if _name in registered_set:
                 name = _name
                 if is_d[idx]:
