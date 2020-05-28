@@ -183,8 +183,19 @@ def split_by_monomer_bonds(rban_record):
     return monomer_smiles_dict
 
 
+def has_chiral_centers(smi):
+    mol = rdc.MolFromSmiles(smi)
+    chiral_centers = rdc.FindMolChiralCenters(mol)
+    if not chiral_centers:
+        return False
+    return True
+
+
 def get_monomers_chirality(rban_record, debug=False):
     monomers = rban_record['monomericGraph']['monomericGraph']['monomers']
+    if not has_chiral_centers(rban_record['isomericSmiles']):
+        return [None] * len(monomers)
+
     monomer_smiles_dict = split_by_monomer_bonds(rban_record)
     res = []
     for i in range(len(monomers)):
@@ -192,13 +203,13 @@ def get_monomers_chirality(rban_record, debug=False):
             res.append(get_aa_chirality(monomer_smiles_dict[i][0]))
         except NoChiralCenters:
             if debug: print(f'{i}: NoChiralCenters')
-            res.append(False)
+            res.append(None)
         except NoCarboxyl:
             if debug: print(f'{i}: NoCarboxyl')
-            res.append(False)
+            res.append(None)
         except WTF:
             if debug: print(f'{i}: WTF:', monomer_smiles_dict[i][0])
-            res.append(False)
+            res.append(None)
     return res
 
 
@@ -254,8 +265,8 @@ def monomericgraph_components_to_string(rban_record, nerpa_monomers, allowed_bon
         for _name, idx in sorted([(nodes[n], n) for n in comp]):
             if _name in registered_set:
                 name = _name
-                if is_d[idx]:
-                    name = f'@{name}'
+                if is_d[idx] is not None:
+                    name = f'@D-{name}' if is_d[idx] else f'@L-{name}'
                 if len(comp) > 1:
                     name = f'*{name}'
                 break
@@ -273,8 +284,8 @@ def main():
     rban_input_json = json.load(open(sys.argv[2])) if len(sys.argv) > 2 else None
 
     monomers_tsv = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../resources/monomers.tsv')
-    if not os.path.exists(monomers_tsv):
-        monomers_tsv = MONOMERS_TSV
+    # if not os.path.exists(monomers_tsv):
+    #     monomers_tsv = MONOMERS_TSV
 
     nerpa_monomers = [x.split()[0] for x in open(monomers_tsv)]
     nerpa_monomers = nerpa_monomers[1:]
