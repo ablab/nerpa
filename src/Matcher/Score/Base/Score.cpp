@@ -150,20 +150,20 @@ double getLDScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid 
     auto nrpConf = nrpAA.getConfiguration();
     auto predConf = predAA.getConfiguration();
 
-    if ((nrpConf == aminoacid::Aminoacid::L) && (predConf == aminoacid::Aminoacid::L)) {
-
+    if ((nrpConf == aminoacid::Aminoacid::L) && (predConf == aminoacid::Aminoacid::D)) {
+        return -0.8;
     }
 
     if ((nrpConf == aminoacid::Aminoacid::L) && (predConf == aminoacid::Aminoacid::L)) {
-
+        return 0.3;
     }
 
-    if ((nrpConf == aminoacid::Aminoacid::L) && (predConf == aminoacid::Aminoacid::L)) {
-
+    if ((nrpConf == aminoacid::Aminoacid::D) && (predConf == aminoacid::Aminoacid::D)) {
+        return 0.8;
     }
 
-    if ((nrpConf == aminoacid::Aminoacid::L) && (predConf == aminoacid::Aminoacid::L)) {
-
+    if ((nrpConf == aminoacid::Aminoacid::D) && (predConf == aminoacid::Aminoacid::L)) {
+        return -1.5;
     }
 
     return 0;
