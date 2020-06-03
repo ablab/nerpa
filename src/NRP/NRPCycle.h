@@ -6,7 +6,6 @@
 
 namespace nrp {
     class NRPCycle : public NRP {
-
     public:
         NRPCycle(const std::string &file_name, const std::vector<std::string> &strformula,
                  const std::vector<aminoacid::Aminoacid> &aminoacids, const std::vector<int> &position,

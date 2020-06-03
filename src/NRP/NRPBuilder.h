@@ -21,12 +21,12 @@ namespace nrp {
 
         static bool isTail(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr);
 
-        static std::vector<int> parseCycle(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr);
+        static std::vector<int> parseCycle(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr, const std::vector<std::pair<int, int>>& ocon = {});
 
         static std::vector<int> parseLine(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr);
 
         static void parseTail(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr, std::vector<int> &tail,
-                              std::vector<int> &cycle);
+                              std::vector<int> &cycle, const std::vector<std::pair<int, int>>& ocon = {});
         static void handleLoops(std::vector<std::vector<int> >& g,
                                 std::vector<std::vector<int> >& gr,
                                 std::vector<std::vector<int> >& formuls);

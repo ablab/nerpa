@@ -2,6 +2,7 @@
 // Created by tag on 31/03/2020.
 //
 
+#include <Logger/logger.hpp>
 #include "Aminoacid/MonomerInfo.h"
 #include "MonomericNRPBuilder.h"
 #include "NRPCycle.h"
@@ -64,15 +65,24 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
     std::string bond;
     std::string tmp;
     int b, e;
+    std::vector<std::pair<int, int>> ocon;
     while (std::getline(ss, bond, ';')) {
         std::stringstream ss_(bond);
         std::getline(ss_, tmp, ',');
         std::istringstream(tmp) >> b;
         std::getline(ss_, tmp, ',');
+        bool is_ocon = false;
+        if (tmp == "o") {
+            is_ocon = true;
+            std::getline(ss_, tmp, ',');
+        }
         std::istringstream(tmp) >> e;
 
         g[b].push_back(e);
         gr[e].push_back(b);
+        if (is_ocon) {
+            ocon.emplace_back(std::make_pair(b, e));
+        }
     }
 
     std::string strgraph = graphToString(g);
@@ -82,10 +92,14 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
     }
 
     if (isCycle(g, gr)) {
-        std::vector<int> pos = parseCycle(g, gr);
+        std::vector<int> pos = parseCycle(g, gr, ocon);
         std::vector<aminoacid::Aminoacid> resaacid = aminoacids_by_pos(aminoacids, pos);
-
-        return std::make_shared<nrp::NRPCycle>(nrp_id, strnodes, resaacid, pos, strgraph, extra_info);
+        if (ocon.empty()) {
+            return std::make_shared<nrp::NRPCycle>(nrp_id, strnodes, resaacid, pos, strgraph, extra_info);
+        } else {
+            INFO("Line from cycle!!\n");
+            return std::make_shared<nrp::NRPLine>(nrp_id, strnodes, resaacid, pos, strgraph, extra_info);
+        }
     } else if (isLine(g, gr)) {
         std::vector<int> pos = parseLine(g, gr);
         std::vector<aminoacid::Aminoacid> resaacid = aminoacids_by_pos(aminoacids, pos);
@@ -93,18 +107,34 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
         return std::make_shared<nrp::NRPLine>(nrp_id, strnodes, resaacid, pos, strgraph, extra_info);
     } else if (isTail(g, gr)) {
         std::vector<int> pos_tail, pos_cycle;
-        parseTail(g, gr, pos_tail, pos_cycle);
+        parseTail(g, gr, pos_tail, pos_cycle, ocon);
 
         std::vector<int> pos1 = pos_tail, pos2 = pos_tail;
         for (int i = 0; i < pos_cycle.size(); ++i) {
             pos1.push_back(pos_cycle[i]);
         }
 
+        bool is_one_pos = false;
+        for (int i = 0; i < ocon.size(); ++i) {
+            if (ocon[i].first == pos_tail.back() && ocon[i].second == pos_cycle.back()) {
+                is_one_pos = true;
+            }
+
+            if (ocon[i].first == pos_cycle.back() && ocon[i].second == pos_tail.back()) {
+                is_one_pos = true;
+            }
+        }
+        std::vector<aminoacid::Aminoacid> resaacid1 = aminoacids_by_pos(aminoacids, pos1);
+
+        if (is_one_pos) {
+            INFO("Line from branch!!\n");
+            return std::make_shared<NRPLine>(nrp_id, strnodes, resaacid1, pos1, strgraph, extra_info);
+        }
+
         for (int i = pos_cycle.size() - 1; i >= 0; --i) {
             pos2.push_back(pos_cycle[i]);
         }
 
-        std::vector<aminoacid::Aminoacid> resaacid1 = aminoacids_by_pos(aminoacids, pos1);
         std::vector<aminoacid::Aminoacid> resaacid2 = aminoacids_by_pos(aminoacids, pos2);
 
         std::shared_ptr<NRP> ver1 = std::make_shared<NRPLine>(nrp_id, strnodes, resaacid1, pos1, strgraph, extra_info),

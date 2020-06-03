@@ -265,10 +265,14 @@ bool nrp::NRPBuilder::isTail(std::vector<std::vector<int>> &g, std::vector<std::
     return (cnt01 + cnt02 == 1 && cnt2 == 1);
 }
 
-std::vector<int> nrp::NRPBuilder::parseCycle(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr) {
+std::vector<int> nrp::NRPBuilder::parseCycle(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr,
+        const std::vector<std::pair<int, int>>& ocon) {
     std::vector<int> pos;
-    pos.push_back(0);
     int cur = 0;
+    if (ocon.size() > 0) {
+        cur = ocon[0].second;
+    }
+    pos.push_back(cur);
     while (pos.size() < g.size()) {
         cur = g[cur][0];
         pos.push_back(cur);
@@ -297,7 +301,7 @@ std::vector<int> nrp::NRPBuilder::parseLine(std::vector<std::vector<int>> &g, st
 
 void
 nrp::NRPBuilder::parseTail(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr, std::vector<int> &tail,
-                           std::vector<int> &cycle) {
+                           std::vector<int> &cycle, const std::vector<std::pair<int, int>>& ocon) {
 
     int strp1 = -1, strp2 = -1;
     for (int i = 0; i < (int) g.size(); ++i) {
@@ -325,6 +329,17 @@ nrp::NRPBuilder::parseTail(std::vector<std::vector<int>> &g, std::vector<std::ve
             cycle.push_back(nc);
             nc = gr[nc][0];
         }
+
+        bool is_ocon = false;
+        for (int i = 0; i < ocon.size(); ++i) {
+            if (ocon[i].first == nc && ocon[i].second == cur) {
+                is_ocon = true;
+            }
+        }
+
+        if (is_ocon) {
+            std::reverse(cycle.begin(), cycle.end());
+        }
     } else {
         tail.push_back(strp2);
         int cur = strp2;
@@ -338,6 +353,18 @@ nrp::NRPBuilder::parseTail(std::vector<std::vector<int>> &g, std::vector<std::ve
             cycle.push_back(nc);
             nc = g[nc][0];
         }
+
+        bool is_ocon = false;
+        for (int i = 0; i < ocon.size(); ++i) {
+            if (ocon[i].first == cur && ocon[i].second == nc) {
+                is_ocon = true;
+            }
+        }
+
+        if (is_ocon) {
+            std::reverse(cycle.begin(), cycle.end());
+        }
+
     }
 }
 
