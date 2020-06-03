@@ -97,7 +97,6 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
         if (ocon.empty()) {
             return std::make_shared<nrp::NRPCycle>(nrp_id, strnodes, resaacid, pos, strgraph, extra_info);
         } else {
-            INFO("Line from cycle!!\n");
             return std::make_shared<nrp::NRPLine>(nrp_id, strnodes, resaacid, pos, strgraph, extra_info);
         }
     } else if (isLine(g, gr)) {
@@ -127,7 +126,6 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
         std::vector<aminoacid::Aminoacid> resaacid1 = aminoacids_by_pos(aminoacids, pos1);
 
         if (is_one_pos) {
-            INFO("Line from branch!!\n");
             return std::make_shared<NRPLine>(nrp_id, strnodes, resaacid1, pos1, strgraph, extra_info);
         }
 
