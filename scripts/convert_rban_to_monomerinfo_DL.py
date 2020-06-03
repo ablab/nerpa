@@ -227,12 +227,15 @@ def monomericgraph_components_to_string(rban_record, nerpa_monomers, allowed_bon
     is_d = get_monomers_chirality(rban_record)
     assert len(is_d) == len(nodes)
     pnp_edges = []
+    oedges = []
     other_edges = defaultdict(list)
     for bond in g['bonds']:
         s, e = bond['bond']['monomers']
         s -= 1
         e -= 1
-        if bond['bond']['bondTypes'][0] in allowed_bond_types:
+        if bond['bond']['bondTypes'][0] in ['ESTER', 'THIOETHER']:
+            oedges.append((s, e))
+        elif bond['bond']['bondTypes'][0] in allowed_bond_types:
             pnp_edges.append((s, e))
         else:
             other_edges[s].append(e)
@@ -274,8 +277,9 @@ def monomericgraph_components_to_string(rban_record, nerpa_monomers, allowed_bon
 
     new_nodes = [get_comp_name(comp) for comp in components]
     new_edges = [(node_to_component[s], node_to_component[e]) for s,e in pnp_edges]
+    new_oedges = [(node_to_component[s], node_to_component[e]) for s,e in oedges]
 
-    result = ','.join(new_nodes) + ';' + ';'.join([f'{s},{e}' for s,e in new_edges])
+    result = ','.join(new_nodes) + ';' + ';'.join([f'{s},{e}' for s,e in new_edges]) + ";" + ';'.join([f'{s},o,{e}' for s,e in new_oedges])
     return result
 
 
