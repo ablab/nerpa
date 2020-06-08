@@ -88,11 +88,7 @@ def gen_predictions(bgc_orfs_parts, input_file_name, output_prefix, current_part
         current_part = gen_prediction_for_one_orfs_part(orf_part, prediction_dict, output_prefix, current_part, predictions_info_list)
     return current_part
 
-def create_predictions_by_antiSAMSHout(path_to_antismashouts, outdir, predictor):
-    if predictor != "NRPSPREDICTOR2":
-        log.err("You can provide antiSMASH output only for NRPSPREDICTOR2!")
-        sys.exit()
-
+def create_predictions_by_antiSAMSHout(path_to_antismashouts, outdir):
     dir_for_predictions = os.path.join(outdir, "predictions")
     if not os.path.exists(dir_for_predictions):
         os.makedirs(dir_for_predictions)

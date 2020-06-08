@@ -7,7 +7,6 @@
 
 Args::Args(std::string cfg_filename) {
     std::ifstream in(cfg_filename);
-    in >> predictor_name;
     std::string tmp, val;
     double x;
     in >> tmp >> x;

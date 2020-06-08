@@ -17,12 +17,6 @@ def parse_args():
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--predictions", "-p", nargs=1, dest="predictions", help="path to file with paths to prediction files", type=str)
     parser.add_argument("--lib_info", "-l", dest="lib_info", nargs=1, help="path to file with paths to mol files", type=str)
-    parser.add_argument("--predictor",
-                        dest="predictor",
-                        default="MINOWA",
-                        choices=["NRPSPREDICTOR2", "MINOWA", "PRISM", "SANDPUMA"],
-                        help="AA domain predictor name [default=MINOWA]",
-                        action='store')
     parser.add_argument("--antismash_output_list", dest="antismash_out", help="path to file with list of paths to antiSMASH output folders", type=str)
     parser.add_argument("--insertion", help="insertion score [default=-1]", default=-1, action="store")
     parser.add_argument("--deletion", help="deletion score [default=-1]", default=-1, action="store")
@@ -43,7 +37,6 @@ def parse_args():
 def print_cfg(args, output_dir):
     cfg_file = os.path.join(output_dir, "nerpa.cfg")
     with open(cfg_file, "w") as f:
-        f.write(args.predictor + "\n")
         f.write("insertion " + str(args.insertion) + "\n")
         f.write("deletion " + str(args.deletion) + "\n")
         f.write("open_gap " + str(args.open_gap) + "\n")
@@ -179,7 +172,7 @@ def run(args):
     if (args.predictions is not None):
         path_predictions = os.path.abspath(copy_prediction_list(args, main_out_dir))
     else:
-        path_predictions = handle_TE.create_predictions_by_antiSAMSHout(args.antismash_out, main_out_dir, args.predictor)
+        path_predictions = handle_TE.create_predictions_by_antiSAMSHout(args.antismash_out, main_out_dir)
 
     directory = os.path.dirname(main_out_dir)
     if not os.path.exists(directory):

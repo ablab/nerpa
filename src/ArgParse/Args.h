@@ -9,7 +9,6 @@
 
 class Args {
 public:
-    std::string predictor_name;
     double insertion;
     double deletion;
     double open_gap;

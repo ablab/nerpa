@@ -10,12 +10,9 @@
 #include <Logger/log_writers.hpp>
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
 #include <Matcher/Score/Base/ScoreWithModification.h>
-#include <NRPsPrediction/Builders/MinowaPredictionBuilder.h>
 #include <Matcher/Score/Minowa/ScoreMinowa.h>
-#include <NRPsPrediction/Builders/PrismPredictionBuilder.h>
 #include <Matcher/Score/Prism/ScorePrism.h>
 #include <Matcher/Score/Sandpuma/ScoreSandpuma.h>
-#include <NRPsPrediction/Builders/SandpumaPredictionBuilder.h>
 #include <Matcher/Score/Base/ScorePositionOnly.h>
 #include <Matcher/Score/Minowa/ScoreMinowaScoreOnly.h>
 #include <Matcher/Score/NrpsPredictor2/ScoreNRPsPredictor2Normalize.h>
@@ -37,18 +34,8 @@
 const double MIN_SCROE = 0.05;
 const double MIN_EXPLAIN_PART = 0;//0.15;
 
-void getPredictor(std::string predictor_name, nrpsprediction::PredictionBuilderBase*& predictionBuilder) {
-    if (predictor_name == "MINOWA") {
-        predictionBuilder = new nrpsprediction::MinowaPredictionBuilder();
-    } else if (predictor_name == "PRISM") {
-        predictionBuilder = new nrpsprediction::PrismPredictionBuilder();
-    } else if (predictor_name == "SANDPUMA") {
-        predictionBuilder = new nrpsprediction::SandpumaPredictionBuilder();
-    } else if (predictor_name == "NRPSPREDICTOR2"){
-        predictionBuilder = new nrpsprediction::Nrpspredictor2Builder();
-    } else {
-        ERROR("Unknown predictor " + predictor_name);
-    }
+void getPredictor(nrpsprediction::PredictionBuilderBase*& predictionBuilder) {
+    predictionBuilder = new nrpsprediction::Nrpspredictor2Builder();
 }
 
 std::string get_file_name(std::string cur_line) {
@@ -59,7 +46,7 @@ std::string get_file_name(std::string cur_line) {
     return res;
 }
 
-std::vector<nrpsprediction::BgcPrediction>  save_predictions(char* file_name, std::string predictor_name) {
+std::vector<nrpsprediction::BgcPrediction>  save_predictions(char* file_name) {
     std::vector<nrpsprediction::BgcPrediction> preds;
     std::ifstream in_predictions_files(file_name);
 
@@ -78,7 +65,7 @@ std::vector<nrpsprediction::BgcPrediction>  save_predictions(char* file_name, st
         INFO(info_file_name)
 
         nrpsprediction::PredictionBuilderBase* nrPsPredictionBuilder;
-        getPredictor(predictor_name, nrPsPredictionBuilder);
+        getPredictor(nrPsPredictionBuilder);
         nrPsPredictionBuilder->read_file(info_file_name);
 
         preds.push_back(nrPsPredictionBuilder->getPrediction());
@@ -146,17 +133,8 @@ std::vector<std::shared_ptr<nrp::NRP>> load_nrps_from_monomeric_info(char* file_
 
 void getScoreFunction(Args args, matcher::Score*& score) {
     using namespace matcher;
-    if (args.predictor_name == "MINOWA") {
-        score = new ScoreMinowa(args.mismatch);
-    } else if (args.predictor_name == "PRISM") {
-        score = new ScorePrism(args.mismatch);
-    } else if (args.predictor_name == "SANDPUMA") {
-        score = new ScoreSandpuma(args.mismatch);
-    } else {
-        score = new Score(args.mismatch);
-    }
+    score = new Score(args.mismatch);
     score = new OrderedGenesScoreBase(std::unique_ptr<Score>(std::move(score)), args.skip_segment, args.insertion, args.deletion, args.mismatch, args.open_gap, args.continue_gap);
-
     if (args.modification) {
         score = new ScoreWithModification(std::unique_ptr<Score>(std::move(score)));
     }
@@ -245,14 +223,14 @@ int main(int argc, char* argv[]) {
         std::stringstream ss(argv[5]);
         ss >> start_from;
     }
-    aminoacid::AminoacidInfo::init(AA_file_name, args.predictor_name);
+    aminoacid::AminoacidInfo::init(AA_file_name, "NRPSPREDICTOR2");
     aminoacid::ModificationInfo::init(args.modification_cfg);
     aminoacid::ModificationInfo::init_AAMod(args.AAmod_cfg);
     aminoacid::MonomerInfo::init(args.monomer_cfg, args.monomer_logP_cfg);
 
     INFO("NRPs Matcher START");
     INFO("Saving predictions");
-    std::vector<nrpsprediction::BgcPrediction> preds = save_predictions(argv[1], args.predictor_name);
+    std::vector<nrpsprediction::BgcPrediction> preds = save_predictions(argv[1]);
     INFO("Saving NRPs structures");
     std::vector<std::shared_ptr<nrp::NRP>> mols = load_nrps_from_monomeric_info(argv[2]);
 
