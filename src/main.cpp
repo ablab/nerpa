@@ -116,7 +116,7 @@ std::vector<std::shared_ptr<nrp::NRP>> load_nrps_from_monomeric_info(char* file_
 
 void getScoreFunction(Args args, matcher::Score*& score) {
     using namespace matcher;
-    score = new Score(args.skip_segment, args.insertion, args.deletion, args.open_gap, args.continue_gap);
+    score = new Score(args.skip_segment, args.insertion, args.deletion);
 }
 
 matcher::MatcherBase* getMatcher(Args args) {

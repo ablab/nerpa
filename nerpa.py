@@ -20,8 +20,6 @@ def parse_args():
     parser.add_argument("--antismash_output_list", dest="antismash_out", help="path to file with list of paths to antiSMASH output folders", type=str)
     parser.add_argument("--insertion", help="insertion score [default=-1]", default=-1, action="store")
     parser.add_argument("--deletion", help="deletion score [default=-5]", default=-5, action="store")
-    parser.add_argument("--open_gap", default=-1, type=float, help="score for opening gap in NRP structure [default=-1]", action="store")
-    parser.add_argument("--continue_gap", default=-0.1, type=float, help="score for continue gap in NRP structure [default=-0.1]", action="store")
     parser.add_argument("--skip_segment", default=-1, type=float, help="score for skip orf in prediction [default=-1]", action="store")
     parser.add_argument("--modification_cfg", help="path to file with modification description", action="store", type=str)
     parser.add_argument("--monomer", help="interpret lib_info as monomeric graphs library", action="store_true")
@@ -36,8 +34,6 @@ def print_cfg(args, output_dir):
     with open(cfg_file, "w") as f:
         f.write("insertion " + str(args.insertion) + "\n")
         f.write("deletion " + str(args.deletion) + "\n")
-        f.write("open_gap " + str(args.open_gap) + "\n")
-        f.write("continue_gap " + str(args.continue_gap) + "\n")
         f.write("skip_segment " + str(args.skip_segment) + "\n")
         f.write(os.path.abspath(os.path.join(output_dir, "modifications.tsv")) + "\n")
         f.write(os.path.abspath(os.path.join(output_dir, "monomers.tsv")) + "\n")

@@ -15,8 +15,6 @@ namespace matcher {
         double skip_segment_score = -10;
         double insertion = -1;
         double deletion = -5;
-        double open_gap = -1;
-        double continue_gap = -1;
 
         //[100, 90, 80, 70, <= 60]
         std::vector<double> ProbGenCorrect = {-0.07, -0.16, -0.7, -1.6, -1.1};
@@ -27,13 +25,10 @@ namespace matcher {
 
         double probGenAA(const aminoacid::Aminoacid &nrpAA) const;
     public:
-        explicit Score(double skip_segment_score = -1, double insertion = -1, double deletion = -1,
-                double open_gap = -1, double continue_gap = -1) {
+        explicit Score(double skip_segment_score = -1, double insertion = -1, double deletion = -1) {
             this->skip_segment_score = skip_segment_score;
             this->insertion = insertion;
             this->deletion = deletion;
-            this->open_gap = open_gap;
-            this->continue_gap = continue_gap;
 
             baseScore = nullptr;
             double curscore = 1;
@@ -69,22 +64,6 @@ namespace matcher {
                 return baseScore->resultScore(score, len);
             } else {
                 return score;
-            }
-        }
-
-        virtual double openGap() const {
-            if (baseScore != nullptr) {
-                return  baseScore->openGap();
-            } else {
-                return open_gap;
-            }
-        }
-
-        virtual double continueGap() const {
-            if (baseScore != nullptr) {
-                return baseScore->continueGap();
-            } else {
-                return continue_gap;
             }
         }
 

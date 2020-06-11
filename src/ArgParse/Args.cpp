@@ -14,10 +14,6 @@ Args::Args(std::string cfg_filename) {
     in >> tmp >> x;
     deletion = x;
     in >> tmp >> x;
-    open_gap = x;
-    in >> tmp >> x;
-    continue_gap = x;
-    in >> tmp >> x;
     skip_segment = x;
     in >> modification_cfg;
     in >> monomer_cfg;
