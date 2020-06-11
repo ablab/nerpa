@@ -19,7 +19,7 @@ def parse_args():
     parser.add_argument("--lib_info", "-l", dest="lib_info", nargs=1, help="path to file with paths to mol files", type=str)
     parser.add_argument("--antismash_output_list", dest="antismash_out", help="path to file with list of paths to antiSMASH output folders", type=str)
     parser.add_argument("--insertion", help="insertion score [default=-1]", default=-1, action="store")
-    parser.add_argument("--deletion", help="deletion score [default=-1]", default=-1, action="store")
+    parser.add_argument("--deletion", help="deletion score [default=-5]", default=-5, action="store")
     parser.add_argument("--open_gap", default=-1, type=float, help="score for opening gap in NRP structure [default=-1]", action="store")
     parser.add_argument("--continue_gap", default=-0.1, type=float, help="score for continue gap in NRP structure [default=-0.1]", action="store")
     parser.add_argument("--mismatch", default=-1, type=float, help="mismatche score [default=-1]", action="store")
