@@ -12,7 +12,6 @@
 namespace matcher {
     class Score {
     protected:
-        double skip_segment_score = -10;
         double insertion = -1;
         double deletion = -5;
 
@@ -25,8 +24,7 @@ namespace matcher {
 
         double probGenAA(const aminoacid::Aminoacid &nrpAA) const;
     public:
-        explicit Score(double skip_segment_score = -1, double insertion = -1, double deletion = -1) {
-            this->skip_segment_score = skip_segment_score;
+        explicit Score(double insertion = -1, double deletion = -1) {
             this->insertion = insertion;
             this->deletion = deletion;
 
@@ -98,14 +96,6 @@ namespace matcher {
                 return baseScore->DeletionScore();
             } else {
                 return deletion;
-            }
-        }
-
-        virtual double SkipSegment() const {
-            if (baseScore != nullptr) {
-                return baseScore->SkipSegment();
-            } else {
-                return skip_segment_score;
             }
         }
 

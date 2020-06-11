@@ -262,13 +262,6 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
         dp[0][ppos] = dp[0][ppos - 1] + score->DeletionScore();
         px[0][ppos] = 0;
         py[0][ppos] = ppos - 1;
-
-        if ((ppos == plen || part_id[ppos] != part_id[ppos - 1]) &&
-        dp[0][ppos - pos_id[ppos - 1] - 1] + score->SkipSegment() > dp[0][ppos]) {
-            dp[0][ppos] = dp[0][ppos - pos_id[ppos - 1] - 1] + score->SkipSegment();
-            px[0][ppos] = 0;
-            py[0][ppos] = ppos - pos_id[ppos - 1] - 1;
-        }
     }
 
     for (int npos = 1; npos <= nrplen; ++npos) {
@@ -294,14 +287,6 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
                 px[npos][ppos] = npos - 1;
                 py[npos][ppos] = ppos + orf_len(ppos - 1) - 1 ;
                 pmtc[npos][ppos] = 1;
-            }
-
-            if ((ppos == plen || part_id[ppos] != part_id[ppos - 1]) &&
-            dp[npos][ppos - pos_id[ppos - 1] - 1] + score->SkipSegment() > dp[npos][ppos]) {
-                dp[npos][ppos] = dp[npos][ppos - pos_id[ppos - 1] - 1] + score->SkipSegment();
-                px[npos][ppos] = npos;
-                py[npos][ppos] = ppos - pos_id[ppos - 1] - 1;
-                pmtc[npos][ppos] = 0;
             }
 
             if (dp[npos][ppos - 1] + score->DeletionScore() > dp[npos][ppos]) {

@@ -13,8 +13,6 @@ Args::Args(std::string cfg_filename) {
     insertion = x;
     in >> tmp >> x;
     deletion = x;
-    in >> tmp >> x;
-    skip_segment = x;
     in >> modification_cfg;
     in >> monomer_cfg;
     in >> monomer_logP_cfg;
