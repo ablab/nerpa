@@ -193,7 +193,7 @@ int main(int argc, char* argv[]) {
     omp_set_num_threads(nthreads);
 
     INFO("THREADS #" << nthreads);
-#   pragma omp parallel for
+//#   pragma omp parallel for
     for (int i = start_from; i < mols.size(); ++i) {
         INFO("NRP structure #" << i)
         std::string output_filename = gen_filename(mols[i]->get_file_name(), "details_mols/");
