@@ -2,7 +2,7 @@
 #include "NRPGenerator.h"
 #include "NRP/NRPCycle.h"
 #include "NRP/NRPLine.h"
-#include "NRP/NRPtail.h"
+#include "NRP/NRPBranch.h"
 
 namespace nrp_generator {
     using namespace nrp;

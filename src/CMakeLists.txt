@@ -19,8 +19,8 @@ set(SOURCE_FILES main.cpp
         NRP/NRPCycle.cpp
         NRP/NRPLine.h
         NRP/NRPLine.cpp
-        NRP/NRPtail.h
-        NRP/NRPtail.cpp
+        NRP/NRPBranch.h
+        NRP/NRPBranch.cpp
         Matcher/Matcher.h
         Matcher/Matcher.cpp
         Matcher/OrderedGenesMatcher.h

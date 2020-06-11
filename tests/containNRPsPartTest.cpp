@@ -2,7 +2,7 @@
 #include "../src/NRP/NRP.h"
 #include "../src/NRP/NRPCycle.h"
 #include "../src/NRP/NRPLine.h"
-#include "../src/NRP/NRPtail.h"
+#include "../src/NRP/NRPBranch.h"
 #include <algorithm>
 #include <cmath>
 #include <Matcher/Matcher.h>
@@ -596,7 +596,7 @@ namespace nrp {
 
         std::shared_ptr<NRP> nrp1 = std::make_shared<NRPLine>("", strformula, aa_sum1, pos1, "", "");
         std::shared_ptr<NRP> nrp2 = std::make_shared<NRPLine>("", strformula, aa_sum2, pos2, "", "");
-        std::shared_ptr<NRP> nrp = std::make_shared<NRPtail>(nrp1, nrp2, first_part.size());
+        std::shared_ptr<NRP> nrp = std::make_shared<NRPBranch>(nrp1, nrp2, first_part.size());
 
         nrpsprediction::OrfPrediction nrps_part("", "");
 

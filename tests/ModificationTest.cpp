@@ -6,7 +6,7 @@
 #include "../src/NRP/NRP.h"
 #include "../src/NRP/NRPCycle.h"
 #include "../src/NRP/NRPLine.h"
-#include "../src/NRP/NRPtail.h"
+#include "../src/NRP/NRPBranch.h"
 #include <algorithm>
 #include <cmath>
 #include <Matcher/Matcher.h>

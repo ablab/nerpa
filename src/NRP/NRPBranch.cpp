@@ -1,61 +1,61 @@
 #include <iostream>
-#include "NRPtail.h"
+#include "NRPBranch.h"
 
-nrp::NRP::NRPType nrp::NRPtail::getType() const {
+nrp::NRP::NRPType nrp::NRPBranch::getType() const {
     return NRP::branch_cycle;
 }
 
-int nrp::NRPtail::getLen() const {
+int nrp::NRPBranch::getLen() const {
     return v1->getLen();
 }
 
-int nrp::NRPtail::getInd(int i) const {
+int nrp::NRPBranch::getInd(int i) const {
     return v1->getInd(i);
 }
 
-std::string nrp::NRPtail::getFormula(int i) const {
+std::string nrp::NRPBranch::getFormula(int i) const {
     return v1->getFormula(i);
 }
 
-aminoacid::Aminoacid nrp::NRPtail::getAminoacid(int i) const {
+aminoacid::Aminoacid nrp::NRPBranch::getAminoacid(int i) const {
     return v1->getAminoacid(i);
 }
 
-void nrp::NRPtail::print() const {
+void nrp::NRPBranch::print() const {
     v1->print();
 }
 
-std::string nrp::NRPtail::getGraphInString() const {
+std::string nrp::NRPBranch::getGraphInString() const {
     return v1->getGraphInString();
 }
 
-std::string nrp::NRPtail::get_file_name() const {
+std::string nrp::NRPBranch::get_file_name() const {
     return v1->get_file_name();
 }
 
-std::string nrp::NRPtail::get_extra_info() const {
+std::string nrp::NRPBranch::get_extra_info() const {
     return v1->get_extra_info();
 }
 
-std::vector<std::shared_ptr<nrp::NRP>> nrp::NRPtail::getLines() const {
+std::vector<std::shared_ptr<nrp::NRP>> nrp::NRPBranch::getLines() const {
     std::vector<std::shared_ptr<nrp::NRP>> lines;
     lines.push_back(v1);
     lines.push_back(v2);
     return lines;
 }
 
-bool nrp::NRPtail::is_valid_seg(int l, int r, int stp) const {
+bool nrp::NRPBranch::is_valid_seg(int l, int r, int stp) const {
     return v1->is_valid_seg(l, r, stp);
 }
 
-nrp::NRPtail::NRPtail(const nrp::NRP &refNrp) {
+nrp::NRPBranch::NRPBranch(const nrp::NRP &refNrp) {
     auto lines = refNrp.getLines();
     assert(lines.size() == 2);
     this->v1 = lines[0];
     this->v2 = lines[1];
 }
 
-std::string nrp::NRPtail::structure_to_string() const {
+std::string nrp::NRPBranch::structure_to_string() const {
     std::stringstream structure_str;
     int full_len = v1->getFullLen();
     for (int i = (int)full_len - 1; i >= tail_size; --i) {
@@ -73,6 +73,6 @@ std::string nrp::NRPtail::structure_to_string() const {
     return structure_str.str();
 }
 
-int nrp::NRPtail::getFullLen() const {
+int nrp::NRPBranch::getFullLen() const {
     return v1->getFullLen();
 }

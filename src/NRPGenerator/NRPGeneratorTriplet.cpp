@@ -1,7 +1,7 @@
 #include <NRP/NRPCycle.h>
 #include <NRP/NRPLine.h>
 #include <algorithm>
-#include <NRP/NRPtail.h>
+#include <NRP/NRPBranch.h>
 #include "NRPGeneratorTriplet.h"
 
 namespace nrp_generator {

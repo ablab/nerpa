@@ -7,7 +7,7 @@
 #include "MonomericNRPBuilder.h"
 #include "NRPCycle.h"
 #include "NRPLine.h"
-#include "NRPtail.h"
+#include "NRPBranch.h"
 #include "NRP.h"
 
 std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, std::string extra) {
@@ -138,7 +138,7 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
         std::shared_ptr<NRP> ver1 = std::make_shared<NRPLine>(nrp_id, strnodes, resaacid1, pos1, strgraph, extra_info),
                 ver2 = std::make_shared<NRPLine>(nrp_id, strnodes, resaacid2, pos2, strgraph, extra_info);
 
-        return std::make_shared<nrp::NRPtail>(ver1, ver2, pos_tail.size());
+        return std::make_shared<nrp::NRPBranch>(ver1, ver2, pos_tail.size());
     }
 
     return nullptr;
