@@ -47,20 +47,10 @@ set(SOURCE_FILES main.cpp
         Aminoacid/ModificationInfo.cpp
         Matcher/Score/Base/ScoreWithModification.cpp
         Matcher/Score/Base/ScoreWithModification.h
-        Matcher/Score/Minowa/ScoreMinowa.cpp
-        Matcher/Score/Minowa/ScoreMinowa.h
-        Matcher/Score/Prism/ScorePrism.cpp
-        Matcher/Score/Prism/ScorePrism.h
-        Matcher/Score/Sandpuma/ScoreSandpuma.cpp
-        Matcher/Score/Sandpuma/ScoreSandpuma.h
         Matcher/Score/Base/ScorePositionOnly.cpp
         Matcher/Score/Base/ScorePositionOnly.h
-        Matcher/Score/Minowa/ScoreMinowaScoreOnly.cpp
-        Matcher/Score/Minowa/ScoreMinowaScoreOnly.h
         Matcher/Score/Base/ScoreFullMatch.cpp
         Matcher/Score/Base/ScoreFullMatch.h
-        Matcher/Score/NrpsPredictor2/ScoreNRPsPredictor2Normalize.h
-        Matcher/Score/Minowa/ScoreMinowaPositionalCoefficient.h
         Matcher/Score/Base/ScoreNormalize.cpp
         Matcher/Score/Base/ScoreNormalize.h
         Matcher/Score/Base/ScoreOpenContinueGap.h
