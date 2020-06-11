@@ -41,27 +41,6 @@ namespace aminoacid {
         in.close();
     }
 
-    void ModificationInfo::init_AAMod(std::string filename) {
-        std::fstream in(filename);
-        std::string buffer;
-        getline(in, buffer);
-
-        while (getline(in, buffer)) {
-            std::stringstream ss(buffer);
-            std::string AA, modification;
-            double coef;
-            ss >> AA >> modification >> coef;
-            int id = AminoacidInfo::getIdByNameId(AA);
-            int mod_id = ModificationInfo::getIdByNameId(modification);
-            if (id < AminoacidInfo::AMINOACID_CNT && mod_id < ModificationInfo::MODIFICATION_CNT) {
-                COEFFICIENT[id][mod_id] = coef;
-            }
-
-        }
-
-        in.close();
-    }
-
     int ModificationInfo::getIdByNameId(std::string name) {
         for (int i = 0; i < MODIFICATION_CNT; ++i) {
             if (NAMES[i] == name) {

@@ -22,7 +22,6 @@ Args::Args(std::string cfg_filename) {
     in >> tmp >> x;
     skip_segment = x;
     in >> modification_cfg;
-    in >> AAmod_cfg;
     in >> monomer_cfg;
     in >> monomer_logP_cfg;
     in >> tmp >> threads;

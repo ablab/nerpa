@@ -206,7 +206,6 @@ int main(int argc, char* argv[]) {
     }
     aminoacid::AminoacidInfo::init(AA_file_name, "NRPSPREDICTOR2");
     aminoacid::ModificationInfo::init(args.modification_cfg);
-    aminoacid::ModificationInfo::init_AAMod(args.AAmod_cfg);
     aminoacid::MonomerInfo::init(args.monomer_cfg, args.monomer_logP_cfg);
 
     INFO("NRPs Matcher START");

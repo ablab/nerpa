@@ -27,7 +27,6 @@ def parse_args():
     parser.add_argument("--modification_cfg", help="path to file with modification description", action="store", type=str)
     parser.add_argument("--monomer", help="interpret lib_info as monomeric graphs library", action="store_true")
     parser.add_argument("--monomer_cfg", help="path to file with monomer description", action="store", type=str)
-    parser.add_argument("--AAmod_cfg", help="path to file with modification for specific AA description", action="store", type=str)
     parser.add_argument("--threads", default=1, type=int, help="number of threads for running Nerpa", action="store")
     parser.add_argument("--local_output_dir", "-o", nargs=1, help="use this output dir", type=str)
     args = parser.parse_args()
@@ -43,7 +42,6 @@ def print_cfg(args, output_dir):
         f.write("mismatch " + str(args.mismatch) + "\n")
         f.write("skip_segment " + str(args.skip_segment) + "\n")
         f.write(os.path.abspath(os.path.join(output_dir, "modifications.tsv")) + "\n")
-        f.write(os.path.abspath(os.path.join(output_dir, "AAmod.tsv")) + "\n")
         f.write(os.path.abspath(os.path.join(output_dir, "monomers.tsv")) + "\n")
         f.write(os.path.abspath(os.path.join(output_dir, "monomersLogP.tsv")) + "\n")
         f.write("threads " + str(args.threads) + "\n")
@@ -187,16 +185,6 @@ def run(args):
 
     local_modifications_cfg = os.path.join(main_out_dir, "modifications.tsv")
     copyfile(path_to_modification_cfg, local_modifications_cfg)
-
-    path_to_AAmod_cfg = "./resources/AAmod.tsv"
-    if (os.path.exists(os.path.join(path_to_cur, 'NRPsMatcher'))):
-        path_to_AAmod_cfg = "../share/nerpa/AAmod.tsv"
-    path_to_AAmod_cfg = os.path.join(path_to_cur, path_to_AAmod_cfg)
-    if args.AAmod_cfg is not None:
-        path_to_AAmod_cfg = os.path.abspath(args.AAmod_cfg)
-
-    local_AAmod_cfg = os.path.join(main_out_dir, "AAmod.tsv")
-    copyfile(path_to_AAmod_cfg, local_AAmod_cfg)
 
     if args.monomer:
         path_to_monomer_logP = "./resources/monomersLogP.tsv"
