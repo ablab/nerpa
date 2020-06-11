@@ -39,8 +39,6 @@ set(SOURCE_FILES main.cpp
         Aminoacid/AminoacidInfo.cpp
         Aminoacid/ModificationInfo.h
         Aminoacid/ModificationInfo.cpp
-        Matcher/Score/Base/ScoreWithModification.cpp
-        Matcher/Score/Base/ScoreWithModification.h
         Matcher/Score/OrderedGenes/OrderedGenesScoreBase.h
         Json/json.hpp
         ArgParse/Args.cpp
