@@ -12,7 +12,6 @@
 #include <Aminoacid/ModificationInfo.h>
 #include <omp.h>
 #include <Matcher/OrderedGenesMatcher.h>
-#include <Matcher/Score/OrderedGenes/OrderedGenesScoreBase.h>
 #include <Aminoacid/MonomerInfo.h>
 
 const double MIN_SCROE = 0.05;
@@ -117,8 +116,7 @@ std::vector<std::shared_ptr<nrp::NRP>> load_nrps_from_monomeric_info(char* file_
 
 void getScoreFunction(Args args, matcher::Score*& score) {
     using namespace matcher;
-    score = new Score(args.mismatch);
-    score = new OrderedGenesScoreBase(std::unique_ptr<Score>(std::move(score)), args.skip_segment, args.insertion, args.deletion, args.mismatch, args.open_gap, args.continue_gap);
+    score = new Score(args.skip_segment, args.insertion, args.deletion, args.mismatch, args.open_gap, args.continue_gap);
 }
 
 matcher::MatcherBase* getMatcher(Args args) {

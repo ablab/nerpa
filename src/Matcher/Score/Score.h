@@ -12,8 +12,13 @@
 namespace matcher {
     class Score {
     protected:
-
+        double skip_segment_score = -10;
+        double insertion = -1;
+        double deletion = -5;
+        double open_gap = -1;
+        double continue_gap = -1;
         double mismatch = -1;
+
         //[100, 90, 80, 70, <= 60]
         std::vector<double> ProbGenCorrect = {-0.07, -0.16, -0.7, -1.6, -1.1};
         //[100, 90, 80, 70, <= 60]
@@ -23,9 +28,21 @@ namespace matcher {
 
         double probGenAA(const aminoacid::Aminoacid &nrpAA) const;
     public:
-        Score();
-        explicit Score(double mismatch) : Score() {
-            mismatch = mismatch;
+        explicit Score(double skip_segment_score = -1, double insertion = -1, double deletion = -1,
+                double mismatch = -1, double open_gap = -1, double continue_gap = -1) {
+            this->mismatch = mismatch;
+            this->skip_segment_score = skip_segment_score;
+            this->insertion = insertion;
+            this->deletion = deletion;
+            this->open_gap = open_gap;
+            this->continue_gap = continue_gap;
+
+            baseScore = nullptr;
+            double curscore = 1;
+            for (int i = 0; i < 100; ++i) {
+                posscore[i] = curscore;
+                curscore /= 1.25;
+            }
         }
 
         explicit Score(std::unique_ptr<Score> base);
@@ -34,7 +51,7 @@ namespace matcher {
             if (baseScore != nullptr) {
                 return baseScore->minScore(len);
             } else {
-                return -len - 1;
+                return -len;
             }
         }
 
@@ -42,8 +59,7 @@ namespace matcher {
             if (baseScore != nullptr) {
                 return baseScore->maxScore(len);
             } else {
-                int MAX_PRED_LEN = 4;
-                return len - (len + 1) / MAX_PRED_LEN;
+                return 1;
             }
         }
 
@@ -54,7 +70,7 @@ namespace matcher {
             if (baseScore != nullptr) {
                 return baseScore->resultScore(score, len, matched_parts, prediction, nrp);
             } else {
-                return score;
+                return score/maxScore(len);
             }
         }
 
@@ -70,7 +86,7 @@ namespace matcher {
             if (baseScore != nullptr) {
                 return  baseScore->openGap();
             } else {
-                return -1;
+                return open_gap;
             }
         }
 
@@ -78,7 +94,7 @@ namespace matcher {
             if (baseScore != nullptr) {
                 return baseScore->continueGap();
             } else {
-                return 0;
+                return continue_gap;
             }
         }
 
@@ -120,7 +136,7 @@ namespace matcher {
             if (baseScore != nullptr) {
                 return baseScore->InsertionScore();
             } else {
-                return -1;
+                return insertion;
             }
         }
 
@@ -128,7 +144,7 @@ namespace matcher {
             if (baseScore != nullptr) {
                 return baseScore->DeletionScore();
             } else {
-                return -1;
+                return deletion;
             }
         }
 
@@ -136,7 +152,7 @@ namespace matcher {
             if (baseScore != nullptr) {
                 return baseScore->SkipSegment();
             } else {
-                return -1;
+                return skip_segment_score;
             }
         }
 
@@ -144,8 +160,7 @@ namespace matcher {
 
     protected:
         std::unique_ptr<Score> baseScore;
-        double posscore[100];
-
+        double posscore[100]{};
     };
 }
 

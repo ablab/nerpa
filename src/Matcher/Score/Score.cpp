@@ -52,15 +52,6 @@ double matcher::Score::aaScore(const nrpsprediction::AAdomainPrediction &apred,
     }
 }
 
-matcher::Score::Score() {
-    baseScore = nullptr;
-    double curscore = 1;
-    for (int i = 0; i < 100; ++i) {
-        posscore[i] = curscore;
-        curscore /= 1.25;
-    }
-}
-
 matcher::Score::Score(std::unique_ptr<Score> base) : Score() {
     baseScore = std::move(base);
 }

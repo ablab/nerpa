@@ -24,8 +24,8 @@ set(SOURCE_FILES main.cpp
         Matcher/OrderedGenesMatcher.h
         Matcher/OrderedGenesMatcher.cpp
         Matcher/MatcherBase.h
-        Matcher/Score/Base/Score.cpp
-        Matcher/Score/Base/Score.h
+        Matcher/Score/Score.cpp
+        Matcher/Score/Score.h
         Matcher/Segment.h
         NRPsPrediction/Builders/PredictionBuilderBase.h
         NRPsPrediction/Builders/PredictionBuilderBase.cpp
@@ -39,7 +39,6 @@ set(SOURCE_FILES main.cpp
         Aminoacid/AminoacidInfo.cpp
         Aminoacid/ModificationInfo.h
         Aminoacid/ModificationInfo.cpp
-        Matcher/Score/OrderedGenes/OrderedGenesScoreBase.h
         ArgParse/Args.cpp
         ArgParse/Args.h
         Aminoacid/MonomerInfo.h
