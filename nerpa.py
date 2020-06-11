@@ -21,7 +21,6 @@ def parse_args():
     parser.add_argument("--insertion", help="insertion score [default=-1]", default=-1, action="store")
     parser.add_argument("--deletion", help="deletion score [default=-5]", default=-5, action="store")
     parser.add_argument("--modification_cfg", help="path to file with modification description", action="store", type=str)
-    parser.add_argument("--monomer", help="interpret lib_info as monomeric graphs library", action="store_true")
     parser.add_argument("--monomer_cfg", help="path to file with monomer description", action="store", type=str)
     parser.add_argument("--threads", default=1, type=int, help="number of threads for running Nerpa", action="store")
     parser.add_argument("--local_output_dir", "-o", nargs=1, help="use this output dir", type=str)
@@ -131,9 +130,6 @@ def run(args):
         log.err("None NRP structure info file provide")
         parser.print_help()
         sys.exit()
-    if not args.monomer and which("print_structure") is None:
-        log.err("dereplicator not found. Please install dereplicator and add it to PATH.")
-        sys.exit()
 
     main_out_dir = os.path.abspath(".") + "/"
     if args.local_output_dir is not None:
@@ -142,11 +138,9 @@ def run(args):
     if not os.path.exists(main_out_dir):
         os.makedirs(main_out_dir)
 
-    if args.monomer:
-        path_to_graphs = os.path.join(main_out_dir, 'path_to_graphs')
-        copyfile(args.lib_info[0], path_to_graphs)
-    else:
-        path_to_graphs, files_list = gen_graphs_by_mol(args, main_out_dir)
+    path_to_graphs = os.path.join(main_out_dir, 'path_to_graphs')
+    copyfile(args.lib_info[0], path_to_graphs)
+
 
     if (args.predictions is not None):
         path_predictions = os.path.abspath(copy_prediction_list(args, main_out_dir))
@@ -178,21 +172,21 @@ def run(args):
     local_modifications_cfg = os.path.join(main_out_dir, "modifications.tsv")
     copyfile(path_to_modification_cfg, local_modifications_cfg)
 
-    if args.monomer:
-        path_to_monomer_logP = "./resources/monomersLogP.tsv"
-        path_to_monomer_cfg = "./resources/monomers.tsv"
-        if (os.path.exists(os.path.join(path_to_cur, 'NRPsMatcher'))):
-            path_to_monomer_logP =  "../share/nerpa/monomersLogP.tsv"
-            path_to_monomer_cfg = "../share/nerpa/monomers.tsv"
-        path_to_monomer_logP =  os.path.join(path_to_cur, path_to_monomer_logP)
-        path_to_monomer_cfg = os.path.join(path_to_cur, path_to_monomer_cfg)
-        if args.monomer_cfg is not None:
-            path_to_monomer_cfg = os.path.abspath(args.monomer_cfg)
 
-        local_monomers_logP = os.path.join(main_out_dir, "monomersLogP.tsv")
-        local_monomers_cfg = os.path.join(main_out_dir, "monomers.tsv")
-        copyfile(path_to_monomer_cfg, local_monomers_cfg)
-        copyfile(path_to_monomer_logP, local_monomers_logP)
+    path_to_monomer_logP = "./resources/monomersLogP.tsv"
+    path_to_monomer_cfg = "./resources/monomers.tsv"
+    if (os.path.exists(os.path.join(path_to_cur, 'NRPsMatcher'))):
+        path_to_monomer_logP =  "../share/nerpa/monomersLogP.tsv"
+        path_to_monomer_cfg = "../share/nerpa/monomers.tsv"
+    path_to_monomer_logP =  os.path.join(path_to_cur, path_to_monomer_logP)
+    path_to_monomer_cfg = os.path.join(path_to_cur, path_to_monomer_cfg)
+    if args.monomer_cfg is not None:
+        path_to_monomer_cfg = os.path.abspath(args.monomer_cfg)
+
+    local_monomers_logP = os.path.join(main_out_dir, "monomersLogP.tsv")
+    local_monomers_cfg = os.path.join(main_out_dir, "monomers.tsv")
+    copyfile(path_to_monomer_cfg, local_monomers_cfg)
+    copyfile(path_to_monomer_logP, local_monomers_logP)
 
     comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_predictions + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" \"" + path_to_cfg + "\"\n"
     print(comand)
