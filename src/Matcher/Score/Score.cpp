@@ -72,15 +72,6 @@ matcher::Score::getTheBestAAInPred(const nrpsprediction::AAdomainPrediction &apr
     }
 }
 
-double matcher::Score::singleUnitScore(const nrpsprediction::AAdomainPrediction &apred,
-                                       const aminoacid::Aminoacid &aminoacid) const {
-    if (baseScore != nullptr) {
-        return baseScore->singleUnitScore(apred, aminoacid);
-    } else {
-        return 0;
-    }
-}
-
 double getModificationScore(const aminoacid::Aminoacid &nrpAA,
         const std::vector<aminoacid::Modification> &mods) {
     bool pred_has_met = false;

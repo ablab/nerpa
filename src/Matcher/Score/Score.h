@@ -55,14 +55,6 @@ namespace matcher {
             }
         }
 
-        virtual double maxScore(const int len) const  {
-            if (baseScore != nullptr) {
-                return baseScore->maxScore(len);
-            } else {
-                return 1;
-            }
-        }
-
         virtual double resultScore(double score, const int len,
                                    const std::vector<Segment>& matched_parts,
                                    const nrpsprediction::BgcPrediction& prediction,
@@ -70,7 +62,7 @@ namespace matcher {
             if (baseScore != nullptr) {
                 return baseScore->resultScore(score, len, matched_parts, prediction, nrp);
             } else {
-                return score/maxScore(len);
+                return score;
             }
         }
 
@@ -98,14 +90,6 @@ namespace matcher {
             }
         }
 
-        virtual double addSegment(Segment seg) const {
-            if (baseScore != nullptr) {
-                return baseScore->addSegment(seg);
-            } else {
-                return seg.scor - 1;
-            }
-        }
-
         virtual bool getScoreForSegment(const std::vector<aminoacid::Aminoacid>& amns,
                                         const nrpsprediction::BgcPrediction& prediction, int part_id, double& score) const;
 
@@ -117,20 +101,12 @@ namespace matcher {
                                                                            nrpsprediction::AAdomainPrediction::AminoacidProb &probRes,
                                                                            std::pair<int, int> &posRes) const;
 
-        virtual double singleUnitScore(const nrpsprediction::AAdomainPrediction &apred,
-                                       const aminoacid::Aminoacid &aminoacid) const;
-
         //return true if match is possible, false for mismatch
         virtual bool getScore(const aminoacid::Aminoacid& nrpAA,
                                 const aminoacid::Aminoacid& predAA,
                                 const nrpsprediction::AAdomainPrediction::AminoacidProb& prob,
                                 const std::pair<int, int>& pos,
                                 double& score) const;
-
-        virtual double InDelScore(double score, const int len) const {
-            return score - 1./len;
-        }
-
 
         virtual double InsertionScore() const {
             if (baseScore != nullptr) {
