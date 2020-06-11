@@ -17,7 +17,6 @@ namespace matcher {
         double deletion = -5;
         double open_gap = -1;
         double continue_gap = -1;
-        double mismatch = -1;
 
         //[100, 90, 80, 70, <= 60]
         std::vector<double> ProbGenCorrect = {-0.07, -0.16, -0.7, -1.6, -1.1};
@@ -29,8 +28,7 @@ namespace matcher {
         double probGenAA(const aminoacid::Aminoacid &nrpAA) const;
     public:
         explicit Score(double skip_segment_score = -1, double insertion = -1, double deletion = -1,
-                double mismatch = -1, double open_gap = -1, double continue_gap = -1) {
-            this->mismatch = mismatch;
+                double open_gap = -1, double continue_gap = -1) {
             this->skip_segment_score = skip_segment_score;
             this->insertion = insertion;
             this->deletion = deletion;

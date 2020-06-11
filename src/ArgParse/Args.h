@@ -13,7 +13,6 @@ public:
     double deletion;
     double open_gap;
     double continue_gap;
-    double mismatch;
     double skip_segment;
     std::string modification_cfg;
     std::string monomer_cfg;
