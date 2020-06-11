@@ -15,7 +15,6 @@ public:
     double continue_gap;
     double mismatch;
     double skip_segment;
-    bool modification;
     std::string modification_cfg;
     std::string AAmod_cfg;
     std::string monomer_cfg;

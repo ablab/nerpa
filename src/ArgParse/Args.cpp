@@ -21,8 +21,6 @@ Args::Args(std::string cfg_filename) {
     mismatch = x;
     in >> tmp >> x;
     skip_segment = x;
-    in >> tmp >> val;
-    modification = (val == "on");
     in >> modification_cfg;
     in >> AAmod_cfg;
     in >> monomer_cfg;

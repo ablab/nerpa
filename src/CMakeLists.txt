@@ -40,9 +40,12 @@ set(SOURCE_FILES main.cpp
         Aminoacid/ModificationInfo.h
         Aminoacid/ModificationInfo.cpp
         Matcher/Score/OrderedGenes/OrderedGenesScoreBase.h
-        Json/json.hpp
         ArgParse/Args.cpp
-        ArgParse/Args.h Aminoacid/MonomerInfo.h Aminoacid/MonomerInfo.cpp NRP/MonomericNRPBuilder.h NRP/MonomericNRPBuilder.cpp)
+        ArgParse/Args.h
+        Aminoacid/MonomerInfo.h
+        Aminoacid/MonomerInfo.cpp
+        NRP/MonomericNRPBuilder.h
+        NRP/MonomericNRPBuilder.cpp)
 
 add_library(nrps_matcher_lib ${SOURCE_FILES})
 add_executable(NRPsMatcher main.cpp)

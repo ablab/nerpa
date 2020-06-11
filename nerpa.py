@@ -24,7 +24,6 @@ def parse_args():
     parser.add_argument("--continue_gap", default=-0.1, type=float, help="score for continue gap in NRP structure [default=-0.1]", action="store")
     parser.add_argument("--mismatch", default=-1, type=float, help="mismatche score [default=-1]", action="store")
     parser.add_argument("--skip_segment", default=-1, type=float, help="score for skip orf in prediction [default=-1]", action="store")
-    parser.add_argument("--modification", help="allow modification", action="store_true")
     parser.add_argument("--modification_cfg", help="path to file with modification description", action="store", type=str)
     parser.add_argument("--monomer", help="interpret lib_info as monomeric graphs library", action="store_true")
     parser.add_argument("--monomer_cfg", help="path to file with monomer description", action="store", type=str)
@@ -43,12 +42,6 @@ def print_cfg(args, output_dir):
         f.write("continue_gap " + str(args.continue_gap) + "\n")
         f.write("mismatch " + str(args.mismatch) + "\n")
         f.write("skip_segment " + str(args.skip_segment) + "\n")
-
-        if args.modification:
-            f.write("modification on\n")
-        else:
-            f.write("modification off\n")
-
         f.write(os.path.abspath(os.path.join(output_dir, "modifications.tsv")) + "\n")
         f.write(os.path.abspath(os.path.join(output_dir, "AAmod.tsv")) + "\n")
         f.write(os.path.abspath(os.path.join(output_dir, "monomers.tsv")) + "\n")
@@ -150,10 +143,6 @@ def run(args):
         sys.exit()
     if not args.monomer and which("print_structure") is None:
         log.err("dereplicator not found. Please install dereplicator and add it to PATH.")
-        sys.exit()
-
-    if args.monomer and args.modification:
-        log.err("Modification inference is not supported in monomer mode.")
         sys.exit()
 
     main_out_dir = os.path.abspath(".") + "/"
