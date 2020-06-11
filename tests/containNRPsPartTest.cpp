@@ -9,7 +9,6 @@
 #include <Logger/log_writers.hpp>
 #include <boost/concept_check.hpp>
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
-#include <Matcher/Score/Base/ScoreFullMatch.h>
 #include <memory>
 
 namespace nrp {
@@ -357,40 +356,6 @@ namespace nrp {
             }
 
             ASSERT_TRUE(hasRightAns);
-        }
-    }
-
-
-    //check all find segment is right
-    TEST_F(ContainNRPsTest, containRandCycleTest) {
-        matcher::ScoreFullMatch score;
-        for (int tst = 0; tst < 1000; ++tst) {
-            int len = rand()%20 + 1;
-            std::shared_ptr<nrp::NRP> nrp = genRandCycleNRP(len);
-            int partlen = rand()%len + 1;
-
-            nrpsprediction::OrfPrediction nrps_part("filename", "orf");
-            std::vector<std::vector<aminoacid::Aminoacid>> predict(partlen);
-
-            genRandNrpPart(partlen, nrps_part, predict);
-
-            std::vector<nrpsprediction::OrfPrediction> parts;
-            parts.push_back(nrps_part);
-            nrpsprediction::BgcPrediction prediction(parts);
-            matcher::Matcher matcher1(nrp, &prediction, &score);
-
-            std::vector<Segment> segments = matcher1.matche_seg(0);
-            for (int i = 0; i < segments.size(); ++i) {
-                if (segments[i].rev == false) {
-                    ASSERT_TRUE(eqval(segments[i].l, 1, predict));
-                } else {
-                    int r = segments[i].r;
-                    if (segments[i].r >= len) {
-                        r -= len;
-                    }
-                    ASSERT_TRUE(eqval(r, -1, predict));
-                }
-            }
         }
     }
 

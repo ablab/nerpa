@@ -3,33 +3,18 @@
 #include <NRP/NRPBuilder.h>
 #include <NRP/MonomericNRPBuilder.h>
 #include <algorithm>
-#include <sstream>
 #include <cstring>
 #include "NRP/NRP.h"
 #include "NRPsPrediction/BgcPrediction.h"
 #include <Logger/log_writers.hpp>
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
 #include <Matcher/Score/Base/ScoreWithModification.h>
-#include <Matcher/Score/Minowa/ScoreMinowa.h>
-#include <Matcher/Score/Prism/ScorePrism.h>
-#include <Matcher/Score/Sandpuma/ScoreSandpuma.h>
-#include <Matcher/Score/Base/ScorePositionOnly.h>
-#include <Matcher/Score/Minowa/ScoreMinowaScoreOnly.h>
-#include <Matcher/Score/NrpsPredictor2/ScoreNRPsPredictor2Normalize.h>
-#include <Matcher/Score/Minowa/ScoreMinowaPositionalCoefficient.h>
-#include <Matcher/Score/Base/ScoreSingleUnit.h>
-#include <Matcher/Score/Base/ScoreOpenContinueGap.h>
-#include <Matcher/Score/Base/ScoreNormalize.h>
-#include <Matcher/Score/Base/ScoreForUntrustedPred.h>
 #include <ArgParse/Args.h>
-#include <Matcher/SingleUnitMatcher.h>
 #include <Aminoacid/ModificationInfo.h>
 #include <omp.h>
 #include <Matcher/OrderedGenesMatcher.h>
 #include <Matcher/Score/OrderedGenes/OrderedGenesScoreBase.h>
 #include <Aminoacid/MonomerInfo.h>
-#include "Matcher/Matcher.h"
-#include "Matcher/InDelMatcher.h"
 
 const double MIN_SCROE = 0.05;
 const double MIN_EXPLAIN_PART = 0;//0.15;

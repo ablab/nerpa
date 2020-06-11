@@ -21,15 +21,9 @@ set(SOURCE_FILES main.cpp
         NRP/NRPLine.cpp
         NRP/NRPBranch.h
         NRP/NRPBranch.cpp
-        Matcher/Matcher.h
-        Matcher/Matcher.cpp
         Matcher/OrderedGenesMatcher.h
         Matcher/OrderedGenesMatcher.cpp
         Matcher/MatcherBase.h
-        Matcher/InDelMatcher.h
-        Matcher/InDelMatcher.cpp
-        Matcher/SingleUnitMatcher.cpp
-        Matcher/SingleUnitMatcher.h
         Matcher/Score/Base/Score.cpp
         Matcher/Score/Base/Score.h
         Matcher/Segment.h
@@ -47,16 +41,7 @@ set(SOURCE_FILES main.cpp
         Aminoacid/ModificationInfo.cpp
         Matcher/Score/Base/ScoreWithModification.cpp
         Matcher/Score/Base/ScoreWithModification.h
-        Matcher/Score/Base/ScorePositionOnly.cpp
-        Matcher/Score/Base/ScorePositionOnly.h
-        Matcher/Score/Base/ScoreFullMatch.cpp
-        Matcher/Score/Base/ScoreFullMatch.h
-        Matcher/Score/Base/ScoreNormalize.cpp
-        Matcher/Score/Base/ScoreNormalize.h
-        Matcher/Score/Base/ScoreOpenContinueGap.h
-        Matcher/Score/Base/ScoreSingleUnit.h
         Matcher/Score/OrderedGenes/OrderedGenesScoreBase.h
-        Matcher/Score/Base/ScoreForUntrustedPred.h
         Json/json.hpp
         ArgParse/Args.cpp
         ArgParse/Args.h Aminoacid/MonomerInfo.h Aminoacid/MonomerInfo.cpp NRP/MonomericNRPBuilder.h NRP/MonomericNRPBuilder.cpp)

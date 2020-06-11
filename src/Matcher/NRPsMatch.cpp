@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <Logger/logger.hpp>
 #include "NRP/NRP.h"
-#include "Matcher.h"
+#include "MatcherBase.h"
 
 void matcher::MatcherBase::Match::match(int pos, int part_id, int part_pos) {
     parts_id[pos] = part_id;
