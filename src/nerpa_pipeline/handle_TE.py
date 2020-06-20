@@ -12,6 +12,9 @@ from logger import log
 def get_split_BGC(dirname):
     possible_BGC = []
     txt_folder = os.path.join(dirname, "txt")
+    if  not os.path.isdir(txt_folder):
+        return possible_BGC
+    
     for filename in os.listdir(txt_folder):
         if filename.endswith("_NRPS_PKS.txt"):
             orfs_list = []
@@ -88,35 +91,34 @@ def gen_predictions(bgc_orfs_parts, input_file_name, output_prefix, current_part
         current_part = gen_prediction_for_one_orfs_part(orf_part, prediction_dict, output_prefix, current_part, predictions_info_list)
     return current_part
 
-def create_predictions_by_antiSAMSHout(path_to_antismashouts, outdir):
+def create_predictions_by_antiSAMSHout(antismashouts, outdir):
     dir_for_predictions = os.path.join(outdir, "predictions")
     if not os.path.exists(dir_for_predictions):
         os.makedirs(dir_for_predictions)
 
     predictions_info_file = os.path.join(outdir, "predictions.info")
     predictions_info_list = []
-    with open(path_to_antismashouts) as fr:
-        for dirname in fr:
-            if dirname[-1] == '\n':
-                dirname = dirname[:-1]
+    for dirname in antismashouts:
+        if dirname[-1] == '\n':
+            dirname = dirname[:-1]
 
-            double_orf, double_aa = handle_PCP2.get_double_orfs_and_AA(dirname)
-            mt_aa = handle_MT.get_MT_AA(dirname)
-            d_aa = handle_E.get_D_AA(dirname)
-            print(d_aa)
-            bgc_orfs_parts = get_split_BGC(dirname)
+        double_orf, double_aa = handle_PCP2.get_double_orfs_and_AA(dirname)
+        mt_aa = handle_MT.get_MT_AA(dirname)
+        d_aa = handle_E.get_D_AA(dirname)
+        print(d_aa)
+        bgc_orfs_parts = get_split_BGC(dirname)
 
-            nrpspred_dir = os.path.join(dirname, "nrpspks_predictions_txt")
-            if os.path.isdir(nrpspred_dir):
-                for filename in os.listdir(nrpspred_dir):
-                    if filename.endswith('nrpspredictor2_codes.txt'):
-                        base_antismashout_name = os.path.basename(dirname)
-                        base_pred_name = os.path.basename(filename)
+        nrpspred_dir = os.path.join(dirname, "nrpspks_predictions_txt")
+        if os.path.isdir(nrpspred_dir):
+            for filename in os.listdir(nrpspred_dir):
+                if filename.endswith('nrpspredictor2_codes.txt'):
+                    base_antismashout_name = os.path.basename(dirname)
+                    base_pred_name = os.path.basename(filename)
                         #predictions_info_list.append(os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name))
                         #shutil.copyfile(os.path.join(nrpspred_dir, filename), os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name))
-                        gen_predictions(bgc_orfs_parts, os.path.join(nrpspred_dir, filename),
-                                        os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name)[:-4],
-                                        0, predictions_info_list, double_orf, double_aa, mt_aa, d_aa)
+                    gen_predictions(bgc_orfs_parts, os.path.join(nrpspred_dir, filename),
+                                    os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name)[:-4],
+                                    0, predictions_info_list, double_orf, double_aa, mt_aa, d_aa)
 
     f = open(predictions_info_file, 'w')
     for line in predictions_info_list:

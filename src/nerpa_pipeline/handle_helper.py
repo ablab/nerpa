@@ -6,6 +6,9 @@ def get_domains_list(dirname):
     domains = []
     cur_orf = ""
     txt_folder = os.path.join(dirname, "txt")
+    if  not os.path.isdir(txt_folder):
+        return domains
+
     for filename in os.listdir(txt_folder):
         if filename.endswith("_NRPS_PKS.txt"):
             csv_file_with_orf = os.path.join(txt_folder, filename)
@@ -27,6 +30,9 @@ def get_orf_orientation(dirname):
     txt_folder = os.path.join(dirname, "txt")
 
     orf_ori = {}
+    if  not os.path.isdir(txt_folder):
+        return orf_ori
+
     #get orientation of orfs
     for filename in os.listdir(txt_folder):
         if filename.endswith("_gene.txt"):
