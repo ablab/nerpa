@@ -61,4 +61,6 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/streptomed
         DESTINATION share/nerpa
         COMPONENT runtime)
 
-
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/external_tools/rBAN"
+        DESTINATION share
+        COMPONENT runtime)
