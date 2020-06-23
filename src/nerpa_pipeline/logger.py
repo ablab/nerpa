@@ -11,8 +11,8 @@ class Log:
         print(s)
 
     def warn(self, s):
-        msg = "WARNING: " + s
-        self.text += msg + "\n"
+        msg = "WARNING: " + s + "\n"
+        self.text += msg
         sys.stdout.write(msg)
         sys.stdout.flush()
 
