@@ -2,6 +2,7 @@
 import sys
 import os
 import argparse
+import csv
 from shutil import copyfile
 
 import nerpa_init
@@ -15,8 +16,19 @@ path_to_exec_dir = os.path.dirname(os.path.abspath(__file__)) + "/"
 def parse_args():
     global parser
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--predictions", "-p", nargs=1, dest="predictions", help="path to file with paths to prediction files", type=str)
-    parser.add_argument("--lib_info", "-l", dest="lib_info", nargs=1, help="path to file with paths to mol files", type=str)
+    parser.add_argument("--predictions", "-p", nargs=1, dest="predictions",
+                        help="path to file with paths to prediction files", type=str)
+    parser.add_argument("--smiles", dest="smiles", nargs=1,
+                        help="string with smiles of a single compound", type=str)
+    parser.add_argument("--smiles-tsv", dest="smiles_tsv", nargs=1,
+                        help="csv with named columns", type=str)
+    parser.add_argument("--col_smiles", dest="col_smiles", nargs=1,
+                        help="name of column with smiles", type=str, default='SMILES')
+    parser.add_argument("--col_id", dest="col_id", nargs=1,
+                        help="name of col with ids (if not provided, id=[number of row])", type=str)
+    parser.add_argument("--sep", dest="sep", nargs=1,
+                        help="separator in smiles-tsv", type=str, default='\t')
+
     parser.add_argument("--antismash_output_list", dest="antismash_out", help="path to file with list of paths to antiSMASH output folders", type=str)
     parser.add_argument("--insertion", help="insertion score [default=-1]", default=-1, action="store")
     parser.add_argument("--deletion", help="deletion score [default=-5]", default=-5, action="store")
@@ -26,6 +38,64 @@ def parse_args():
     parser.add_argument("--local_output_dir", "-o", nargs=1, help="use this output dir", type=str)
     args = parser.parse_args()
     return args
+
+
+def check_tsv_ids_duplicates(reader, col_id):
+    ids = [row[col_id] for row in reader]
+    return len(ids) == len(set(ids))
+
+def check_if_only_one_is_present(arg1, arg2):
+    return not (arg1 is not None and arg2 is not None)
+
+def check_if_at_least_one_is_present(arg1, arg2):
+    return arg1 is not None or arg2 is not None
+
+class ValidationError(Exception):
+    pass
+
+def validate(expr, msg=''):
+    if not expr:
+        raise ValidationError(msg)
+
+def validate_arguments(args):
+    try:
+        validate(len(sys.argv) > 1)
+
+        validate(check_if_at_least_one_is_present(args.predictions, args.antismash_out),
+            "None prediction info file provide")
+
+        validate(check_if_only_one_is_present(args.predictions, args.antismash_out),
+            "You cann't use --predictions and --antismash_output_list simultaneously")
+
+        validate(check_if_at_least_one_is_present(args.smiles, args.smiles_tsv),
+            "No structures provided")
+
+        validate(check_if_only_one_is_present(args.smiles, args.smiles_tsv),
+            "Simultaneous use of --smiles and --smiles-tsv is not allowed.")
+
+        try:
+            with open(args.smiles_tsv, newline='') as f_in:
+                reader = csv.DictReader(f_in, delimiter=args.sep, quoting=csv.QUOTE_NONE)
+                validate(args.col_smiles in reader.fieldnames,
+                    f'Column "{args.col_smiles}" was specified but does not exist in {args.smiles_tsv}.')
+                if args.col_id:
+                    validate(args.col_id in reader.fieldnames,
+                        f'Column "{args.col_id}" was specified but does not exist in {args.smiles_tsv}.')
+                    validate(check_tsv_ids_duplicates(reader, args.col_id),
+                        f'Duplicate IDs are found.')
+        except FileNotFoundError:
+            raise ValidationError(f'No such file: "{args.smiles_tsv}".')
+        except csv.Error as e:
+            raise ValidationError(f'Cannot parse "{args.smiles_tsv}": {e}.')
+        except Exception as e:
+            raise ValidationError(f'Invalid input file "{args.smiles_tsv}": {e}.')
+
+    except ValidationError as e:
+        if str(e):
+            log.err(e)
+        parser.print_help()
+        sys.exit()
+
 
 def print_cfg(args, output_dir):
     cfg_file = os.path.join(output_dir, "nerpa.cfg")
@@ -112,24 +182,7 @@ def copy_prediction_list(args, main_out_dir):
 def run(args):
     path_to_cur = os.path.dirname(os.path.abspath(__file__))
 
-    if (len(sys.argv) == 1):
-        parser.print_help()
-        sys.exit()
-
-    if (args.predictions is None) and (args.antismash_out is None):
-        log.err("None prediction info file provide")
-        parser.print_help()
-        sys.exit()
-
-    if (args.predictions is not None) and (args.antismash_out is not None):
-        log.err("You cann't use --predictions and --antismash_output_list simultaneously")
-        parser.print_help()
-        sys.exit()
-
-    if (args.lib_info is None):
-        log.err("None NRP structure info file provide")
-        parser.print_help()
-        sys.exit()
+    validate_arguments(args)
 
     main_out_dir = os.path.abspath(".") + "/"
     if args.local_output_dir is not None:
@@ -139,7 +192,7 @@ def run(args):
         os.makedirs(main_out_dir)
 
     path_to_graphs = os.path.join(main_out_dir, 'path_to_graphs')
-    copyfile(args.lib_info[0], path_to_graphs)
+    copyfile(args.smiles_tsv[0], path_to_graphs)
 
 
     if (args.predictions is not None):
