@@ -155,6 +155,9 @@ def gen_graphs_from_smiles_tsv(args, main_out_dir, path_to_monomers_tsv, path_to
                            )
         if p.stderr:
             log.err(p.stderr)
+        for line in p.stdout.split('\n'):
+            if line.startswith('WARNING'):
+                log.warn('rBAN ' + line)
     except subprocess.CalledProcessError as e:
         log.err(str(e))
         sys.exit()
