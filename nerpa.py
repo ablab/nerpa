@@ -18,20 +18,26 @@ path_to_exec_dir = os.path.dirname(os.path.abspath(__file__)) + "/"
 def parse_args():
     global parser
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--predictions", "-p", nargs=1, dest="predictions",
-                        help="path to file with paths to prediction files", type=str)
-    parser.add_argument("--smiles", dest="smiles", nargs='*',
+    genomic_group = parser.add_argument_group('Genomic input', 'description')
+    genomic_input_group = genomic_group.add_mutually_exclusive_group(required=True)
+    genomic_input_group.add_argument("--predictions", "-p", nargs=1, dest="predictions",
+                                     help="path to file with paths to prediction files", type=str)
+    genomic_input_group.add_argument("--antismash_output_list", dest="antismash_out",
+                               help="path to file with list of paths to antiSMASH output folders", type=str)
+
+    struct_group = parser.add_argument_group('Chemical input', 'description')
+    struct_input_group = struct_group.add_mutually_exclusive_group(required=True)
+    struct_input_group.add_argument("--smiles", dest="smiles", nargs='*',
                         help="string (or several strings) with smiles", type=str)
-    parser.add_argument("--smiles-tsv", dest="smiles_tsv",
+    struct_input_group.add_argument("--smiles-tsv", dest="smiles_tsv",
                         help="csv with named columns", type=str)
-    parser.add_argument("--col_smiles", dest="col_smiles",
+    struct_group.add_argument("--col_smiles", dest="col_smiles",
                         help="name of column with smiles [default='SMILES']", type=str, default='SMILES')
-    parser.add_argument("--col_id", dest="col_id",
+    struct_group.add_argument("--col_id", dest="col_id",
                         help="name of col with ids (if not provided, id=[number of row])", type=str)
-    parser.add_argument("--sep", dest="sep",
+    struct_group.add_argument("--sep", dest="sep",
                         help="separator in smiles-tsv", type=str, default='\t')
 
-    parser.add_argument("--antismash_output_list", dest="antismash_out", help="path to file with list of paths to antiSMASH output folders", type=str)
     parser.add_argument("--insertion", help="insertion score [default=-1]", default=-1, action="store")
     parser.add_argument("--deletion", help="deletion score [default=-5]", default=-5, action="store")
     parser.add_argument("--modification_cfg", help="path to file with modification description", action="store", type=str)
@@ -46,12 +52,6 @@ def check_tsv_ids_duplicates(reader, col_id):
     ids = [row[col_id] for row in reader]
     return len(ids) == len(set(ids))
 
-def check_if_only_one_is_present(arg1, arg2):
-    return not (arg1 is not None and arg2 is not None)
-
-def check_if_at_least_one_is_present(arg1, arg2):
-    return arg1 is not None or arg2 is not None
-
 class ValidationError(Exception):
     pass
 
@@ -61,20 +61,6 @@ def validate(expr, msg=''):
 
 def validate_arguments(args):
     try:
-        validate(len(sys.argv) > 1)
-
-        validate(check_if_at_least_one_is_present(args.predictions, args.antismash_out),
-            "None prediction info file provide")
-
-        validate(check_if_only_one_is_present(args.predictions, args.antismash_out),
-            "You cann't use --predictions and --antismash_output_list simultaneously")
-
-        validate(check_if_at_least_one_is_present(args.smiles, args.smiles_tsv),
-            "No structures provided")
-
-        validate(check_if_only_one_is_present(args.smiles, args.smiles_tsv),
-            "Simultaneous use of --smiles and --smiles-tsv is not allowed.")
-
         if args.smiles_tsv:
             try:
                 with open(args.smiles_tsv, newline='') as f_in:
