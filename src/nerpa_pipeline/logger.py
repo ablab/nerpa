@@ -7,17 +7,17 @@ class Log:
     text = ""
 
     def log(self, s):
-        self.text += s + "\n"
+        self.text += f'{s}\n'
         print(s)
 
     def warn(self, s):
-        msg = "WARNING: " + s + "\n"
+        msg = f"WARNING: {s}\n"
         self.text += msg
         sys.stdout.write(msg)
         sys.stdout.flush()
 
     def err(self, s):
-        msg = "ERROR: " + s + "\n"
+        msg = f"ERROR: {s}\n"
         self.text += msg
         sys.stdout.write(msg)
         sys.stdout.flush()
