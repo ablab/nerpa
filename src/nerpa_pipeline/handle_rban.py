@@ -19,7 +19,17 @@ O_BONDS = ['ESTER', 'THIOETHER']
 UNDEFINED_NAME = 'NA'
 
 
-def process_single_record(rban_record, nerpa_monomers, allowed_bond_types, na=UNDEFINED_NAME):
+class NumNodesError(Exception):
+    def __init__(self, identifier, coverage):
+        self.identifier = identifier
+        self.coverage = coverage
+
+    def __str__(self):
+        return f'Poor monomer coverage for id="{self.identifier}": only {self.coverage} monomers identified. ' \
+               f'Skipping.'
+
+
+def process_single_record(rban_record, nerpa_monomers, allowed_bond_types, na=UNDEFINED_NAME, min_recognized_nodes=3):
     g = rban_record['monomericGraph']['monomericGraph']
     nodes = [m['monomer']['monomer']['monomer'] for m in g['monomers']]
     if USE_DL:
@@ -81,8 +91,12 @@ def process_single_record(rban_record, nerpa_monomers, allowed_bond_types, na=UN
         return name
 
     new_nodes = [get_comp_name(comp) for comp in components]
+    num_recognized_nodes = sum(n != na for n in new_nodes)
     new_edges = [(node_to_component[s], node_to_component[e]) for s,e in pnp_edges]
     new_oedges = [(node_to_component[s], node_to_component[e]) for s,e in oedges]
+
+    if num_recognized_nodes < min_recognized_nodes:
+        raise NumNodesError(rban_record['id'], num_recognized_nodes)
 
     result = ','.join(new_nodes) + ';' \
              + ';'.join([f'{s},{e}' for s,e in new_edges]) + ";" \
@@ -96,8 +110,11 @@ def generate_graphs_from_rban_output(path_to_rban_output, path_to_monomers_tsv, 
     with open(path_to_graphs, 'w') as f_out:
         with open(path_to_rban_output) as f_in:
             for i, rban_record in enumerate(json.load(f_in)):
-                graph = process_single_record(rban_record, recognized_monomers, PNP_BONDS, UNDEFINED_NAME)
-                f_out.write(f'{rban_record["id"]} {graph}\n')
+                try:
+                    graph = process_single_record(rban_record, recognized_monomers, PNP_BONDS, UNDEFINED_NAME)
+                    f_out.write(f'{rban_record["id"]} {graph}\n')
+                except NumNodesError as e:
+                    log.warn(e)
 
 
 def generate_rban_input_from_smiles_string(smiles, path_to_rban_input):
