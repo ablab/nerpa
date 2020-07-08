@@ -79,7 +79,7 @@ def gen_prediction_for_one_orfs_part(orf_part, prediction_dict, output_prefix, c
     return current_part
 
 def gen_predictions(bgc_orfs_parts, input_file_name, output_prefix, current_part,
-                    predictions_info_list, double_orf, double_aa, mt_aa, d_aa):
+                    predictions_info_list, double_orf, double_aa, mt_aa, d_aa, base_antismashout_name):
     prediction_dict = {}
     with open(input_file_name, 'r') as rf:
         for line in rf:
@@ -101,6 +101,14 @@ def gen_predictions(bgc_orfs_parts, input_file_name, output_prefix, current_part
                 prediction_dict[ctgorf] += line
             else:
                 prediction_dict[ctgorf] = line
+
+    orf_ori = handle_helper.get_orf_orientation(base_antismashout_name)
+    for cur_orf in orf_ori.keys():
+        if orf_ori[cur_orf] == '-' and (cur_orf in prediction_dict):
+            prediction_dict[cur_orf] = '\n'.join(prediction_dict[cur_orf].split('\n')[::-1])
+            if prediction_dict[cur_orf][0] == '\n':
+                prediction_dict[cur_orf] = prediction_dict[cur_orf][1:]
+            prediction_dict[cur_orf] += '\n'
 
     for orf_part in bgc_orfs_parts:
         current_part = gen_prediction_for_one_orfs_part(orf_part, prediction_dict, output_prefix, current_part, predictions_info_list)
@@ -133,7 +141,7 @@ def create_predictions_by_antiSAMSHout(antismashouts, outdir):
                         #shutil.copyfile(os.path.join(nrpspred_dir, filename), os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name))
                     gen_predictions(bgc_orfs_parts, os.path.join(nrpspred_dir, filename),
                                     os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name)[:-4],
-                                    0, predictions_info_list, double_orf, double_aa, mt_aa, d_aa)
+                                    0, predictions_info_list, double_orf, double_aa, mt_aa, d_aa, dirname)
 
     f = open(predictions_info_file, 'w')
     for line in predictions_info_list:

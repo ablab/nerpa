@@ -31,7 +31,7 @@ nrpsprediction::OrfPrediction::OrfPrediction(std::string file_name, std::string 
 }
 
 void nrpsprediction::OrfPrediction::add_prediction(int num, const nrpsprediction::AAdomainPrediction &prediction) {
-    assert(num - 1 == aminoacids.size());
+    //assert(num - 1 == aminoacids.size());
     aminoacids.push_back(prediction);
 }
 

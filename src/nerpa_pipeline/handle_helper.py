@@ -60,5 +60,5 @@ def get_orf_position(dirname):
                     if "gene" in row[0]:
                         continue
 
-                    orf_pos[row[0]] = (row[1], row[2])
+                    orf_pos[row[0]] = (int(row[1]), int(row[2]))
     return orf_pos
