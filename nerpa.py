@@ -19,7 +19,7 @@ def parse_args():
     parser.add_argument("--lib_info", "-l", dest="lib_info", nargs=1, help="path to file with paths to mol files", type=str)
     parser.add_argument("--antismash_output_list", dest="antismash_out", help="path to file with list of paths to antiSMASH output folders", type=str)
     parser.add_argument("--antismash", "-a", dest="antismash", help="path to antiSMASH output or to directory with many antiSMASH outputs", type=str)
-    parser.add_argument("--insertion", help="insertion score [default=-1]", default=-1, action="store")
+    parser.add_argument("--insertion", help="insertion score [default=-2.8]", default=-2.8, action="store")
     parser.add_argument("--deletion", help="deletion score [default=-5]", default=-5, action="store")
     parser.add_argument("--modification_cfg", help="path to file with modification description", action="store", type=str)
     parser.add_argument("--monomer_cfg", help="path to file with monomer description", action="store", type=str)
