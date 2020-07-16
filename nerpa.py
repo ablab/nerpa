@@ -31,6 +31,8 @@ def parse_args():
                         help="string (or several strings) with smiles", type=str)
     struct_input_group.add_argument("--smiles-tsv", dest="smiles_tsv",
                         help="csv with named columns", type=str)
+    struct_input_group.add_argument("--graphs", dest="graphs",
+                                    help="", type=str)
     struct_group.add_argument("--col_smiles", dest="col_smiles",
                         help="name of column with smiles [default='SMILES']", type=str, default='SMILES')
     struct_group.add_argument("--col_id", dest="col_id",
@@ -226,8 +228,11 @@ def run(args):
     copyfile(path_to_monomer_logP, local_monomers_logP)
 
     path_to_graphs = os.path.join(main_out_dir, 'path_to_graphs')
-    path_to_rban= os.path.join(path_to_cur, '../share/rBAN/rBAN-1.0.jar')
-    gen_graphs_from_smiles_tsv(args, main_out_dir, local_monomers_cfg, path_to_graphs, path_to_rban)
+    if args.graphs:
+        copyfile(args.graphs, path_to_graphs)
+    else:
+        path_to_rban = os.path.join(path_to_cur, '../share/rBAN/rBAN-1.0.jar')
+        gen_graphs_from_smiles_tsv(args, main_out_dir, local_monomers_cfg, path_to_graphs, path_to_rban)
 
     comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_predictions + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" \"" + path_to_cfg + "\"\n"
     print(comand)
