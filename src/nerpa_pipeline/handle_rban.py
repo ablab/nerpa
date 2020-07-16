@@ -79,8 +79,8 @@ def process_single_record(rban_record, nerpa_monomers, allowed_bond_types, na=UN
 
     registered_set = set(nerpa_monomers)
     def get_comp_name(comp):
-        name = na
-        for _name, idx in sorted([(nodes[n], n) for n in comp]):
+        namelist = sorted([(nodes[n], n) for n in comp])
+        for _name, idx in namelist:
             if _name in registered_set:
                 name = _name
                 if is_d[idx] is not None:
@@ -88,10 +88,13 @@ def process_single_record(rban_record, nerpa_monomers, allowed_bond_types, na=UN
                 if len(comp) > 1:
                     name = f'*{name}'
                 break
+        else:
+            cat_name = "|".join([n for n, _ in namelist if not n.startswith("X")])
+            name = f'<{cat_name}>' if cat_name else na
         return name
 
     new_nodes = [get_comp_name(comp) for comp in components]
-    num_recognized_nodes = sum(n != na for n in new_nodes)
+    num_recognized_nodes = sum(n != na and not n.startswith('<') for n in new_nodes)
     new_edges = [(node_to_component[s], node_to_component[e]) for s,e in pnp_edges]
     new_oedges = [(node_to_component[s], node_to_component[e]) for s,e in oedges]
 
