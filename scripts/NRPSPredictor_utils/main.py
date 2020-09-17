@@ -25,7 +25,7 @@ def main():
         metavar='DIR',
         type=str,
         default=None,
-        help='Output dir ("nrpspks_predictions_txt" will be created inside). '
+        help='Output dir ("nrpspks_predictions_txt" and "txt" subdirs will be created inside). '
              'If not specified: use parent dir of each input JSON file'
     )
     parser.add_argument(
