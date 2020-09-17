@@ -10,10 +10,6 @@ import handle_E
 import handle_helper
 from logger import log
 
-def check_cond_starter():
-    pass
-
-
 def split_orfs_by_dist(orfs_list_short, orf_pos):
     possible_BGC = []
     cur_parts = []
@@ -51,6 +47,102 @@ def split_orfs_by_TE(possible_BGC, orf_ori):
 
     return res
 
+def preprocess_cond_start(possible_BGC, filename, orf_ori):
+    orf_domain_list = {}
+    with open(filename, 'r') as rf:
+        csv_reader = csv.reader(rf, delimiter='\t')
+        for row in csv_reader:
+            if row[1] == "NRPSPKS_ID":
+                continue
+
+            if row[1] not in orf_domain_list:
+                orf_domain_list[row[1]] = []
+
+            if row[6] == 'Condensation':
+                if row[7] == "Condensation_Starter":
+                    orf_domain_list[row[1]].append('C_Starter')
+                else:
+                    orf_domain_list[row[1]].append('C_' + row[7].split('_')[-1])
+            elif row[6] == 'Thioesterase':
+                orf_domain_list[row[1]].append("TE")
+            elif row[6] == "AMP-binding":
+                orf_domain_list[row[1]].append("A")
+            elif row[6] == "Epimerization":
+                orf_domain_list[row[1]].append("E")
+            else:
+                orf_domain_list[row[1]].append(row[6])
+
+    def is_Starter_TE(part):
+        if orf_ori[part[0]] == '-':
+            if orf_domain_list[part[0]][-1] == "C_Starter" and orf_domain_list[part[0]][0] == "TE":
+                return True
+        else:
+            if orf_domain_list[part[0]][0] == "C_Starter" and orf_domain_list[part[0]][-1] == "TE":
+                return True
+        return False
+
+    res = []
+    for possBGC in possible_BGC:
+        sep = []
+        cur_i = 0
+        for i in range(len(possBGC)):
+            if is_Starter_TE(possBGC[i]):
+                if cur_i != i:
+                    sep.append(possBGC[cur_i:i])
+                sep.append([possBGC[i]])
+                cur_i = i + 1
+        if cur_i != len(possBGC):
+            sep.append(possBGC[cur_i:])
+        res += sep
+
+    return res
+
+
+def check_cond_starter(possible_BGC, filename, orf_ori):
+    orf_domain_list = {}
+    with open(filename, 'r') as rf:
+        csv_reader = csv.reader(rf, delimiter='\t')
+        for row in csv_reader:
+            if row[1] == "NRPSPKS_ID":
+                continue
+
+            if row[1] not in orf_domain_list:
+                orf_domain_list[row[1]] = []
+
+            if row[6] == 'Condensation':
+                if row[7] == "Condensation_Starter":
+                    orf_domain_list[row[1]].append('C_Starter')
+                else:
+                    orf_domain_list[row[1]].append('C_' + row[7].split('_')[-1])
+            elif row[6] == 'Thioesterase':
+                orf_domain_list[row[1]].append("TE")
+            elif row[6] == "AMP-binding":
+                orf_domain_list[row[1]].append("A")
+            elif row[6] == "Epimerization":
+                orf_domain_list[row[1]].append("E")
+            else:
+                orf_domain_list[row[1]].append(row[6])
+
+    def same_ori(parts):
+        et_ori = "?"
+        for i in range(len(parts)):
+            if et_ori == "?":
+                et_ori = orf_ori[parts[i][0]]
+            elif et_ori != orf_ori[parts[i][0]]:
+                return False
+        return True
+
+    def print_BGC(parts):
+        print("Filename: " + filename)
+        for i in range(len(parts)):
+            print(parts[i][0] + ":" + str(orf_domain_list[parts[i][0]]))
+
+    for possBGC in possible_BGC:
+        if not same_ori(possBGC):
+            print("Different order:")
+            print_BGC(possBGC)
+            return
+
 
 def get_split_BGC(dirname):
     possible_BGC = []
@@ -82,8 +174,10 @@ def get_split_BGC(dirname):
                 else:
                     orfs_list_short[-1][1] = max(orfs_list_short[-1][-1], cur_orf[-1])
 
-            possible_BGC = split_orfs_by_dist(orfs_list_short, orf_pos)
-            possible_BGC = split_orfs_by_TE(possible_BGC, orf_ori)
+            cur_posBGC = split_orfs_by_dist(orfs_list_short, orf_pos)
+            cur_posBGC = preprocess_cond_start(cur_posBGC, csv_file_with_orf, orf_ori)
+            check_cond_starter(cur_posBGC, csv_file_with_orf, orf_ori)
+            possible_BGC += split_orfs_by_TE(cur_posBGC, orf_ori)
     return possible_BGC
 
 
