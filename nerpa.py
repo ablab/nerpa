@@ -18,7 +18,8 @@ def parse_args():
     parser.add_argument("--predictions", "-p", nargs=1, dest="predictions", help="path to file with paths to prediction files", type=str)
     parser.add_argument("--lib_info", "-l", dest="lib_info", nargs=1, help="path to file with paths to mol files", type=str)
     parser.add_argument("--antismash_output_list", dest="antismash_out", help="path to file with list of paths to antiSMASH output folders", type=str)
-    parser.add_argument("--insertion", help="insertion score [default=-1]", default=-1, action="store")
+    parser.add_argument("--antismash", "-a", dest="antismash", help="path to antiSMASH output or to directory with many antiSMASH outputs", type=str)
+    parser.add_argument("--insertion", help="insertion score [default=-2.8]", default=-2.8, action="store")
     parser.add_argument("--deletion", help="deletion score [default=-5]", default=-5, action="store")
     parser.add_argument("--modification_cfg", help="path to file with modification description", action="store", type=str)
     parser.add_argument("--monomer_cfg", help="path to file with monomer description", action="store", type=str)
@@ -109,6 +110,29 @@ def copy_prediction_list(args, main_out_dir):
     f.close()
     return new_prediction_path
 
+
+def get_antismash_list(args):
+    aouts = []
+    if (args.antismash_out is not None):
+        with open(args.antismash_out) as f:
+            for dir in f:
+                aouts.append(dir)
+
+    is_one = False
+    if (args.antismash is not None):
+        for filename in os.listdir(args.antismash):
+            if filename.endswith(".json"):
+                is_one = True
+            if filename == "nrpspks_predictions_txt":
+                is_one = True
+        if is_one:
+            aouts.append(args.antismash)
+        else:
+            for filename in os.listdir(args.antismash):
+                aouts.append(os.path.join(args.antismash, filename))
+
+    return aouts
+
 def run(args):
     path_to_cur = os.path.dirname(os.path.abspath(__file__))
 
@@ -116,7 +140,7 @@ def run(args):
         parser.print_help()
         sys.exit()
 
-    if (args.predictions is None) and (args.antismash_out is None):
+    if (args.predictions is None) and (args.antismash_out is None) and (args.antismash is None):
         log.err("None prediction info file provide")
         parser.print_help()
         sys.exit()
@@ -145,7 +169,7 @@ def run(args):
     if (args.predictions is not None):
         path_predictions = os.path.abspath(copy_prediction_list(args, main_out_dir))
     else:
-        path_predictions = handle_TE.create_predictions_by_antiSAMSHout(args.antismash_out, main_out_dir)
+        path_predictions = handle_TE.create_predictions_by_antiSAMSHout(get_antismash_list(args), main_out_dir)
 
     directory = os.path.dirname(main_out_dir)
     if not os.path.exists(directory):
