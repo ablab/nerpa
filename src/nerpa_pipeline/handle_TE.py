@@ -10,6 +10,48 @@ import handle_E
 import handle_helper
 from logger import log
 
+def check_cond_starter():
+    pass
+
+
+def split_orfs_by_dist(orfs_list_short, orf_pos):
+    possible_BGC = []
+    cur_parts = []
+    for cur_orf in orfs_list_short:
+        if (len(cur_parts) > 0) and (orf_pos[cur_orf[0]][0] - orf_pos[cur_parts[-1][0]][1] > 20000):
+            possible_BGC.append(cur_parts)
+            cur_parts = []
+        cur_parts.append(cur_orf)
+
+    if len(cur_parts) > 0:
+        possible_BGC.append(cur_parts)
+
+    return possible_BGC
+
+
+def split_orfs_by_TE(possible_BGC, orf_ori):
+    res = []
+
+    cur_parts = []
+    for pos_BGC in possible_BGC:
+        for cur_orf in pos_BGC:
+            cur_parts.append(cur_orf[0])
+            if cur_orf[-1] == 1:
+                if orf_ori[cur_orf[0]] == '+':
+                    res.append(cur_parts)
+                    cur_parts = []
+                else:
+                    cur_parts = cur_parts[:-1]
+                    if len(cur_parts) > 0:
+                        res.append(cur_parts)
+                    cur_parts = [cur_orf[0]]
+
+            if len(cur_parts) > 0:
+                res.append(cur_parts)
+
+    return res
+
+
 def get_split_BGC(dirname):
     possible_BGC = []
     txt_folder = os.path.join(dirname, "txt")
@@ -40,28 +82,10 @@ def get_split_BGC(dirname):
                 else:
                     orfs_list_short[-1][1] = max(orfs_list_short[-1][-1], cur_orf[-1])
 
-            cur_parts = []
-            for cur_orf in orfs_list_short:
-                if (len(cur_parts) > 0) and (orf_pos[cur_orf[0]][0] - orf_pos[cur_parts[-1]][1] > 20000):
-                    possible_BGC.append(cur_parts)
-                    cur_parts = []
-
-                cur_parts.append(cur_orf[0])
-                if cur_orf[-1] == 1:
-                    if orf_ori[cur_orf[0]] == '+':
-                        possible_BGC.append(cur_parts)
-                        cur_parts = []
-                    else:
-                        cur_parts = cur_parts[:-1]
-                        if len(cur_parts) > 0:
-                            possible_BGC.append(cur_parts)
-                        cur_parts = [cur_orf[0]]
-
-            if len(cur_parts) > 0:
-                if len(possible_BGC) > 0:
-                    possible_BGC.append(cur_parts + possible_BGC[-1])
-                possible_BGC.append(cur_parts)
+            possible_BGC = split_orfs_by_dist(orfs_list_short, orf_pos)
+            possible_BGC = split_orfs_by_TE(possible_BGC, orf_ori)
     return possible_BGC
+
 
 def gen_prediction_for_one_orfs_part(orf_part, prediction_dict, output_prefix, current_part, predictions_info_list):
     output_str = ""
