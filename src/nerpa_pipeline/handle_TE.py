@@ -47,7 +47,7 @@ def split_orfs_by_TE(possible_BGC, orf_ori):
 
     return res
 
-def preprocess_cond_start(possible_BGC, filename, orf_ori):
+def preprocess_cond_start(possible_BGC, filename, orf_ori, orf_pos):
     orf_domain_list = {}
     with open(filename, 'r') as rf:
         csv_reader = csv.reader(rf, delimiter='\t')
@@ -74,12 +74,15 @@ def preprocess_cond_start(possible_BGC, filename, orf_ori):
 
     def is_Starter_TE(part):
         if orf_ori[part[0]] == '-':
-            if orf_domain_list[part[0]][-1] == "C_Starter" and orf_domain_list[part[0]][0] == "TE":
+            if orf_domain_list[part[0]][-1] == "C_Starter" and (orf_domain_list[part[0]][0] == "TE" or orf_domain_list[part[0]][0] == "TD"):
                 return True
         else:
-            if orf_domain_list[part[0]][0] == "C_Starter" and orf_domain_list[part[0]][-1] == "TE":
+            if orf_domain_list[part[0]][0] == "C_Starter" and (orf_domain_list[part[0]][-1] == "TE"  or orf_domain_list[part[0]][-1] == "TD"):
                 return True
         return False
+
+    def is_unique_A(part):
+        return len(orf_domain_list[part[0]]) == 1 and (orf_domain_list[part[0]][-1] == "A")
 
     res = []
     for possBGC in possible_BGC:
@@ -91,11 +94,67 @@ def preprocess_cond_start(possible_BGC, filename, orf_ori):
                     sep.append(possBGC[cur_i:i])
                 sep.append([possBGC[i]])
                 cur_i = i + 1
+            elif is_unique_A(possBGC[i]):
+                if cur_i != i:
+                    sep.append(possBGC[cur_i:i])
+                cur_i = i + 1
+
         if cur_i != len(possBGC):
             sep.append(possBGC[cur_i:])
         res += sep
 
-    return res
+    def end_by_TE_TD(part):
+        return orf_domain_list[part[0]][-1] in ["TE", "TD"]
+
+    def split_by_first_starter_te(parts):
+        def separate_first_st_te(parts):
+            if (orf_ori[parts[0][0]] == '+') and (orf_domain_list[parts[0][0]][0] == "C_Starter"):
+                lst_id = 0
+                max_dist = 0
+                while (lst_id < len(parts)) and (orf_ori[parts[lst_id][0]] == '+') and (not end_by_TE_TD(parts[lst_id])):
+                    lst_id += 1
+                    if lst_id < len(parts):
+                        max_dist = max(max_dist, orf_pos[parts[lst_id][0]][0] - orf_pos[parts[lst_id - 1][0]][1])
+
+                if (lst_id < len(parts)) and (orf_ori[parts[lst_id][0]] == '+') and (end_by_TE_TD(parts[lst_id])):
+                    if (lst_id + 1 < len(parts)) and ((orf_pos[parts[lst_id + 1][0]][0] - orf_pos[parts[lst_id][0]][1]) > 2 * max_dist):
+                        return [parts[:lst_id + 1], parts[lst_id + 1:]]
+            return [parts]
+
+        def del_orfs_without_A(parts):
+            without_A_cnt = 0
+            for part in parts:
+                has_A = False
+                for cur_orf in orf_domain_list[part[0]]:
+                    if cur_orf[0] == "A":
+                        has_A = True
+                if has_A:
+                    break
+                without_A_cnt += 1
+            return parts[without_A_cnt:]
+
+        sepr = []
+        cur_parts = parts
+        can_sep = True
+        while can_sep:
+            cur_parts = del_orfs_without_A(cur_parts)
+            if len(cur_parts) == 0:
+                break
+            cur_separate = separate_first_st_te(cur_parts)
+            if len(cur_separate) == 2:
+                sepr.append(cur_separate[0])
+                cur_parts = cur_separate[1]
+            else:
+                sepr += cur_separate
+                can_sep = False
+        return sepr
+
+    res2 = []
+    for possBGC in res:
+        sep = split_by_first_starter_te(possBGC)
+        res2 += sep
+
+    return res2
 
 
 def check_cond_starter(possible_BGC, filename, orf_ori):
@@ -123,9 +182,12 @@ def check_cond_starter(possible_BGC, filename, orf_ori):
             else:
                 orf_domain_list[row[1]].append(row[6])
 
+
     def same_ori(parts):
         et_ori = "?"
         for i in range(len(parts)):
+            if ("A" not in orf_domain_list[parts[i][0]]) and ("TE" not in orf_domain_list[parts[i][0]]) and ("C_Starter" not in orf_domain_list[parts[i][0]]):
+                continue
             if et_ori == "?":
                 et_ori = orf_ori[parts[i][0]]
             elif et_ori != orf_ori[parts[i][0]]:
@@ -137,7 +199,17 @@ def check_cond_starter(possible_BGC, filename, orf_ori):
         for i in range(len(parts)):
             print(parts[i][0] + ":" + str(orf_domain_list[parts[i][0]]))
 
+    def has_starter(parts):
+        for i in range(len(parts)):
+            for orf in orf_domain_list[parts[i][0]]:
+                if orf == "C_Starter":
+                    return True
+        return False
+
     for possBGC in possible_BGC:
+        if not has_starter(possBGC):
+            continue
+
         if not same_ori(possBGC):
             print("Different order:")
             print_BGC(possBGC)
@@ -175,7 +247,7 @@ def get_split_BGC(dirname):
                     orfs_list_short[-1][1] = max(orfs_list_short[-1][-1], cur_orf[-1])
 
             cur_posBGC = split_orfs_by_dist(orfs_list_short, orf_pos)
-            cur_posBGC = preprocess_cond_start(cur_posBGC, csv_file_with_orf, orf_ori)
+            cur_posBGC = preprocess_cond_start(cur_posBGC, csv_file_with_orf, orf_ori, orf_pos)
             check_cond_starter(cur_posBGC, csv_file_with_orf, orf_ori)
             possible_BGC += split_orfs_by_TE(cur_posBGC, orf_ori)
     return possible_BGC
@@ -246,7 +318,7 @@ def create_predictions_by_antiSAMSHout(antismashouts, outdir):
         double_orf, double_aa = handle_PCP2.get_double_orfs_and_AA(dirname)
         mt_aa = handle_MT.get_MT_AA(dirname)
         d_aa = handle_E.get_D_AA(dirname)
-        print(d_aa)
+        #print(d_aa)
         bgc_orfs_parts = get_split_BGC(dirname)
 
         nrpspred_dir = os.path.join(dirname, "nrpspks_predictions_txt")
