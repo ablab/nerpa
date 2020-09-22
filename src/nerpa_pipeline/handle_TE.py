@@ -106,6 +106,15 @@ def preprocess_cond_start(possible_BGC, filename, orf_ori, orf_pos):
     def end_by_TE_TD(part):
         return orf_domain_list[part[0]][-1] in ["TE", "TD"]
 
+    def end_by_Starter(part):
+        return orf_domain_list[part[0]][-1] == "C_Starter"
+
+    def start_by_TE_TD(part):
+        return orf_domain_list[part[0]][0] in ["TE", "TD"]
+
+    def start_by_Starter(part):
+        return orf_domain_list[part[0]][0] == "C_Starter"
+
     def split_by_first_starter_te(parts):
         def separate_first_st_te(parts):
             if (orf_ori[parts[0][0]] == '+') and (orf_domain_list[parts[0][0]][0] == "C_Starter"):
@@ -117,6 +126,20 @@ def preprocess_cond_start(possible_BGC, filename, orf_ori, orf_pos):
                         max_dist = max(max_dist, orf_pos[parts[lst_id][0]][0] - orf_pos[parts[lst_id - 1][0]][1])
 
                 if (lst_id < len(parts)) and (orf_ori[parts[lst_id][0]] == '+') and (end_by_TE_TD(parts[lst_id])):
+                    if (lst_id + 1 < len(parts)) and ((orf_pos[parts[lst_id + 1][0]][0] - orf_pos[parts[lst_id][0]][1]) > 2 * max_dist):
+                        return [parts[:lst_id + 1], parts[lst_id + 1:]]
+            return [parts]
+
+        def separate_first_te_st(parts):
+            if (orf_ori[parts[0][0]] == '-') and (start_by_TE_TD(parts[0])):
+                lst_id = 0
+                max_dist = 0
+                while (lst_id < len(parts)) and (orf_ori[parts[lst_id][0]] == '-') and (not end_by_Starter(parts[lst_id])):
+                    lst_id += 1
+                    if lst_id < len(parts):
+                        max_dist = max(max_dist, orf_pos[parts[lst_id][0]][0] - orf_pos[parts[lst_id - 1][0]][1])
+
+                if (lst_id < len(parts)) and (orf_ori[parts[lst_id][0]] == '-') and (end_by_Starter(parts[lst_id])):
                     if (lst_id + 1 < len(parts)) and ((orf_pos[parts[lst_id + 1][0]][0] - orf_pos[parts[lst_id][0]][1]) > 2 * max_dist):
                         return [parts[:lst_id + 1], parts[lst_id + 1:]]
             return [parts]
@@ -141,6 +164,10 @@ def preprocess_cond_start(possible_BGC, filename, orf_ori, orf_pos):
             if len(cur_parts) == 0:
                 break
             cur_separate = separate_first_st_te(cur_parts)
+            if len(cur_separate) == 1:
+                cur_parts = cur_separate[0]
+                cur_separate = separate_first_te_st(cur_parts)
+
             if len(cur_separate) == 2:
                 sepr.append(cur_separate[0])
                 cur_parts = cur_separate[1]
@@ -149,12 +176,79 @@ def preprocess_cond_start(possible_BGC, filename, orf_ori, orf_pos):
                 can_sep = False
         return sepr
 
+    def split_by_last_starter_te(parts):
+        def separate_last_st_te(parts):
+            if (orf_ori[parts[-1][0]] == '-') and (orf_domain_list[parts[-1][0]][-1] == "C_Starter"):
+                lst_id = len(parts) - 1
+                max_dist = 0
+                while (lst_id >= 0) and (orf_ori[parts[lst_id][0]] == '-') and (not start_by_TE_TD(parts[lst_id])):
+                    lst_id -= 1
+                    if lst_id >= 0:
+                        max_dist = max(max_dist, orf_pos[parts[lst_id + 1][0]][0] - orf_pos[parts[lst_id][0]][1])
+
+                if (lst_id >= 0) and (orf_ori[parts[lst_id][0]] == '-') and (start_by_TE_TD(parts[lst_id])):
+                    if (lst_id > 0) and ((orf_pos[parts[lst_id][0]][0] - orf_pos[parts[lst_id - 1][0]][1]) > 2 * max_dist):
+                        return [parts[:lst_id], parts[lst_id:]]
+            return [parts]
+
+        def separate_last_te_st(parts):
+            if (orf_ori[parts[0][0]] == '+') and (end_by_TE_TD(parts[0])):
+                lst_id = len(parts) - 1
+                max_dist = 0
+                while (lst_id >= 0) and (orf_ori[parts[lst_id][0]] == '+') and (not start_by_Starter(parts[lst_id])):
+                    lst_id -= 1
+                    if lst_id >= 0:
+                        max_dist = max(max_dist, orf_pos[parts[lst_id + 1][0]][0] - orf_pos[parts[lst_id][0]][1])
+
+                if (lst_id >= 0) and (orf_ori[parts[lst_id][0]] == '+') and (start_by_Starter(parts[lst_id])):
+                    if (lst_id > 0) and ((orf_pos[parts[lst_id][0]][0] - orf_pos[parts[lst_id - 1][0]][1]) > 2 * max_dist):
+                        return [parts[:lst_id], parts[lst_id:]]
+            return [parts]
+
+        def del_orfs_without_A(parts):
+            without_A_cnt = 0
+            for part in parts[::-1]:
+                has_A = False
+                for cur_orf in orf_domain_list[part[0]]:
+                    if cur_orf[0] == "A":
+                        has_A = True
+                if has_A:
+                    break
+                without_A_cnt += 1
+            return parts[:len(parts) - without_A_cnt]
+
+        sepr = []
+        cur_parts = parts
+        can_sep = True
+        while can_sep:
+            cur_parts = del_orfs_without_A(cur_parts)
+            if len(cur_parts) == 0:
+                break
+            cur_separate = separate_last_st_te(cur_parts)
+            if len(cur_separate) == 1:
+                cur_parts = cur_separate[0]
+                cur_separate = separate_last_te_st(cur_parts)
+
+            if len(cur_separate) == 2:
+                sepr = [cur_separate[1]] + sepr
+                cur_parts = cur_separate[0]
+            else:
+                sepr = cur_separate + sepr
+                can_sep = False
+        return sepr
+
+
     res2 = []
     for possBGC in res:
         sep = split_by_first_starter_te(possBGC)
         res2 += sep
 
-    return res2
+    res = []
+    for possBGC in res2:
+        sep = split_by_last_starter_te(possBGC)
+        res += sep
+
+    return res
 
 
 def check_cond_starter(possible_BGC, filename, orf_ori):
