@@ -115,6 +115,21 @@ def preprocess_cond_start(possible_BGC, filename, orf_ori, orf_pos):
     def start_by_Starter(part):
         return orf_domain_list[part[0]][0] == "C_Starter"
 
+    def has_AA(part):
+        for cur_orf in orf_domain_list[part[0]]:
+            if cur_orf[0] == "A":
+                return True
+        return False
+
+
+    def get_next_AA_id(parts, lst_id, stp):
+        while lst_id < len(parts) and lst_id >= 0:
+            if has_AA(parts[lst_id]):
+                return lst_id
+            lst_id += stp
+        return lst_id
+
+
     def split_by_first_starter_te(parts):
         def separate_first_st_te(parts):
             if (orf_ori[parts[0][0]] == '+') and (orf_domain_list[parts[0][0]][0] == "C_Starter"):
@@ -126,7 +141,8 @@ def preprocess_cond_start(possible_BGC, filename, orf_ori, orf_pos):
                         max_dist = max(max_dist, orf_pos[parts[lst_id][0]][0] - orf_pos[parts[lst_id - 1][0]][1])
 
                 if (lst_id < len(parts)) and (orf_ori[parts[lst_id][0]] == '+') and (end_by_TE_TD(parts[lst_id])):
-                    if (lst_id + 1 < len(parts)) and ((orf_pos[parts[lst_id + 1][0]][0] - orf_pos[parts[lst_id][0]][1]) > 2 * max_dist):
+                    nxt_id = get_next_AA_id(parts, lst_id + 1, 1)
+                    if (nxt_id < len(parts)) and ((orf_pos[parts[nxt_id][0]][0] - orf_pos[parts[lst_id][0]][1]) > 2 * max_dist):
                         return [parts[:lst_id + 1], parts[lst_id + 1:]]
             return [parts]
 
@@ -140,7 +156,8 @@ def preprocess_cond_start(possible_BGC, filename, orf_ori, orf_pos):
                         max_dist = max(max_dist, orf_pos[parts[lst_id][0]][0] - orf_pos[parts[lst_id - 1][0]][1])
 
                 if (lst_id < len(parts)) and (orf_ori[parts[lst_id][0]] == '-') and (end_by_Starter(parts[lst_id])):
-                    if (lst_id + 1 < len(parts)) and ((orf_pos[parts[lst_id + 1][0]][0] - orf_pos[parts[lst_id][0]][1]) > 2 * max_dist):
+                    nxt_id = get_next_AA_id(parts, lst_id + 1, 1)
+                    if (nxt_id < len(parts)) and ((orf_pos[parts[nxt_id][0]][0] - orf_pos[parts[lst_id][0]][1]) > 2 * max_dist):
                         return [parts[:lst_id + 1], parts[lst_id + 1:]]
             return [parts]
 
@@ -187,7 +204,8 @@ def preprocess_cond_start(possible_BGC, filename, orf_ori, orf_pos):
                         max_dist = max(max_dist, orf_pos[parts[lst_id + 1][0]][0] - orf_pos[parts[lst_id][0]][1])
 
                 if (lst_id >= 0) and (orf_ori[parts[lst_id][0]] == '-') and (start_by_TE_TD(parts[lst_id])):
-                    if (lst_id > 0) and ((orf_pos[parts[lst_id][0]][0] - orf_pos[parts[lst_id - 1][0]][1]) > 2 * max_dist):
+                    nxt_id = get_next_AA_id(parts, lst_id - 1, -1)
+                    if (lst_id > 0) and ((orf_pos[parts[lst_id][0]][0] - orf_pos[parts[nxt_id][0]][1]) > 2 * max_dist):
                         return [parts[:lst_id], parts[lst_id:]]
             return [parts]
 
@@ -201,7 +219,8 @@ def preprocess_cond_start(possible_BGC, filename, orf_ori, orf_pos):
                         max_dist = max(max_dist, orf_pos[parts[lst_id + 1][0]][0] - orf_pos[parts[lst_id][0]][1])
 
                 if (lst_id >= 0) and (orf_ori[parts[lst_id][0]] == '+') and (start_by_Starter(parts[lst_id])):
-                    if (lst_id > 0) and ((orf_pos[parts[lst_id][0]][0] - orf_pos[parts[lst_id - 1][0]][1]) > 2 * max_dist):
+                    nxt_id = get_next_AA_id(parts, lst_id - 1, -1)
+                    if (nxt_id >= 0) and ((orf_pos[parts[lst_id][0]][0] - orf_pos[parts[nxt_id][0]][1]) > 2 * max_dist):
                         return [parts[:lst_id], parts[lst_id:]]
             return [parts]
 
@@ -300,12 +319,26 @@ def check_cond_starter(possible_BGC, filename, orf_ori):
                     return True
         return False
 
+    def starter_count(parts):
+        cnt_starter = 0
+        for i in range(len(parts)):
+            for orf in orf_domain_list[parts[i][0]]:
+                if orf == "C_Starter":
+                    cnt_starter += 1
+        return cnt_starter
+
+
     for possBGC in possible_BGC:
         if not has_starter(possBGC):
             continue
 
         if not same_ori(possBGC):
             print("Different order:")
+            print_BGC(possBGC)
+            return
+
+        if starter_count(possBGC) > 2:
+            print("Too many C_Starter:")
             print_BGC(possBGC)
             return
 
