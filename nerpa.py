@@ -151,9 +151,7 @@ def gen_graphs_from_smiles_tsv(args, main_out_dir, path_to_monomers_tsv, path_to
         sys.exit()
     log.log('Done.')
 
-    handle_rban.generate_graphs_from_rban_output(
-        path_to_rban_output, path_to_monomers_tsv, path_to_graphs
-    )
+    handle_rban.generate_graphs_from_rban_output(path_to_rban_output, path_to_monomers_tsv, path_to_graphs, main_out_dir, path_to_rban_jar)
 
 
 def copy_prediction_list(args, main_out_dir):
