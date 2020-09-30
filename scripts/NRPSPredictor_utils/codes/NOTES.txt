@@ -1,0 +1,121 @@
+1. About "allo" prefix and some non-trivial D-confs
+Is used for amino acids with two chiral centers (threonine and isoleucine only).
+
+Threonine can exist in four possible stereoisomers with the following configurations:
+(2S,3R), (2R,3S), (2S,3S) and (2R,3R).
+However, the name L-threonine is used for one single diastereomer, (2S,3R)-2-amino-3-hydroxybutanoic acid.
+The second stereoisomer (2S,3S), which is rarely present in nature, is called L-allothreonine.
+The two stereoisomers (2R,3S)- and (2R,3R)-2-amino-3-hydroxybutanoic acid are only of minor importance (D-Thr, D-alloThr).
+
+Analogously:
+l-isoleucine (2S,3S) and d-isoleucine (2R,3R)
+l-alloisoleucine (2S,3R) and d-alloisoleucine (2R,3S)
+
+Side note: lysergic acid default state is "D-", so its default synonym is D-lysergic acid
+However, other confs are also possible: https://en.wikipedia.org/wiki/Lysergic_acid
+The isomer with inverted configuration at carbon atom 8 close to the carboxyl group is called
+isolysergic acid. Inversion at carbon 5 close to the nitrogen atom leads to l-lysergic acid
+and l-isolysergic acid, respectively.
+
+2. Non-trivial synonyms:
+valeric acid == pentanoic acid
+2-oxo-isovaleric-acid == 3-methyl-2-oxobutanoic acid
+alpha-hydroxy-isocaproic-acid == HICA == leucic acid
+dehydro-threonine == 2,3-dehydroaminobutyric acid  (dht=dhab)
+sarcosine == N-methylglycine
+
+3. Non-trivial relations:
+phenylglycine ~ alanine  # It is a non-proteinogenic alpha amino acid related to alanine, but with a phenyl group in place of the methyl group
+4-propyl-L-proline ~ tyrosine # See Lincomycin biosynthesis, it starts with tyrosine which is transformed to 4-propyl-L-proline by the consecutive action of LmbB1, LmbB2, LmbW, LmbA and LmbX proteins
+LDAP ~ lysine # Diaminopimelic acid (LDAP, DAP) is an amino acid, representing an epsilon-carboxy derivative of lysine
+bht == beta-hydroxy-tyrosine
+dht == dehydro-threonine/2,3-dehydroaminobutyric acid
+dhpg == 3,5-dihydroxy-phenyl-glycine (see also phenylglycine above)
+phenylacetate ~ synthesized from phenylalanine via phenylpyruvate
+3-(3-pyridyl)-l-alanine ~ phenylalanine
+
+4. Abbreviations (not present in aaSMILES.txt)
+bmt: 4-butenyl-4-methyl threonine   CC=CCC(C)C(O)C(N)C(=O)O
+piperazic: piperazic acid   C1CC(NNC1)C(=O)O
+hse: homoserine   NC(CCO)C(=O)O
+kyn: kynurenine   NC(CC(=O)c1ccccc1(N))C(=O)O
+hty: homotyrosine   NC(CCc1ccc(O)cc1)C(=O)O
+phe-ac: phenylacetate
+cysa: cysteic acid
+dpr: 2,3-diaminopropionic acid
+33p-l-ala: 3-(3-pyridyl)-l-alanine
+valol: valinol  CC(C)C(CO)N
+apa: aziridino[1,2a]pyrrolidinyl amino acid  N/C(C(=O)O)=C/1[C@@H](O)[C@H](O)[C@@H]2CN12  # manually deduced from https://pubmed.ncbi.nlm.nih.gov/18635006/
+apc: 4-aminopyrrole-2-carboxylate  c1c(c[nH]c1C(=O)[O-])N  # from https://pubmed.ncbi.nlm.nih.gov/19389628/; maybe we need just c1c(c[nH]c1C(=O)O)N
+gua: guanidinoacetate  NC(=N)NCC([O-])=O  # from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2227734/; maybe we need just NC(=N)NCC(O)=O
+cit: citrulline  C(C[C@@H](C(=O)O)N)CNC(=O)N  # from https://pubmed.ncbi.nlm.nih.gov/17005978/
+end: enduracididine  C1[C@H](NC(=N)N1)C[C@@H](C(=O)O)N  # from https://pubmed.ncbi.nlm.nih.gov/17005978/; NOTE: could be in D- form too!
+uda: β-ureidoalanine  C([C@@H](C(=O)(O))(N))NC(=O)N  # from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2643575/
+cha: L-3-cyclohex-2'-enylalanine  C1CC=C[C@@H](C1)C[C@@H](C(=O)(O))(N)  # from https://www.pnas.org/content/106/30/12295
+ahp: 3-amino-6-hydroxy-2-piperidone  C1CC(NC(=O)C1N)O  # from https://europepmc.org/article/med/10931313
+
+5. On some modifications
+In the case of "hfOrn" (L-Nδ-hydroxy-Nδ-formylornithine).
+Both modifications are made by hydroxylase and formyltranserase encoded in adjacent genes
+https://journals.plos.org/plosone/article/figure?id=10.1371/journal.pone.0151273.g005
+However, after that, A-domain prefer "hfOrn", not just "Orn", so we may say that
+A-domain specificity is hfOrn here, not Orn (in contrast to the cases of methylation and epimerization,
+that happen "after" A-domain selection!).
+
+Similarly, for the case of "N-(1,1-dimethyl-1-allyl)Trp".
+The modification is encoded in CymD gene, which plays a role of a
+bacterial N-(1,1-dimethyl-1-allyl)-tryptophan synthase,
+which alkylates tryptophan with DMAPP as the prenyl donor in a
+cation-independent manner prior to NRPS assembly.
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2846197/
+After that, the A-domain (CymA gene) captures "N-(1,1-dimethyl-1-allyl)Trp".
+
+GENERAL LINKS:
+https://github.com/antismash/antismash/blob/master/antismash/modules/nrps_pks/data/aaSMILES.txt
+https://github.com/antismash/antismash/blob/master/antismash/modules/nrps_pks/external/NRPSPredictor2/data/labeled_sigs
+https://bitbucket.org/chevrm/sandpuma2/src/master/flat/sp1.stach.faa
+A FEW ADDITIONAL LINKS:
+https://github.com/antismash/antismash/blob/master/antismash/modules/nrps_pks/external/NRPSPredictor2/knowncodes.fasta
+
+----- NOTES on the content of known codes files ------
+
+some (!) ERRORS in sandpuma_mibig_based.fna:
+(1) Entry:
+>BGC0000431_EFE73308.1_231_mod1_cysa
+DIWQSTADD
+
+In reality, the code in mod1 (on the next gene: EFE73312.1) is
+DaTKMGHVGK
+(90% similarity to Asp). But https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3919142/ supplement says:
+The substrate specificity 10 aa code (DATKMGHVGK) of the first A domain in StenS was predicted to
+encode for an asparatic acid. Asparatic acid shares structural similiary to cysteic acid.
+It is therefore not unreasonable that based on the position and structural similarity
+the cysteic acid is loaded by this first A domain in the assembly line. Although the A domain
+is predicted to load Asp, the A domain is very selective for cysteic acid as none of the 141
+nodes in the stenothricin constellation of the MS/MS network represent a stenothricin variant
+with an Asp instead of CysA.
+
+(2) Entry:
+>BGC0001147_AIS24862.1_37_mod1_glycy
+SVEQVGEVS
+
+The corresponding BGC is missing (removed) in MIBiG, it is for Distamycin
+IUPAC: N-{5-[(5-{[(3Z)-3-Amino-3-iminopropyl]carbamoyl}-1-methyl-1H-pyrrol-3-yl)carbamoyl]-1-methyl-1H-pyrrol-3-yl}-4-formamido-1-methyl-1H-pyrrole-2-carboxamide
+https://en.wikipedia.org/wiki/Distamycin
+The paper (https://pubmed.ncbi.nlm.nih.gov/25415678/) and its supplement contains NO information about A-domains there.
+"distamycin is assembled by a NRPS constituted of free standing domains only". It seems there is no A-domain at all.
+
+--
+
+For nrpspredictor2_knowncodes.fasta:
+(1) Entry:
+>B9UJ07_m1__xxx
+ERYSASLIWR
+
+From https://www.uniprot.org/uniprot/B9UJ07 -- it is zbmIII gene
+From the Zorbamycin paper (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3086045/):
+The ZbmIII (NRPS-0) A domain is proposed to be inactive since the essential
+aspartate (D235) and lysine (K517) moieties are replaced by different amino acids;
+similar amino acid substitutions have also reported for the BlmIII (NRPS-0) domain,
+which has been confirmed biochemically to be non-functional,24 and the homologous
+TlmIII (NRPS-0) A domain.
