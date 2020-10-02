@@ -4,9 +4,11 @@ from log_utils import error, info
 from codes_handler import get_prediction_from_signature
 
 
-SVM_HEADER = '#sequence-id<tab>8A-signature<tab>stachelhaus-code<tab>3class-pred<tab>large-class-pred<tab>small-class-pred<tab>single-class-pred<tab>nearest stachelhaus code<tab>NRPS1pred-large-class-pred<tab>NRPS2pred-large-class-pred<tab>outside applicability domain?<tab>coords<tab>pfam-score\n'
+SVM_HEADER = '#sequence-id<tab>8A-signature<tab>stachelhaus-code<tab>3class-pred<tab>large-class-pred<tab>small-class-pred<tab>single-class-pred<tab>nearest stachelhaus code<tab>NRPS1pred-large-class-pred<tab>NRPS2pred-large-class-pred<tab>outside applicability domain?<tab>coords<tab>pfam-score\n'  #FIXME: convert into '<tab>'.join([..])
 GENE_HEADER = '\t'.join(["gene ID", "gene start", "gene end", "gene strand", "smCOG", "locus_tag", "annotation"]) + '\n'
-NRPS_PKS_HEADER = ''
+NRPS_PKS_HEADER = '\t'.join(["Cluster_ID", "NRPSPKS_ID", "annotation", "aSDomain", "score", "evalue", "domain_type",
+                             "subtype", "domain_start", "domain_end", "KR activity", "KR stereochemistry",
+                             "NRPSPredictor2", "Stachelhaus", "Minowa", "pkssignature", "consensus"]) + '\n'
 PREDICTIONS_TXT_DIR = 'nrpspks_predictions_txt'
 FEATURES_TXT_DIR = 'txt'
 
@@ -53,6 +55,47 @@ ctg1_orf00225_A2	RWMTFDVSVWEWHFFVSGEHNLYGPTEASVDVTS	DVWHFSLVDK	hydrophobic-aliph
                       str(int(bool(domain_prediction['uncertain']))),
                       '0:0', '0.000000e+00'  # seems that these columns are always the same
                       ])
+
+
+class NRPS_PKS_entry:
+    def __init__(self):
+        self.Cluster_ID = ''
+        self.NRPSPKS_ID = ''
+        self.annotation = ''
+        self.aSDomain = ''
+        self.score = ''
+        self.evalue = ''
+        self.domain_type = ''
+        self.subtype = ''
+        self.domain_start = ''
+        self.domain_end = ''
+        self.KR_activity = ''
+        self.KR_stereochemistry = ''
+        self.NRPSPredictor2 = ''
+        self.Stachelhaus = ''
+        self.Minowa = ''
+        self.pkssignature = ''
+        self.consensus = ''
+
+    def __str__(self):
+        return '\t'.join(map(str,
+                             [self.Cluster_ID, self.NRPSPKS_ID, self.annotation,
+                              self.aSDomain, self.score, self.evalue, self.domain_type,
+                              self.subtype, self.domain_start, self.domain_end,
+                              self.KR_activity, self.KR_stereochemistry,
+                              self.NRPSPredictor2, self.Stachelhaus, self.Minowa,
+                              self.pkssignature, self.consensus]))
+
+
+def __parse_location(location):
+    # e.g. 'location' = '[351:486](+)'
+    coords = location.split(']')[0][1:]
+    start, end = map(int, coords.split(':'))
+    if '(' in location:
+        strand = location.split('](')[1][0]
+    else:
+        strand = ''
+    return start, end, strand
 
 
 def handle_single_input(path, output_dir, known_codes, verbose=False):
@@ -140,40 +183,73 @@ def handle_single_input(path, output_dir, known_codes, verbose=False):
             regions_of_interest = []
             for feature in contig_data['features']:
                 if feature['type'] == 'region':
-                    location = feature['location']  # e.g. 'location' = '[351:486](+)'
-                    coords = location.split(']')[0][1:]
-                    start, end = map(int, coords.split(':'))
+                    start, end, _ = __parse_location(feature['location'])
                     regions_of_interest.append((start, end))
 
             with open(cur_contig_gene_output_fpath, 'w') as gene_f:
                 gene_f.write(GENE_HEADER)
-                # features1 = contig_data['features'][:300]
-                # features2 = contig_data['features'][300:600]
-                # features3 = contig_data['features'][600:900]
                 # content example: ctg1_orf00189	127377	128739	-		ctg1_orf00189	unannotated orf
-                cur_region = (0, 0)
+                cur_reg_idx = 0
                 for feature in contig_data['features']:
                     if feature['type'] == 'CDS':
-                        location = feature['location']  # e.g. 'location' = '[351:486](+)'
-                        coords = location.split(']')[0][1:]
-                        start, end = map(int, coords.split(':'))
-                        while start > cur_region[1]:
-                            if regions_of_interest:
-                                cur_region = regions_of_interest.pop(0)
-                            else:
-                                cur_region = None
-                                break
-                        if cur_region is None:
+                        start, end, strand = __parse_location(feature['location'])
+                        while cur_reg_idx < len(regions_of_interest) and start > regions_of_interest[cur_reg_idx][1]:
+                            cur_reg_idx += 1
+                        if cur_reg_idx == len(regions_of_interest):
                             break
-                        if end < cur_region[0]:
+                        if end < regions_of_interest[cur_reg_idx][0]:
                             continue
 
-                        strand = location.split('](')[1][0]
                         ctg_id, orf_idx = feature['qualifiers']['locus_tag'][0].split('_')  # e.g. 'locus_tag' = ['ctg1_1']
                         orf_id = __get_entry_id(ctg_id, orf_idx)
                         gene_f.write('\t'.join(map(str,
                                                    [orf_id, start, end, strand, '', orf_id, 'unannotated orf']))
                                      + '\n')
+
+            with open(cur_contig_NRPS_PKS_output_fpath, 'w') as nrps_pks_f:
+                nrps_pks_f.write(NRPS_PKS_HEADER)
+                # features1 = contig_data['features'][:300]
+                # features2 = contig_data['features'][300:600]
+                # features3 = contig_data['features'][600:900]
+                # # content example 1: JNWS01000001.1_c1	ctg1_orf00198	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf00198_KR1	21.1	6.10E-07	PKS_KR		134108	134471	inactive	C1
+                # # content example 1: JNWS01000001.1_c1	ctg1_orf00225	NRPS	nrpspksdomains_ctg1_orf00225_Xdom17	104.6	2.70E-32	Thioesterase		147794	148490
+                # t = 1
+
+                cur_reg_idx = 0
+                last_CDS_before_aSDomain = None
+                for feature in contig_data['features']:
+                    if feature['type'] == 'CDS':
+                        last_CDS_before_aSDomain = feature
+                    elif feature['type'] == 'aSDomain':
+                        start, end, strand = __parse_location(feature['location'])
+                        while cur_reg_idx < len(regions_of_interest) and start > regions_of_interest[cur_reg_idx][1]:
+                            cur_reg_idx += 1
+                        if cur_reg_idx == len(regions_of_interest):
+                            break
+                        if end < regions_of_interest[cur_reg_idx][0]:
+                            continue
+
+                        locus_tag = feature['qualifiers']['locus_tag'][0]
+                        ctg_id, orf_idx = locus_tag.split('_')  # e.g. 'locus_tag' = ['ctg1_1']
+                        entry = NRPS_PKS_entry()
+                        entry.Cluster_ID = contig_data['id'] + '_c%d' % (cur_reg_idx + 1)
+                        entry.NRPSPKS_ID = __get_entry_id(ctg_id, orf_idx)
+                        if last_CDS_before_aSDomain is not None:
+                            if 'qualifiers' in last_CDS_before_aSDomain and 'NRPS_PKS' in last_CDS_before_aSDomain['qualifiers']:
+                                NRPS_PKS_type = last_CDS_before_aSDomain['qualifiers']['NRPS_PKS'][-1]
+                                entry.annotation = NRPS_PKS_type.split(' ')[1]
+                        entry.aSDomain = feature['qualifiers']['domain_id'][0].replace(locus_tag, entry.NRPSPKS_ID)
+                        entry.score = feature['qualifiers']['score'][0]
+                        entry.evalue = feature['qualifiers']['evalue'][0]
+                        entry.domain_type = feature['qualifiers']['aSDomain'][0]
+                        if entry.domain_type.startswith('Condensation'):  # special case
+                            entry.subtype = entry.domain_type
+                            entry.domain_type = entry.domain_type.split('_')[0]
+                        # TODO: process MT->oMT, MT->nMT, etc domain types-subtypes
+                        entry.domain_start = start
+                        entry.domain_end = end
+                        # TODO: process the rest fields (KR_activity, etc for PK and NRPSPredictor2, etc for AMP-binding)
+                        nrps_pks_f.write(str(entry) + '\n')
 
     info('Done with %s, see results in %s' % (main_json_path, output_dir), verbose=verbose)
 
