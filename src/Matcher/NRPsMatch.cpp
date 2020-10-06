@@ -136,3 +136,7 @@ int matcher::MatcherBase::Match::getCntMatch() {
 void matcher::MatcherBase::Match::setScore(double score) {
     this->scr = score;
 }
+
+matcher::MatcherBase::~MatcherBase() {
+
+}

@@ -41,4 +41,8 @@ namespace nrpsprediction {
     BgcPrediction PredictionBuilderBase::getPrediction() {
         return BgcPrediction(nrpparts, short_parts);
     }
+
+    PredictionBuilderBase::~PredictionBuilderBase() {
+
+    }
 }
