@@ -10,7 +10,7 @@
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
 #include <ArgParse/Args.h>
 #include <Aminoacid/ModificationInfo.h>
-#include <omp.h>
+//#include <omp.h>
 #include <Matcher/OrderedGenesMatcher.h>
 #include <Aminoacid/MonomerInfo.h>
 
@@ -119,7 +119,7 @@ void run_mol_predictions(std::vector<nrpsprediction::BgcPrediction> preds, std::
         return;
     }
 
-#pragma omp critical
+//#pragma omp critical
     {
         std::ofstream out_short("report_mols", std::ofstream::out | std::ofstream::app);
         std::ofstream out(output_filename);
@@ -189,10 +189,10 @@ int main(int argc, char* argv[]) {
     INFO("Start from: " << start_from)
     unsigned nthreads = args.threads;
 
-    omp_set_dynamic(0);
-    omp_set_num_threads(nthreads);
-
-    INFO("THREADS #" << nthreads);
+//    omp_set_dynamic(0);
+//    omp_set_num_threads(nthreads);
+//
+//    INFO("THREADS #" << nthreads);
 //#   pragma omp parallel for
     for (int i = start_from; i < mols.size(); ++i) {
         INFO("NRP structure #" << i)
