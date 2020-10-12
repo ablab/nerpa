@@ -13,6 +13,9 @@ namespace nrpsprediction {
         if (predict_aa.find("+MT") != std::string::npos) {
             res.emplace_back(aminoacid::Modification(aminoacid::ModificationInfo::getIdByNameId("methylation")));
         }
+        if (predict_aa.find("+PK") != std::string::npos) {
+            res.emplace_back(aminoacid::Modification(aminoacid::ModificationInfo::getIdByNameId("pkhybrid")));
+        }
         return res;
     }
 

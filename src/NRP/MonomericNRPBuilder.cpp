@@ -48,6 +48,11 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
             if (code[i] == '@' && code[i + 1] == 'L') {
                 cur_config = aminoacid::Aminoacid::L;
             }
+
+            if (code[i] == '@' && code[i + 1] == 'P') {
+                aminoacid::Modification mod(aminoacid::ModificationInfo::getIdByNameId("pkhybrid"));
+                aa.addModification(mod);
+            }
         }
 
         aa.setConfiguration(cur_config);
