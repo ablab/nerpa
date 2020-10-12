@@ -200,7 +200,7 @@ def get_aa_chirality(smi):
 
                     # since glutamic acid has several COOH matches
                     if neighbor_tags in RCN_pattern or neighbor_tags in NCR_pattern:
-                        if ch_center.GetChiralTag() == rdc.rdrdc.ChiralType.CHI_TETRAHEDRAL_CCW:
+                        if ch_center.GetChiralTag() == rdc.rdchem.ChiralType.CHI_TETRAHEDRAL_CCW:
                             return neighbor_tags in RCN_pattern
                         else:
                             return neighbor_tags in NCR_pattern
