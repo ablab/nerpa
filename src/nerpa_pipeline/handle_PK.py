@@ -10,10 +10,14 @@ def get_PK_hybrids(dirname):
     PK_DOMAIN = 'PKS_KS'
     A_DOMAIN = 'AMP-binding'
 
+    # initialized here and not re-initialized in cycle to support PK module on a different orf
+    # (as in BGC0000963, BGC0001058)
+    prev_d = None
+
     for orfds in domains:
         step = -1 if orfds and orf_ori[orfds[0][0]] == '-' else 1
         coding_domains_gen = filter(lambda x: x[2] == A_DOMAIN or x[2] == PK_DOMAIN, orfds[::step])
-        prev_d = None
+        # prev_d = None
         for d in coding_domains_gen:
             if prev_d and prev_d[2] == A_DOMAIN and d[2] == PK_DOMAIN:
                 PK_hybrids_list.append(prev_d[0] + "_" + prev_d[1].split('_')[-1])
