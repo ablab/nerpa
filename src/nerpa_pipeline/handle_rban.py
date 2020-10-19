@@ -176,7 +176,7 @@ def generate_graphs_from_rban_output(path_to_rban_output, path_to_monomers_tsv, 
 
 def generate_rban_input_from_smiles_string(smiles, path_to_rban_input):
     with open(path_to_rban_input, 'w') as f:
-        json.dump([{'id': i, 'smiles': smi} for i, smi in enumerate(smiles)], f, indent=2)
+        json.dump([{'id': i, 'smiles': smi.strip()} for i, smi in enumerate(smiles)], f, indent=2)
 
 
 def generate_rban_input_from_smiles_tsv(path_to_csv, path_to_rban_input, sep='\t',
@@ -187,7 +187,7 @@ def generate_rban_input_from_smiles_tsv(path_to_csv, path_to_rban_input, sep='\t
         for i, row in enumerate(reader, 1):
             idx = str(i) if id_col_name is None else row[id_col_name]
             smi = row[smi_col_name]
-            result.append({'id': idx, 'smiles': smi})
+            result.append({'id': idx, 'smiles': smi.strip()})
 
     with open(path_to_rban_input, 'w') as f:
         json.dump(result, f, indent=2)
@@ -199,7 +199,7 @@ def generate_rban_input_from_list(lst, path_to_rban_input):
     :param path_to_rban_input: filename
     :return:
     """
-    dicts = [{'id': idx, 'smiles': smi} for smi, idx in lst]
+    dicts = [{'id': idx, 'smiles': smi.strip()} for smi, idx in lst]
     with open(path_to_rban_input, 'w') as f:
         json.dump(dicts, f, indent=2)
 
