@@ -57,7 +57,23 @@ namespace aminoacid {
         std::vector<Modification> modifications;
         std::string possible_name = "";
     };
+
+    inline std::ostream& operator<<(std::ostream &os, Aminoacid::Configuation const &cat) {
+        switch (cat) {
+            case Aminoacid::L:
+                os << "L";
+                break;
+            case Aminoacid::D:
+                os << "D";
+                break;
+            default:
+                os << "NA";
+        }
+        return os;
+    }
 }
+
+
 
 
 #endif //NRPSMATCHER_AMINOACIDS_H

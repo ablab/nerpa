@@ -47,22 +47,30 @@ void matcher::MatcherBase::Match::print(std::ostream &out) {
 
     out << "number of components : " << parts_id.size() << "\n";
     for (int i = 0; i < parts_id.size(); ++i) {
-        int ri = rp[i];
-        std::string formula = nrp->getFormula(i);
+        std::string formula = nrp->getFormula(nrp->getInd(i));
+        aminoacid::Aminoacid aa = nrp->getAminoacid(i);
 
-        out << formula << " -> ";
+        out << formula << " " << aa.getConfiguration() << " " << aa.get_name();
+        for (auto &mod : aa.getModifications()) {
+            out << "+" << aminoacid::ModificationInfo::NAMES[mod.getId()];
+        }
+        out << " -> ";
 
-        if (!isMatched(ri)) {
+        if (!isMatched(i)) {
             out << "-\n";
         } else {
-            nrpsprediction::AAdomainPrediction amn_pred = nrpParts[parts_id[ri]].getAAdomainPrediction()[parts_pos[ri]];
+            nrpsprediction::AAdomainPrediction amn_pred = nrpParts[parts_id[i]].getAAdomainPrediction()[parts_pos[i]];
             nrpsprediction::AAdomainPrediction::AminoacidProb amprob;
             std::pair<int, int> pos;
-            auto res = scoreFun->getTheBestAAInPred(amn_pred, nrp->getAminoacid(ri), amprob, pos);
+            auto res = scoreFun->getTheBestAAInPred(amn_pred, nrp->getAminoacid(i), amprob, pos);
+            out << res.second.getConfiguration() << " " << res.second;
+            for (auto &mod : amn_pred.get_modifications()) {
+                out << "+" << aminoacid::ModificationInfo::NAMES[mod.getId()];
+            }
 
-            out << res.second << "("  << res.first <<"; "
+            out << "("  << res.first <<"; "
                 << pos.first << "-" << pos.second << ") "
-                << nrpParts[parts_id[ri]].get_orf_name() << " " << parts_pos[ri] << "\n";
+                << nrpParts[parts_id[i]].get_orf_name() << " " << parts_pos[i] << "\n";
         }
     }
 
