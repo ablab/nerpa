@@ -73,6 +73,9 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
     std::vector<std::pair<int, int>> ocon;
     while (std::getline(ss, bond, ';')) {
         std::stringstream ss_(bond);
+
+        if (bond.empty()) break;
+        
         std::getline(ss_, tmp, ',');
         std::istringstream(tmp) >> b;
         std::getline(ss_, tmp, ',');
