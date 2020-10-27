@@ -7,7 +7,7 @@ from shutil import copyfile
 import nerpa_init
 
 nerpa_init.init()
-import handle_TE
+import predictions_preprocessor
 from logger import log
 
 path_to_exec_dir = os.path.dirname(os.path.abspath(__file__)) + "/"
@@ -169,7 +169,7 @@ def run(args):
     if (args.predictions is not None):
         path_predictions = os.path.abspath(copy_prediction_list(args, main_out_dir))
     else:
-        path_predictions = handle_TE.create_predictions_by_antiSAMSHout(get_antismash_list(args), main_out_dir)
+        path_predictions = predictions_preprocessor.create_predictions_by_antiSAMSHout(get_antismash_list(args), main_out_dir)
 
     directory = os.path.dirname(main_out_dir)
     if not os.path.exists(directory):
