@@ -80,6 +80,10 @@ def create_predictions_by_antiSAMSHout(antismashouts, outdir):
         d_aa = handle_E.get_D_AA(dirname)
         print(d_aa)
         bgc_orfs_parts = handle_TE.get_split_BGC(dirname)
+        
+        handle_helper.debug_print_parts(dirname, bgc_orfs_parts, handle_helper.get_orf_domain_list(dirname),
+                                        handle_helper.get_orf_orientation(dirname),
+                                        handle_helper.get_orf_position(dirname))
 
         nrpspred_dir = os.path.join(dirname, "nrpspks_predictions_txt")
         if os.path.isdir(nrpspred_dir):
