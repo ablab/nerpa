@@ -51,6 +51,9 @@ def get_orf_position(dirname):
     txt_folder = os.path.join(dirname, "txt")
 
     orf_pos = {}
+    if  not os.path.isdir(txt_folder):
+        return orf_pos
+
     for filename in os.listdir(txt_folder):
         if filename.endswith("_gene.txt"):
             csv_file_with_orf = os.path.join(txt_folder, filename)
@@ -67,9 +70,12 @@ def get_orf_domain_list(dirname):
     txt_folder = os.path.join(dirname, "txt")
     orf_domain_list = {}
 
+    if  not os.path.isdir(txt_folder):
+        return orf_domain_list
+
     for filename in os.listdir(txt_folder):
         if filename.endswith("_NRPS_PKS.txt"):
-            with open(filename, 'r') as rf:
+            with open(os.path.join(txt_folder, filename), 'r') as rf:
                 csv_reader = csv.reader(rf, delimiter='\t')
                 for row in csv_reader:
                     if row[1] == "NRPSPKS_ID":
@@ -98,6 +104,6 @@ def debug_print_parts(filename, parts, orf_domain_list, orf_ori, orf_pos):
     for i in range(len(parts)):
         print("Part# " + str(i))
         for j in range(len(parts[i])):
-            cur_orf = parts[i][j][0]
+            cur_orf = parts[i][j]
             print(cur_orf + "[" + str(orf_pos[cur_orf][0]) + "-" +
                   str(orf_pos[cur_orf][1]) + "; " + orf_ori[cur_orf] + "]: " + str(orf_domain_list[cur_orf]))
