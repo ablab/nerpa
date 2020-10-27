@@ -24,6 +24,61 @@ def split_orfs_by_dist(orfs_list_short, orf_pos):
 
     return possible_BGC
 
+def get_domain_list(filename):
+    orf_domain_list = {}
+    with open(filename, 'r') as rf:
+        csv_reader = csv.reader(rf, delimiter='\t')
+        for row in csv_reader:
+            if row[1] == "NRPSPKS_ID":
+                continue
+
+            if row[1] not in orf_domain_list:
+                orf_domain_list[row[1]] = []
+
+            if row[6] == 'Condensation':
+                if row[7] == "Condensation_Starter":
+                    orf_domain_list[row[1]].append('C_Starter')
+                else:
+                    orf_domain_list[row[1]].append('C_' + row[7].split('_')[-1])
+            elif row[6] == 'Thioesterase':
+                orf_domain_list[row[1]].append("TE")
+            elif row[6] == "AMP-binding":
+                orf_domain_list[row[1]].append("A")
+            elif row[6] == "Epimerization":
+                orf_domain_list[row[1]].append("E")
+            else:
+                orf_domain_list[row[1]].append(row[6])
+    return orf_domain_list
+
+def get_dist_list(orfs_list_short, orf_pos, filename):
+    orf_domain_list = get_domain_list(filename)
+    dist_list = []
+    cur_parts = []
+    def is_big_orf(bgc_name):
+        if "A" in orf_domain_list[bgc_name] and "PCP" in orf_domain_list[bgc_name]:
+            for dm in orf_domain_list[bgc_name]:
+                if "C_" in dm:
+                    return True
+        return False
+
+    def get_str(bgc_name):
+        res = ""
+        for dm in orf_domain_list[bgc_name]:
+            res += dm + "-"
+        return res
+
+    comment = ""
+    for cur_orf in orfs_list_short:
+        comment += cur_orf[0] + ": " + get_str(cur_orf[0]) + "; "
+        if True:#is_big_orf(cur_orf[0]):
+            if len(cur_parts) > 0:
+                dist_list.append(orf_pos[cur_orf[0]][0] - orf_pos[cur_parts[-1][0]][1])
+                comment += "dist=" + str(orf_pos[cur_orf[0]][0] - orf_pos[cur_parts[-1][0]][1])
+            cur_parts.append(cur_orf)
+        comment += "\n"
+
+    dist_list.sort()
+    return (dist_list, comment)
 
 def split_orfs_by_TE(possible_BGC, orf_ori):
     res = []
@@ -82,7 +137,11 @@ def preprocess_cond_start(possible_BGC, filename, orf_ori, orf_pos):
         return False
 
     def is_unique_A(part):
-        return len(orf_domain_list[part[0]]) == 1 and (orf_domain_list[part[0]][-1] == "A")
+        if (len(orf_domain_list[part[0]]) == 1 and (orf_domain_list[part[0]][-1] == "A")):
+            return True
+        if (len(orf_domain_list[part[0]]) == 2) and ("A" in orf_domain_list[part[0]]) and ("PCP" in orf_domain_list[part[0]]):
+            return True
+        return False
 
     res = []
     for possBGC in possible_BGC:
@@ -299,7 +358,7 @@ def check_cond_starter(possible_BGC, filename, orf_ori):
     def same_ori(parts):
         et_ori = "?"
         for i in range(len(parts)):
-            if ("A" not in orf_domain_list[parts[i][0]]) and ("TE" not in orf_domain_list[parts[i][0]]) and ("C_Starter" not in orf_domain_list[parts[i][0]]):
+            if ("A" not in orf_domain_list[parts[i][0]]):
                 continue
             if et_ori == "?":
                 et_ori = orf_ori[parts[i][0]]
@@ -327,10 +386,24 @@ def check_cond_starter(possible_BGC, filename, orf_ori):
                     cnt_starter += 1
         return cnt_starter
 
+    def wrong_starter_pos(parts):
+        for i in range(len(parts)):
+            for j in range(len(orf_domain_list[parts[i][0]])):
+                orf = orf_domain_list[parts[i][0]][j]
+                if orf == "C_Starter":
+                    if not ((i == 0 and j == 0) or (i == len(parts) - 1 and j == len(orf_domain_list[parts[i][0]]) - 1)):
+                        return True
+        return False
+
 
     for possBGC in possible_BGC:
         if not has_starter(possBGC):
             continue
+
+        if wrong_starter_pos(possBGC):
+            print("C_Starteron wrong poss:")
+            print_BGC(possBGC)
+            return
 
         if not same_ori(possBGC):
             print("Different order:")
@@ -372,6 +445,13 @@ def get_split_BGC(dirname):
                     orfs_list_short.append(cur_orf)
                 else:
                     orfs_list_short[-1][1] = max(orfs_list_short[-1][-1], cur_orf[-1])
+
+            #dist_list, comment = get_dist_list(orfs_list_short, orf_pos, csv_file_with_orf)
+            #print("Comment: ", comment)
+            #if (len(dist_list) == 0):
+            #    dist_list.append(-1)
+            #with open("dist_stat.csv", 'a') as fa:
+            #    fa.write(dirname.split('/')[-1] + "\t" + str(dist_list[0]) + "\t" + str(dist_list[-1]) + "\t\"" + comment + "\"\n")
 
             cur_posBGC = split_orfs_by_dist(orfs_list_short, orf_pos)
             cur_posBGC = preprocess_cond_start(cur_posBGC, csv_file_with_orf, orf_ori, orf_pos)
