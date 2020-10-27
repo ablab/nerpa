@@ -14,7 +14,7 @@ def split_orfs_by_dist(orfs_list_short, orf_pos):
     possible_BGC = []
     cur_parts = []
     for cur_orf in orfs_list_short:
-        if (len(cur_parts) > 0) and (orf_pos[cur_orf[0]][0] - orf_pos[cur_parts[-1][0]][1] > 20000):
+        if (len(cur_parts) > 0) and (orf_pos[cur_orf[0]][0] - orf_pos[cur_parts[-1][0]][1] > 10000):
             possible_BGC.append(cur_parts)
             cur_parts = []
         cur_parts.append(cur_orf)
@@ -200,9 +200,9 @@ def preprocess_cond_start(possible_BGC, filename, orf_ori, orf_pos):
                         max_dist = max(max_dist, orf_pos[parts[lst_id][0]][0] - orf_pos[parts[lst_id - 1][0]][1])
 
                 if (lst_id < len(parts)) and (orf_ori[parts[lst_id][0]] == '+') and (end_by_TE_TD(parts[lst_id])):
-                    nxt_id = get_next_AA_id(parts, lst_id + 1, 1)
-                    if (nxt_id < len(parts)) and ((orf_pos[parts[nxt_id][0]][0] - orf_pos[parts[lst_id][0]][1]) > 2 * max_dist):
-                        return [parts[:lst_id + 1], parts[lst_id + 1:]]
+                    #nxt_id = get_next_AA_id(parts, lst_id + 1, 1)
+                    #if (nxt_id < len(parts)) and ((orf_pos[parts[nxt_id][0]][0] - orf_pos[parts[lst_id][0]][1]) > 2 * max_dist):
+                    return [parts[:lst_id + 1], parts[lst_id + 1:]]
             return [parts]
 
         def separate_first_te_st(parts):
@@ -215,9 +215,9 @@ def preprocess_cond_start(possible_BGC, filename, orf_ori, orf_pos):
                         max_dist = max(max_dist, orf_pos[parts[lst_id][0]][0] - orf_pos[parts[lst_id - 1][0]][1])
 
                 if (lst_id < len(parts)) and (orf_ori[parts[lst_id][0]] == '-') and (end_by_Starter(parts[lst_id])):
-                    nxt_id = get_next_AA_id(parts, lst_id + 1, 1)
-                    if (nxt_id < len(parts)) and ((orf_pos[parts[nxt_id][0]][0] - orf_pos[parts[lst_id][0]][1]) > 2 * max_dist):
-                        return [parts[:lst_id + 1], parts[lst_id + 1:]]
+                    #nxt_id = get_next_AA_id(parts, lst_id + 1, 1)
+                    #if (nxt_id < len(parts)) and ((orf_pos[parts[nxt_id][0]][0] - orf_pos[parts[lst_id][0]][1]) > 2 * max_dist):
+                    return [parts[:lst_id + 1], parts[lst_id + 1:]]
             return [parts]
 
         def del_orfs_without_A(parts):
@@ -263,13 +263,13 @@ def preprocess_cond_start(possible_BGC, filename, orf_ori, orf_pos):
                         max_dist = max(max_dist, orf_pos[parts[lst_id + 1][0]][0] - orf_pos[parts[lst_id][0]][1])
 
                 if (lst_id >= 0) and (orf_ori[parts[lst_id][0]] == '-') and (start_by_TE_TD(parts[lst_id])):
-                    nxt_id = get_next_AA_id(parts, lst_id - 1, -1)
-                    if (lst_id > 0) and ((orf_pos[parts[lst_id][0]][0] - orf_pos[parts[nxt_id][0]][1]) > 2 * max_dist):
-                        return [parts[:lst_id], parts[lst_id:]]
+                    #nxt_id = get_next_AA_id(parts, lst_id - 1, -1)
+                    #if (lst_id > 0) and ((orf_pos[parts[lst_id][0]][0] - orf_pos[parts[nxt_id][0]][1]) > 2 * max_dist):
+                    return [parts[:lst_id], parts[lst_id:]]
             return [parts]
 
         def separate_last_te_st(parts):
-            if (orf_ori[parts[0][0]] == '+') and (end_by_TE_TD(parts[0])):
+            if (orf_ori[parts[-1][0]] == '+') and (end_by_TE_TD(parts[-1])):
                 lst_id = len(parts) - 1
                 max_dist = 0
                 while (lst_id >= 0) and (orf_ori[parts[lst_id][0]] == '+') and (not start_by_Starter(parts[lst_id])):
@@ -278,9 +278,9 @@ def preprocess_cond_start(possible_BGC, filename, orf_ori, orf_pos):
                         max_dist = max(max_dist, orf_pos[parts[lst_id + 1][0]][0] - orf_pos[parts[lst_id][0]][1])
 
                 if (lst_id >= 0) and (orf_ori[parts[lst_id][0]] == '+') and (start_by_Starter(parts[lst_id])):
-                    nxt_id = get_next_AA_id(parts, lst_id - 1, -1)
-                    if (nxt_id >= 0) and ((orf_pos[parts[lst_id][0]][0] - orf_pos[parts[nxt_id][0]][1]) > 2 * max_dist):
-                        return [parts[:lst_id], parts[lst_id:]]
+                    #nxt_id = get_next_AA_id(parts, lst_id - 1, -1)
+                    #if (nxt_id >= 0) and ((orf_pos[parts[lst_id][0]][0] - orf_pos[parts[nxt_id][0]][1]) > 2 * max_dist):
+                    return [parts[:lst_id], parts[lst_id:]]
             return [parts]
 
         def del_orfs_without_A(parts):
@@ -303,10 +303,12 @@ def preprocess_cond_start(possible_BGC, filename, orf_ori, orf_pos):
             if len(cur_parts) == 0:
                 break
             cur_separate = separate_last_st_te(cur_parts)
+            #print("Separate: ", cur_separate)
             if len(cur_separate) == 1:
                 cur_parts = cur_separate[0]
                 cur_separate = separate_last_te_st(cur_parts)
 
+            #print("Separate2: ", cur_separate)
             if len(cur_separate) == 2:
                 sepr = [cur_separate[1]] + sepr
                 cur_parts = cur_separate[0]
