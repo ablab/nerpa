@@ -7,7 +7,6 @@ import csv
 import handle_PCP2
 import handle_MT
 import handle_E
-import handle_TE
 import splitter
 import handle_helper
 from logger import log
@@ -104,11 +103,6 @@ def create_predictions_by_antiSAMSHout(antismashouts, outdir):
         parts = splitter.split_and_reorder(parts, orf_ori, orf_pos, orf_domains)
         handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
 
-        print("=====PARTS after TE handle: ")
-        bgc_orfs_parts = handle_TE.get_split_BGC(dirname)
-        handle_helper.debug_print_parts(dirname, bgc_orfs_parts, handle_helper.get_orf_domain_list(dirname),
-                                        orf_ori, orf_pos)
-
         nrpspred_dir = os.path.join(dirname, "nrpspks_predictions_txt")
         if os.path.isdir(nrpspred_dir):
             for filename in os.listdir(nrpspred_dir):
@@ -117,7 +111,7 @@ def create_predictions_by_antiSAMSHout(antismashouts, outdir):
                     base_pred_name = os.path.basename(filename)
                     #predictions_info_list.append(os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name))
                     #shutil.copyfile(os.path.join(nrpspred_dir, filename), os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name))
-                    gen_predictions(bgc_orfs_parts, os.path.join(nrpspred_dir, filename),
+                    gen_predictions(parts, os.path.join(nrpspred_dir, filename),
                                     os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name)[:-4],
                                     0, predictions_info_list, double_orf, double_aa, mt_aa, d_aa, dirname)
 
