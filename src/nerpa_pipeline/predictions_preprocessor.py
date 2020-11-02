@@ -8,6 +8,7 @@ import handle_PCP2
 import handle_MT
 import handle_E
 import handle_TE
+import splitter
 import handle_helper
 from logger import log
 
@@ -78,12 +79,35 @@ def create_predictions_by_antiSAMSHout(antismashouts, outdir):
         double_orf, double_aa = handle_PCP2.get_double_orfs_and_AA(dirname)
         mt_aa = handle_MT.get_MT_AA(dirname)
         d_aa = handle_E.get_D_AA(dirname)
-        print(d_aa)
+
+        orf_pos = handle_helper.get_orf_position(dirname)
+        orf_ori = handle_helper.get_orf_orientation(dirname)
+        orf_domains = handle_helper.get_orf_domain_list(dirname)
+
+        print("====PARTS BEFORE: ")
+        parts = handle_helper.get_parts(dirname)
+        handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
+
+        print("====SPLIT BY DIST:")
+        parts = splitter.split_by_dist(parts, orf_pos)
+        handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
+
+        print("====SPLIT BY SINGLE ORF WITH Starter-TE")
+        parts = splitter.split_by_one_orf_Starter_TE(parts, orf_ori, orf_domains)
+        handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
+
+        print("====REMOVE SINGLE DOMAINs ORFS")
+        parts = splitter.split_by_single_domain_orf(parts, orf_ori, orf_domains)
+        handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
+
+        print("====SPLIT AND REORDER")
+        parts = splitter.split_and_reorder(parts, orf_ori, orf_pos, orf_domains)
+        handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
+
+        print("=====PARTS after TE handle: ")
         bgc_orfs_parts = handle_TE.get_split_BGC(dirname)
-        
         handle_helper.debug_print_parts(dirname, bgc_orfs_parts, handle_helper.get_orf_domain_list(dirname),
-                                        handle_helper.get_orf_orientation(dirname),
-                                        handle_helper.get_orf_position(dirname))
+                                        orf_ori, orf_pos)
 
         nrpspred_dir = os.path.join(dirname, "nrpspks_predictions_txt")
         if os.path.isdir(nrpspred_dir):
