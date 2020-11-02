@@ -211,7 +211,7 @@ def run(args):
     local_monomers_cfg = os.path.join(main_out_dir, "monomers.tsv")
     copyfile(path_to_monomer_cfg, local_monomers_cfg)
     copyfile(path_to_monomer_logP, local_monomers_logP)
-
+    return
     comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_predictions + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" \"" + path_to_cfg + "\"\n"
     print(comand)
     os.system(comand)
