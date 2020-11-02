@@ -99,10 +99,35 @@ def get_orf_domain_list(dirname):
                         orf_domain_list[row[1]].append(row[6])
     return orf_domain_list
 
+
+def get_parts(dirname):
+    possible_BGC = []
+    txt_folder = os.path.join(dirname, "txt")
+    if  not os.path.isdir(txt_folder):
+        return possible_BGC
+
+    for filename in os.listdir(txt_folder):
+        if filename.endswith("_NRPS_PKS.txt"):
+            orfs_list = []
+            csv_file_with_orf = os.path.join(txt_folder, filename)
+
+            with open(csv_file_with_orf, 'r') as rf:
+                csv_reader = csv.reader(rf, delimiter='\t')
+                for row in csv_reader:
+                    if row[1] == "NRPSPKS_ID":
+                        continue
+
+                    if (len(orfs_list) == 0 or orfs_list[-1] != row[1]):
+                        orfs_list.append(row[1])
+
+            possible_BGC.append(orfs_list)
+    return  possible_BGC
+
+
 def debug_print_parts(filename, parts, orf_domain_list, orf_ori, orf_pos):
     print("Filename: " + filename)
     for i in range(len(parts)):
-        print("Part# " + str(i))
+        print("BGC# " + str(i))
         for j in range(len(parts[i])):
             cur_orf = parts[i][j]
             print(cur_orf + "[" + str(orf_pos[cur_orf][0]) + "-" +
