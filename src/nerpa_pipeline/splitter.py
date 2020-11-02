@@ -27,9 +27,9 @@ def end_by_TE_TD(orf, orf_domains, orf_ori):
 
 
 def start_by_Starter(orf, orf_domains, orf_ori):
-    if orf_ori[orf] == '+' and (orf_domains[orf][0] == "Starter"):
+    if orf_ori[orf] == '+' and (orf_domains[orf][0] == "C_Starter"):
         return True
-    if orf_ori[orf] == '-' and (orf_domains[orf][-1] == "Starter"):
+    if orf_ori[orf] == '-' and (orf_domains[orf][-1] == "C_Starter"):
         return True
     return False
 
@@ -43,7 +43,7 @@ def split_by_one_orf_Starter_TE(BGCs, orf_ori, orf_domains):
             if end_by_TE_TD(orf, orf_domains, orf_ori) and start_by_Starter(orf, orf_domains, orf_ori):
                 if i != cur_i:
                     res_bgcs.append(BGC[cur_i: i])
-                res_bgcs.append(BGC[i])
+                res_bgcs.append([BGC[i]])
                 cur_i = i + 1
         if cur_i != len(BGC):
             res_bgcs.append(BGC[cur_i: len(BGC)])
@@ -91,6 +91,32 @@ def TE_TD_count(lft, rgh, BGC, orf_domains):
     return counter
 
 
+def has_A_domain(BGC, orf_domains):
+    for orf in BGC:
+        if "A" in orf_domains[orf]:
+            return True
+    return False
+
+
+def is_correct(BGC, orf_ori, orf_pos, orf_domains):
+    if C_starter_count(0, len(BGC), BGC, orf_domains) > 1:
+        return False
+
+    if TE_TD_count(0, len(BGC), BGC, orf_domains) > 1:
+        return False
+
+    if C_starter_count(0, len(BGC), BGC, orf_domains) == 1 and (not start_by_Starter(BGC[0], orf_domains, orf_ori)):
+        return False
+
+    if TE_TD_count(0, len(BGC), BGC, orf_domains) == 1 and (not end_by_TE_TD(BGC[0], orf_domains, orf_ori)):
+        return False
+
+    if not has_A_domain(BGC, orf_domains):
+        return False
+
+    return True
+
+
 def is_correct_orfs_subseq(lft, rgh, BGC, orf_ori, orf_pos, orf_domains):
     if C_starter_count(lft, rgh, BGC, orf_domains) > 1:
         return False
@@ -122,11 +148,10 @@ def reorder(BGC, orf_ori, orf_pos, orf_domains):
     return [BGC]
 
 
-def is_correct(BGC, orf_ori, orf_pos, orf_domains):
-    return True
-
-
 def split_and_reorder(BGCs, orf_ori, orf_pos, orf_domains):
+    if is_correct(BGCs, orf_ori, orf_pos, orf_domains):
+        return BGCs
+
     res_bgcs = []
     for BGC in BGCs:
         for lft in range(len(BGC)):
@@ -139,7 +164,7 @@ def split_and_reorder(BGCs, orf_ori, orf_pos, orf_domains):
         bgcs_reorder += reorder(BGC, orf_ori, orf_pos, orf_domains)
 
     res_bgcs = []
-    for BGC in res_bgcs:
+    for BGC in bgcs_reorder:
         if is_correct(BGC, orf_ori, orf_pos, orf_domains):
             res_bgcs.append(BGC)
     return res_bgcs
