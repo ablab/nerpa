@@ -72,3 +72,74 @@ def split_by_single_domain_orf(BGCs, orf_ori, orf_domains):
             res_bgcs.append(BGC[cur_i:len(BGC)])
 
     return res_bgcs
+
+def C_starter_count(lft, rgh, BGC, orf_domains):
+    counter = 0
+    for i in range(lft, rgh):
+        for dm in orf_domains[BGC[i]]:
+            if dm == "C_Starter":
+                counter += 1
+    return counter
+
+
+def TE_TD_count(lft, rgh, BGC, orf_domains):
+    counter = 0
+    for i in range(lft, rgh):
+        for dm in orf_domains[BGC[i]]:
+            if dm == "TE" or dm == "TD":
+                counter += 1
+    return counter
+
+
+def is_correct_orfs_subseq(lft, rgh, BGC, orf_ori, orf_pos, orf_domains):
+    if C_starter_count(lft, rgh, BGC, orf_domains) > 1:
+        return False
+
+    if TE_TD_count(lft, rgh, BGC, orf_domains) > 1:
+        return False
+
+    return True
+
+
+def reorder(BGC, orf_ori, orf_pos, orf_domains):
+    C_starter_id = -1
+    for i in range(len(BGC)):
+        orf = BGC[i]
+        if "C_Starter" in orf_domains[orf]:
+            C_starter_id = i
+
+    if C_starter_id != -1:
+        BGC = [BGC[C_starter_id]] + BGC[0:C_starter_id] + BGC[C_starter_id + 1:]
+
+    TE_TD_id = -1
+    for i in range(len(BGC)):
+        orf = BGC[i]
+        if ("TE" in orf_domains[orf]) or ("TD" in orf_domains[orf]):
+            TE_TD_id = i
+
+    if TE_TD_id != -1:
+        BGC = BGC[0:TE_TD_id] + BGC[TE_TD_id + 1:] + [BGC[TE_TD_id]]
+    return [BGC]
+
+
+def is_correct(BGC, orf_ori, orf_pos, orf_domains):
+    return True
+
+
+def split_and_reorder(BGCs, orf_ori, orf_pos, orf_domains):
+    res_bgcs = []
+    for BGC in BGCs:
+        for lft in range(len(BGC)):
+            for rgh in range(lft, len(BGC)):
+                if is_correct_orfs_subseq(lft, rgh, BGC, orf_ori, orf_pos, orf_domains):
+                    res_bgcs.append(BGC[lft:rgh + 1])
+
+    bgcs_reorder = []
+    for BGC in res_bgcs:
+        bgcs_reorder += reorder(BGC, orf_ori, orf_pos, orf_domains)
+
+    res_bgcs = []
+    for BGC in res_bgcs:
+        if is_correct(BGC, orf_ori, orf_pos, orf_domains):
+            res_bgcs.append(BGC)
+    return res_bgcs
