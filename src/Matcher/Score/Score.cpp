@@ -74,32 +74,60 @@ matcher::Score::getTheBestAAInPred(const nrpsprediction::AAdomainPrediction &apr
 
 double getModificationScore(const aminoacid::Aminoacid &nrpAA,
         const std::vector<aminoacid::Modification> &mods) {
-    bool pred_has_met = false;
-    bool nrp_has_met = false;
-    for (int i = 0; i < mods.size(); ++i) {
-        if (mods[i].getId() == aminoacid::ModificationInfo::getIdByNameId("methylation")) {
-            pred_has_met = true;
-        }
+
+    std::vector<int> pred_mods_flags(aminoacid::ModificationInfo::MODIFICATION_CNT, 0);
+    for (auto &m : mods) {
+        pred_mods_flags[m.getId()] = 1;
     }
 
     auto mds = nrpAA.getModifications();
-    for (int i = 0; i < mds.size(); ++i) {
-        if (mds[i].getId() == aminoacid::ModificationInfo::getIdByNameId("methylation")) {
-            nrp_has_met = true;
+    std::vector<int> nrp_mods_flags(aminoacid::ModificationInfo::MODIFICATION_CNT, 0);
+    for (auto &m : mds) {
+        nrp_mods_flags[m.getId()] = 1;
+    }
+
+    double res = 0;
+    size_t DL_id = aminoacid::ModificationInfo::getIdByNameId("d-config");
+    for (int i = 0; i != aminoacid::ModificationInfo::MODIFICATION_CNT; ++i) {
+        if (i != DL_id) {
+            size_t coef = 3; //FF
+            if (pred_mods_flags[i] && nrp_mods_flags[i]) { //TT
+                coef = 0;
+            } else if (pred_mods_flags[i]) { //TF
+                coef = 1;
+            } else if (nrp_mods_flags[i]) { //FT
+                coef = 2;
+            }
+            res += aminoacid::ModificationInfo::COEFFICIENT[i][coef];
         }
     }
-    if (!nrp_has_met && !pred_has_met) {
-        return 0.1;
-    }
-    if (nrp_has_met && pred_has_met) {
-        return 2.2;
-    }
-    if (pred_has_met && !nrp_has_met) {
-        return -2.2;
-    }
-    if (!pred_has_met && nrp_has_met) {
-        return -2.2;
-    }
+    return res;
+//    bool pred_has_met = false;
+//    bool nrp_has_met = false;
+//    for (int i = 0; i < mods.size(); ++i) {
+//        if (mods[i].getId() == aminoacid::ModificationInfo::getIdByNameId("methylation")) {
+//            pred_has_met = true;
+//        }
+//    }
+//
+//    auto mds = nrpAA.getModifications();
+//    for (int i = 0; i < mds.size(); ++i) {
+//        if (mds[i].getId() == aminoacid::ModificationInfo::getIdByNameId("methylation")) {
+//            nrp_has_met = true;
+//        }
+//    }
+//    if (!nrp_has_met && !pred_has_met) {
+//        return 0.1;
+//    }
+//    if (nrp_has_met && pred_has_met) {
+//        return 2.2;
+//    }
+//    if (pred_has_met && !nrp_has_met) {
+//        return -2.2;
+//    }
+//    if (!pred_has_met && nrp_has_met) {
+//        return -2.2;
+//    }
 }
 
 double matcher::Score::probGenAA(const aminoacid::Aminoacid &nrpAA) const {
@@ -132,23 +160,33 @@ double getLDScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid 
     auto nrpConf = nrpAA.getConfiguration();
     auto predConf = predAA.getConfiguration();
 
+    if (nrpConf == aminoacid::Aminoacid::NA || predConf == aminoacid::Aminoacid::NA) {
+        return 0;
+    }
+
+    size_t DL_id = aminoacid::ModificationInfo::getIdByNameId("d-config");
+    size_t coef = 0; // TT
+
     if ((nrpConf == aminoacid::Aminoacid::L) && (predConf == aminoacid::Aminoacid::D)) {
-        return -0.8;
+        coef = 1; // TF
+//        return -0.8;
     }
 
     if ((nrpConf == aminoacid::Aminoacid::L) && (predConf == aminoacid::Aminoacid::L)) {
-        return 0.3;
+        coef = 3; // FF
+//        return 0.3;
     }
 
-    if ((nrpConf == aminoacid::Aminoacid::D) && (predConf == aminoacid::Aminoacid::D)) {
-        return 0.8;
-    }
+//    if ((nrpConf == aminoacid::Aminoacid::D) && (predConf == aminoacid::Aminoacid::D)) {
+//        return 0.8;
+//    }
 
     if ((nrpConf == aminoacid::Aminoacid::D) && (predConf == aminoacid::Aminoacid::L)) {
-        return -1.5;
+        coef = 2; // FT
+//        return -1.5;
     }
 
-    return 0;
+    return aminoacid::ModificationInfo::COEFFICIENT[DL_id][coef];
 }
 
 bool matcher::Score::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,

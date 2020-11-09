@@ -163,7 +163,15 @@ int main(int argc, char* argv[]) {
     aminoacid::ModificationInfo::init(args.modification_cfg);
     aminoacid::MonomerInfo::init(args.monomer_cfg, args.monomer_logP_cfg);
 
-    INFO("NRPs Matcher START");
+    for (int i = 0; i != aminoacid::ModificationInfo::MODIFICATION_CNT; ++i) {
+        std::cout << aminoacid::ModificationInfo::NAMES[i] << " ";
+        for (double x : aminoacid::ModificationInfo::COEFFICIENT[i]) {
+            std::cout << x << " ";
+        }
+        std::cout << std::endl;
+    }
+
+        INFO("NRPs Matcher START");
     INFO("Saving predictions");
     std::vector<nrpsprediction::BgcPrediction> preds = save_predictions(argv[1]);
     INFO("Saving NRPs structures");

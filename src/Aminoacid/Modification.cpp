@@ -13,7 +13,7 @@ namespace aminoacid {
 
     Modification::Modification(int id) {
         this->id = id;
-        formula = ModificationInfo::FORMULS[id];
+//        formula = ModificationInfo::FORMULS[id];
     }
 
     Modification::Modification() {
@@ -37,10 +37,10 @@ namespace aminoacid {
         this->formula = Formula();
     }
 
-    double Modification::getScore(int AAid) {
-        if (id != ModificationInfo::MODIFICATION_CNT && AAid != AminoacidInfo::AMINOACID_CNT) {
-            return ModificationInfo::COEFFICIENT[AAid][id];
-        }
-        return -1;
-    }
+//    double Modification::getScore(int AAid) {
+//        if (id != ModificationInfo::MODIFICATION_CNT && AAid != AminoacidInfo::AMINOACID_CNT) {
+//            return ModificationInfo::COEFFICIENT[AAid][id];
+//        }
+//        return -1;
+//    }
 }
