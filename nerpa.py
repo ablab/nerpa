@@ -2,12 +2,15 @@
 import sys
 import os
 import argparse
+import csv
 from shutil import copyfile
+import subprocess
 
 import nerpa_init
 
 nerpa_init.init()
 import handle_TE
+import handle_rban
 from logger import log
 
 path_to_exec_dir = os.path.dirname(os.path.abspath(__file__)) + "/"
@@ -15,10 +18,28 @@ path_to_exec_dir = os.path.dirname(os.path.abspath(__file__)) + "/"
 def parse_args():
     global parser
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--predictions", "-p", nargs=1, dest="predictions", help="path to file with paths to prediction files", type=str)
-    parser.add_argument("--lib_info", "-l", dest="lib_info", nargs=1, help="path to file with paths to mol files", type=str)
-    parser.add_argument("--antismash_output_list", dest="antismash_out", help="path to file with list of paths to antiSMASH output folders", type=str)
-    parser.add_argument("--antismash", "-a", dest="antismash", help="path to antiSMASH output or to directory with many antiSMASH outputs", type=str)
+    genomic_group = parser.add_argument_group('Genomic input', 'description')
+    genomic_group.add_argument("--predictions", "-p", nargs=1, dest="predictions",
+                                     help="path to file with paths to prediction files", type=str)
+    genomic_group.add_argument("--antismash_output_list", dest="antismash_out",
+                               help="path to file with list of paths to antiSMASH output folders", type=str)
+    genomic_group.add_argument("--antismash", "-a", dest="antismash", help="path to antiSMASH output or to directory with many antiSMASH outputs", type=str)
+
+    struct_group = parser.add_argument_group('Chemical input', 'description')
+    struct_input_group = struct_group.add_mutually_exclusive_group(required=True)
+    struct_input_group.add_argument("--smiles", dest="smiles", nargs='*',
+                        help="string (or several strings) with smiles", type=str)
+    struct_input_group.add_argument("--smiles-tsv", dest="smiles_tsv",
+                        help="csv with named columns", type=str)
+    struct_input_group.add_argument("--graphs", dest="graphs",
+                                    help="", type=str)
+    struct_group.add_argument("--col_smiles", dest="col_smiles",
+                        help="name of column with smiles [default='SMILES']", type=str, default='SMILES')
+    struct_group.add_argument("--col_id", dest="col_id",
+                        help="name of col with ids (if not provided, id=[number of row])", type=str)
+    struct_group.add_argument("--sep", dest="sep",
+                        help="separator in smiles-tsv", type=str, default='\t')
+
     parser.add_argument("--insertion", help="insertion score [default=-2.8]", default=-2.8, action="store")
     parser.add_argument("--deletion", help="deletion score [default=-5]", default=-5, action="store")
     parser.add_argument("--modification_cfg", help="path to file with modification description", action="store", type=str)
@@ -27,6 +48,50 @@ def parse_args():
     parser.add_argument("--local_output_dir", "-o", nargs=1, help="use this output dir", type=str)
     args = parser.parse_args()
     return args
+
+
+def check_tsv_ids_duplicates(reader, col_id):
+    ids = [row[col_id] for row in reader]
+    return len(ids) == len(set(ids))
+
+class ValidationError(Exception):
+    pass
+
+def validate(expr, msg=''):
+    if not expr:
+        raise ValidationError(msg)
+
+def validate_arguments(args):
+    try:
+        if not (args.predictions or args.antismash or args.antismash_out):
+            raise ValidationError(f'one of the arguments --predictions --antismash/-a --antismash_output_list is required')
+        if args.predictions and (args.antismash or args.antismash_out):
+            raise ValidationError(f'argument --predictions: not allowed with argument --antismash/-a or --antismash_output_list')
+
+        if args.smiles_tsv:
+            try:
+                with open(args.smiles_tsv, newline='') as f_in:
+                    reader = csv.DictReader(f_in, delimiter=args.sep, quoting=csv.QUOTE_NONE)
+                    validate(args.col_smiles in reader.fieldnames,
+                        f'Column "{args.col_smiles}" was specified but does not exist in {args.smiles_tsv}.')
+                    if args.col_id:
+                        validate(args.col_id in reader.fieldnames,
+                            f'Column "{args.col_id}" was specified but does not exist in {args.smiles_tsv}.')
+                        validate(check_tsv_ids_duplicates(reader, args.col_id),
+                            f'Duplicate IDs are found.')
+            except FileNotFoundError:
+                raise ValidationError(f'No such file: "{args.smiles_tsv}".')
+            except csv.Error as e:
+                raise ValidationError(f'Cannot parse "{args.smiles_tsv}": {e}.')
+            except Exception as e:
+                raise ValidationError(f'Invalid input file "{args.smiles_tsv}": {e}.')
+
+    except ValidationError as e:
+        if str(e):
+            log.err(f'{e}\n')
+        parser.print_help()
+        sys.exit()
+
 
 def print_cfg(args, output_dir):
     cfg_file = os.path.join(output_dir, "nerpa.cfg")
@@ -61,41 +126,40 @@ def which(program):
                 return exe_file
     return None
 
-def gen_graphs_by_mol(args, main_out_dir):
-    if not os.path.exists(os.path.dirname(main_out_dir + 'graphs/')):
-        os.makedirs(os.path.dirname(main_out_dir + 'graphs/'))
 
-    path_file = main_out_dir + "/path_to_graphs"
-    files_list = []
+def gen_graphs_from_smiles_tsv(args, main_out_dir, path_to_monomers_tsv, path_to_graphs, path_to_rban_jar):
+    path_to_rban_input = os.path.join(main_out_dir, 'rban.input.json')
+    if args.smiles_tsv:
+        handle_rban.generate_rban_input_from_smiles_tsv(
+            args.smiles_tsv, path_to_rban_input, sep=args.sep, id_col_name=args.col_id, smi_col_name=args.col_smiles)
+    else:
+        handle_rban.generate_rban_input_from_smiles_string(args.smiles, path_to_rban_input)
 
-    f = open(path_file, 'w')
-    with open(args.lib_info[0]) as fr:
-        for line in fr:
-            line_parts = line.split()
-            file = line_parts[0]
-            if (file[0] != '/'):
-                file = '/'.join(os.path.abspath(args.lib_info[0]).split('/')[:-1]) + "/" + file
+    path_to_rban_output = os.path.join(main_out_dir, 'rban.output.json')
+    log.log('Running rBAN...')
+    command = ['java', '-jar', path_to_rban_jar,
+               # '-monomersDB', '',
+               '-inputFile', path_to_rban_input,
+               '-outputFolder', main_out_dir,
+               '-outputFileName', os.path.basename(path_to_rban_output)]
+    try:
+        p = subprocess.run(command, text=True, capture_output=True,
+                           # check=True
+                           )
+        if p.stderr:
+            log.err(p.stderr)
+        for line in p.stdout.split('\n'):
+            if line.startswith('WARNING'):
+                log.warn('rBAN ' + line)
+    except subprocess.CalledProcessError as e:
+        log.err(str(e))
+        sys.exit()
+    log.log('Done.')
 
-            nfname = file.split('/')[-1][:-3] + "gr"
-            info = ' '.join(line_parts[1:])
+    handle_rban.generate_graphs_from_rban_output(
+        path_to_rban_output, path_to_monomers_tsv, path_to_graphs
+    )
 
-            prfix_to_search = ["./", "../", "../../", "../share/", "../share/npdtools/", "../share/nerpa/" ]
-            config_folder = "configs"
-            fragmintation_rule_folder = "Fragmentation_rule"
-            path_to_program = which("print_structure")[:-15]
-
-
-            for prefix in prfix_to_search:
-                if (os.path.exists(path_to_program + prefix + fragmintation_rule_folder)):
-                    config_folder = path_to_program + prefix
-
-            print(os.path.join(path_to_program, "print_structure") + " " + file + " --print_rule_fragmented_graph -C "+ config_folder + " > " + main_out_dir + "graphs/" + nfname)
-            os.system(os.path.join(path_to_program, "print_structure") + " " + file + " --print_rule_fragmented_graph -C "+ config_folder + " > " + main_out_dir + "graphs/" + nfname)
-            f.write((main_out_dir + "graphs/" + nfname + " " + info + "\n"))
-            files_list.append(main_out_dir + "graphs/" + nfname)
-
-    f.close()
-    return path_file, files_list
 
 def copy_prediction_list(args, main_out_dir):
     new_prediction_path = os.path.join(main_out_dir, "prediction.info")
@@ -136,24 +200,7 @@ def get_antismash_list(args):
 def run(args):
     path_to_cur = os.path.dirname(os.path.abspath(__file__))
 
-    if (len(sys.argv) == 1):
-        parser.print_help()
-        sys.exit()
-
-    if (args.predictions is None) and (args.antismash_out is None) and (args.antismash is None):
-        log.err("None prediction info file provide")
-        parser.print_help()
-        sys.exit()
-
-    if (args.predictions is not None) and (args.antismash_out is not None):
-        log.err("You cann't use --predictions and --antismash_output_list simultaneously")
-        parser.print_help()
-        sys.exit()
-
-    if (args.lib_info is None):
-        log.err("None NRP structure info file provide")
-        parser.print_help()
-        sys.exit()
+    validate_arguments(args)
 
     main_out_dir = os.path.abspath(".") + "/"
     if args.local_output_dir is not None:
@@ -161,10 +208,6 @@ def run(args):
 
     if not os.path.exists(main_out_dir):
         os.makedirs(main_out_dir)
-
-    path_to_graphs = os.path.join(main_out_dir, 'path_to_graphs')
-    copyfile(args.lib_info[0], path_to_graphs)
-
 
     if (args.predictions is not None):
         path_predictions = os.path.abspath(copy_prediction_list(args, main_out_dir))
@@ -211,6 +254,13 @@ def run(args):
     local_monomers_cfg = os.path.join(main_out_dir, "monomers.tsv")
     copyfile(path_to_monomer_cfg, local_monomers_cfg)
     copyfile(path_to_monomer_logP, local_monomers_logP)
+
+    path_to_graphs = os.path.join(main_out_dir, 'path_to_graphs')
+    if args.graphs:
+        copyfile(args.graphs, path_to_graphs)
+    else:
+        path_to_rban = os.path.join(path_to_cur, '../share/rBAN/rBAN-1.0.jar')
+        gen_graphs_from_smiles_tsv(args, main_out_dir, local_monomers_cfg, path_to_graphs, path_to_rban)
 
     comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_predictions + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" \"" + path_to_cfg + "\"\n"
     print(comand)
