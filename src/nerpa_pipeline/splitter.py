@@ -124,8 +124,17 @@ def is_correct_orfs_subseq(lft, rgh, BGC, orf_ori, orf_pos, orf_domains):
 
     return True
 
+def reverse_neg(BGC, orf_ori):
+    for orf in BGC:
+        if orf_ori[orf] == '+':
+            return BGC
+
+    return list(reversed(BGC))
+
 
 def reorder(BGC, orf_ori, orf_pos, orf_domains):
+    BGC = reverse_neg(BGC, orf_ori)
+
     C_starter_id = -1
     for i in range(len(BGC)):
         orf = BGC[i]
@@ -149,7 +158,7 @@ def reorder(BGC, orf_ori, orf_pos, orf_domains):
 def split_and_reorder(BGCs, orf_ori, orf_pos, orf_domains):
     res_bgcs = []
     for BGC in BGCs:
-        if is_correct(BGC, orf_ori, orf_pos, orf_domains):
+        if is_correct(reverse_neg(BGC, orf_ori), orf_ori, orf_pos, orf_domains):
             res_bgcs.append(BGC)
         else:
             for lft in range(len(BGC)):
