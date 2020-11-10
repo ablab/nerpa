@@ -76,18 +76,16 @@ def split_by_single_domain_orf(BGCs, orf_ori, orf_domains):
 def C_starter_count(lft, rgh, BGC, orf_domains):
     counter = 0
     for i in range(lft, rgh):
-        for dm in orf_domains[BGC[i]]:
-            if dm == "C_Starter":
-                counter += 1
+        if "C_Starter" in orf_domains[BGC[i]]:
+            counter += 1
     return counter
 
 
 def TE_TD_count(lft, rgh, BGC, orf_domains):
     counter = 0
     for i in range(lft, rgh):
-        for dm in orf_domains[BGC[i]]:
-            if dm == "TE" or dm == "TD":
-                counter += 1
+        if ("TE" in orf_domains[BGC[i]]) or ("TD" in orf_domains[BGC[i]]):
+            counter += 1
     return counter
 
 
