@@ -96,7 +96,24 @@ def has_A_domain(BGC, orf_domains):
     return False
 
 
+def is_correct_NCterm(BGC, orf_ori, orf_domains):
+    if len(BGC) == 0:
+        return True
+    if orf_ori[BGC[0]] == '+' and orf_domains[BGC[0]][0] == "NRPS-COM_Nterm":
+        return False
+    if orf_ori[BGC[0]] == '-' and orf_domains[BGC[0]][-1] == "NRPS-COM_Nterm":
+        return False
+    if orf_ori[BGC[-1]] == '+' and orf_domains[BGC[-1]][-1] == "NRPS-COM_Cterm":
+        return False
+    if orf_ori[BGC[-1]] == '-' and orf_domains[BGC[-1]][0] == "NRPS-COM_Cterm":
+        return False
+    return True
+
+
 def is_correct(BGC, orf_ori, orf_pos, orf_domains):
+    if not is_correct_NCterm(BGC, orf_ori, orf_domains):
+        return False
+
     if C_starter_count(0, len(BGC), BGC, orf_domains) > 1:
         return False
 
@@ -131,6 +148,15 @@ def reverse_neg(BGC, orf_ori):
 
     return list(reversed(BGC))
 
+def generate_all_perm(BGC, orf_ori, orf_pos, orf_domains):
+    import itertools
+    Perm_BGC = []
+    row_perm_BGC = list(itertools.permutations(BGC))
+    for bgc in row_perm_BGC:
+        if is_correct(BGC, orf_ori, orf_pos, orf_domains):
+            Perm_BGC.append(bgc)
+    return Perm_BGC
+
 
 def reorder(BGC, orf_ori, orf_pos, orf_domains):
     BGC = reverse_neg(BGC, orf_ori)
@@ -152,6 +178,10 @@ def reorder(BGC, orf_ori, orf_pos, orf_domains):
 
     if TE_TD_id != -1:
         BGC = BGC[0:TE_TD_id] + BGC[TE_TD_id + 1:] + [BGC[TE_TD_id]]
+
+    if not is_correct_NCterm(BGC, orf_ori, orf_domains):
+        return generate_all_perm(BGC, orf_ori, orf_pos, orf_domains)
+
     return [BGC]
 
 

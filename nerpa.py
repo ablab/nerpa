@@ -275,6 +275,7 @@ def run(args):
         path_to_monomers = os.path.join(path_to_cur, '../share/rBAN/nrproMonomers_nerpa.json')
         gen_graphs_from_smiles_tsv(args, main_out_dir, local_monomers_cfg, path_to_graphs, path_to_rban, path_to_monomers)
 
+
     comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_predictions + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" \"" + path_to_cfg + "\"\n"
     print(comand)
     os.system(comand)
