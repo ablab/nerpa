@@ -98,7 +98,7 @@ def __parse_location(location):
     return start, end, strand
 
 
-def handle_single_input(path, output_dir, known_codes, verbose=False):
+def handle_single_input(path, output_dir, naming_style, known_codes, verbose=False):
     info('Processing ' + path, verbose=verbose)
     path = os.path.abspath(path)
     main_json_path = path
@@ -133,7 +133,8 @@ def handle_single_input(path, output_dir, known_codes, verbose=False):
                         prefix, ctg_id, orf_idx, amp_binding = prediction.split('_')
                         a_idx = amp_binding.split('.')[1]
                         stachelhaus_seq = domain_predictions[prediction]["NRPSPredictor2"]["stachelhaus_seq"].upper()
-                        parsed_predictions.append({"orf": int(orf_idx), "A": int(a_idx),
+                        parsed_predictions.append({"v5_name": prediction,
+                                                   "orf": int(orf_idx), "A": int(a_idx),
                                                    "signature": stachelhaus_seq,
                                                    "svm": __get_svm_results(domain_predictions[prediction]["NRPSPredictor2"])})
 
@@ -160,25 +161,36 @@ def handle_single_input(path, output_dir, known_codes, verbose=False):
                 # FIXME: remove: for debugging purposes only
                 # if ctg_id == 'ctg12':
                 #     t = 1
-                info('\tprocessing contig: %s' % ctg_id, verbose=verbose)
+                seq_entry_id = contig_data['id']
+                info('\tprocessing contig (%s): %s' % (seq_entry_id, ctg_id), verbose=verbose)
                 parsed_predictions.sort(key=lambda x: (x["orf"], x["A"]))
-                cur_contig_codes_output_fpath = __get_contig_output_fpath(output_dir, ctg_id, type='codes')
-                cur_contig_svm_output_fpath = __get_contig_output_fpath(output_dir, ctg_id, type='svm')
+                cur_contig_codes_output_fpath = __get_contig_output_fpath(output_dir,
+                                                seq_entry_id if naming_style == 'v5' else ctg_id, type='codes')
+                cur_contig_svm_output_fpath = __get_contig_output_fpath(output_dir,
+                                              seq_entry_id if naming_style == 'v5' else ctg_id, type='svm')
                 with open(cur_contig_codes_output_fpath, 'w') as codes_f:
                     with open(cur_contig_svm_output_fpath, 'w') as svm_f:
                         svm_f.write(SVM_HEADER)
                         for prediction in parsed_predictions:
-                            entry_id = __get_entry_id(ctg_id, prediction["orf"], prediction["A"])
+                            entry_id = __get_entry_id(ctg_id, prediction["orf"], prediction["A"]) \
+                                if naming_style == 'v3' else prediction["v5_name"]
                             main_aa_pred, aa_pred_list = get_prediction_from_signature(prediction["signature"], known_codes)
                             codes_f.write('\t'.join([entry_id, main_aa_pred, aa_pred_list]) + '\n')
                             svm_f.write('\t'.join([entry_id, prediction["svm"]]) + '\n')
-                            info('\t\tprocessed ORF: %s, A-domain: %s, Stachelhaus code: %s' %
-                                 (prediction["orf"], prediction["A"], prediction["signature"]), verbose=verbose)
+                            info('\t\tprocessed (%s) ORF: %s, A-domain: %s, Stachelhaus code: %s' %
+                                 (prediction["v5_name"], prediction["orf"], prediction["A"], prediction["signature"]),
+                                 verbose=verbose)
 
             # part 2: parsing features and writing _genes.txt and _NRPS_PKS.txt files
+            if not parsed_predictions:
+                continue  # TODO: check whether we need "empty" files for entries without NRPS/PKS just for consistency
             seq_record_id = contig_data['id'].split('.')[0]  # for consistency with antiSMASH v.3 naming logic, e.g. 'JNWS01000001.1' --> 'JNWS01000001'
-            cur_contig_gene_output_fpath = __get_contig_output_fpath(output_dir, seq_record_id, type='gene')
-            cur_contig_NRPS_PKS_output_fpath = __get_contig_output_fpath(output_dir, seq_record_id, type='NRPS_PKS')
+            # TODO: check whether it is imporant to keep seq_record_id style in Nerpa;
+            # otherwise it is better to have only seq_entry_id or ctg_id (depending on the naming style)
+            cur_contig_gene_output_fpath = __get_contig_output_fpath(output_dir,
+                                           seq_entry_id if naming_style == 'v5' else ctg_id, type='gene')
+            cur_contig_NRPS_PKS_output_fpath = __get_contig_output_fpath(output_dir,
+                                               seq_entry_id if naming_style == 'v5' else ctg_id, type='NRPS_PKS')
 
             regions_of_interest = []
             for feature in contig_data['features']:
@@ -200,8 +212,9 @@ def handle_single_input(path, output_dir, known_codes, verbose=False):
                         if end < regions_of_interest[cur_reg_idx][0]:
                             continue
 
-                        ctg_id, orf_idx = feature['qualifiers']['locus_tag'][0].split('_')  # e.g. 'locus_tag' = ['ctg1_1']
-                        orf_id = __get_entry_id(ctg_id, orf_idx)
+                        locus_tag = feature['qualifiers']['locus_tag'][0]
+                        ctg_id, orf_idx = locus_tag.split('_')  # e.g. 'locus_tag' = ['ctg1_1']
+                        orf_id = __get_entry_id(ctg_id, orf_idx) if naming_style == 'v3' else locus_tag
                         gene_f.write('\t'.join(map(str,
                                                    [orf_id, start, end, strand, '', orf_id, 'unannotated orf']))
                                      + '\n')
@@ -233,7 +246,7 @@ def handle_single_input(path, output_dir, known_codes, verbose=False):
                         ctg_id, orf_idx = locus_tag.split('_')  # e.g. 'locus_tag' = ['ctg1_1']
                         entry = NRPS_PKS_entry()
                         entry.Cluster_ID = contig_data['id'] + '_c%d' % (cur_reg_idx + 1)
-                        entry.NRPSPKS_ID = __get_entry_id(ctg_id, orf_idx)
+                        entry.NRPSPKS_ID = __get_entry_id(ctg_id, orf_idx) if naming_style == 'v3' else locus_tag
                         if last_CDS_before_aSDomain is not None:
                             if 'qualifiers' in last_CDS_before_aSDomain and 'NRPS_PKS' in last_CDS_before_aSDomain['qualifiers']:
                                 NRPS_PKS_type = last_CDS_before_aSDomain['qualifiers']['NRPS_PKS'][-1]

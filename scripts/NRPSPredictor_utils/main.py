@@ -46,6 +46,16 @@ def main():
              '(or in the default location if "default" is specified: %s)' % config.DEFAULT_OUTPUT_CODES
     )
     parser.add_argument(
+        '-n', '--naming-style',
+        choices=['v3', 'v5', 'mix'],
+        default='v3',
+        help='Naming style for A domains and TXT files.'
+             '"v3" results in names like "ctg34_orf00040_A1" and "ctg34_nrpspredictor2_codes.txt";'
+             '"v5" results in names like "nrpspksdomains_ctg34_39_AMP-binding.1" and "JOGG01000034.1_nrpspredictor2_codes.txt"'
+             '"mix" results in names like "nrpspksdomains_ctg34_39_AMP-binding.1" and "ctg34_nrpspredictor2_codes.txt". '
+             'Default: "%(default)s"'
+    )
+    parser.add_argument(
         '-m', '--mode',
         choices=['classic', 'weighted', 'hybrid'],
         default='classic',
@@ -83,7 +93,7 @@ def main():
         error('File with codes (--code) does not exist or its format cannot be recognized. Aborting..', exit=True)
 
     for input_path in args.inputs:
-        json_handler.handle_single_input(input_path, args.output_dir, known_codes, args.verbose)
+        json_handler.handle_single_input(input_path, args.output_dir, args.naming_style, known_codes, args.verbose)
 
 
 if __name__ == "__main__":
