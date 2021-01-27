@@ -3,6 +3,7 @@
 //
 
 #include <fstream>
+#include <Logger/logger.hpp>
 #include "MonomerInfo.h"
 #include "AminoacidInfo.h"
 #include "ModificationInfo.h"
