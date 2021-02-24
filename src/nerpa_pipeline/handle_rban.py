@@ -7,14 +7,6 @@ import subprocess
 from logger import log
 
 import handle_DL
-USE_DL=True
-
-try:
-    import handle_DL
-    USE_DL=True
-except ImportError:
-    log.warn(f'Unable to import RDKit. Stereoisometry information will not be used.')
-    USE_DL=False
 
 
 # TODO: move this section to some sort of config file
@@ -39,14 +31,13 @@ def process_single_record(rban_record, nerpa_monomers, allowed_bond_types, hybri
     nodes = []
     nodes = [m['monomer']['monomer']['monomer'] for m in g['monomers']]
     is_pk = [False] * len(nodes)
-    if USE_DL:
-        try:
-            is_d = handle_DL.get_monomers_chirality(rban_record)
-        except Exception as e:
-            log.warn(f'Unable to get isomeric information for {rban_record["id"]} : {e}')
-            is_d = [None] * len(nodes)
-    else:
+
+    try:
+        is_d = handle_DL.get_monomers_chirality(rban_record)
+    except Exception as e:
+        log.warn(f'Unable to get isomeric information for {rban_record["id"]} : {e}')
         is_d = [None] * len(nodes)
+
 
     for k, v in hybrid_monomers_dict.items():
         nodes[k] = v
@@ -159,10 +150,8 @@ def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban):
 def generate_graphs_from_rban_output(path_to_rban_output, path_to_monomers_tsv, path_to_graphs, main_out_dir, path_to_rban):
     recognized_monomers = [x.split()[0] for x in open(path_to_monomers_tsv)]
     recognized_monomers = recognized_monomers[1:]
-    if USE_DL:
-        hybrid_monomers_dict = rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban)
-    else:
-        hybrid_monomers_dict = defaultdict(dict)
+    hybrid_monomers_dict = rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban)
+
     with open(path_to_graphs, 'w') as f_out:
         with open(path_to_rban_output) as f_in:
             for i, rban_record in enumerate(json.load(f_in)):
