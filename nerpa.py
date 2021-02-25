@@ -127,7 +127,7 @@ def which(program):
     return None
 
 
-def gen_graphs_from_smiles_tsv(args, main_out_dir, path_to_monomers_tsv, path_to_graphs, path_to_rban_jar):
+def gen_graphs_from_smiles_tsv(args, main_out_dir, path_to_monomers_tsv, path_to_graphs, path_to_rban_jar, path_to_monomers):
     path_to_rban_input = os.path.join(main_out_dir, 'rban.input.json')
     if args.smiles_tsv:
         handle_rban.generate_rban_input_from_smiles_tsv(
@@ -138,7 +138,7 @@ def gen_graphs_from_smiles_tsv(args, main_out_dir, path_to_monomers_tsv, path_to
     path_to_rban_output = os.path.join(main_out_dir, 'rban.output.json')
     log.log('Running rBAN...')
     command = ['java', '-jar', path_to_rban_jar,
-               # '-monomersDB', '',
+               '-monomersDB', path_to_monomers,
                '-inputFile', path_to_rban_input,
                '-outputFolder', main_out_dir,
                '-outputFileName', os.path.basename(path_to_rban_output)]
@@ -258,7 +258,8 @@ def run(args):
         copyfile(args.graphs, path_to_graphs)
     else:
         path_to_rban = os.path.join(path_to_cur, '../share/rBAN/rBAN-1.0.jar')
-        gen_graphs_from_smiles_tsv(args, main_out_dir, local_monomers_cfg, path_to_graphs, path_to_rban)
+        path_to_monomers = os.path.join(path_to_cur, '../share/rBAN/nrproMonomers_nerpa.json')
+        gen_graphs_from_smiles_tsv(args, main_out_dir, local_monomers_cfg, path_to_graphs, path_to_rban, path_to_monomers)
 
     comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_predictions + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" \"" + path_to_cfg + "\"\n"
     print(comand)
