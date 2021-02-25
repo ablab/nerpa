@@ -11,7 +11,7 @@ class NoChiralCenters(Exception):
     pass
 class NoCarboxyl(Exception):
     pass
-class WTF(Exception):
+class UnexpectedError(Exception):
     pass
 class RDKitError(Exception):
     pass
@@ -160,15 +160,16 @@ def split_by_monomer_bonds(rban_record):
     bonds, types = get_monomer_bonds(rwmol, rban_record)
     rwmol = split_other_bonds(rwmol, bonds)
 
-    frag_ids = rdc.GetMolFrags(rwmol)
+    frags = rdc.GetMolFrags(rwmol)
     frag_smi = [rdc.MolToSmiles(x) for x in rdc.GetMolFrags(rwmol, asMols=True)]
 
-    monomer_smiles_dict = defaultdict(list)
-    for k, monomer in enumerate(monomers):
+    monomer_smiles_dict = {}
+    for monomer in monomers:
         monomer_atoms = set(monomer['monomer']['atoms'])
-        for i, frag_atoms in enumerate(map(set, frag_ids)):
+        monomer_idx = monomer['monomer']['index']
+        for frag_idx, frag_atoms in enumerate(map(set, frags)):
             if len(monomer_atoms & frag_atoms) > 0:
-                monomer_smiles_dict[k].append(frag_smi[i])
+                monomer_smiles_dict[monomer_idx] = frag_smi[frag_idx]
     return monomer_smiles_dict
 
 
@@ -229,7 +230,7 @@ def get_aa_chirality(smi):
         return res_alpha
     if res_beta is not None:
         return res_beta
-    raise WTF
+    raise UnexpectedError
 
 
 def has_chiral_centers(smi):
@@ -250,24 +251,21 @@ def get_monomers_chirality(rban_record, debug=False):
     :param debug:
     :return:
     """
-    monomers = rban_record['monomericGraph']['monomericGraph']['monomers']
     if not has_chiral_centers(rban_record['isomericSmiles']):
-        return [None] * len(monomers)
+        return {}
 
     monomer_smiles_dict = split_by_monomer_bonds(rban_record)
-    res = []
-    for i in range(len(monomers)):
+    res = {}
+    for monomer_idx, smi in monomer_smiles_dict.items():
         try:
-            res.append(get_aa_chirality(monomer_smiles_dict[i][0]))
+            res[monomer_idx] = get_aa_chirality(smi)
         except NoChiralCenters:
-            if debug: print(f'{i}: NoChiralCenters')
-            res.append(None)
+            if debug: print(f'{monomer_idx}: NoChiralCenters')
         except NoCarboxyl:
-            if debug: print(f'{i}: NoCarboxyl')
-            res.append(None)
-        except WTF:
-            if debug: print(f'{i}: WTF:', monomer_smiles_dict[i][0])
-            res.append(None)
+            if debug: print(f'{monomer_idx}: NoCarboxyl')
+        except UnexpectedError:
+            if debug: print(f'{monomer_idx}: UnexpectedError:', smi)
+
     return res
 
 
