@@ -8,7 +8,7 @@ import subprocess
 from logger import log
 import networkx as nx
 
-import handle_DL
+import handle_monomers
 
 
 # TODO: move this section to some sort of config file
@@ -136,7 +136,7 @@ def process_single_record(rban_record, recognized_monomers, backbone_bond_types,
     structure_id = rban_record['id']
 
     try:
-        chirality = handle_DL.get_monomers_chirality(rban_record)
+        chirality = handle_monomers.get_monomers_chirality(rban_record)
         for i, d in chirality.items():
             G.nodes[i]['isD'] = d
     except Exception as e:
@@ -205,10 +205,10 @@ def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban):
                     smi = monomer['monomer']['monomer']['smiles']
                     monomer_id = monomer['monomer']['index']
                     try:
-                        aa_smi, pk_smi, _ = handle_DL.split_aa_pk_hybrid(smi)
+                        aa_smi, pk_smi, _ = handle_monomers.split_aa_pk_hybrid(smi)
                         new_id = f'{struct_id}_{monomer_id}'
                         new_monomers.append((aa_smi, new_id))
-                    except handle_DL.PKError:
+                    except handle_monomers.PKError:
                         pass
     new_rban_input = os.path.join(main_out_dir, 'rban-putative-hybrids.input.json')
     generate_rban_input_from_list(new_monomers, new_rban_input)
