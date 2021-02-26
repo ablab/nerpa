@@ -4,17 +4,19 @@ from contextlib import redirect_stderr
 from functools import wraps
 
 from rdkit import Chem as rdc
+import networkx as nx
 
 
 class NoChiralCenters(Exception):
     pass
 class NoCarboxyl(Exception):
     pass
-class WTF(Exception):
+class UnexpectedError(Exception):
     pass
 class RDKitError(Exception):
     pass
-
+class PKError(Exception):
+    pass
 
 def handle_RDKit_errors(suppress=True):
     def decorator(func):
@@ -158,15 +160,16 @@ def split_by_monomer_bonds(rban_record):
     bonds, types = get_monomer_bonds(rwmol, rban_record)
     rwmol = split_other_bonds(rwmol, bonds)
 
-    frag_ids = rdc.GetMolFrags(rwmol)
+    frags = rdc.GetMolFrags(rwmol)
     frag_smi = [rdc.MolToSmiles(x) for x in rdc.GetMolFrags(rwmol, asMols=True)]
 
-    monomer_smiles_dict = defaultdict(list)
-    for k, monomer in enumerate(monomers):
+    monomer_smiles_dict = {}
+    for monomer in monomers:
         monomer_atoms = set(monomer['monomer']['atoms'])
-        for i, frag_atoms in enumerate(map(set, frag_ids)):
+        monomer_idx = monomer['monomer']['index']
+        for frag_idx, frag_atoms in enumerate(map(set, frags)):
             if len(monomer_atoms & frag_atoms) > 0:
-                monomer_smiles_dict[k].append(frag_smi[i])
+                monomer_smiles_dict[monomer_idx] = frag_smi[frag_idx]
     return monomer_smiles_dict
 
 
@@ -181,7 +184,7 @@ def get_aa_chirality(smi):
         NCR_pattern = 'NCR' * 2
         for idx, rs in chiral_centers:
             # Sadly, we cannot make use of rs here, see
-            # https://chemistry.stackexchange.com/questions/90826/difference-between-ld-and-sr-in-naming
+            # https://rdcistry.stackexchange.com/questions/90826/difference-between-ld-and-sr-in-naming
             if idx in match:
                 ch_center = mol.GetAtomWithIdx(idx)
                 neighbors = [a.GetIdx() for a in ch_center.GetNeighbors()]
@@ -227,7 +230,7 @@ def get_aa_chirality(smi):
         return res_alpha
     if res_beta is not None:
         return res_beta
-    raise WTF
+    raise UnexpectedError
 
 
 def has_chiral_centers(smi):
@@ -248,22 +251,145 @@ def get_monomers_chirality(rban_record, debug=False):
     :param debug:
     :return:
     """
-    monomers = rban_record['monomericGraph']['monomericGraph']['monomers']
     if not has_chiral_centers(rban_record['isomericSmiles']):
-        return [None] * len(monomers)
+        return {}
 
     monomer_smiles_dict = split_by_monomer_bonds(rban_record)
-    res = []
-    for i in range(len(monomers)):
+    res = {}
+    for monomer_idx, smi in monomer_smiles_dict.items():
         try:
-            res.append(get_aa_chirality(monomer_smiles_dict[i][0]))
+            res[monomer_idx] = get_aa_chirality(smi)
         except NoChiralCenters:
-            if debug: print(f'{i}: NoChiralCenters')
-            res.append(None)
+            if debug: print(f'{monomer_idx}: NoChiralCenters')
         except NoCarboxyl:
-            if debug: print(f'{i}: NoCarboxyl')
-            res.append(None)
-        except WTF:
-            if debug: print(f'{i}: WTF:', monomer_smiles_dict[i][0])
-            res.append(None)
+            if debug: print(f'{monomer_idx}: NoCarboxyl')
+        except UnexpectedError:
+            if debug: print(f'{monomer_idx}: UnexpectedError:', smi)
+
     return res
+
+
+def mol_to_nx(mol):
+    G = nx.Graph()
+    for atom in mol.GetAtoms():
+        G.add_node(atom.GetIdx(),
+                   atomic_num=atom.GetAtomicNum(),
+                   formal_charge=atom.GetFormalCharge(),
+                   chiral_tag=atom.GetChiralTag(),
+                   hybridization=atom.GetHybridization(),
+                   num_explicit_hs=atom.GetNumExplicitHs(),
+                   is_aromatic=atom.GetIsAromatic())
+    for bond in mol.GetBonds():
+        G.add_edge(bond.GetBeginAtomIdx(),
+                   bond.GetEndAtomIdx(),
+                   bond_type=bond.GetBondType())
+    return G
+
+
+def find_aa_pk_bond(mol):
+    """
+        returns pair of atom indices (a1, a2)
+        a1: nrp end
+        a2: pk end
+    """
+    G = mol_to_nx(mol)
+
+    cooh = rdc.MolFromSmarts('[CX3](=[OX1])O')
+    cooh_match = mol.GetSubstructMatches(cooh)
+    if not cooh_match:
+        raise PKError
+
+    # backbone starting carbon
+    starts = [x[0] for x in cooh_match]
+
+    # identify all nitrogens
+    nitrogens = [atom.GetIdx() for atom in mol.GetAtoms() if atom.GetAtomicNum() == 7]
+    if not nitrogens:
+        raise PKError
+
+    # identify all putative backbone ends (carbons connected to nitrogens)
+    ends = sorted(list(
+        set(c for n in nitrogens for c in G.neighbors(n)
+            if G.nodes[c]['atomic_num'] == 6)
+    ))
+
+    cyclic_nodes = set(node for cycle in nx.cycle_basis(G) for node in cycle)
+
+    # list of all backbone candidates (no cycles allowed!)
+    paths = []
+    for s in starts:
+        for e in ends:
+            for pth in nx.shortest_simple_paths(G, s, e):
+                try:
+                    for x in pth:
+                        if G.nodes[x]['atomic_num'] != 6:
+                            raise
+                    # exclude last carbon to support Proline & Homoproline
+                    for x in pth[:-1]:
+                        if x in cyclic_nodes:
+                            raise
+                except:
+                    pass
+                if len(pth) > 3:
+                    paths.append((len(pth), e, pth))
+    if not paths:
+        raise PKError
+    paths = sorted(paths)
+    shortest_path = paths[0][2]
+    if len(shortest_path) % 2:
+        bond_break = (shortest_path[-3], shortest_path[-4])
+    else:
+        bond_break = (shortest_path[-2], shortest_path[-3])
+    return bond_break
+
+
+def split_aa_pk_hybrid(smi):
+    mol = rdc.MolFromSmiles(smi)
+    if not mol:
+        raise PKError
+    bond_break = find_aa_pk_bond(mol)
+
+    mw = rdc.RWMol(mol)
+    oxs = [a.GetIdx() for a in mw.GetAtomWithIdx(bond_break[0]).GetNeighbors()
+           if a.GetAtomicNum() == 8]
+    if len(oxs) > 1:
+        raise PKError
+
+    if oxs:
+        bond_type = mw.GetBondBetweenAtoms(bond_break[0], oxs[0]).GetBondType()
+        if bond_type == rdc.BondType.DOUBLE:
+            cond_type = 'KS'
+            new_ox = mw.AddAtom(rdc.Atom(8))
+            mw.AddBond(bond_break[0], new_ox, rdc.BondType.SINGLE)
+        elif bond_type == rdc.BondType.SINGLE:
+            cond_type = 'KS+KR'
+            new_ox = mw.AddAtom(rdc.Atom(8))
+            mw.AddBond(bond_break[0], new_ox, rdc.BondType.DOUBLE)
+        else:
+            raise PKError
+    else:
+        bond_type = mw.GetBondBetweenAtoms(*bond_break).GetBondType()
+        if bond_type == rdc.BondType.DOUBLE:
+            cond_type = 'KS+KR+DH'
+        elif bond_type == rdc.BondType.SINGLE:
+            cond_type = 'KS+KR+DH+ER'
+        else:
+            raise PKError
+        new_ox1 = mw.AddAtom(rdc.Atom(8))
+        new_ox2 = mw.AddAtom(rdc.Atom(8))
+        mw.AddBond(bond_break[0], new_ox1, rdc.BondType.SINGLE)
+        mw.AddBond(bond_break[0], new_ox2, rdc.BondType.DOUBLE)
+    mw.RemoveBond(*bond_break)
+
+    aa_part_smi = None
+    pk_part_smi = None
+    for frag_atoms in rdc.GetMolFrags(mw):
+        if bond_break[0] in frag_atoms:
+            aa_part_smi = rdc.MolFragmentToSmiles(mw, frag_atoms)
+        else:
+            pk_part_smi = rdc.MolFragmentToSmiles(mw, frag_atoms)
+    if (not aa_part_smi) or (not pk_part_smi):
+        raise PKError
+    return aa_part_smi, pk_part_smi, cond_type
+
+
