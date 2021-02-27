@@ -29,7 +29,7 @@ namespace aminoacid {
         }
 
         NAMES.push_back("empty");
-        NAMES.push_back("");
+        NAMES.push_back("unk");
         FORMULS.push_back(Formula());
         FORMULS.push_back(Formula());
         MODIFICATION_CNT += 1;

@@ -45,6 +45,53 @@ void matcher::MatcherBase::Match::print(std::ostream &out) {
     double scr = score();
     out << "SCORE: " << scr << "\n";
 
+    out << "ALIGNMENT:\n";
+    for (auto it = alignment.rbegin(); it != alignment.rend(); ++it) {
+        int nrp_pos, part_id, part_pos;
+        std::tie(nrp_pos, part_id, part_pos) = *it;
+
+        if (part_id == -1) {
+            out << "- - - - -";
+        } else {
+            nrpsprediction::AAdomainPrediction amn_pred = nrpParts[part_id].getAAdomainPrediction()[part_pos];
+            nrpsprediction::AAdomainPrediction::AminoacidProb amprob;
+            aminoacid::Aminoacid aa;
+            std::pair<int, int> pos;
+            std::pair<double, aminoacid::Aminoacid> res;
+
+            out << nrpParts[part_id].get_orf_name() << " " << part_pos << " ";
+
+            if (nrp_pos == -1) {
+                res = std::make_pair(0, amn_pred.getAAPrediction()[0].aminoacid);
+//                out << amn_pred.getAAPrediction()[0].aminoacid.get_name() << "(?; ?-?)";
+            } else {
+                aa = nrp->getAminoacid(nrp_pos);
+                res = scoreFun->getTheBestAAInPred(amn_pred, aa, amprob, pos);
+            }
+            out << res.second.getConfiguration() << " " << res.second;
+            for (auto &mod : amn_pred.get_modifications()) {
+                out << "+" << aminoacid::ModificationInfo::NAMES[mod.getId()];
+            }
+            out << " ("  << res.first <<";"
+                << pos.first << "-" << pos.second << ")";
+        }
+
+        out << " -> ";
+
+        if (nrp_pos == -1) {
+            out << "- - - - -";
+        } else {
+            aminoacid::Aminoacid aa = nrp->getAminoacid(nrp_pos);
+            out << nrp->getFormula(nrp_pos) << " " << aa.getConfiguration() << " " << aa.get_name();
+            for (auto &mod : aa.getModifications()) {
+                out << "+" << aminoacid::ModificationInfo::NAMES[mod.getId()];
+            }
+        }
+
+        out << "\n";
+    }
+
+    out << "GRAPH:\n";
     std::vector<int> rp(parts_id.size());
     for (int i = 0; i < rp.size(); ++i) {
         rp[nrp->getInd(i)] = i;
