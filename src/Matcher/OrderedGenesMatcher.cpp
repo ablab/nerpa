@@ -154,15 +154,16 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getLineMatch(bool can_
     }
 
     matcher::MatcherBase::Match matche1 = getSimpleMatch(nrp_iterator, prediction, score);
-    matcher::MatcherBase::Match matche2 = getSimpleMatch(nrp_iterator_rev, prediction, score);
+//    matcher::MatcherBase::Match matche2 = getSimpleMatch(nrp_iterator_rev, prediction, score);
 
     delete nrp_iterator;
     delete nrp_iterator_rev;
 
-    if (matche1.score() > matche2.score()) {
-        return matche1;
-    }
-    return matche2;
+    return matche1;
+//    if (matche1.score() > matche2.score()) {
+//        return matche1;
+//    }
+//    return matche2;
 }
 
 matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getCycleMatch(const std::shared_ptr<nrp::NRP> nrp,
@@ -175,7 +176,7 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getCycleMatch(const st
         NRP_iterator* nrp_iterator_rev = new NRP_iterator_cycle_rev(nrp, i);
 
         matcher::MatcherBase::Match matche1 = getSimpleMatch(nrp_iterator, prediction, score);
-        matcher::MatcherBase::Match matche2 = getSimpleMatch(nrp_iterator_rev, prediction, score);
+//        matcher::MatcherBase::Match matche2 = getSimpleMatch(nrp_iterator_rev, prediction, score);
 
         delete nrp_iterator;
         delete nrp_iterator_rev;
@@ -184,9 +185,9 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getCycleMatch(const st
             resMatche = matche1;
         }
 
-        if (matche2.score() > resMatche.score()) {
-            resMatche = matche2;
-        }
+//        if (matche2.score() > resMatche.score()) {
+//            resMatche = matche2;
+//        }
     }
 
     return resMatche;
