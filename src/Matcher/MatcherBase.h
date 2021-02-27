@@ -22,6 +22,7 @@ namespace matcher {
             const Score* scoreFun;
             double scr;
             std::vector<nrpsprediction::OrfPrediction> nrpParts;
+            std::vector<std::tuple<int,int,int>> alignment;
             std::vector<int> parts_id;
             std::vector<int> parts_pos;
         public:
@@ -31,6 +32,7 @@ namespace matcher {
                 parts_pos.resize(nrp->getFullLen(), -1);
             }
 
+            void match_align(int pos, int part_id, int part_pos);
             void match(int pos, int part_id, int part_pos);
             void print(std::ostream& out);
             void print_short(std::ofstream& out);

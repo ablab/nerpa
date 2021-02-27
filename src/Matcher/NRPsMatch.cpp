@@ -5,6 +5,11 @@
 #include "NRP/NRP.h"
 #include "MatcherBase.h"
 
+
+void matcher::MatcherBase::Match::match_align(int pos, int part_id, int part_pos) {
+    alignment.emplace_back(pos, part_id, part_pos);
+}
+
 void matcher::MatcherBase::Match::match(int pos, int part_id, int part_pos) {
     parts_id[pos] = part_id;
     parts_pos[pos] = part_pos;
