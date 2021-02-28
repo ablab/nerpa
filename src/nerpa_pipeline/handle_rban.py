@@ -157,8 +157,8 @@ def process_single_record(rban_record, recognized_monomers, backbone_bond_types,
         for node in path:
             attr = G.nodes[node]
             name = attr['name']
-            if not attr.get('isIdentified', False):
-                name = f'<{name}>'
+            # if not attr.get('isIdentified', False):
+            #     name = f'<{name}>'
             is_d = attr.get('isD', None)
             if is_d is not None:
                 name = f'@D-{name}' if is_d else f'@L-{name}'

@@ -55,25 +55,26 @@ void matcher::MatcherBase::Match::print(std::ostream &out) {
         } else {
             nrpsprediction::AAdomainPrediction amn_pred = nrpParts[part_id].getAAdomainPrediction()[part_pos];
             nrpsprediction::AAdomainPrediction::AminoacidProb amprob;
-            aminoacid::Aminoacid aa;
+            aminoacid::Aminoacid aa = amn_pred.getAAPrediction()[0].aminoacid;
             std::pair<int, int> pos;
             std::pair<double, aminoacid::Aminoacid> res;
 
             out << nrpParts[part_id].get_orf_name() << " " << part_pos << " ";
-
-            if (nrp_pos == -1) {
-                res = std::make_pair(0, amn_pred.getAAPrediction()[0].aminoacid);
-//                out << amn_pred.getAAPrediction()[0].aminoacid.get_name() << "(?; ?-?)";
-            } else {
-                aa = nrp->getAminoacid(nrp_pos);
-                res = scoreFun->getTheBestAAInPred(amn_pred, aa, amprob, pos);
-            }
-            out << res.second.getConfiguration() << " " << res.second;
+            out << aa.getConfiguration() << " " << aa;
             for (auto &mod : amn_pred.get_modifications()) {
                 out << "+" << aminoacid::ModificationInfo::NAMES[mod.getId()];
             }
-            out << " ("  << res.first <<";"
-                << pos.first << "-" << pos.second << ")";
+            out << " ";
+            if (nrp_pos == -1) {
+//                res = std::make_pair(0, amn_pred.getAAPrediction()[0].aminoacid);
+                out << "- - -";
+            } else {
+                aminoacid::Aminoacid nrp_aa = nrp->getAminoacid(nrp_pos);
+                res = scoreFun->getTheBestAAInPred(amn_pred, nrp_aa, amprob, pos);
+
+                out << res.second << "(" << res.first << ";"
+                    << pos.first << "-" << pos.second << ")";
+            }
         }
 
         out << " -> ";
