@@ -41,4 +41,16 @@ namespace aminoacid {
         }
         return MODIFICATION_CNT - 1;
     }
+
+    double ModificationInfo::getCoefficientById(size_t id, bool in_pred, bool in_nrp) {
+        size_t coef = 3; //FF
+        if (in_pred && in_nrp) { //TT
+            coef = 0;
+        } else if (in_pred) { //TF
+            coef = 1;
+        } else if (in_nrp) { //FT
+            coef = 2;
+        }
+        return COEFFICIENT[id][coef];
+    }
 }

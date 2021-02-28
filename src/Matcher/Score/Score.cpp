@@ -90,15 +90,7 @@ double getModificationScore(const aminoacid::Aminoacid &nrpAA,
     size_t DL_id = aminoacid::ModificationInfo::getIdByNameId("@D");
     for (int i = 0; i != aminoacid::ModificationInfo::MODIFICATION_CNT; ++i) {
         if (i != DL_id) {
-            size_t coef = 3; //FF
-            if (pred_mods_flags[i] && nrp_mods_flags[i]) { //TT
-                coef = 0;
-            } else if (pred_mods_flags[i]) { //TF
-                coef = 1;
-            } else if (nrp_mods_flags[i]) { //FT
-                coef = 2;
-            }
-            res += aminoacid::ModificationInfo::COEFFICIENT[i][coef];
+            res += aminoacid::ModificationInfo::getCoefficientById(i, pred_mods_flags[i], nrp_mods_flags[i]);
         }
     }
     return res;
@@ -165,28 +157,7 @@ double getLDScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid 
     }
 
     size_t DL_id = aminoacid::ModificationInfo::getIdByNameId("@D");
-    size_t coef = 0; // TT
-
-    if ((nrpConf == aminoacid::Aminoacid::L) && (predConf == aminoacid::Aminoacid::D)) {
-        coef = 1; // TF
-//        return -0.8;
-    }
-
-    if ((nrpConf == aminoacid::Aminoacid::L) && (predConf == aminoacid::Aminoacid::L)) {
-        coef = 3; // FF
-//        return 0.3;
-    }
-
-//    if ((nrpConf == aminoacid::Aminoacid::D) && (predConf == aminoacid::Aminoacid::D)) {
-//        return 0.8;
-//    }
-
-    if ((nrpConf == aminoacid::Aminoacid::D) && (predConf == aminoacid::Aminoacid::L)) {
-        coef = 2; // FT
-//        return -1.5;
-    }
-
-    return aminoacid::ModificationInfo::COEFFICIENT[DL_id][coef];
+    return aminoacid::ModificationInfo::getCoefficientById(DL_id, predConf == aminoacid::Aminoacid::D, nrpConf == aminoacid::Aminoacid::D);
 }
 
 bool matcher::Score::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,

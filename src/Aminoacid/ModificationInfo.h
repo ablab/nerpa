@@ -14,6 +14,7 @@ namespace aminoacid {
         static void init(std::string filename);
 //        static void init_AAMod(std::string filename);
         static int getIdByNameId(std::string name);
+        static double getCoefficientById(size_t id, bool in_pred, bool in_nrp);
     };
 }
 
