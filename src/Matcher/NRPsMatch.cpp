@@ -53,7 +53,7 @@ void matcher::MatcherBase::Match::print(std::ostream &out) {
         std::tie(nrp_pos, part_id, part_pos) = *it;
 
         if (part_id == -1) {
-            out << "- - - - -";
+            out << "- - - - " << "none(" << scoreFun->InsertionScore() << ";-1--1)";
         } else {
             nrpsprediction::AAdomainPrediction amn_pred = nrpParts[part_id].getAAdomainPrediction()[part_pos];
             nrpsprediction::AAdomainPrediction::AminoacidProb amprob;
@@ -69,7 +69,7 @@ void matcher::MatcherBase::Match::print(std::ostream &out) {
             out << " ";
             if (nrp_pos == -1) {
 //                res = std::make_pair(0, amn_pred.getAAPrediction()[0].aminoacid);
-                out << "-";
+                out << "none(" << scoreFun->DeletionScore() << ";-1--1)";
             } else {
                 aminoacid::Aminoacid nrp_aa = nrp->getAminoacid(nrp_pos);
                 res = scoreFun->getTheBestAAInPred(amn_pred, nrp_aa, amprob, pos);
