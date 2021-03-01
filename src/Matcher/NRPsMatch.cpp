@@ -46,6 +46,8 @@ void matcher::MatcherBase::Match::print(std::ostream &out) {
     out << "SCORE: " << scr << "\n";
 
     out << "ALIGNMENT:\n";
+    out << "ORF_ID A_domain_Idx Prediction_DL-config Prediction_Residue Matched_Residue(Nerpa_score;start_rank-end_rank)";
+    out << " -> Monomer_Idx Monomer_Code Monomer_DL-config Monomer_Residue\n";
     for (auto it = alignment.rbegin(); it != alignment.rend(); ++it) {
         int nrp_pos, part_id, part_pos;
         std::tie(nrp_pos, part_id, part_pos) = *it;
@@ -67,7 +69,7 @@ void matcher::MatcherBase::Match::print(std::ostream &out) {
             out << " ";
             if (nrp_pos == -1) {
 //                res = std::make_pair(0, amn_pred.getAAPrediction()[0].aminoacid);
-                out << "- - -";
+                out << "-";
             } else {
                 aminoacid::Aminoacid nrp_aa = nrp->getAminoacid(nrp_pos);
                 res = scoreFun->getTheBestAAInPred(amn_pred, nrp_aa, amprob, pos);
@@ -80,10 +82,10 @@ void matcher::MatcherBase::Match::print(std::ostream &out) {
         out << " -> ";
 
         if (nrp_pos == -1) {
-            out << "- - - - -";
+            out << "- - - -";
         } else {
             aminoacid::Aminoacid aa = nrp->getAminoacid(nrp_pos);
-            out << nrp->getFormula(nrp_pos) << " " << aa.getConfiguration() << " " << aa.get_name();
+            out << nrp_pos << " " << nrp->getFormula(nrp_pos) << " " << aa.getConfiguration() << " " << aa.get_name();
             for (auto &mod : aa.getModifications()) {
                 out << "+" << aminoacid::ModificationInfo::NAMES[mod.getId()];
             }
@@ -103,7 +105,7 @@ void matcher::MatcherBase::Match::print(std::ostream &out) {
         int ri = rp[i];
         std::string formula = nrp->getFormula(i);
 
-        out << formula << " -> ";
+        out << i << " " << formula << " 0 -> ";
 
         if (!isMatched(ri)) {
             out << "-\n";

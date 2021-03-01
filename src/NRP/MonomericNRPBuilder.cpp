@@ -53,9 +53,9 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
         aa.setConfiguration(cur_config);
         aminoacids.push_back(aa);
 
-        std::stringstream ssnode;
-        ssnode << node_idx++ << " " << code << " " << 0;
-        strnodes.push_back(ssnode.str());
+//        std::stringstream ssnode;
+//        ssnode << node_idx++ << " " << code << " " << 0;
+        strnodes.push_back(code);
     }
 
     std::vector<std::vector<int> > g(aminoacids.size());
