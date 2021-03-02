@@ -15,7 +15,7 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
     std::stringstream ss(extra);
     std::string graph, extra_info;
     ss >> graph;
-    getline(ss, extra_info);
+//    getline(ss, extra_info);
 
     size_t pos = graph.find(';');
     if (pos == std::string::npos) return nullptr;

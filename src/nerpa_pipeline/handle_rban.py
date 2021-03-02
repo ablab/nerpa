@@ -177,19 +177,22 @@ def process_single_record(rban_record, recognized_monomers, backbone_bond_types,
         n = sum(G.nodes[node]['isIdentified'] for node in path)
         return n >= min_recognized_nodes
 
-    structures = set()
+    structures = {}
     for path in cycles:
         if sufficiently_covered(path):
-            structures.add(gen_nerpa_input(path, cyclic=True))
+            gr = gen_nerpa_input(path, cyclic=True)
+            structures[gr] = path
     for path in paths:
         if sufficiently_covered(path):
-            structures.add(gen_nerpa_input(path))
+            gr = gen_nerpa_input(path)
+            structures[gr] = path
     if 1 < len(paths) < 4:
         for x in permutations(paths):
             path = [node for comp in x for node in comp]
             if sufficiently_covered(path):
-                structures.add(gen_nerpa_input(path))
-    structures = [(f'{structure_id}_variant{i}', x) for i,x in enumerate(sorted(structures))]
+                gr = gen_nerpa_input(path)
+                structures[gr] = path
+    structures = [(f'{structure_id}_variant{i}', gr, structures[gr]) for i, gr in enumerate(sorted(structures.keys()))]
 
     return structures
 
@@ -232,7 +235,7 @@ def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban):
 
 def generate_graphs_from_rban_output(path_to_rban_output, path_to_monomers_tsv, path_to_graphs, main_out_dir, path_to_rban):
     recognized_monomers = [x.split()[0] for x in open(path_to_monomers_tsv)]
-    recognized_monomers = recognized_monomers[1:]
+    recognized_monomers = set(recognized_monomers[1:])
     hybrid_monomers_dict = rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban)
 
     with open(path_to_graphs, 'w') as f_out:
@@ -241,8 +244,8 @@ def generate_graphs_from_rban_output(path_to_rban_output, path_to_monomers_tsv, 
                 try:
                     graphs = process_single_record(rban_record, recognized_monomers, PNP_BONDS, hybrid_monomers_dict[i],
                                                    UNDEFINED_NAME, min_recognized_nodes=2)
-                    for i, g in graphs:
-                        f_out.write(f'{i} {g}\n')
+                    for i, gr, pt in graphs:
+                        f_out.write(f'{i} {gr} {pt}\n')
                 except NumNodesError as e:
                     log.warn(e)
 
