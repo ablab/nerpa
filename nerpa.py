@@ -103,6 +103,9 @@ def print_cfg(args, output_dir):
         f.write(os.path.abspath(os.path.join(output_dir, "monomersLogP.tsv")) + "\n")
         f.write("threads " + str(args.threads) + "\n")
 
+        # TODO: add to cmd parameters
+        f.write(f'min_score 0.05\n')
+        f.write(f'min_explain_part 0\n')
     return cfg_file
 
 def which(program):

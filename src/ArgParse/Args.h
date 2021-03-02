@@ -15,8 +15,10 @@ public:
     std::string monomer_cfg;
     std::string monomer_logP_cfg;
     unsigned int threads;
+    double min_score;
+    double min_explain_part;
 
-    Args(std::string cfg_filename);
+    explicit Args(std::string &cfg_filename);
 };
 
 

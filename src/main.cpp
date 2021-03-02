@@ -14,9 +14,6 @@
 #include <Matcher/OrderedGenesMatcher.h>
 #include <Aminoacid/MonomerInfo.h>
 
-const double MIN_SCROE = 0.05;
-const double MIN_EXPLAIN_PART = 0;//0.15;
-
 void getPredictor(nrpsprediction::PredictionBuilderBase*& predictionBuilder) {
     predictionBuilder = new nrpsprediction::Nrpspredictor2Builder();
 }
@@ -103,8 +100,8 @@ void run_mol_predictions(std::vector<nrpsprediction::BgcPrediction> preds, std::
         matcher::MatcherBase::Match match = matcher->getMatch(mol, &preds[i], score);
         delete matcher;
 
-        if (match.score() >= MIN_SCROE &&
-                (double)match.getCntMatch()/preds[i].getSumPredictionLen() >= MIN_EXPLAIN_PART) {
+        if (match.score() >= args.min_score &&
+                (double)match.getCntMatch()/preds[i].getSumPredictionLen() >= args.min_explain_part) {
             nrpsMatchs.push_back(match);
             std::ofstream out(output_filename);
             match.print(out);
