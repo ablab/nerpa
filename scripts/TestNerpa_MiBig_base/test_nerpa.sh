@@ -1,11 +1,11 @@
-DATE=`date +"%d-%b-%Y_%H:%M"`
-#DATE='04-Mar-2021_15:37'
+#DATE=`date +"%d-%b-%Y_%H:%M"`
+DATE='04-Mar-2021_16:16'
 RES_DIR=$TEST_MIBIG_RESULT_PATH/result/res_$DATE
 
 mkdir -p $RES_DIR
 
 START_TIME=$(date +%s)
-nerpa.py -a $TEST_MIBIG_DATA_PATH/prediction/ --smiles-tsv $TEST_MIBIG_DATA_PATH/mibig2019NRP.csv --col_smiles "SMILES" --col_id "Accession" --sep "," -o $RES_DIR
+#nerpa.py -a $TEST_MIBIG_DATA_PATH/prediction/ --smiles-tsv $TEST_MIBIG_DATA_PATH/mibig2019NRP.csv --col_smiles "SMILES" --col_id "Accession" --sep "," -o $RES_DIR
 END_TIME=$(date +%s)
 DIFF_TIME=$(($END_TIME - $START_TIME))
 
