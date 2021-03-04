@@ -80,7 +80,7 @@ std::vector<std::shared_ptr<nrp::NRP>> load_nrps_from_monomeric_info(char* file_
 
 void getScoreFunction(Args args, matcher::Score*& score) {
     using namespace matcher;
-    score = new Score(args.insertion, args.deletion);
+    score = new Score(args.prob_cfg);
 }
 
 matcher::MatcherBase* getMatcher(Args args) {

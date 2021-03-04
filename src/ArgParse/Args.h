@@ -9,11 +9,10 @@
 
 class Args {
 public:
-    double insertion;
-    double deletion;
     std::string modification_cfg;
     std::string monomer_cfg;
     std::string monomer_logP_cfg;
+    std::string prob_cfg;
     unsigned int threads;
     double min_score;
     double min_explain_part;
