@@ -42,6 +42,7 @@ with open( res_dir + "/report.csv", 'r') as f:
             all_res.append([row[6], row[5], row[0]])
 
 
+#result_match[mol_id] = [score, match_cnt]
 result_match = {}
 cnt_all = 0
 cnt_found = 0
@@ -55,10 +56,10 @@ with open( res_dir + "/mibig_cmp.csv", 'w' ) as fw:
         csv_reader = csv.reader(f, delimiter=',')
         for row in csv_reader:
             if (row[5].split('/')[-1].split('.')[0] in row[6]):
-                score_iswrong.append((float(row[0]), False, row[5].split('/')[-1][:-3], row[6]))
-                result_match[row[5].split('/')[-1][:-3]] = [row[0], row[3]]
+                score_iswrong.append((float(row[0]), False, row[5].split('/')[-1], row[6]))
+                result_match[row[5].split('/')[-1]] = [row[0], row[3]]
             elif row[0] != 'score':
-                score_iswrong.append((float(row[0]), True, row[5].split('/')[-1][:-3], row[6]))
+                score_iswrong.append((float(row[0]), True, row[5].split('/')[-1], row[6]))
 
     for mol_name in list_AA:
         cnt_all += 1
