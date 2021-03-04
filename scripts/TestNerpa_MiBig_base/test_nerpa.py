@@ -1,13 +1,16 @@
-import garlic_res_utils
-
+import os
 import sys
 import csv
 import matplotlib
+
+import garlic_res_utils
+
 matplotlib.use('Agg')
 
 AA_info={}
 list_AA=[]
-dirname = sys.argv[1]
+res_dir = sys.argv[1]
+data_path = sys.argv[2]
 
 def calcFDR(score_iswrong, top_cnt=0):
     FDR=[] # (sum wrong)/(sum all)
@@ -42,10 +45,10 @@ def showFDR(cnt, scores, FDR, out_prefix="FDR_"):
     plt.plot(cnt[:160], FDR[:160])
     plt.xlabel('number of elements')
     plt.ylabel('FDR')
-    plt.savefig('result/' + dirname + "/" + out_prefix + "cnt.png") 
+    plt.savefig(res_dir + "/" + out_prefix + "cnt.png") 
     plt.clf()
 
-    with open("result/" + dirname + "/" + out_prefix + "cnt.csv", "w") as fw:
+    with open(res_dir + "/" + out_prefix + "cnt.csv", "w") as fw:
         fw.write("CNT, FDR\n")
         for i in range(len(cnt[:160])):
             fw.write(str(cnt[i]) + ", " + str(FDR[i]) + "\n")
@@ -54,10 +57,10 @@ def showFDR(cnt, scores, FDR, out_prefix="FDR_"):
     plt.plot(scores[:160], FDR[:160])
     plt.xlabel('scores')
     plt.ylabel('FDR')
-    plt.savefig('result/' + dirname + "/" + out_prefix + "scores.png")
+    plt.savefig( res_dir + "/" + out_prefix + "scores.png")
     plt.clf()
 
-    with open("result/" + dirname + "/" + out_prefix + "scores.csv", "w") as fw:
+    with open( res_dir + "/" + out_prefix + "scores.csv", "w") as fw:
         fw.write("SCORES, FDR\n")
         for i in range(len(scores[:160])):
             fw.write(str(scores[i]) + ", " + str(FDR[i]) + "\n")
@@ -71,7 +74,7 @@ def showFDRwithGARLIC(cnt_nerpa, cnt_garlic, FDR_nerpa, FDR_garlic, out_prefix="
     plt.xlabel('number of elements')
     plt.ylabel('FDR')
     plt.legend()
-    plt.savefig('result/' + dirname + "/" + out_prefix + "with_garlic.png")
+    plt.savefig( res_dir + "/" + out_prefix + "with_garlic.png")
     plt.clf()
 
 #all_res[0] = genome id, all_res[1] = structure id, all_res[2] = score
@@ -86,7 +89,7 @@ def getRank(all_res, BGC, score, for_structure=False):
             rank += 1
     return rank
 
-with open('mibig_base.csv', 'r') as f:
+with open(os.path.join(data_path, 'base.csv'), 'r') as f:
     csv_reader = csv.reader(f, delimiter=',')
     for row in csv_reader:
         if (row[0] == 'Accession'):
@@ -95,7 +98,7 @@ with open('mibig_base.csv', 'r') as f:
         list_AA.append(row[0])
         
 all_res = []
-with open("result/" + dirname + "/report.csv", 'r') as f:
+with open( res_dir + "/report.csv", 'r') as f:
     csv_reader = csv.reader(f, delimiter=',')
     for row in csv_reader:
         if row[0] != 'score':
@@ -108,10 +111,10 @@ cnt_found = 0
 cnt_08per = 0
 cnt_05per = 0
 score_iswrong = [] 
-with open("result/" + dirname + "/mibig_cmp.csv", 'w' ) as fw:
+with open( res_dir + "/mibig_cmp.csv", 'w' ) as fw:
     csv_writer = csv.writer(fw, delimiter=',', quotechar='"')
     csv_writer.writerow(['Accession', 'Main Product', 'Organism', 'Structure type', 'Molecule Length', 'Has Match', 'Score', 'Matched Length', 'Matched Percentage', 'Rank for Genome', 'Rank for Structure'])
-    with open("result/" + dirname + "/report.csv", 'r') as f:
+    with open( res_dir + "/report.csv", 'r') as f:
         csv_reader = csv.reader(f, delimiter=',')
         for row in csv_reader:
             if (row[5].split('/')[-1].split('.')[0] in row[6]):
@@ -134,23 +137,26 @@ with open("result/" + dirname + "/mibig_cmp.csv", 'w' ) as fw:
         else:
             csv_writer.writerow([mol_name] + AA_info[mol_name] + ['False', '0', '0', '0', '-1', '-1'])
 
+
+garlic_report_path = os.path.join(data_path, "base_line/GARLIC/report.csv")
+
 score_iswrong.sort(key=lambda x: (-x[0], x[1]))
 cnt, scores, FDR = calcFDR(score_iswrong)
-cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong("./base_line/GARLIC/report.csv"))
+cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong(garlic_report_path))
 
 showFDR(cnt, scores, FDR)
 showFDR(cntg, scoresg, FDR, "FDR_garlic_")
 showFDRwithGARLIC(cnt, cntg, FDR, FDRg)
 
 cnt, scores, FDR = calcFDR(score_iswrong, 1)
-cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong("./base_line/GARLIC/report.csv"), 1)
+cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong(garlic_report_path), 1)
 
 showFDR(cnt, scores, FDR, "FDR_top1_mol_")
 showFDR(cntg, scoresg, FDRg, "FDR_top1_mol_garlic_")
 showFDRwithGARLIC(cnt, cntg, FDR, FDRg, "FDR_top1_mol_")
 
 cnt, scores, FDR = calcFDR(score_iswrong, 3)
-cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong("./base_line/GARLIC/report.csv"), 3)
+cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong(garlic_report_path), 3)
 
 showFDR(cnt, scores, FDR, "FDR_top3_mol_")
 showFDR(cntg, scoresg, FDRg, "FDR_top3_mol_garlic_")
@@ -159,7 +165,7 @@ showFDRwithGARLIC(cnt, cntg, FDR, FDRg, "FDR_top3_mol_")
 for i in range(len(score_iswrong)):
     score_iswrong[i]  = (score_iswrong[i][0], score_iswrong[i][1], score_iswrong[i][3], score_iswrong[i][2]) 
 
-garlic_score = garlic_res_utils.get_score_iswrong("./base_line/GARLIC/report.csv")
+garlic_score = garlic_res_utils.get_score_iswrong(garlic_report_path)
 for i in range(len(garlic_score)):
     garlic_score[i] = (garlic_score[i][0], garlic_score[i][1], garlic_score[i][3], garlic_score[i][2])
 
@@ -182,4 +188,4 @@ showFDRwithGARLIC(cnt, cntg, FDR, FDRg, "FDR_top3_genome_")
 print("Find " + str(cnt_found) + " (out of " + str(cnt_all) + ")")
 print("Find " + str(cnt_05per) + " (out of " + str(cnt_all) + ") half matched")
 print("Find " + str(cnt_08per) + " (out of " + str(cnt_all) + ") almost completely matched")
-print("The result can be found: " + "result/" + dirname)
+print("The result can be found: " + res_dir)
