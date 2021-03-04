@@ -10,6 +10,8 @@ DIFF_TIME=$(($END_TIME - $START_TIME))
 echo "It tooks $DIFF_TIME seconds"
 echo "It tooks $DIFF_TIME seconds" > $TEST_MIBIG_RESULT_PATH/result/res_$DATE/running_time
 
-python3 ./test_nerpa.py res_$DATE
-python3 ./test_nerpa_details.py res_$DATE
-python3 ./merge_details_with_base.py res_$DATE
+SOURCE="$( dirname ${BASH_SOURCE[0]} )"
+
+python3 $SOURCE/test_nerpa.py res_$DATE
+python3 $SOURCE/test_nerpa_details.py res_$DATE
+python3 $SOURCE/merge_details_with_base.py res_$DATE
