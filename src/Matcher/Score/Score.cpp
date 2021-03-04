@@ -6,6 +6,7 @@
 #include "Score.h"
 #include <Aminoacid/MonomerInfo.h>
 #include <math.h>
+#include <fstream>
 
 bool matcher::Score::getScoreForSegment(const std::vector<aminoacid::Aminoacid>& amns,
                                         const nrpsprediction::BgcPrediction& prediction, int part_id,
@@ -203,4 +204,27 @@ double matcher::Score::Mismatch(const aminoacid::Aminoacid &structure_aa,
         score -= probGenAA(structure_aa);
         return (score + md_score + dl_score);
     }
+}
+
+matcher::Score::Score(std::string &config) {
+    std::ifstream in(config);
+    std::string tmp;
+    in >> tmp >> insertion >> tmp >> deletion;
+
+    auto read_line_to_vec = [&in] (size_t n) -> std::vector<double> {
+        std::vector<double> res;
+        double w;
+        std::string tmp;
+        in >> tmp;
+        for (size_t i = 0; i != n; ++i) {
+            in >> w;
+            res.push_back(w);
+        }
+        return res;
+    };
+
+    size_t n_params = 5;
+    ProbGenCorrect = read_line_to_vec(n_params);
+    ProbGenIncorrect = read_line_to_vec(n_params);
+    ProbGetScore = read_line_to_vec(n_params);
 }
