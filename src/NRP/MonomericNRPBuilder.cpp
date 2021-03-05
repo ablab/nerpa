@@ -40,7 +40,7 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
         }
 
         aminoacid::Aminoacid::Configuation cur_config = aminoacid::Aminoacid::NA;
-        for (int i = 0 ; i < code.size(); ++i) {
+        for (int i = 0 ; i < int(code.size()) - 1; ++i) {
             if (code[i] == '@' && code[i + 1] == 'D') {
                 cur_config = aminoacid::Aminoacid::D;
             }

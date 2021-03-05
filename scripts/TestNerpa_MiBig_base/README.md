@@ -26,7 +26,12 @@ mkdir result
 * Add print_structure and NERPA to PATH. Let's Nerpa is compiled to ``/Bmo/kolga/soft/Nerpa/bin``
 ````
 PATH=$PATH:/Bmo/kolga/soft/Nerpa/bin
-PATH=$PATH:/Bmo/kolga/soft/dereplicator_build/bin
+````
+
+* Setup path to testing data and result dir
+````
+TEST_MIBIG_DATA_PATH=/Bmo/kolga/data/Nerpa/MiBigTest/NRP/
+TEST_MIBIG_RESULT_PATH=/Bmo/kolga/run/Nerpa/MiBigResult/
 ````
 
 ##RUN

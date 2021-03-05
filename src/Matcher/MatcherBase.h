@@ -52,6 +52,8 @@ namespace matcher {
         virtual matcher::MatcherBase::Match getMatch(const std::shared_ptr<nrp::NRP> nrp,
                                                      const nrpsprediction::BgcPrediction *prediction,
                                                      const matcher::Score *score) = 0;
+
+        virtual ~MatcherBase();
     };
 }
 

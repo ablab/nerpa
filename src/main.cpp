@@ -68,12 +68,16 @@ std::vector<std::shared_ptr<nrp::NRP>> load_nrps_from_monomeric_info(char* file_
         std::string extra;
         ss >> cur_id;
         getline(ss, extra);
-        std::shared_ptr<nrp::NRP> nrp_from_fragment_graph = nrp::MonomericNRPBuilder::build(cur_id, extra);
-        if (nrp_from_fragment_graph == nullptr) {
+        try {
+            std::shared_ptr<nrp::NRP> nrp_from_fragment_graph = nrp::MonomericNRPBuilder::build(cur_id, extra);
+            if (nrp_from_fragment_graph == nullptr) {
+                continue;
+            }
+            nrp_from_fragment_graph->print();
+            nrps.push_back(nrp_from_fragment_graph);
+        } catch (...) {
             continue;
         }
-        nrp_from_fragment_graph->print();
-        nrps.push_back(nrp_from_fragment_graph);
     }
     return nrps;
 }
@@ -189,7 +193,7 @@ int main(int argc, char* argv[]) {
     omp_set_num_threads(nthreads);
 
     INFO("THREADS #" << nthreads);
-//#   pragma omp parallel for
+#   pragma omp parallel for
     for (int i = start_from; i < mols.size(); ++i) {
         INFO("NRP structure #" << i)
         std::string output_filename = gen_filename(mols[i]->get_file_name(), "details_mols/");

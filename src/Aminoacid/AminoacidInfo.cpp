@@ -178,6 +178,6 @@ namespace aminoacid {
                 return i;
             }
         }
-        return AMINOACID_CNT;
+        return AMINOACID_CNT - 1;
     }
 }

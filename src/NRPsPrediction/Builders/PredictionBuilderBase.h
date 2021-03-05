@@ -22,6 +22,8 @@ namespace nrpsprediction {
         virtual void read_file(std::string file_name) = 0;
 
         virtual BgcPrediction getPrediction();
+
+        virtual ~PredictionBuilderBase();
     };
 }
 
