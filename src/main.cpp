@@ -10,7 +10,7 @@
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
 #include <ArgParse/Args.h>
 #include <Aminoacid/ModificationInfo.h>
-#include <omp.h>
+#include "utils/openmp_wrapper.h"
 #include <Matcher/OrderedGenesMatcher.h>
 #include <Aminoacid/MonomerInfo.h>
 
@@ -189,8 +189,7 @@ int main(int argc, char* argv[]) {
     INFO("Start from: " << start_from)
     unsigned nthreads = args.threads;
 
-    omp_set_dynamic(0);
-    omp_set_num_threads(nthreads);
+    nerpa_set_omp_threads(nthreads);
 
     INFO("THREADS #" << nthreads);
 #   pragma omp parallel for
