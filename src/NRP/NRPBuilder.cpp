@@ -283,8 +283,8 @@ std::vector<int> nrp::NRPBuilder::parseCycle(std::vector<std::vector<int>> &g, s
 
 std::vector<int> nrp::NRPBuilder::parseLine(std::vector<std::vector<int>> &g, std::vector<std::vector<int>> &gr) {
     int strp1 = -1;
-    for (int i = 0; i < (int) g.size(); ++i) {
-        if (g[i].size() == 0) {
+    for (int i = 0; i < (int) gr.size(); ++i) {
+        if (gr[i].size() == 0) {
             strp1 = i;
         }
     }
@@ -292,7 +292,7 @@ std::vector<int> nrp::NRPBuilder::parseLine(std::vector<std::vector<int>> &g, st
     pos.push_back(strp1);
     int cur = strp1;
     while (pos.size() < g.size()) {
-        cur = gr[cur][0];
+        cur = g[cur][0];
         pos.push_back(cur);
     }
 

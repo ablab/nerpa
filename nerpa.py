@@ -40,8 +40,9 @@ def parse_args():
     struct_group.add_argument("--sep", dest="sep",
                         help="separator in smiles-tsv", type=str, default='\t')
 
-    parser.add_argument("--insertion", help="insertion score [default=-2.8]", default=-2.8, action="store")
-    parser.add_argument("--deletion", help="deletion score [default=-5]", default=-5, action="store")
+    # parser.add_argument("--insertion", help="insertion score [default=-2.8]", default=-2.8, action="store")
+    # parser.add_argument("--deletion", help="deletion score [default=-5]", default=-5, action="store")
+    parser.add_argument("--scoring_cfg", help="path to file with scoring weights", action="store", type=str)
     parser.add_argument("--modification_cfg", help="path to file with modification description", action="store", type=str)
     parser.add_argument("--monomer_cfg", help="path to file with monomer description", action="store", type=str)
     parser.add_argument("--threads", default=1, type=int, help="number of threads for running Nerpa", action="store")
@@ -96,13 +97,17 @@ def validate_arguments(args):
 def print_cfg(args, output_dir):
     cfg_file = os.path.join(output_dir, "nerpa.cfg")
     with open(cfg_file, "w") as f:
-        f.write("insertion " + str(args.insertion) + "\n")
-        f.write("deletion " + str(args.deletion) + "\n")
         f.write(os.path.abspath(os.path.join(output_dir, "modifications.tsv")) + "\n")
         f.write(os.path.abspath(os.path.join(output_dir, "monomers.tsv")) + "\n")
         f.write(os.path.abspath(os.path.join(output_dir, "monomersLogP.tsv")) + "\n")
+        f.write(os.path.abspath(os.path.join(output_dir, "prob_gen.cfg")) + "\n")
         f.write("threads " + str(args.threads) + "\n")
 
+        # TODO: add to cmd parameters
+        f.write(f'min_score 0.05\n')
+        f.write(f'min_explain_part 0\n')
+        f.write(f'default_monomer_logp -6.2\n')
+        f.write(f'default_aminoacid_logp -6.64\n')
     return cfg_file
 
 def which(program):
@@ -237,6 +242,15 @@ def run(args):
     local_modifications_cfg = os.path.join(main_out_dir, "modifications.tsv")
     copyfile(path_to_modification_cfg, local_modifications_cfg)
 
+    if args.scoring_cfg is not None:
+        path_to_scoring_cfg = os.path.abspath(args.scoring_cfg)
+    else:
+        path_to_scoring_cfg = "./resources/prob_gen.cfg"
+        if (os.path.exists(os.path.join(path_to_cur, 'NRPsMatcher'))):
+            path_to_scoring_cfg = "../share/nerpa/prob_gen.cfg"
+        path_to_scoring_cfg = os.path.join(path_to_cur, path_to_scoring_cfg)
+    local_scoring_cfg = os.path.join(main_out_dir, "prob_gen.cfg")
+    copyfile(path_to_scoring_cfg, local_scoring_cfg)
 
     path_to_monomer_logP = "./resources/monomersLogP.tsv"
     path_to_monomer_cfg = "./resources/monomers.tsv"

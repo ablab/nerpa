@@ -14,9 +14,6 @@
 #include <Matcher/OrderedGenesMatcher.h>
 #include <Aminoacid/MonomerInfo.h>
 
-const double MIN_SCROE = 0.05;
-const double MIN_EXPLAIN_PART = 0;//0.15;
-
 void getPredictor(nrpsprediction::PredictionBuilderBase*& predictionBuilder) {
     predictionBuilder = new nrpsprediction::Nrpspredictor2Builder();
 }
@@ -87,7 +84,7 @@ std::vector<std::shared_ptr<nrp::NRP>> load_nrps_from_monomeric_info(char* file_
 
 void getScoreFunction(Args args, matcher::Score*& score) {
     using namespace matcher;
-    score = new Score(args.insertion, args.deletion);
+    score = new Score(args.prob_cfg);
 }
 
 matcher::MatcherBase* getMatcher(Args args) {
@@ -107,8 +104,8 @@ void run_mol_predictions(std::vector<nrpsprediction::BgcPrediction> preds, std::
         matcher::MatcherBase::Match match = matcher->getMatch(mol, &preds[i], score);
         delete matcher;
 
-        if (match.score() >= MIN_SCROE &&
-                (double)match.getCntMatch()/preds[i].getSumPredictionLen() >= MIN_EXPLAIN_PART) {
+        if (match.score() >= args.min_score &&
+                (double)match.getCntMatch()/preds[i].getSumPredictionLen() >= args.min_explain_part) {
             nrpsMatchs.push_back(match);
             std::ofstream out(output_filename);
             match.print(out);
@@ -163,9 +160,18 @@ int main(int argc, char* argv[]) {
         std::stringstream ss(argv[5]);
         ss >> start_from;
     }
-    aminoacid::AminoacidInfo::init(AA_file_name, "NRPSPREDICTOR2");
+    aminoacid::AminoacidInfo::init(AA_file_name, "NRPSPREDICTOR2", args.aminoacid_info_default_logp);
     aminoacid::ModificationInfo::init(args.modification_cfg);
-    aminoacid::MonomerInfo::init(args.monomer_cfg, args.monomer_logP_cfg);
+    aminoacid::MonomerInfo::init(args.monomer_cfg, args.monomer_logP_cfg, args.monomer_info_default_logp);
+
+    std::cout << args.modification_cfg << "\n";
+    for (int i = 0; i != aminoacid::ModificationInfo::MODIFICATION_CNT; ++i) {
+        std::cout << aminoacid::ModificationInfo::NAMES[i] << " ";
+        for (double x : aminoacid::ModificationInfo::COEFFICIENT[i]) {
+            std::cout << x << " ";
+        }
+        std::cout << std::endl;
+    }
 
     INFO("NRPs Matcher START");
     INFO("Saving predictions");

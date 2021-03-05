@@ -154,15 +154,16 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getLineMatch(bool can_
     }
 
     matcher::MatcherBase::Match matche1 = getSimpleMatch(nrp_iterator, prediction, score);
-    matcher::MatcherBase::Match matche2 = getSimpleMatch(nrp_iterator_rev, prediction, score);
+//    matcher::MatcherBase::Match matche2 = getSimpleMatch(nrp_iterator_rev, prediction, score);
 
     delete nrp_iterator;
     delete nrp_iterator_rev;
 
-    if (matche1.score() > matche2.score()) {
-        return matche1;
-    }
-    return matche2;
+    return matche1;
+//    if (matche1.score() > matche2.score()) {
+//        return matche1;
+//    }
+//    return matche2;
 }
 
 matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getCycleMatch(const std::shared_ptr<nrp::NRP> nrp,
@@ -175,7 +176,7 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getCycleMatch(const st
         NRP_iterator* nrp_iterator_rev = new NRP_iterator_cycle_rev(nrp, i);
 
         matcher::MatcherBase::Match matche1 = getSimpleMatch(nrp_iterator, prediction, score);
-        matcher::MatcherBase::Match matche2 = getSimpleMatch(nrp_iterator_rev, prediction, score);
+//        matcher::MatcherBase::Match matche2 = getSimpleMatch(nrp_iterator_rev, prediction, score);
 
         delete nrp_iterator;
         delete nrp_iterator_rev;
@@ -184,9 +185,9 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getCycleMatch(const st
             resMatche = matche1;
         }
 
-        if (matche2.score() > resMatche.score()) {
-            resMatche = matche2;
-        }
+//        if (matche2.score() > resMatche.score()) {
+//            resMatche = matche2;
+//        }
     }
 
     return resMatche;
@@ -241,6 +242,7 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
 
     auto nrplen = size_t(nrp_iterator->getLen());
 
+    enum match_type {Match, Insertion, Deletion, NA};
     //dp[nrp_pos][pred_pos] = score for prefix
     std::vector< std::vector<double> > dp(std::vector<std::vector<double>>(nrplen + 1,
             std::vector<double>(plen + 1,  score->minScore(nrplen))));
@@ -248,20 +250,22 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
             std::vector<int>(plen + 1,  0)));
     std::vector< std::vector<int> > py(std::vector<std::vector<int> >(nrplen + 1,
             std::vector<int>(plen + 1,  0)));
-    std::vector< std::vector<int> > pmtc(std::vector<std::vector<int> >(nrplen + 1,
-            std::vector<int>(plen + 1,  0)));
+    std::vector< std::vector<match_type> > pmtc(std::vector<std::vector<match_type> >(nrplen + 1,
+            std::vector<match_type>(plen + 1,  NA)));
 
     dp[0][0] = 0;
     for (int npos = 1; npos <= nrplen; ++npos) {
         dp[npos][0] = dp[npos - 1][0] + score->InsertionScore();
         px[npos][0] = npos - 1;
         py[npos][0] = 0;
+        pmtc[npos][0] = Insertion;
     }
 
     for (int ppos = 1; ppos <= plen; ++ppos) {
         dp[0][ppos] = dp[0][ppos - 1] + score->DeletionScore();
         px[0][ppos] = 0;
         py[0][ppos] = ppos - 1;
+        pmtc[0][ppos] = Deletion;
     }
 
     for (int npos = 1; npos <= nrplen; ++npos) {
@@ -270,14 +274,14 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
             dp[npos][ppos] = dp[npos - 1][ppos - 1] + match_score;
             px[npos][ppos] = npos - 1;
             py[npos][ppos] = ppos - 1;
-            pmtc[npos][ppos] = 1;
+            pmtc[npos][ppos] = Match;
 
             if (is_rep_aa(ppos - 1) &&
                 dp[npos - 1][ppos] + match_score > dp[npos][ppos]) {
                 dp[npos][ppos] = dp[npos - 1][ppos] + match_score;
                 px[npos][ppos] = npos - 1;
                 py[npos][ppos] = ppos;
-                pmtc[npos][ppos] = 1;
+                pmtc[npos][ppos] = Match;
             }
 
             if (is_rep_orf(ppos - 1) && pos_id[ppos - 1] == 0 &&
@@ -286,31 +290,43 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
                 dp[npos][ppos] = dp[npos - 1][ppos + orf_len(ppos - 1) - 1] + match_score;
                 px[npos][ppos] = npos - 1;
                 py[npos][ppos] = ppos + orf_len(ppos - 1) - 1 ;
-                pmtc[npos][ppos] = 1;
+                pmtc[npos][ppos] = Match;
             }
 
             if (dp[npos][ppos - 1] + score->DeletionScore() > dp[npos][ppos]) {
                 dp[npos][ppos] = dp[npos][ppos - 1] + score->DeletionScore();
                 px[npos][ppos] = npos;
                 py[npos][ppos] = ppos - 1;
-                pmtc[npos][ppos] = 0;
+                pmtc[npos][ppos] = Deletion;
             }
 
             if (dp[npos - 1][ppos] + score->InsertionScore() > dp[npos][ppos]) {
                 dp[npos][ppos] = std::max(dp[npos - 1][ppos] + score->InsertionScore(), dp[npos][ppos]);
                 px[npos][ppos] = npos - 1;
                 py[npos][ppos] = ppos;
-                pmtc[npos][ppos] = 0;
+                pmtc[npos][ppos] = Insertion;
             }
         }
     }
 
     matcher::MatcherBase::Match nrPsMatch(nrp_iterator->getNRP(), nrp_parts, dp[nrplen][plen], score);
 
+//    std::cout << nrp_iterator->getNRP()->get_file_name() << "\n";
     int curx = int(nrplen), cury = int(plen);
+
     while (curx != 0 || cury != 0) {
-        if (pmtc[curx][cury]) {
+        if (pmtc[curx][cury] == Match) {
+            nrPsMatch.match_align(nrp_iterator->getID(curx - 1), part_id[cury - 1], pos_id[cury - 1]);
             nrPsMatch.match(nrp_iterator->getID(curx - 1), part_id[cury - 1], pos_id[cury - 1]);
+//            std::cout << "M " << curx << " " << nrp_iterator->getAA(curx - 1).get_name() << "  -- " << cury << " "
+//            << get_aapred(cury - 1).getAAPrediction()[0].aminoacid.get_name() << "\n";
+        } else if (pmtc[curx][cury] == Deletion) {
+            nrPsMatch.match_align(-1, part_id[cury - 1], pos_id[cury - 1]);
+//            std::cout << "D " << curx << " none -- " << cury << " "
+//                                                    << get_aapred(cury - 1).getAAPrediction()[0].aminoacid.get_name() << "\n";
+        } else if (pmtc[curx][cury] == Insertion) {
+            nrPsMatch.match_align(nrp_iterator->getID(curx - 1), -1, -1);
+//            std::cout << "I " << curx << " " << nrp_iterator->getAA(curx - 1).get_name() << "  -- " << cury << " none \n";
         }
 
         int ocurx = curx;
@@ -319,6 +335,7 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
         cury = py[ocurx][ocury];
     }
 
+//    std::cout << "\n";
     nrPsMatch.setScore(score->resultScore(dp[nrplen][plen], nrplen));
     return nrPsMatch;
 }

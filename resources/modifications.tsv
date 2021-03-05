@@ -1,15 +1,5 @@
-Name	Formula	Coefficient
-methylation	CH2	0
-dimethylation	C2H4	0
-demethylation	C-1H-2	0
-hydration	H2O	0
-hydroxylation	O	0
-formylation	CO	0
-phosphotylation	PH2O3	0
-acetylation	C2H2O	0
-dedimethylation	C-2H-4	0
-dehydration	H-2O-1	0
-dehydroxylation	O-1	0
-deformylation	C-1O-1	0
-dephosphotylation	P-1H-2O-3	0
-deacetylation	C-2H-2O-1	0
+Name	predT-nrpT	predT-nrpF	predF-nrpT	predF-nrpF
+@D	0.8	-0.8	-1.5	0.3
+MT	2.2	-2.2	-2.2	0.1
+F  0   0   0   0
+Hal 0   0   0   0
