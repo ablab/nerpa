@@ -17,4 +17,6 @@ Args::Args(std::string &cfg_filename) {
     in >> tmp >> threads;
     in >> tmp >> min_score;
     in >> tmp >> min_explain_part;
+    in >> tmp >> monomer_info_default_logp;
+    in >> tmp >> aminoacid_info_default_logp;
 }

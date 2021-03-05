@@ -106,6 +106,8 @@ def print_cfg(args, output_dir):
         # TODO: add to cmd parameters
         f.write(f'min_score 0.05\n')
         f.write(f'min_explain_part 0\n')
+        f.write(f'default_monomer_logp -6.2\n')
+        f.write(f'default_aminoacid_logp -6.64\n')
     return cfg_file
 
 def which(program):

@@ -16,6 +16,8 @@ public:
     unsigned int threads;
     double min_score;
     double min_explain_part;
+    double monomer_info_default_logp;
+    double aminoacid_info_default_logp;
 
     explicit Args(std::string &cfg_filename);
 };

@@ -156,9 +156,9 @@ int main(int argc, char* argv[]) {
         std::stringstream ss(argv[5]);
         ss >> start_from;
     }
-    aminoacid::AminoacidInfo::init(AA_file_name, "NRPSPREDICTOR2");
+    aminoacid::AminoacidInfo::init(AA_file_name, "NRPSPREDICTOR2", args.aminoacid_info_default_logp);
     aminoacid::ModificationInfo::init(args.modification_cfg);
-    aminoacid::MonomerInfo::init(args.monomer_cfg, args.monomer_logP_cfg);
+    aminoacid::MonomerInfo::init(args.monomer_cfg, args.monomer_logP_cfg, args.monomer_info_default_logp);
 
     std::cout << args.modification_cfg << "\n";
     for (int i = 0; i != aminoacid::ModificationInfo::MODIFICATION_CNT; ++i) {
