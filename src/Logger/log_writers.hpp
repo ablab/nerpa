@@ -7,12 +7,16 @@
 
 #pragma once
 
-#include "path_helper.hpp"
 #include "logger.hpp"
 
 #include <iostream>
 
 namespace logging {
+
+    std::string filename(std::string const& path) {
+        size_t pos = path.find_last_of('/');
+        return pos != std::string::npos ? path.substr(pos + 1) : path;
+    }
 
     struct console_writer : public writer {
 #ifdef SPADES_USE_JEMALLOC
@@ -30,7 +34,7 @@ namespace logging {
         void write_msg(double time, size_t max_rss, level l, const char* file, size_t line_num, const char* source, const char* msg) {
             std::cout << fmt::format("{:14s} {:^5s} {:6.6s} {:24.24s} ({:26.26s}:{:4d})   {:s}",
                                      human_readable_time(time), human_readable_memory(max_rss), logging::level_name(l),
-                                     source, path::filename(file), int(line_num), msg)
+                                     source, filename(file), int(line_num), msg)
                       << std::endl;
         }
 #endif
@@ -44,7 +48,7 @@ namespace logging {
         //if (!path::FileExists(log_props_file))
         //    log_props_file = path::append_path(dir, cfg::get().log_filename);
 
-        logger *lg = create_logger(path::FileExists(log_props_file) ? log_props_file : "");
+        logger *lg = create_logger();
         lg->add_writer(std::make_shared<console_writer>());
         attach_logger(lg);
     }

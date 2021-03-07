@@ -8,10 +8,13 @@
 #include "Nrpspredictor2Builder.h"
 
 namespace nrpsprediction {
-    std::vector<aminoacid::Modification> parse_modifications(std::string predict_aa) {
+    std::vector<aminoacid::Modification> parse_modifications(std::string &predict_aa) {
         std::vector<aminoacid::Modification> res;
-        if (predict_aa.find("+MT") != std::string::npos) {
-            res.emplace_back(aminoacid::Modification(aminoacid::ModificationInfo::getIdByNameId("methylation")));
+        std::stringstream ss(predict_aa);
+        std::string single_mod;
+        std::getline(ss, single_mod, '+');
+        while (std::getline(ss, single_mod, '+')) {
+            res.emplace_back(aminoacid::Modification(aminoacid::ModificationInfo::getIdByNameId(single_mod)));
         }
         return res;
     }

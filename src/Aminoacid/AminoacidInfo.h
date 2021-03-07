@@ -11,14 +11,14 @@
 namespace aminoacid {
     class AminoacidInfo {
     public:
-        static const double DEFAULT_LOG_P;
+        static double DEFAULT_LOG_P;
         static int AMINOACID_CNT;
         static std::vector<std::string> AMINOACID_NAMES;
         static std::vector<std::string> NAME_ID;
         static std::vector<Formula> FORMULS;
         static std::vector<double> LogP;
 
-        static void init(std::string filename, std::string predictor);
+        static void init(std::string filename, std::string predictor, double default_logp);
         static int getIdByNameId(std::string name);
     };
 }

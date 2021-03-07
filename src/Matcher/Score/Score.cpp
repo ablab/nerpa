@@ -6,6 +6,7 @@
 #include "Score.h"
 #include <Aminoacid/MonomerInfo.h>
 #include <math.h>
+#include <fstream>
 
 bool matcher::Score::getScoreForSegment(const std::vector<aminoacid::Aminoacid>& amns,
                                         const nrpsprediction::BgcPrediction& prediction, int part_id,
@@ -74,32 +75,52 @@ matcher::Score::getTheBestAAInPred(const nrpsprediction::AAdomainPrediction &apr
 
 double getModificationScore(const aminoacid::Aminoacid &nrpAA,
         const std::vector<aminoacid::Modification> &mods) {
-    bool pred_has_met = false;
-    bool nrp_has_met = false;
-    for (int i = 0; i < mods.size(); ++i) {
-        if (mods[i].getId() == aminoacid::ModificationInfo::getIdByNameId("methylation")) {
-            pred_has_met = true;
-        }
+
+    std::vector<int> pred_mods_flags(aminoacid::ModificationInfo::MODIFICATION_CNT, 0);
+    for (auto &m : mods) {
+        pred_mods_flags[m.getId()] = 1;
     }
 
     auto mds = nrpAA.getModifications();
-    for (int i = 0; i < mds.size(); ++i) {
-        if (mds[i].getId() == aminoacid::ModificationInfo::getIdByNameId("methylation")) {
-            nrp_has_met = true;
+    std::vector<int> nrp_mods_flags(aminoacid::ModificationInfo::MODIFICATION_CNT, 0);
+    for (auto &m : mds) {
+        nrp_mods_flags[m.getId()] = 1;
+    }
+
+    double res = 0;
+    size_t DL_id = aminoacid::ModificationInfo::getIdByNameId("@D");
+    for (int i = 0; i != aminoacid::ModificationInfo::MODIFICATION_CNT; ++i) {
+        if (i != DL_id) {
+            res += aminoacid::ModificationInfo::getCoefficientById(i, pred_mods_flags[i], nrp_mods_flags[i]);
         }
     }
-    if (!nrp_has_met && !pred_has_met) {
-        return 0.1;
-    }
-    if (nrp_has_met && pred_has_met) {
-        return 2.2;
-    }
-    if (pred_has_met && !nrp_has_met) {
-        return -2.2;
-    }
-    if (!pred_has_met && nrp_has_met) {
-        return -2.2;
-    }
+    return res;
+//    bool pred_has_met = false;
+//    bool nrp_has_met = false;
+//    for (int i = 0; i < mods.size(); ++i) {
+//        if (mods[i].getId() == aminoacid::ModificationInfo::getIdByNameId("methylation")) {
+//            pred_has_met = true;
+//        }
+//    }
+//
+//    auto mds = nrpAA.getModifications();
+//    for (int i = 0; i < mds.size(); ++i) {
+//        if (mds[i].getId() == aminoacid::ModificationInfo::getIdByNameId("methylation")) {
+//            nrp_has_met = true;
+//        }
+//    }
+//    if (!nrp_has_met && !pred_has_met) {
+//        return 0.1;
+//    }
+//    if (nrp_has_met && pred_has_met) {
+//        return 2.2;
+//    }
+//    if (pred_has_met && !nrp_has_met) {
+//        return -2.2;
+//    }
+//    if (!pred_has_met && nrp_has_met) {
+//        return -2.2;
+//    }
 }
 
 double matcher::Score::probGenAA(const aminoacid::Aminoacid &nrpAA) const {
@@ -132,23 +153,12 @@ double getLDScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid 
     auto nrpConf = nrpAA.getConfiguration();
     auto predConf = predAA.getConfiguration();
 
-    if ((nrpConf == aminoacid::Aminoacid::L) && (predConf == aminoacid::Aminoacid::D)) {
-        return -0.8;
+    if (nrpConf == aminoacid::Aminoacid::NA || predConf == aminoacid::Aminoacid::NA) {
+        return 0;
     }
 
-    if ((nrpConf == aminoacid::Aminoacid::L) && (predConf == aminoacid::Aminoacid::L)) {
-        return 0.3;
-    }
-
-    if ((nrpConf == aminoacid::Aminoacid::D) && (predConf == aminoacid::Aminoacid::D)) {
-        return 0.8;
-    }
-
-    if ((nrpConf == aminoacid::Aminoacid::D) && (predConf == aminoacid::Aminoacid::L)) {
-        return -1.5;
-    }
-
-    return 0;
+    size_t DL_id = aminoacid::ModificationInfo::getIdByNameId("@D");
+    return aminoacid::ModificationInfo::getCoefficientById(DL_id, predConf == aminoacid::Aminoacid::D, nrpConf == aminoacid::Aminoacid::D);
 }
 
 bool matcher::Score::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid::Aminoacid &predAA,
@@ -194,4 +204,27 @@ double matcher::Score::Mismatch(const aminoacid::Aminoacid &structure_aa,
         score -= probGenAA(structure_aa);
         return (score + md_score + dl_score);
     }
+}
+
+matcher::Score::Score(std::string &config) {
+    std::ifstream in(config);
+    std::string tmp;
+    in >> tmp >> insertion >> tmp >> deletion;
+
+    auto read_line_to_vec = [&in] (size_t n) -> std::vector<double> {
+        std::vector<double> res;
+        double w;
+        std::string tmp;
+        in >> tmp;
+        for (size_t i = 0; i != n; ++i) {
+            in >> w;
+            res.push_back(w);
+        }
+        return res;
+    };
+
+    size_t n_params = 5;
+    ProbGenCorrect = read_line_to_vec(n_params);
+    ProbGenIncorrect = read_line_to_vec(n_params);
+    ProbGetScore = read_line_to_vec(n_params);
 }

@@ -9,14 +9,17 @@
 
 class Args {
 public:
-    double insertion;
-    double deletion;
     std::string modification_cfg;
     std::string monomer_cfg;
     std::string monomer_logP_cfg;
+    std::string prob_cfg;
     unsigned int threads;
+    double min_score;
+    double min_explain_part;
+    double monomer_info_default_logp;
+    double aminoacid_info_default_logp;
 
-    Args(std::string cfg_filename);
+    explicit Args(std::string &cfg_filename);
 };
 
 

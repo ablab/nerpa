@@ -1,222 +1,59 @@
-NameId	MINOWA	# CHARACTER CODE	Name	NRPSPREDICTOR2	SANDPUMA	PRISM	Formula	NRPSPred2_LogP
-Ala	Ala	Ala	Alanine	ala	ala	A	C3H7NO2	-2.85
-Bal	B-Ala	Bal	beta-Alanine	b_ala	b-ala	&beta;-Ala	C3H7NO2	-2.85
-3ala	-	-	-	-	-	5-ALA	-	-
-Dal	-	Dal	DehydroxyAlanine	ala_d	d-ala	-	-	-2.85
-3ppla	-	-	-	-	33p-l-ala	-	-	-
-nohAla	-	-	-	-	noh-ala	-	-	-
-nohDAla	-	-	-	-	noh-d-ala	-	-	-
-Hba	-	Hba	2,3-Hydroxy-beta-alanine	-	-	-	-	-
-ohdAla	-	-	-	-	oh-d-ala	-	-	-
-Arg	Arg	Arg	Arginine	arg	arg	R	C6H14N4O2	-4.28
-dehArg	-	-	-	-	4-5-dehydro-arg	-	-	-
-Goa	-	Goa	gamma-hydroxy-arginine	-	-	-	-	-
-Asn	Asn	Asn	Asparagine	asn	asn	N	C4H8N2O3	-3.79
-Has	hAsn	Has	Hydroxyasparagine	-	-	OHAsn	C4H8N2O4	-
-DAsn	-	-	-	-	d-asn	-	-	-
-Ahp	Ahp	Ahp	amino-6-hydroxy-2-piperidone	ahp	-	-	C5H10N2O2	-4.89
-Asp	Asp	Asp	Aspartic acid	asp	asp	D	C4H7NO4	-
-A3o	-	A3o	3-Hydroxyaspartic acid	-	-	OHAsp	C4H7NO5	-
-Boa	-	Boa	beta-hydroxyaspartic acid	-	-	-	C4H7NO5	-
-Mas	MeAsp	Mas	Methylaspartic acid	-	me-asp	MeAsp	C5H9NO4	-
-OmAsp	OmAsp	Oma	3-O-methyl-aspartic acid	-	-	-	-	-2.99
-Cys	Cys	Cys	Cysteine	cys	cys	C	C3H7NO2S	-3.79
-Dab	Dab	Dab	2,4-diaminobutyric acid	dab	dab	Dab	C4H10N2O2	-3.35
-Aba	-	Aba	2,3-Diaminobutyric acid	-	-	-	C4H10N2O2	-
-Gln	Gln	Gln	Glutamine	gln	gln	Q	C5H10N2O3	-3.46
-OHGln	-	-	-	-	-	OHGln	-	-
-DGln	-	-	-	-	d-gln	-	-	-
-3ohgln	-	-	-	-	3oh-gln	-	-	-
-Dhg	-	Dhg	beta,gamma-dihydroxyglutamine	-	-	-	C5H10N2O5	-
-Glu	Glu	Glu	Glutamic acid	glu	glu	E	C5H9NO4	-3.5
-4og	-	4og	4-Hydroxyglutamic acid	-	-	-	C5H9NO5	-
-3mGlu	3mGlu	3mg	3-Methylglutamic acid	-	3-me-glu	MeGlu	C6H11NO4	-
-Mgl	-	Mgl	Methylglutamic acid	-	-	-	C6H11NO4	-
-Gly	Gly	Gly	Glycine	gly	gly	G	C2H5NO2	-3.04
-Hpg	Hpg	Hpg	4-hydroxyphenylglycine	hpg	hpg	Hpg	C8H9NO3	-5.29
-Dhp	DHpg	Dhp	3,5-dihydroxyphenylglycine	dhp	-	-	C8H9NO4	-5.29
-aohgly	-	-	-	-	aoh-gly	-	-	-
-Hcl	Hpg2Cl	Hcl	3,5-dichloro-4-hydroxy-L-phenylglycine	-	hpg2cl	-	-	-
-Ile	Ile	Ile	Isoleucine	ile	ile	I	C6H13NO2	-2.87
-aile	-	-	-	-	aile	-	-	-
-Leu	Leu	Leu	Leucine	leu	leu	L	C6H13NO2	-2.24
-Bol	-	Bol	beta-hydroxyleucine	-	-	-	C6H13NO3	-
-OHLeu	-	-	-	-	-	OHLeu	-	-
-3ohleu	-	-	-	-	3oh-leu	-	-	-
-Dhl	-	Dhl	Dehydroxyleucine	-	-	-	-	-
-Mnl	-	Mnl	5-Methyl-norleucine	-	-	-	-	-
-DLeu	-	-	-	-	d-leu	-	-	-
-BdLeu	-	-	-	-	boh-d-leu	-	-	-
-Bly	beta-Lys	Bly	beta-Lysine	-	blys	&beta;-Lys	C6H14N2O2	-
-Lys	Lys	Lys	Lysine	lys	lys	K	C6H14N2O2	-4.6
-lys-erg	-	-	-	-	lys-erg	-	-	-
-Orn	Orn	Orn	Ornithine	orn	orn	Orn	C5H12N2O2	-3.97
-Oho	OHOrn	Oho	delta-N-hydroxyornithine	-	-	OHOrn	C5H12N2O3	-
-Nh5Orn	5NhOrn	5no	N5-Hydroxyornithine	-	-	-	C5H12N2O3	-
-Foo	fOHOrn	Foo	formyl-N5-hydroxyornithine	-	fhorn	-	C6H12N2O4	-
-Horn	-	-	-	-	horn	HAOrn	-	-
-DCHorn	-	-	-	-	d-cyclo-horn	-	-	-
-nmeFhorn	-	-	-	-	nme-fhorn	-	-	-
-For	-	For	Formylornithine	-	-	-	-	-
-Phe	Phe	Phe	Phenylalanine	phe	phe	F	C9H11NO2	-2.81
-Pip	pipecolate	Pip	Pipecolate	pip	pip	Pip	C6H11NO2	-5.58
-Pro	Pro	Pro	Proline	pro	pro	P	C5H9NO2	-3.21
-Ser	Ser	Ser	Serine	ser	ser	S	C3H7NO3	-2.57
-Tyr	Tyr	Tyr	Tyrosine	tyr	tyr	Y	C9H11NO3	-3.42
-Trp	Trp	Trp	Tryptophan	trp	trp	-	C11H12N2O2	-4.19
-Val	Val	Val	Valine	val	val	V	C5H11NO2	-2.15
-Tcl	Thr-4-Cl	Tcl	4-Chlorothreonine	tcl	-	-	C4H8ClNO3	-2.25
-Thr	-	-	-	thr	thr	T	C4H9NO3	-2.25
-AloThr	Thr	Thr	allo-Threonine	allothr	athr	Thr	C4H9NO3	-2.25
-Bmt	Bmt	Bmt	(4R)-4-[(E)-2-butenyl]-4-methyl-L-threonine	bmt	bmt	Bmt	C9H17NO3	-
-Dht	-	-	-	dht	dht	-	C4H7NO2	-
-Abu	Abu	Abu	Aminobutyric acid	abu	abu	Abu	C4H9NO2	-2.25
-Hiq	-	Hiq	6-hydroxy-1,2,3,4-tetrahydroisoquinoline-3-carboxylic acid	-	-	-	C10H11NO3	-
-Kyn	Kyn	Kyn	kynurenine	kyn	kyn	-	C10H12N2O3	-
-homoTyr	homoTyr	Hty	homoTyrosine	hty	-	Hty	C10H13NO3	-
-Qna	Qna	Qna	Quinaldinic acid	-	-	-	C10H7NO2	-
-Kya	-	Kya	Kynurenic acid	-	-	-	C10H7NO3	-
-Dhs	-	Dhs	Dehydroserine	-	-	-	C3H5NO3	-
-Amn	-	Amm	Aminomalonate	-	-	-	C3H5NO4	-
-Gac	guanidinoacetic_acid	Gac	Guanidinoacetic acid	gua	-	-	C3H7N3O2	-
-Sar	Sar	Sar	Sarcosine	-	sar	-	C3H7NO2	-
-Isr	-	Isr	isoserine	-	-	-	C3H7NO3	-
-Dap	2-3-diaminoproprionate	Dap	2,3-diaminopropionate	-	-	Dap	C3H8N2O2	-
-Ani	alaninol	Ani	alaninol	-	alanionl	-	C3H9NO	-
-Acp	-	Acp	1-Aminocyclopropane-1-carboxylate	-	-	-	C4H6NO2	-
-Hby	-	Hby	Dehydrobutyrine	-	-	OHBu	C4H7NO2	-
-Ama	-	Ama	amino(methoxy)acetic acid	-	-	-	C4H8N2O4	-
-Aib	-	Aib	2-Aminoisobutyric acid	-	-	Aib	C4H9NO2	-
-Hms	-	Hms	2-Hydroxymethylserine	-	-	-	C4H9NO4	-
-Hiv	-	Hiv	2,3-Dihydroxy-isovalerate	-	-	-	C5H10O4	-
-Amb	-	Amb	2-Amino-2-methylbutanoate	-	-	-	C5H11NO2	-
-Iva	-	Iva	Isovaline	-	-	-	C5H11NO2	-
-Met	-	Met	Methionine	met	met	M	C5H11NO2S	-
-Bov	-	Bov	beta-hydroxyvaline	-	-	-	C5H11NO3	-
-Ppt	-	Ppt	Phosphinothricin	-	-	-	C5H12NO4P	-
-Opb	-	Opb	2-Amino-4-hydroxymethylphosphinyl-butanoate	-	-	-	C5H15N2O4P	-
-Pyr	-	Pyr	Pyridine	-	-	Pyr	C5H5N	-
-3ma	-	3ma	(2S,3S)-3-Methylaspartate	-	-	-	C5H9N04	-
-3op	-	3op	3-Hydroxyproline	-	-	OHPro	C5H9NO3	-
-4op	-	4op	4-Hydroxyproline	-	-	OHPro	C5H9NO3	-
-mPro	mPro	Mpr	Methylproline	-	me-pro	MePro	C6H11NO2	-
-Amp	-	Amp	2-Amino-4-methyl-pentenoic acid	-	-	-	C6H11NO2	-
-Aad	Aad	Aad	Alpha-aminoadipate	aad	aad	Aad	C6H11NO4	-
-Cap	capreomycidine	Cap	Capreomycidine	-	-	Cap	C6H12N4O2	-
-Cit	-	Cit	Citrulline	cit	-	-	C6H13N3O3	-
-Hpa	3-HPA	Hpa	3-hydroxypicolinic acid	-	-	-	C6H5NO3	-
-Hxy	-	Hxy	5-hexynoate	-	-	-	C6H7O2	-
-His	His	His	Histidine	his	his	H	C6H9N3O2	-
-Hex	-	Hex	5-hexenoate	-	-	-	C6H9O2	-
-Ska	-	Ska	Shikimic acid	-	-	-	C7H10O5	-
-Dpa	-	Dpa	Diaminopimelic acid	-	-	-	C7H14N2O4	-
-Hci	-	Hci	homoCitrulline	-	-	-	C7H15N3O3	-
-Aha	-	Aha	3,7-diaminoheptanoic acid	-	-	-	C7H16N2O2	-
-Sal	Sal	Sal	Salicylate	sal	sal	Sal	C7H5O3	-
-Hdb	-	Hdb	2,3-dihydroxybenzoate	-	-	-	C7H5O4	-
-PHBA	-	-	-	-	-	PHBA	C7H6O3	-
-Hbz	-	Hbz	Hydroxybenzoic acid	-	-	-	C7H6O3	-
-Hsa	-	Hsa	2,3-dihydroxy-4-sulfobenzoic acid	-	-	-	C7H6O7S	-
-Ata	-	Ata	Anthranilic acid	-	-	-	C7H7NO2	-
-Pca	-	Pca	Piperidazine-3-carboxylic acid	-	-	-	C7H7NO2	-
-Ahb	-	Ahb	AHBA; 3-Amino-5-hydroxybenzoic acid	-	-	AHBA	C7H7NO3	-
-Xpa	-	Xpa	2,6-Dioxo-4-piperidinyl-acetic acid	-	-	-	C7H9NO4	-
-Pth	-	Pth	Phthalate	-	-	-	C8H4O4	-
-Qxa	QA	Qxa	Quinoxaline	-	-	QX	C8H6N2	-
-Abz	-	Abz	5-amino-1,3-benzothiazole-7-carboxylic acid	-	-	-	C8H6N2O2S	-
-Pya	Phenylacetate	Pya	Phenylacetate	-	-	-	C8H7O2	-
-Pap	-	Pap	p-aminoacetophenone	-	-	-	C8H9NO	-
-Mha	4-MHA	Mha	4-methyl-3-hydroxyanthranilic acid	-	-	-	C8H9NO3	-
-Hpl	-	Hpl	4-Hydroxyphenyllactic acid	-	-	-	C9H10O4	-
-Mab	-	Mab	4-dimethylamino-benzoic acid	-	-	-	C9H11NO2	-
-Pse	-	Pse	Phenylserine	-	-	-	C9H11NO3	-
-Top	-	Top	TOPA	-	-	-	C9H11NO5	-
-And	-	And	2-Aminononane-1,9-dioic acid	-	-	-	C9H17NO4	-
-akF	-	-	-	-	-	&alpha;kF	-	-
-akI	-	-	-	-	-	&alpha;kI	-	-
-akL	-	-	-	-	-	&alpha;kL	-	-
-akV	-	-	-	-	-	&alpha;kV	-	-
-bAib	-	-	-	-	-	&beta;-Aib	-	-
-bAln	-	-	-	-	-	&beta;-Aln	-	-
-bPhe	-	-	-	-	-	&beta;-Phe	-	-
-Dhb	DHB	Dhb	2,3-dehydroaminobutyric acid	dhb	dhb	2,3DHB	-	-
-3hpa	-	-	-	-	-	3-HPA	-	-
-3hqa	-	-	-	-	-	3-HQA	-	-
-3ha	-	-	-	-	-	3HA	-	-
-aa	-	-	-	-	-	AA	-	-
-acl	-	-	-	-	-	ACL	-	-
-c10	-	-	-	-	-	C<sub>10</sub>	-	-
-c14	-	-	-	-	-	C<sub>14</sub>	-	-
-c6	-	-	-	-	-	C<sub>6</sub>	-	-
-Chc	-	-	-	-	-	CHC	-	-
-Cinn	-	-	-	-	-	Cinn	-	-
-Col	-	-	-	-	-	CoL	-	-
-Dha	-	-	-	-	-	Dha	-	-
-Dhab	-	-	-	-	dhab	Dhab	-	-
-Dhchc	-	-	-	-	-	DHCHC	-	-
-Dhpg	-	-	-	dhpg	dhpg	Dhpg	-	-
-Fhba	-	-	-	-	-	FHBA	-	-
-Hse	-	-	-	hse	hse	Hse	-	-
-MePhe	-	-	-	-	-	MePhe	-	-
-OHHty	-	-	-	-	-	OHHty	-	-
-OHPhe	-	-	-	-	-	OHPhe	-	-
-OHPip	-	-	-	-	-	OHPip	-	-
-OHPP	-	-	-	-	-	OHPP	-	-
-OHTyr	-	-	-	-	-	OHTyr	-	-
-OHVal	-	-	-	-	-	OHVal	-	-
-OMeTrp	-	-	-	-	-	OMeTrp	-	-
-Paa	-	Paa	{1-[amino(imino)methyl]pyrrolidin-2-yl}acetic acid	-	-	PAA	-	-
-Pba	-	Pba	PABA	-	-	PABA	-	-
-Piz	-	-	-	-	piperazic	Piz	-	-
-3oh3mpro	-	-	-	-	3oh-3me-pro	-	-	-
-clTrp	-	-	-	-	6cl-trp	-	-	-
-ameser	-	-	-	-	alpha-me-ser	-	-	-
-Bht	-	-	-	bht	bht	-	-	-
-BmeTyr	-	-	-	-	boh-ome-tyr	-	-	-
-Cysa	-	-	-	-	cysa	-	-	-
-DAthr	-	-	-	-	d-athr	-	-	-
-DCys	-	-	-	-	d-cys	-	-	-
-Ddab	-	-	-	-	d-dab	-	-	-
-DPro	-	-	-	-	d-pro	-	-	-
-DSer	-	-	-	-	d-ser	-	-	-
-DThr	-	-	-	-	d-thr	-	-	-
-DTrp	-	-	-	-	d-trp	-	-	-
-DVal	-	-	-	-	d-val	-	-	-
-DeOxyThr	-	-	-	-	deoxy-thr	-	-	-
-Dhabdht	-	-	-	-	dhab-dht	-	-	-
-DHabu	-	-	-	-	dhabu	-	-	-
-DnbSal	-	-	-	-	dnb-sal	-	-	-
-Dpg	-	-	-	dpg	dpg	-	-	-
-glyPhe	-	-	-	-	gly-ph	-  	-	-
-GlyCy	-	-	-	-	glycy	-	-	-
-goh-val	-	-	-	-	goh-val	-	-	-
-hpg2Cl	-	-	-	-	hpg-hpg2cl	-	-	-
-iva	-	-	-	-	iva	-	-	-
-mTyr	-	-	-	-	me-tyr	-	-	-
-nmeThr	-	-	-	-	nme-thr	-	-	-
-nohVal	-	-	-	-	noh-val	-	-	-
-pheAC	-	-	-	-	phe-ac	-	-	-
-proMpro	-	-	-	-	pro-me-pro	-	-	-
-Aeo	Aeo	Aeo	2-amino-9,10-epoxi-8-oxodecanoic acid	aeo	-	-	C10H17NO4	-
-Apa	-	-	-	apa	-	-	-	-
-Apc	-	-	-	apc	-	-	-	-
-Cha	-	-	-	cha	-	-	-	-
-End	-	-	-	end	-	-	-	-
-hyv	-	-	4-Hydroxy-D-valine	hyv	-	-	C5H11NO3	-
-phg	-	-	-	phg	-	-	-	-
-uda	-	-	-	uda	-	-	-	-
-vol	-	-	-	vol	-	-	-	-
-Aho	-	Aho	4,8-diamino-3-hydroxy-octanoic_acid	-	-	-	-	-
-Amd	-	Amd	AHMOD	-	-	-	-	-
-bOhTyr	bOHTyr	Bot	beta-hydroxytyrosine	-	-	-	-	-
-Btc	-	Btc	Benzothiazole-3-amino-5-carboxylic acid	-	-	-	-	-
-Cpa	-	Cpa	2-amino-3-[2-(dihydroxyamino)cyclopropyl]propanoic acid	-	-	-	-	-
-Cpd	-	Cpd	trans-1,2-CPDA	-	-	-	-	-
-Hcy	-	Hcy	homoCystein	-	-	-	-	-
-Hht	-	Hht	3,4-dihydroxyhomotyrosine	-	-	-	-	-
-Hmc	-	Hmc	3-hydroxy-6-(methylthio)-2,5-dioxocyclohexanecarboxylic acid	-	-	-	-	-
-Ota	-	Ota	3-oxo-5-thia-2-azabicyclo-4.4.0-deca-7,9,11-triene-9-carboxylic acid	-	-	-	-	-
-Oya	-	Oya	1,3-oxazol-5-ylacetic acid	-	-	-	-	-
-Pea	-	Pea	(2E)-2-amino-4-hydroxypent-2-enoic acid	-	-	-	-	-
-Pec	-	Pyc	trans-(3S,4S)-4-hydroxy-2,3,4,5-tetrahydropyridazine-3-carboxylic acid	-	-	-	-	-
-Xaa	-	Xaa	Alkyl chain	-	-	-	-	-
+NameId	NRPSPREDICTOR2	Name	NRPSPred2_LogP
+2-oxo-isovaleric-acid	2-oxo-isovaleric-acid	2-oxo-isovaleric-acid 3-methyl-2-oxobutanoic acid	-6.64
+33p-l-ala	33p-l-ala	3-(3-pyridyl)-l-alanine	-6.64
+4ppro	4ppro	4-propyl-proline 4-Propylpyrrolidine-2-carboxylic acid	-6.64
+HICA	HICA	alpha-hydroxy-isocaproic-acid leucic acid	-6.64
+LDAP	LDAP	diaminopimelic acid	-6.64
+aad	aad	2-amino-adipic acid	-6.64
+abu	abu	2-amino-butyric acid	-2.25
+aeo	aeo	2-amino-8-oxo-9,10-decanoate	-6.64
+ala	ala	alanine	-2.85
+alaninol	alaninol	alaninol	-6.64
+arg	arg	arginine	-4.28
+asn	asn	asparagine	-3.79
+asp	asp	aspartic acid	-6.64
+b-ala	b-ala	beta-alanine	-6.64
+b-lys	b-lys	beta-lysine	-6.64
+bht	bht	beta-hydroxy-tyrosine	-6.64
+bmt	bmt	4-butenyl-4-methyl threonine	-6.64
+cap	cap	capreomycidine	-6.64
+cys	cys	cysteine	-3.79
+cysa	cysa	cysteic acid	-6.64
+dab	dab	2,4-diaminobutyric acid	-3.35
+dhb	dhb	2,3-dihydroxy-benzoic acid	-6.64
+dhpg	dhpg	3,5-dihydroxy-phenyl-glycine	-6.64
+dht	dht	dehydro-threonine 2,3-dehydroaminobutyric acid	-6.64
+dpr	dpr	2,3-diaminopropionic acid	-6.64
+gln	gln	glutamine	-3.46
+glu	glu	glutamic acid	-3.5
+gly	gly	glycine	-3.04
+glycolic-acid	glycolic-acid	glycolic acid 2-hydroxyacetic acid	-6.64
+his	his	histidine	-6.64
+hiv	hiv	2-hydroxyisovalerate	-6.64
+hpg	hpg	4-hydroxy-phenyl-glycine	-5.29
+hse	hse	homoserine	-6.64
+hty	hty	homotyrosine	-6.64
+hyv	hyv	4-hydroxy-L-valine	-6.64
+ile	ile	isoleucine	-2.87
+indole-3-carboxylic	indole-3-carboxylic	Indole-3-carboxylic acid	-6.64
+iva	iva	isovaline	-6.64
+kyn	kyn	kynurenine	-6.64
+leu	leu	leucine	-2.24
+lys	lys	lysine	-4.6
+lyserg	lyserg	lysergic acid	-6.64
+met	met	methionine	-6.64
+orn	orn	ornithine	-3.97
+phe	phe	phenylalanine	-2.81
+phe-ac	phe-ac	phenylacetate	-6.64
+phg	phg	phenyl-glycine	-6.64
+pip	pip	pipecolic acid	-5.58
+piperazic	piperazic	piperazic acid	-6.64
+pro	pro	proline	-3.21
+sal	sal	salicylic acid	-6.64
+ser	ser	serine	-2.57
+tcl	tcl	(4S)-5,5,5-trichloro-leucine	-2.25
+thr	thr	threonine	-2.25
+trp	trp	tryptophan	-4.19
+tyr	tyr	tyrosine	-3.42
+val	val	valine	-2.15
+vol	vol	valinol	-6.64

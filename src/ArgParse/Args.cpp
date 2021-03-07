@@ -5,16 +5,18 @@
 #include <fstream>
 #include "Args.h"
 
-Args::Args(std::string cfg_filename) {
+Args::Args(std::string &cfg_filename) {
+
+    // TODO: make config independent of the key order (consider using some lightweight parser)
     std::ifstream in(cfg_filename);
     std::string tmp, val;
-    double x;
-    in >> tmp >> x;
-    insertion = x;
-    in >> tmp >> x;
-    deletion = x;
     in >> modification_cfg;
     in >> monomer_cfg;
     in >> monomer_logP_cfg;
+    in >> prob_cfg;
     in >> tmp >> threads;
+    in >> tmp >> min_score;
+    in >> tmp >> min_explain_part;
+    in >> tmp >> monomer_info_default_logp;
+    in >> tmp >> aminoacid_info_default_logp;
 }

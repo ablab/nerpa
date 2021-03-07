@@ -12,11 +12,12 @@ namespace aminoacid {
 
     std::unordered_map<std::string, int> MonomerInfo::MONOMER_TO_AA;
     std::unordered_map<std::string, std::vector<int>> MonomerInfo::MONOMER_TO_MODIFICATIONS;
-    const double MonomerInfo::DEFAULT_LOG_P = -6.2;
+    double MonomerInfo::DEFAULT_LOG_P = -6.2;
     std::unordered_map<int, double> MonomerInfo::LogP;
 
-    void MonomerInfo::init(std::string& filename, std::string& logp_filename) {
+    void MonomerInfo::init(std::string& filename, std::string& logp_filename, double default_logp) {
         std::cout << "INIT\n";
+        DEFAULT_LOG_P = default_logp;
         std::fstream in(filename);
         std::string buffer;
         getline(in, buffer); // skip header

@@ -15,7 +15,7 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
     std::stringstream ss(extra);
     std::string graph, extra_info;
     ss >> graph;
-    getline(ss, extra_info);
+//    getline(ss, extra_info);
 
     size_t pos = graph.find(';');
     if (pos == std::string::npos) return nullptr;
@@ -53,9 +53,9 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
         aa.setConfiguration(cur_config);
         aminoacids.push_back(aa);
 
-        std::stringstream ssnode;
-        ssnode << node_idx++ << " " << code << " " << 0;
-        strnodes.push_back(ssnode.str());
+//        std::stringstream ssnode;
+//        ssnode << node_idx++ << " " << code << " " << 0;
+        strnodes.push_back(code);
     }
 
     std::vector<std::vector<int> > g(aminoacids.size());
@@ -68,6 +68,9 @@ std::shared_ptr<nrp::NRP> nrp::MonomericNRPBuilder::build(std::string nrp_id, st
     std::vector<std::pair<int, int>> ocon;
     while (std::getline(ss, bond, ';')) {
         std::stringstream ss_(bond);
+
+        if (bond.empty()) break;
+        
         std::getline(ss_, tmp, ',');
         std::istringstream(tmp) >> b;
         std::getline(ss_, tmp, ',');

@@ -96,9 +96,10 @@ namespace aminoacid {
     std::vector<double> AminoacidInfo::LogP = {};
 
     int AminoacidInfo::AMINOACID_CNT = int(AMINOACID_NAMES.size());
-    const double AminoacidInfo::DEFAULT_LOG_P = -6.64;
+    double AminoacidInfo::DEFAULT_LOG_P = -6.64;
 
-    void AminoacidInfo::init(std::string filename, std::string predictor) {
+    void AminoacidInfo::init(std::string filename, std::string predictor, double default_logp) {
+        DEFAULT_LOG_P = default_logp;
         std::ifstream in(filename);
         std::string buffer;
         getline(in, buffer);

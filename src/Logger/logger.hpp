@@ -73,7 +73,6 @@ namespace logging
          *
          */
 
-        properties(std::string filename = "", level default_level = L_INFO);
         properties(level default_level = L_INFO);
 
         std::unordered_map<std::string, level> levels;
@@ -100,7 +99,7 @@ namespace logging
     };
 
     std::shared_ptr<logger>& __logger();
-    logger* create_logger(std::string filename = "", level default_level = L_INFO);
+    logger* create_logger(level default_level = L_INFO);
 
     void attach_logger(logger *lg);
     void detach_logger();
