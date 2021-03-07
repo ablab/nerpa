@@ -69,6 +69,7 @@ install(FILES
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/modifications.tsv"
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/monomers.tsv"
         "${CMAKE_CURRENT_SOURCE_DIR}/resources/monomersLogP.tsv"
+        "${CMAKE_CURRENT_SOURCE_DIR}/resources/prob_gen.cfg"
         DESTINATION share/nerpa
         COMPONENT runtime)
 
