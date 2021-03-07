@@ -7,6 +7,8 @@ import garlic_res_utils
 
 matplotlib.use('Agg')
 
+MAX_ELEM=100
+
 def calcFDR(score_iswrong, top_cnt=0):
     FDR=[] # (sum wrong)/(sum all)
     scores=[]
@@ -37,7 +39,7 @@ def showFDR(cnt, scores, FDR, res_dir, out_prefix="FDR_"):
     import matplotlib.pyplot as plt
     
     plt.clf()
-    plt.plot(cnt[:160], FDR[:160])
+    plt.plot(cnt[:MAX_ELEM], FDR[:MAX_ELEM])
     plt.xlabel('number of elements')
     plt.ylabel('FDR')
     plt.savefig(res_dir + "/" + out_prefix + "cnt.png") 
@@ -45,11 +47,11 @@ def showFDR(cnt, scores, FDR, res_dir, out_prefix="FDR_"):
 
     with open(res_dir + "/" + out_prefix + "cnt.csv", "w") as fw:
         fw.write("CNT, FDR\n")
-        for i in range(len(cnt[:160])):
+        for i in range(len(cnt[:MAX_ELEM])):
             fw.write(str(cnt[i]) + ", " + str(FDR[i]) + "\n")
 
     plt.gca().invert_xaxis()
-    plt.plot(scores[:160], FDR[:160])
+    plt.plot(scores[:MAX_ELEM], FDR[:MAX_ELEM])
     plt.xlabel('scores')
     plt.ylabel('FDR')
     plt.savefig( res_dir + "/" + out_prefix + "scores.png")
@@ -57,15 +59,15 @@ def showFDR(cnt, scores, FDR, res_dir, out_prefix="FDR_"):
 
     with open( res_dir + "/" + out_prefix + "scores.csv", "w") as fw:
         fw.write("SCORES, FDR\n")
-        for i in range(len(scores[:160])):
+        for i in range(len(scores[:MAX_ELEM])):
             fw.write(str(scores[i]) + ", " + str(FDR[i]) + "\n")
 
 def showFDRwithGARLIC(cnt_nerpa, cnt_garlic, FDR_nerpa, FDR_garlic, res_dir, out_prefix="FDR_"):
     import matplotlib
     import matplotlib.pyplot as plt
 
-    plt.plot(cnt_nerpa[:160], FDR_nerpa[:160], label="nerpa")
-    plt.plot(cnt_garlic[:160], FDR_garlic[:160], label="garlic")
+    plt.plot(cnt_nerpa[:MAX_ELEM], FDR_nerpa[:MAX_ELEM], label="nerpa")
+    plt.plot(cnt_garlic[:MAX_ELEM], FDR_garlic[:MAX_ELEM], label="garlic")
     plt.xlabel('number of elements')
     plt.ylabel('FDR')
     plt.legend()
