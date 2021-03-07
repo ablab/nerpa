@@ -55,6 +55,7 @@ with open( res_dir + "/mibig_cmp.csv", 'w' ) as fw:
     with open( res_dir + "/report.csv", 'r') as f:
         csv_reader = csv.reader(f, delimiter=',')
         for row in csv_reader:
+            row[5] = row[5].split("_")[0]
             if (row[5].split('/')[-1].split('.')[0] in row[6]):
                 score_iswrong.append((float(row[0]), False, row[5].split('/')[-1], row[6]))
                 result_match[row[5].split('/')[-1]] = [row[0], row[3]]
