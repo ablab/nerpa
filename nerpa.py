@@ -148,7 +148,9 @@ def gen_graphs_from_smiles_tsv(args, main_out_dir, path_to_monomers_tsv, path_to
                '-outputFolder', main_out_dir,
                '-outputFileName', os.path.basename(path_to_rban_output)]
     try:
-        p = subprocess.run(command, text=True, capture_output=True,
+        p = subprocess.run(command,
+                           stdout=subprocess.PIPE, stderr=subprocess.PIPE,  # instead of Python 3.7+ only: capture_output=True
+                           universal_newlines=True,  # instead of Python 3.7+ only: text=True,
                            # check=True
                            )
         if p.stderr:
