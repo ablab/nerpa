@@ -13,6 +13,7 @@ nerpa_init.init()
 
 site.addsitedir(nerpa_init.python_modules_dir)
 
+import nerpa_utils
 import handle_TE
 import handle_rban
 from logger import log
@@ -51,7 +52,8 @@ def parse_args():
     parser.add_argument("--modification_cfg", help="path to file with modification description", action="store", type=str)
     parser.add_argument("--monomer_cfg", help="path to file with monomer description", action="store", type=str)
     parser.add_argument("--threads", default=1, type=int, help="number of threads for running Nerpa", action="store")
-    parser.add_argument("--local_output_dir", "-o", nargs=1, help="use this output dir", type=str)
+    parser.add_argument("--output_dir", "-o", help="output dir [default: nerpa_results/results_<datetime>]",
+                        type=str, default=None)
     args = parser.parse_args()
     return args
 
@@ -150,7 +152,7 @@ def gen_graphs_from_smiles_tsv(args, main_out_dir, path_to_monomers_tsv, path_to
     command = ['java', '-jar', path_to_rban_jar,
                '-monomersDB', path_to_monomers,
                '-inputFile', path_to_rban_input,
-               '-outputFolder', main_out_dir,
+               '-outputFolder', main_out_dir + '/',  # rBAN specifics
                '-outputFileName', os.path.basename(path_to_rban_output)]
     try:
         p = subprocess.run(command,
@@ -210,27 +212,14 @@ def get_antismash_list(args):
 def run(args):
     validate_arguments(args)
 
-    main_out_dir = os.path.abspath(".") + "/"
-    if args.local_output_dir is not None:
-        main_out_dir = os.path.abspath(args.local_output_dir[0]) + "/"
+    output_dir = nerpa_utils.set_up_output_dir(output_dirpath=args.output_dir)
 
-    if not os.path.exists(main_out_dir):
-        os.makedirs(main_out_dir)
-
-    if (args.predictions is not None):
-        path_predictions = os.path.abspath(copy_prediction_list(args, main_out_dir))
+    if args.predictions is not None:
+        path_predictions = copy_prediction_list(args, output_dir)
     else:
-        path_predictions = handle_TE.create_predictions_by_antiSAMSHout(get_antismash_list(args), main_out_dir)
+        path_predictions = handle_TE.create_predictions_by_antiSAMSHout(get_antismash_list(args), output_dir)
 
-    directory = os.path.dirname(main_out_dir)
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-    os.chdir(directory)
-
-    path_to_cfg = print_cfg(args, main_out_dir)
-
-    if not os.path.exists(os.path.dirname('details_mols/')):
-        os.makedirs(os.path.dirname('details_mols/'))
+    path_to_cfg = print_cfg(args, output_dir)
 
     path_to_AA = os.path.join(nerpa_init.configs_dir, "aminoacids.tsv")
 
@@ -238,14 +227,14 @@ def run(args):
     if args.modification_cfg is not None:
         path_to_modification_cfg = os.path.abspath(args.modification_cfg)
 
-    local_modifications_cfg = os.path.join(main_out_dir, "modifications.tsv")
+    local_modifications_cfg = os.path.join(output_dir, "modifications.tsv")
     copyfile(path_to_modification_cfg, local_modifications_cfg)
 
     if args.scoring_cfg is not None:
         path_to_scoring_cfg = os.path.abspath(args.scoring_cfg)
     else:
         path_to_scoring_cfg = os.path.join(nerpa_init.configs_dir, "prob_gen.cfg")
-    local_scoring_cfg = os.path.join(main_out_dir, "prob_gen.cfg")
+    local_scoring_cfg = os.path.join(output_dir, "prob_gen.cfg")
     copyfile(path_to_scoring_cfg, local_scoring_cfg)
 
     path_to_monomer_logP = os.path.join(nerpa_init.configs_dir, "monomersLogP.tsv")
@@ -253,23 +242,32 @@ def run(args):
     if args.monomer_cfg is not None:
         path_to_monomer_cfg = os.path.abspath(args.monomer_cfg)
 
-    local_monomers_logP = os.path.join(main_out_dir, "monomersLogP.tsv")
-    local_monomers_cfg = os.path.join(main_out_dir, "monomers.tsv")
+    local_monomers_logP = os.path.join(output_dir, "monomersLogP.tsv")
+    local_monomers_cfg = os.path.join(output_dir, "monomers.tsv")
     copyfile(path_to_monomer_cfg, local_monomers_cfg)
     copyfile(path_to_monomer_logP, local_monomers_logP)
 
-    path_to_graphs = os.path.join(main_out_dir, 'path_to_graphs')
+    path_to_graphs = os.path.join(output_dir, 'path_to_graphs')
     if args.graphs:
         copyfile(args.graphs, path_to_graphs)
     else:
         path_to_rban = os.path.join(nerpa_init.external_tools_dir, 'rBAN', 'rBAN-1.0.jar')
         path_to_monomers = os.path.join(nerpa_init.external_tools_dir, 'rBAN', 'nrproMonomers_nerpa.json')
-        gen_graphs_from_smiles_tsv(args, main_out_dir, local_monomers_cfg, path_to_graphs, path_to_rban, path_to_monomers)
+        gen_graphs_from_smiles_tsv(args, output_dir, local_monomers_cfg, path_to_graphs, path_to_rban, path_to_monomers)
+
+    # FIXME: let NRPsMatcher work normally without changing dir!
+    cwd = os.getcwd()
+    os.chdir(output_dir)
+
+    if not os.path.exists(os.path.dirname('details_mols/')):
+        os.makedirs(os.path.dirname('details_mols/'))
 
     comand = os.path.join(nerpa_init.bin_dir, "NRPsMatcher") + " \"" + path_predictions + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" \"" + path_to_cfg + "\"\n"
     print(comand)
     os.system(comand)
-    return
+    print("Nerpa results are saved to " + output_dir)
+
+    os.chdir(cwd)
 
 
 args = parse_args()

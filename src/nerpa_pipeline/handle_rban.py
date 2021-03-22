@@ -294,7 +294,7 @@ def run_rban(path_to_rban, path_to_rban_input, path_to_rban_output, main_out_dir
     command = ['java', '-jar', path_to_rban,
                # '-monomersDB', '',
                '-inputFile', path_to_rban_input,
-               '-outputFolder', main_out_dir,
+               '-outputFolder', main_out_dir + '/',  # rBAN specifics
                '-outputFileName', os.path.basename(path_to_rban_output)]
     p = subprocess.run(command,
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
