@@ -1,0 +1,3 @@
+streptomedb.3052.gr @D-Trp,aThr/Thr,@L-Asp,@D-Hpg,dh-Trp,@L-3Me-Glu,@D-OH-Asn,@L-Asp,@L-Asp,Gly,@L-Ser,NA;0,1;2,3;4,5;5,6;7,0;3,8;8,7;9,2;10,11;6,9;1,10;1,o,4 Halocin_S8
+mibig_682.gr bAla,@D-Ala,@L-Pro,NA,@D-Val,@L-Val,@D-Leu,@L-Val,@D-aThr/Thr,@D-Ala,@D-Pro,@L-Val,@L-Ile/aIle,@L-Val;0,1;2,3;4,5;6,7;5,8;7,9;10,0;11,4;8,12;1,11;13,10;9,2;12,6;8,o,13 Lydiamycin_C
+NRT47-J.gr Asn,Gly,Ile/aIle,Trp,Gly,Asp,Asp,Dab,aThr/Thr,Phe,Dab,Ser,NA;0,1;2,3;4,5;5,0;6,7;7,8;1,6;10,2;8,11;11,12;3,4;9,10;8,o,9 Alterobactin_B_Alterobactin_B

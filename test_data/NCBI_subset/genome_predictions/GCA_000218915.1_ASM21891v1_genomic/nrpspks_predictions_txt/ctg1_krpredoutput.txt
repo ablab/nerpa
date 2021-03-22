@@ -1,0 +1,13 @@
+ctg1_orf02603_KR1	inactive	C2
+ctg1_orf02625_KR1	active	?
+ctg1_orf02625_KR2	active	?
+ctg1_orf02626_KR1	inactive	C2
+ctg1_orf02632_KR1	active	?
+ctg1_orf02632_KR2	active	?
+ctg1_orf02632_KR3	active	?
+ctg1_orf06415_KR1	inactive	C2
+ctg1_orf06424_KR1	active	?
+ctg1_orf06959_KR1	inactive	C1
+ctg1_orf07438_KR1	inactive	C2
+ctg1_orf07613_KR1	inactive	C1
+ctg1_orf09011_KR1	inactive	C2
