@@ -296,7 +296,10 @@ def run_rban(path_to_rban, path_to_rban_input, path_to_rban_output, main_out_dir
                '-inputFile', path_to_rban_input,
                '-outputFolder', main_out_dir,
                '-outputFileName', os.path.basename(path_to_rban_output)]
-    p = subprocess.run(command, text=True, capture_output=True,
+    p = subprocess.run(command,
+                       stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                       # instead of Python 3.7+ only: capture_output=True
+                       universal_newlines=True,  # instead of Python 3.7+ only: text=True,
                        # check=True
                        )
     if p.stderr and log:
