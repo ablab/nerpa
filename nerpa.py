@@ -1,19 +1,24 @@
 #!/usr/bin/env python3
+
 import sys
 import os
 import argparse
 import csv
+import site
 from shutil import copyfile
 import subprocess
 
 import nerpa_init
-
 nerpa_init.init()
+
+site.addsitedir(nerpa_init.python_modules_dir)
+
 import handle_TE
 import handle_rban
 from logger import log
 
 path_to_exec_dir = os.path.dirname(os.path.abspath(__file__)) + "/"
+
 
 def parse_args():
     global parser
@@ -203,8 +208,6 @@ def get_antismash_list(args):
     return aouts
 
 def run(args):
-    path_to_cur = os.path.dirname(os.path.abspath(__file__))
-
     validate_arguments(args)
 
     main_out_dir = os.path.abspath(".") + "/"
@@ -229,15 +232,9 @@ def run(args):
     if not os.path.exists(os.path.dirname('details_mols/')):
         os.makedirs(os.path.dirname('details_mols/'))
 
-    path_to_AA = "./resources/aminoacids.tsv"
-    if (os.path.exists(os.path.join(path_to_cur, 'NRPsMatcher'))):
-        path_to_AA = "../share/nerpa/aminoacids.tsv"
-    path_to_AA = os.path.join(path_to_cur, path_to_AA)
+    path_to_AA = os.path.join(nerpa_init.configs_dir, "aminoacids.tsv")
 
-    path_to_modification_cfg = "./resources/modifications.tsv"
-    if (os.path.exists(os.path.join(path_to_cur, 'NRPsMatcher'))):
-        path_to_modification_cfg = "../share/nerpa/modifications.tsv"
-    path_to_modification_cfg = os.path.join(path_to_cur, path_to_modification_cfg)
+    path_to_modification_cfg = os.path.join(nerpa_init.configs_dir, "modifications.tsv")
     if args.modification_cfg is not None:
         path_to_modification_cfg = os.path.abspath(args.modification_cfg)
 
@@ -247,20 +244,12 @@ def run(args):
     if args.scoring_cfg is not None:
         path_to_scoring_cfg = os.path.abspath(args.scoring_cfg)
     else:
-        path_to_scoring_cfg = "./resources/prob_gen.cfg"
-        if (os.path.exists(os.path.join(path_to_cur, 'NRPsMatcher'))):
-            path_to_scoring_cfg = "../share/nerpa/prob_gen.cfg"
-        path_to_scoring_cfg = os.path.join(path_to_cur, path_to_scoring_cfg)
+        path_to_scoring_cfg = os.path.join(nerpa_init.configs_dir, "prob_gen.cfg")
     local_scoring_cfg = os.path.join(main_out_dir, "prob_gen.cfg")
     copyfile(path_to_scoring_cfg, local_scoring_cfg)
 
-    path_to_monomer_logP = "./resources/monomersLogP.tsv"
-    path_to_monomer_cfg = "./resources/monomers.tsv"
-    if (os.path.exists(os.path.join(path_to_cur, 'NRPsMatcher'))):
-        path_to_monomer_logP =  "../share/nerpa/monomersLogP.tsv"
-        path_to_monomer_cfg = "../share/nerpa/monomers.tsv"
-    path_to_monomer_logP =  os.path.join(path_to_cur, path_to_monomer_logP)
-    path_to_monomer_cfg = os.path.join(path_to_cur, path_to_monomer_cfg)
+    path_to_monomer_logP = os.path.join(nerpa_init.configs_dir, "monomersLogP.tsv")
+    path_to_monomer_cfg = os.path.join(nerpa_init.configs_dir, "monomers.tsv")
     if args.monomer_cfg is not None:
         path_to_monomer_cfg = os.path.abspath(args.monomer_cfg)
 
@@ -273,14 +262,15 @@ def run(args):
     if args.graphs:
         copyfile(args.graphs, path_to_graphs)
     else:
-        path_to_rban = os.path.join(path_to_cur, '../share/rBAN/rBAN-1.0.jar')
-        path_to_monomers = os.path.join(path_to_cur, '../share/rBAN/nrproMonomers_nerpa.json')
+        path_to_rban = os.path.join(nerpa_init.external_tools_dir, 'rBAN', 'rBAN-1.0.jar')
+        path_to_monomers = os.path.join(nerpa_init.external_tools_dir, 'rBAN', 'nrproMonomers_nerpa.json')
         gen_graphs_from_smiles_tsv(args, main_out_dir, local_monomers_cfg, path_to_graphs, path_to_rban, path_to_monomers)
 
-    comand = path_to_exec_dir + "/NRPsMatcher \"" +  path_predictions + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" \"" + path_to_cfg + "\"\n"
+    comand = os.path.join(nerpa_init.bin_dir, "NRPsMatcher") + " \"" + path_predictions + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" \"" + path_to_cfg + "\"\n"
     print(comand)
     os.system(comand)
     return
+
 
 args = parse_args()
 run(args)

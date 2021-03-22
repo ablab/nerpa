@@ -62,7 +62,7 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/nerpa_pipeline"
         DESTINATION share/nerpa
         COMPONENT runtime)
 
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/resources"
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/configs"
         DESTINATION share/nerpa
         COMPONENT runtime)
 
