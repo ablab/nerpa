@@ -62,25 +62,14 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src/nerpa_pipeline"
         DESTINATION share/nerpa
         COMPONENT runtime)
 
-install(FILES
-        "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/library.info.streptomedb"
-        "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/prediction.info"
-        "${CMAKE_CURRENT_SOURCE_DIR}/resources/aminoacids.tsv"
-        "${CMAKE_CURRENT_SOURCE_DIR}/resources/modifications.tsv"
-        "${CMAKE_CURRENT_SOURCE_DIR}/resources/monomers.tsv"
-        "${CMAKE_CURRENT_SOURCE_DIR}/resources/monomersLogP.tsv"
-        "${CMAKE_CURRENT_SOURCE_DIR}/resources/prob_gen.cfg"
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/resources"
         DESTINATION share/nerpa
         COMPONENT runtime)
 
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/predictions"
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/test_dataset"
         DESTINATION share/nerpa
         COMPONENT runtime)
 
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/resources/test_dataset/streptomedb"
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/external_tools"
         DESTINATION share/nerpa
-        COMPONENT runtime)
-
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/external_tools/rBAN"
-        DESTINATION share
         COMPONENT runtime)
