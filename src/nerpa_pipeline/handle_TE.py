@@ -8,7 +8,7 @@ import handle_PCP2
 import handle_MT
 import handle_E
 import handle_helper
-from logger import log
+
 
 def get_split_BGC(dirname):
     possible_BGC = []

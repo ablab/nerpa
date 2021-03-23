@@ -5,7 +5,7 @@ import csv
 from collections import defaultdict
 from itertools import permutations
 import subprocess
-from logger import log
+import logger
 import networkx as nx
 
 import handle_monomers
@@ -140,7 +140,7 @@ def process_single_record(rban_record, recognized_monomers, backbone_bond_types,
         for i, d in chirality.items():
             G.nodes[i]['isD'] = d
     except Exception as e:
-        log.warn(f'Unable to get isomeric information for {rban_record["id"]}')
+        logger.warning(f'Unable to get isomeric information for {rban_record["id"]}')
 
     for i, name in hybrid_monomers_dict.items():
         G.nodes[i]['name'] = name
@@ -149,7 +149,7 @@ def process_single_record(rban_record, recognized_monomers, backbone_bond_types,
     try:
         cycles, paths, _ = putative_backbones(G, min_nodes=2)
     except Exception as e:
-        log.warn(f'Unable to linearize {rban_record["id"]}')
+        logger.warning(f'Unable to linearize {rban_record["id"]}')
         return []
 
     def gen_nerpa_input(path, cyclic=False):
@@ -247,7 +247,7 @@ def generate_graphs_from_rban_output(path_to_rban_output, path_to_monomers_tsv, 
                     for i, gr, pt in graphs:
                         f_out.write(f'{i} {gr} {pt}\n')
                 except NumNodesError as e:
-                    log.warn(e)
+                    logger.warning(e)
 
 
 def generate_rban_input_from_smiles_string(smiles, path_to_rban_input):
@@ -280,7 +280,7 @@ def generate_rban_input_from_list(lst, path_to_rban_input):
         json.dump(dicts, f, indent=2)
 
 
-def run_rban(path_to_rban, path_to_rban_input, path_to_rban_output, main_out_dir, log=None):
+def run_rban(path_to_rban, path_to_rban_input, path_to_rban_output, main_out_dir):
     """
     raises: subprocess.CalledProcessError
 
@@ -302,8 +302,8 @@ def run_rban(path_to_rban, path_to_rban_input, path_to_rban_output, main_out_dir
                        universal_newlines=True,  # instead of Python 3.7+ only: text=True,
                        # check=True
                        )
-    if p.stderr and log:
-        log.err(p.stderr)
+    if p.stderr:
+        logger.error(p.stderr)
     for line in p.stdout.split('\n'):
-        if line.startswith('WARNING') and log:
-            log.warn('rBAN ' + line)
+        if line.startswith('WARNING'):
+            logger.warning('rBAN ' + line)

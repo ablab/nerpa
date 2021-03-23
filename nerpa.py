@@ -14,9 +14,11 @@ nerpa_init.init()
 site.addsitedir(nerpa_init.python_modules_dir)
 
 import nerpa_utils
+import nerpa_config
 import handle_TE
 import handle_rban
-from logger import log
+import logger
+# from logger import log  # TODO FIXME
 
 path_to_exec_dir = os.path.dirname(os.path.abspath(__file__)) + "/"
 
@@ -96,7 +98,7 @@ def validate_arguments(args):
 
     except ValidationError as e:
         if str(e):
-            log.err(f'{e}\n')
+            logger.error(f'{e}\n')
         parser.print_help()
         sys.exit()
 
@@ -148,7 +150,7 @@ def gen_graphs_from_smiles_tsv(args, main_out_dir, path_to_monomers_tsv, path_to
         handle_rban.generate_rban_input_from_smiles_string(args.smiles, path_to_rban_input)
 
     path_to_rban_output = os.path.join(main_out_dir, 'rban.output.json')
-    log.log('Running rBAN...')
+    logger.info('Running rBAN...')
     command = ['java', '-jar', path_to_rban_jar,
                '-monomersDB', path_to_monomers,
                '-inputFile', path_to_rban_input,
@@ -161,14 +163,14 @@ def gen_graphs_from_smiles_tsv(args, main_out_dir, path_to_monomers_tsv, path_to
                            # check=True
                            )
         if p.stderr:
-            log.err(p.stderr)
+            logger.error(p.stderr)
         for line in p.stdout.split('\n'):
             if line.startswith('WARNING'):
-                log.warn('rBAN ' + line)
+                logger.warning('rBAN ' + line)
     except subprocess.CalledProcessError as e:
-        log.err(str(e))
+        logger.error(str(e))
         sys.exit()
-    log.log('Done.')
+    logger.info('Done.')
 
     handle_rban.generate_graphs_from_rban_output(path_to_rban_output, path_to_monomers_tsv, path_to_graphs, main_out_dir, path_to_rban_jar)
 
@@ -210,9 +212,13 @@ def get_antismash_list(args):
     return aouts
 
 def run(args):
+    logger.init(nerpa_config.LOGGER_NAME)
+
     validate_arguments(args)
 
     output_dir = nerpa_utils.set_up_output_dir(output_dirpath=args.output_dir)
+    log_fpath = os.path.join(output_dir, nerpa_config.LOGGER_NAME + '.log')
+    logger.add_file_handler(log_fpath)
 
     if args.predictions is not None:
         path_predictions = copy_prediction_list(args, output_dir)
@@ -263,12 +269,21 @@ def run(args):
         os.makedirs(os.path.dirname('details_mols/'))
 
     comand = os.path.join(nerpa_init.bin_dir, "NRPsMatcher") + " \"" + path_predictions + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" \"" + path_to_cfg + "\"\n"
-    print(comand)
+    logger.info(comand)
     os.system(comand)
-    print("Nerpa results are saved to " + output_dir)
+    logger.info("Nerpa results and log are saved to " + output_dir)
 
     os.chdir(cwd)
 
 
-args = parse_args()
-run(args)
+if __name__ == "__main__":
+    try:
+        args = parse_args()
+        run(args)
+    except Exception:
+        _, exc_value, _ = sys.exc_info()
+        logger.exception(exc_value)
+        logger.error('Exception caught!')
+    finally:
+        # TODO: clean up: remove all intermediate files
+        logger.cleanup()
