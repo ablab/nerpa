@@ -4,11 +4,11 @@ import json
 import csv
 from collections import defaultdict
 from itertools import permutations
-import subprocess
-import logger
 import networkx as nx
 
+import logger
 import handle_monomers
+import nerpa_utils
 
 
 # TODO: move this section to some sort of config file
@@ -216,10 +216,7 @@ def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban):
     new_rban_input = os.path.join(main_out_dir, 'rban-putative-hybrids.input.json')
     generate_rban_input_from_list(new_monomers, new_rban_input)
     new_rban_output = os.path.join(main_out_dir, 'rban-putative-hybrids.output.json')
-    try:
-        run_rban(path_to_rban, new_rban_input, new_rban_output, main_out_dir)
-    except subprocess.CalledProcessError as e:
-        raise e
+    run_rban(path_to_rban, new_rban_input, new_rban_output, main_out_dir)
 
     hybrid_monomers_dict = defaultdict(dict)
     new_monomers_processed = json.loads(open(new_rban_output).read())
@@ -282,13 +279,10 @@ def generate_rban_input_from_list(lst, path_to_rban_input):
 
 def run_rban(path_to_rban, path_to_rban_input, path_to_rban_output, main_out_dir):
     """
-    raises: subprocess.CalledProcessError
-
     :param path_to_rban:
     :param path_to_rban_input:
     :param path_to_rban_output:
     :param main_out_dir:
-    :param log:
     :return:
     """
     command = ['java', '-jar', path_to_rban,
@@ -296,14 +290,4 @@ def run_rban(path_to_rban, path_to_rban_input, path_to_rban_output, main_out_dir
                '-inputFile', path_to_rban_input,
                '-outputFolder', main_out_dir + '/',  # rBAN specifics
                '-outputFileName', os.path.basename(path_to_rban_output)]
-    p = subprocess.run(command,
-                       stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                       # instead of Python 3.7+ only: capture_output=True
-                       universal_newlines=True,  # instead of Python 3.7+ only: text=True,
-                       # check=True
-                       )
-    if p.stderr:
-        logger.error(p.stderr)
-    for line in p.stdout.split('\n'):
-        if line.startswith('WARNING'):
-            logger.warning('rBAN ' + line)
+    nerpa_utils.sys_call(command)

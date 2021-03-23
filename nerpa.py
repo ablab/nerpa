@@ -6,7 +6,6 @@ import argparse
 import csv
 import site
 from shutil import copyfile
-import subprocess
 
 import nerpa_init
 nerpa_init.init()
@@ -150,27 +149,13 @@ def gen_graphs_from_smiles_tsv(args, main_out_dir, path_to_monomers_tsv, path_to
         handle_rban.generate_rban_input_from_smiles_string(args.smiles, path_to_rban_input)
 
     path_to_rban_output = os.path.join(main_out_dir, 'rban.output.json')
-    logger.info('Running rBAN...')
+    logger.info('\n======= Structures preprocessing with rBAN')
     command = ['java', '-jar', path_to_rban_jar,
                '-monomersDB', path_to_monomers,
                '-inputFile', path_to_rban_input,
                '-outputFolder', main_out_dir + '/',  # rBAN specifics
                '-outputFileName', os.path.basename(path_to_rban_output)]
-    try:
-        p = subprocess.run(command,
-                           stdout=subprocess.PIPE, stderr=subprocess.PIPE,  # instead of Python 3.7+ only: capture_output=True
-                           universal_newlines=True,  # instead of Python 3.7+ only: text=True,
-                           # check=True
-                           )
-        if p.stderr:
-            logger.error(p.stderr)
-        for line in p.stdout.split('\n'):
-            if line.startswith('WARNING'):
-                logger.warning('rBAN ' + line)
-    except subprocess.CalledProcessError as e:
-        logger.error(str(e))
-        sys.exit()
-    logger.info('Done.')
+    nerpa_utils.sys_call(command)
 
     handle_rban.generate_graphs_from_rban_output(path_to_rban_output, path_to_monomers_tsv, path_to_graphs, main_out_dir, path_to_rban_jar)
 
@@ -261,19 +246,15 @@ def run(args):
         path_to_monomers = os.path.join(nerpa_init.external_tools_dir, 'rBAN', 'nrproMonomers_nerpa.json')
         gen_graphs_from_smiles_tsv(args, output_dir, local_monomers_cfg, path_to_graphs, path_to_rban, path_to_monomers)
 
-    # FIXME: let NRPsMatcher work normally without changing dir!
-    cwd = os.getcwd()
-    os.chdir(output_dir)
+    details_mol_dir = os.path.join(output_dir, 'details_mols')
+    if not os.path.exists(details_mol_dir):
+        os.makedirs(details_mol_dir)
 
-    if not os.path.exists(os.path.dirname('details_mols/')):
-        os.makedirs(os.path.dirname('details_mols/'))
-
-    comand = os.path.join(nerpa_init.bin_dir, "NRPsMatcher") + " \"" + path_predictions + "\" \"" + path_to_graphs + "\" \"" + path_to_AA + "\" \"" + path_to_cfg + "\"\n"
-    logger.info(comand)
-    os.system(comand)
-    logger.info("Nerpa results and log are saved to " + output_dir)
-
-    os.chdir(cwd)
+    command = [os.path.join(nerpa_init.bin_dir, "NRPsMatcher"),
+               path_predictions, path_to_graphs, path_to_AA, path_to_cfg]
+    logger.info("\n======= Nerpa matching")
+    nerpa_utils.sys_call(command, cwd=output_dir)
+    logger.info("\nNerpa results and log are saved to " + output_dir)
 
 
 if __name__ == "__main__":
