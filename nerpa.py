@@ -51,7 +51,7 @@ def parse_args(log):
     parsed_args = parser.parse_args()
 
     validate_arguments(parsed_args, parser, log)
-    return parse_args
+    return parsed_args
 
 
 def check_tsv_ids_duplicates(reader, col_id):
