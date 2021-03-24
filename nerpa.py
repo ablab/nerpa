@@ -13,11 +13,9 @@ nerpa_init.init()
 site.addsitedir(nerpa_init.python_modules_dir)
 
 import nerpa_utils
-import nerpa_config
 import handle_TE
 import handle_rban
 import logger
-# from logger import log  # TODO FIXME
 
 path_to_exec_dir = os.path.dirname(os.path.abspath(__file__)) + "/"
 
@@ -70,7 +68,7 @@ def validate(expr, msg=''):
     if not expr:
         raise ValidationError(msg)
 
-def validate_arguments(args):
+def validate_arguments(args, log):
     try:
         if not (args.predictions or args.antismash or args.antismash_out):
             raise ValidationError(f'one of the arguments --predictions --antismash/-a --antismash_output_list is required')
@@ -97,7 +95,7 @@ def validate_arguments(args):
 
     except ValidationError as e:
         if str(e):
-            logger.error(f'{e}\n')
+            log.error(f'{e}\n')
         parser.print_help()
         sys.exit()
 
@@ -140,7 +138,9 @@ def which(program):
     return None
 
 
-def gen_graphs_from_smiles_tsv(args, main_out_dir, path_to_monomers_tsv, path_to_graphs, path_to_rban_jar, path_to_monomers):
+def gen_graphs_from_smiles_tsv(args, main_out_dir,
+                               path_to_monomers_tsv, path_to_graphs, path_to_rban_jar, path_to_monomers,
+                               log):
     path_to_rban_input = os.path.join(main_out_dir, 'rban.input.json')
     if args.smiles_tsv:
         handle_rban.generate_rban_input_from_smiles_tsv(
@@ -149,15 +149,16 @@ def gen_graphs_from_smiles_tsv(args, main_out_dir, path_to_monomers_tsv, path_to
         handle_rban.generate_rban_input_from_smiles_string(args.smiles, path_to_rban_input)
 
     path_to_rban_output = os.path.join(main_out_dir, 'rban.output.json')
-    logger.info('\n======= Structures preprocessing with rBAN')
+    log.info('\n======= Structures preprocessing with rBAN')
     command = ['java', '-jar', path_to_rban_jar,
                '-monomersDB', path_to_monomers,
                '-inputFile', path_to_rban_input,
                '-outputFolder', main_out_dir + '/',  # rBAN specifics
                '-outputFileName', os.path.basename(path_to_rban_output)]
-    nerpa_utils.sys_call(command)
+    nerpa_utils.sys_call(command, log)
 
-    handle_rban.generate_graphs_from_rban_output(path_to_rban_output, path_to_monomers_tsv, path_to_graphs, main_out_dir, path_to_rban_jar)
+    handle_rban.generate_graphs_from_rban_output(path_to_rban_output, path_to_monomers_tsv, path_to_graphs,
+                                                 main_out_dir, path_to_rban_jar, log)
 
 
 def copy_prediction_list(args, main_out_dir):
@@ -196,14 +197,12 @@ def get_antismash_list(args):
 
     return aouts
 
-def run(args):
-    logger.init(nerpa_config.LOGGER_NAME)
-
-    validate_arguments(args)
+def run(args, log):
+    validate_arguments(args, log)
 
     output_dir = nerpa_utils.set_up_output_dir(output_dirpath=args.output_dir)
-    log_fpath = os.path.join(output_dir, nerpa_config.LOGGER_NAME + '.log')
-    logger.add_file_handler(log_fpath)
+    log.set_up_file_handler(output_dir)
+    log.start()
 
     if args.predictions is not None:
         path_predictions = copy_prediction_list(args, output_dir)
@@ -244,7 +243,9 @@ def run(args):
     else:
         path_to_rban = os.path.join(nerpa_init.external_tools_dir, 'rBAN', 'rBAN-1.0.jar')
         path_to_monomers = os.path.join(nerpa_init.external_tools_dir, 'rBAN', 'nrproMonomers_nerpa.json')
-        gen_graphs_from_smiles_tsv(args, output_dir, local_monomers_cfg, path_to_graphs, path_to_rban, path_to_monomers)
+        gen_graphs_from_smiles_tsv(args, output_dir,
+                                   local_monomers_cfg, path_to_graphs, path_to_rban, path_to_monomers,
+                                   log)
 
     details_mol_dir = os.path.join(output_dir, 'details_mols')
     if not os.path.exists(details_mol_dir):
@@ -252,19 +253,22 @@ def run(args):
 
     command = [os.path.join(nerpa_init.bin_dir, "NRPsMatcher"),
                path_predictions, path_to_graphs, path_to_AA, path_to_cfg]
-    logger.info("\n======= Nerpa matching")
-    nerpa_utils.sys_call(command, cwd=output_dir)
-    logger.info("\nNerpa results and log are saved to " + output_dir)
+    log.info("\n======= Nerpa matching")
+    nerpa_utils.sys_call(command, log, cwd=output_dir)
+    log.info("RESULTS:")
+    log.info("Main report is saved to " + os.path.join(output_dir, 'report.csv'), indent=1)
+    log.info("Detailed reports are saved to " + output_dir, indent=1)
+    log.finish()
 
 
 if __name__ == "__main__":
+    log = logger.NerpaLogger()
     try:
         args = parse_args()
-        run(args)
+        run(args, log)
     except Exception:
         _, exc_value, _ = sys.exc_info()
-        logger.exception(exc_value)
-        logger.error('Exception caught!')
+        log.exception(exc_value)
     finally:
         # TODO: clean up: remove all intermediate files
-        logger.cleanup()
+        pass

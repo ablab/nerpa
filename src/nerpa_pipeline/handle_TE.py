@@ -128,7 +128,7 @@ def create_predictions_by_antiSAMSHout(antismashouts, outdir):
         double_orf, double_aa = handle_PCP2.get_double_orfs_and_AA(dirname)
         mt_aa = handle_MT.get_MT_AA(dirname)
         d_aa = handle_E.get_D_AA(dirname)
-        print(d_aa)
+        # print(d_aa)  # TODO: print in debug mode
         bgc_orfs_parts = get_split_BGC(dirname)
 
         nrpspred_dir = os.path.join(dirname, "nrpspks_predictions_txt")
