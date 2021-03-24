@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import sys
 import json
 
 import config
@@ -10,7 +11,7 @@ import json_handler
 from log_utils import error, info
 
 
-def main():
+def main(args):
     parser = argparse.ArgumentParser(description='Parser of antiSMASH v5 output and interpreter of Stachelhaus codes')
     # TODO: add argument for classical output (as much NRPSpredictor2-compatibe as possible) and advanced (our improved style)
     parser.add_argument(
@@ -26,7 +27,9 @@ def main():
         type=str,
         default=None,
         help='Output dir ("nrpspks_predictions_txt" and "txt" subdirs will be created inside). '
-             'If not specified: use parent dir of each input JSON file'
+             'If not specified: use parent dir of each input JSON file. '
+             'If specified and multiple inputs are provided, the dir is used as a root dir where each input'
+             ' processing results are stored separately (subdir name is a basename of input JSON parent dir)'
     )
     parser.add_argument(
         '-c', '--codes',
@@ -67,7 +70,7 @@ def main():
         help='Produce verbose output. Otherwise only the most important messages are printed.'
     )
 
-    args = parser.parse_args()
+    args = parser.parse_args(args)
 
     # special case: determining --codes default value if nothing is specified
     if args.codes is None:
@@ -92,9 +95,11 @@ def main():
     else:
         error('File with codes (--code) does not exist or its format cannot be recognized. Aborting..', exit=True)
 
+    is_root_outdir = True if (args.output_dir is not None and len(args.inputs) > 1) else False
     for input_path in args.inputs:
-        json_handler.handle_single_input(input_path, args.output_dir, args.naming_style, known_codes, args.verbose)
+        json_handler.handle_single_input(input_path, args.output_dir, is_root_outdir,
+                                         args.naming_style, known_codes, args.verbose)
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])

@@ -98,7 +98,7 @@ def __parse_location(location):
     return start, end, strand
 
 
-def handle_single_input(path, output_dir, naming_style, known_codes, verbose=False):
+def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_codes, verbose=False):
     info('Processing ' + path, verbose=verbose)
     path = os.path.abspath(path)
     main_json_path = path
@@ -110,6 +110,8 @@ def handle_single_input(path, output_dir, naming_style, known_codes, verbose=Fal
         return
     if output_dir is None:
         output_dir = os.path.dirname(main_json_path)
+    elif is_root_outdir:
+        output_dir = os.path.join(output_dir, os.path.basename(os.path.dirname(main_json_path)))
     output_dir = os.path.abspath(output_dir)
     __create_output_dirs(output_dir)
     info('Processing JSON %s, saving results to %s' % (main_json_path, output_dir), verbose=verbose)
