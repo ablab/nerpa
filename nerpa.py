@@ -5,7 +5,7 @@ import os
 import argparse
 import csv
 import site
-from shutil import copyfile
+import shutil
 
 import nerpa_init
 nerpa_init.init()
@@ -47,9 +47,7 @@ def parse_args():
 
     # parser.add_argument("--insertion", help="insertion score [default=-2.8]", default=-2.8, action="store")
     # parser.add_argument("--deletion", help="deletion score [default=-5]", default=-5, action="store")
-    parser.add_argument("--scoring_cfg", help="path to file with scoring weights", action="store", type=str)
-    parser.add_argument("--modification_cfg", help="path to file with modification description", action="store", type=str)
-    parser.add_argument("--monomer_cfg", help="path to file with monomer description", action="store", type=str)
+    parser.add_argument("--configs_dir", help="custom directory with configs", action="store", type=str)
     parser.add_argument("--threads", default=1, type=int, help="number of threads for running Nerpa", action="store")
     parser.add_argument("--output_dir", "-o", help="output dir [default: nerpa_results/results_<datetime>]",
                         type=str, default=None)
@@ -99,22 +97,6 @@ def validate_arguments(args, log):
         parser.print_help()
         sys.exit()
 
-
-def print_cfg(args, output_dir):
-    cfg_file = os.path.join(output_dir, "nerpa.cfg")
-    with open(cfg_file, "w") as f:
-        f.write(os.path.abspath(os.path.join(output_dir, "modifications.tsv")) + "\n")
-        f.write(os.path.abspath(os.path.join(output_dir, "monomers.tsv")) + "\n")
-        f.write(os.path.abspath(os.path.join(output_dir, "monomersLogP.tsv")) + "\n")
-        f.write(os.path.abspath(os.path.join(output_dir, "prob_gen.cfg")) + "\n")
-        f.write("threads " + str(args.threads) + "\n")
-
-        # TODO: add to cmd parameters
-        f.write(f'min_score 0.05\n')
-        f.write(f'min_explain_part 0\n')
-        f.write(f'default_monomer_logp -6.2\n')
-        f.write(f'default_aminoacid_logp -6.64\n')
-    return cfg_file
 
 def which(program):
     def is_exe(fpath):
@@ -209,37 +191,20 @@ def run(args, log):
     else:
         path_predictions = handle_TE.create_predictions_by_antiSAMSHout(get_antismash_list(args), output_dir)
 
-    path_to_cfg = print_cfg(args, output_dir)
+    input_configs_dir = args.configs_dir if args.configs_dir else nerpa_init.configs_dir
+    current_configs_dir = os.path.join(output_dir, "configs")
+    # remember shutil.copytree caveat (compared to dir_util.copy_tree):
+    # directory metadata will be copied that may cause potential problems
+    # if src dir is too old and there is a cluster cronjob which
+    # automatically remove old files from the temporary workspace
+    shutil.copytree(input_configs_dir, current_configs_dir, copy_function=shutil.copy)
 
-    path_to_AA = os.path.join(nerpa_init.configs_dir, "aminoacids.tsv")
-
-    path_to_modification_cfg = os.path.join(nerpa_init.configs_dir, "modifications.tsv")
-    if args.modification_cfg is not None:
-        path_to_modification_cfg = os.path.abspath(args.modification_cfg)
-
-    local_modifications_cfg = os.path.join(output_dir, "modifications.tsv")
-    copyfile(path_to_modification_cfg, local_modifications_cfg)
-
-    if args.scoring_cfg is not None:
-        path_to_scoring_cfg = os.path.abspath(args.scoring_cfg)
-    else:
-        path_to_scoring_cfg = os.path.join(nerpa_init.configs_dir, "prob_gen.cfg")
-    local_scoring_cfg = os.path.join(output_dir, "prob_gen.cfg")
-    copyfile(path_to_scoring_cfg, local_scoring_cfg)
-
-    path_to_monomer_logP = os.path.join(nerpa_init.configs_dir, "monomersLogP.tsv")
-    path_to_monomer_cfg = os.path.join(nerpa_init.configs_dir, "monomers.tsv")
-    if args.monomer_cfg is not None:
-        path_to_monomer_cfg = os.path.abspath(args.monomer_cfg)
-
-    local_monomers_logP = os.path.join(output_dir, "monomersLogP.tsv")
-    local_monomers_cfg = os.path.join(output_dir, "monomers.tsv")
-    copyfile(path_to_monomer_cfg, local_monomers_cfg)
-    copyfile(path_to_monomer_logP, local_monomers_logP)
+    path_to_AA = os.path.join(current_configs_dir, "aminoacids.tsv")
 
     path_to_graphs = os.path.join(output_dir, 'path_to_graphs')
+    local_monomers_cfg = os.path.join(current_configs_dir, "monomers.tsv")
     if args.graphs:
-        copyfile(args.graphs, path_to_graphs)
+        shutil.copyfile(args.graphs, path_to_graphs)
     else:
         path_to_rban = os.path.join(nerpa_init.external_tools_dir, 'rBAN', 'rBAN-1.0.jar')
         path_to_monomers = os.path.join(nerpa_init.external_tools_dir, 'rBAN', 'nrproMonomers_nerpa.json')
@@ -252,7 +217,7 @@ def run(args, log):
         os.makedirs(details_mol_dir)
 
     command = [os.path.join(nerpa_init.bin_dir, "NRPsMatcher"),
-               path_predictions, path_to_graphs, path_to_AA, path_to_cfg]
+               path_predictions, path_to_graphs, path_to_AA, '--configs_dir', current_configs_dir]
     log.info("\n======= Nerpa matching")
     nerpa_utils.sys_call(command, log, cwd=output_dir)
     log.info("RESULTS:")

@@ -8,30 +8,36 @@
 #include "NRPsPrediction/BgcPrediction.h"
 #include <Logger/log_writers.hpp>
 #include <NRPsPrediction/Builders/Nrpspredictor2Builder.h>
-#include <ArgParse/Args.h>
 #include <Aminoacid/ModificationInfo.h>
 #include "utils/openmp_wrapper.h"
 #include "utils/cxxopts.hpp"
+#include "utils/config.h"
 #include <Matcher/OrderedGenesMatcher.h>
 #include <Aminoacid/MonomerInfo.h>
 
 cxxopts::Options parse_options(int argc, char **argv) {
     cxxopts::Options options(argv[0],
-                             " <file_with_predictions> <file_with_structures> <file_with_aa> <config_file> - matching BGC predictions with NRPs");
+                             " <file_with_predictions> <file_with_structures> <file_with_aa> - matching BGC predictions with NRPs");
     options.add_options()
             ("h,help", "Print help")
             ("p,predictions", "File listing paths to antiSMASH predictions", cxxopts::value<std::string>(), "FILE")
             ("s,structures", "File with parsed NRP structures", cxxopts::value<std::string>(), "FILE")
             ("a,amino_acids", "File with amino acids", cxxopts::value<std::string>(), "FILE")
-            ("c,config", "Configuration file", cxxopts::value<std::string>(), "FILE");
+            ("C,configs_dir", "Dir with all essential configuration files", cxxopts::value<std::string>()->default_value("./configs/"), "DIR");
 
     options.add_options("Advanced")
-            ("start_from", "Starting molecule index in the list of NRP structures", cxxopts::value<int>()->default_value("0"), "N");
+            ("threads", "Num threads", cxxopts::value<unsigned int>()->default_value("1"), "N")
+            ("start_from", "Starting molecule index in the list of NRP structures", cxxopts::value<int>()->default_value("0"), "N")
+            ("min_score", "Min BGC-NRP match score to report", cxxopts::value<double>()->default_value("0.05"), "FLOAT")
+            ("min_explain_part", "", cxxopts::value<double>()->default_value("0.0"), "FLOAT")
+            ("default_monomer_logp", "", cxxopts::value<double>()->default_value("-6.2"), "FLOAT")
+            ("default_aminoacid_logp", "", cxxopts::value<double>()->default_value("-6.64"), "FLOAT")
+            ("debug", "Debug mode (create temporary files & verbose output)");
 
     const std::vector<std::string> all_groups({"", "Advanced"});
 
     try {
-        options.parse_positional(std::vector<std::string>({"predictions", "structures", "amino_acids", "config"}));
+        options.parse_positional(std::vector<std::string>({"predictions", "structures", "amino_acids"}));
         options.parse(argc, argv);
     } catch (const cxxopts::OptionException &e) {
         std::cout << "error parsing options: " << e.what() << std::endl;
@@ -46,8 +52,7 @@ cxxopts::Options parse_options(int argc, char **argv) {
     for (const auto &required : std::vector<std::pair<std::string, std::string>>{
             {"predictions",   "Predictions file"},
             {"structures",   "Structures file"},
-            {"amino_acids", "AA file"},
-            {"config",   "Config file"}}) {
+            {"amino_acids", "AA file"}}) {
         if (options.count(required.first) != 1) {
             std::cout << required.second << " should be specified" << std::endl << std::endl;
             std::cout << options.help(all_groups) << std::endl;
@@ -126,30 +131,30 @@ std::vector<std::shared_ptr<nrp::NRP>> load_nrps_from_monomeric_info(const std::
     return nrps;
 }
 
-void getScoreFunction(Args args, matcher::Score*& score) {
+void getScoreFunction(matcher::Score*& score) {
     using namespace matcher;
-    score = new Score(args.prob_cfg);
+    score = new Score(config::get().prob_cfg);
 }
 
-matcher::MatcherBase* getMatcher(Args args) {
+matcher::MatcherBase* getMatcher() {
     return new matcher::OrderedGenesMatcher();
 }
 
 
-void run_mol_predictions(std::vector<nrpsprediction::BgcPrediction> preds, std::shared_ptr<nrp::NRP> mol, std::string output_filename,
-                         Args args) {
+void run_mol_predictions(std::vector<nrpsprediction::BgcPrediction> preds, std::shared_ptr<nrp::NRP> mol,
+                         std::string output_filename) {
     matcher::Score* score;
-    getScoreFunction(args, score);
+    getScoreFunction(score);
     std::vector<matcher::MatcherBase::Match> nrpsMatchs;
     for (int i = 0; i < preds.size(); ++i) {
         if (preds[i].getOrfs().size() == 0) continue;
         //std::cerr << mol->get_file_name() << " " << preds[i].getOrfs()[0].get_file_name() << "\n";
-        matcher::MatcherBase* matcher = getMatcher(args);
+        matcher::MatcherBase* matcher = getMatcher();
         matcher::MatcherBase::Match match = matcher->getMatch(mol, &preds[i], score);
         delete matcher;
 
-        if (match.score() >= args.min_score &&
-                (double)match.getCntMatch()/preds[i].getSumPredictionLen() >= args.min_explain_part) {
+        if (match.score() >= config::get().min_score &&
+                (double)match.getCntMatch()/preds[i].getSumPredictionLen() >= config::get().min_explain_part) {
             nrpsMatchs.push_back(match);
             std::ofstream out(output_filename);
             match.print(out);
@@ -196,17 +201,20 @@ int main(int argc, char* argv[]) {
     logging::create_console_logger("");
 
     cxxopts::Options options = parse_options(argc, argv);
+    config::create_instance(options);
+
+    // an example of updating values in the config object
+    if (options.count("debug") > 0)
+        config::get_writable().debug = true;
 
     std::string AA_file_name = options["amino_acids"].as<std::string>();
-    std::string cfg_filename = options["config"].as<std::string>();
-    Args args(cfg_filename);
 
     int start_from = std::max(0, options["start_from"].as<int>());
-    aminoacid::AminoacidInfo::init(AA_file_name, "NRPSPREDICTOR2", args.aminoacid_info_default_logp);
-    aminoacid::ModificationInfo::init(args.modification_cfg);
-    aminoacid::MonomerInfo::init(args.monomer_cfg, args.monomer_logP_cfg, args.monomer_info_default_logp);
+    aminoacid::AminoacidInfo::init(AA_file_name, "NRPSPREDICTOR2", config::get().aminoacid_info_default_logp);
+    aminoacid::ModificationInfo::init(config::get().modification_cfg);
+    aminoacid::MonomerInfo::init(config::get().monomer_cfg, config::get().monomer_logP_cfg, config::get().monomer_info_default_logp);
 
-    std::cout << args.modification_cfg << "\n";
+    std::cout << config::get().modification_cfg << "\n";
     for (int i = 0; i != aminoacid::ModificationInfo::MODIFICATION_CNT; ++i) {
         std::cout << aminoacid::ModificationInfo::NAMES[i] << " ";
         for (double x : aminoacid::ModificationInfo::COEFFICIENT[i]) {
@@ -229,17 +237,16 @@ int main(int argc, char* argv[]) {
 
     INFO("Processing matching for NRPs structurs")
     INFO("Start from: " << start_from)
-    unsigned nthreads = args.threads;
 
-    nerpa_set_omp_threads(nthreads);
+    nerpa_set_omp_threads(config::get().threads);
 
-    INFO("THREADS #" << nthreads);
+    INFO("THREADS #" << config::get().threads);
 #   pragma omp parallel for
     for (int i = start_from; i < mols.size(); ++i) {
         INFO("NRP structure #" << i)
         std::string output_filename = gen_filename(mols[i]->get_file_name(), "details_mols/");
 
-        run_mol_predictions(preds, mols[i], output_filename, args);
+        run_mol_predictions(preds, mols[i], output_filename);
     }
 
     return 0;

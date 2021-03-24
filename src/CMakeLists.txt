@@ -4,6 +4,8 @@ add_subdirectory(Logger)
 set(SOURCE_FILES main.cpp
         utils/openmp_wrapper.h
         utils/cxxopts.hpp
+        utils/config.h
+        utils/config.cpp
         Aminoacid/Aminoacid.cpp
         Aminoacid/Aminoacid.h
         NRPsPrediction/AAdomainPrediction.cpp
@@ -41,8 +43,6 @@ set(SOURCE_FILES main.cpp
         Aminoacid/AminoacidInfo.cpp
         Aminoacid/ModificationInfo.h
         Aminoacid/ModificationInfo.cpp
-        ArgParse/Args.cpp
-        ArgParse/Args.h
         Aminoacid/MonomerInfo.h
         Aminoacid/MonomerInfo.cpp
         NRP/MonomericNRPBuilder.h
