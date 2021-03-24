@@ -42,12 +42,12 @@ class NerpaLogger(object):
                 msg = 'EXCEPTION! ' + str(msg)
             else:
                 msg = 'ERROR! ' + str(msg)
-            msg += "\n\nIn case you have troubles running our tool, " \
+            msg += "\nIn case you have troubles running our tool, " \
                    "you can post an issue on https://github.com/ablab/nerpa/issues " \
                    "or write to aleksey.gurevich@spbu.ru"
 
         if to_stderr or self._logger is None or not self._logger.handlers:
-            sys.stderr.write(msg + '\n')
+            sys.stderr.write('\n' + msg + '\n')
         else:
             self._logger.error('')
             if is_exception:

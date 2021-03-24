@@ -17,11 +17,8 @@ import handle_TE
 import handle_rban
 import logger
 
-path_to_exec_dir = os.path.dirname(os.path.abspath(__file__)) + "/"
 
-
-def parse_args():
-    global parser
+def parse_args(log):
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
     genomic_group = parser.add_argument_group('Genomic input', 'description')
     genomic_group.add_argument("--predictions", "-p", nargs=1, dest="predictions",
@@ -33,13 +30,12 @@ def parse_args():
     struct_group = parser.add_argument_group('Chemical input', 'description')
     struct_input_group = struct_group.add_mutually_exclusive_group(required=True)
     struct_input_group.add_argument("--smiles", dest="smiles", nargs='*',
-                        help="string (or several strings) with smiles", type=str)
+                        help="string (or several strings) with structures in the SMILES format", type=str)
     struct_input_group.add_argument("--smiles-tsv", dest="smiles_tsv",
-                        help="csv with named columns", type=str)
-    struct_input_group.add_argument("--graphs", dest="graphs",
-                                    help="", type=str)
+                        help="multi-column file containing structures in the SMILES format", type=str)
+    struct_input_group.add_argument("--graphs", dest="graphs", help="", type=str)
     struct_group.add_argument("--col_smiles", dest="col_smiles",
-                        help="name of column with smiles [default='SMILES']", type=str, default='SMILES')
+                        help="name of column with structures in the SMILES format [default: 'SMILES']", type=str, default='SMILES')
     struct_group.add_argument("--col_id", dest="col_id",
                         help="name of col with ids (if not provided, id=[number of row])", type=str)
     struct_group.add_argument("--sep", dest="sep",
@@ -51,22 +47,28 @@ def parse_args():
     parser.add_argument("--threads", default=1, type=int, help="number of threads for running Nerpa", action="store")
     parser.add_argument("--output_dir", "-o", help="output dir [default: nerpa_results/results_<datetime>]",
                         type=str, default=None)
-    args = parser.parse_args()
-    return args
+
+    parsed_args = parser.parse_args()
+
+    validate_arguments(parsed_args, parser, log)
+    return parse_args
 
 
 def check_tsv_ids_duplicates(reader, col_id):
     ids = [row[col_id] for row in reader]
     return len(ids) == len(set(ids))
 
+
 class ValidationError(Exception):
     pass
+
 
 def validate(expr, msg=''):
     if not expr:
         raise ValidationError(msg)
 
-def validate_arguments(args, log):
+
+def validate_arguments(args, parser, log):
     try:
         if not (args.predictions or args.antismash or args.antismash_out):
             raise ValidationError(f'one of the arguments --predictions --antismash/-a --antismash_output_list is required')
@@ -92,32 +94,9 @@ def validate_arguments(args, log):
                 raise ValidationError(f'Invalid input file "{args.smiles_tsv}": {e}.')
 
     except ValidationError as e:
-        if str(e):
-            log.error(f'{e}\n')
         parser.print_help()
-        sys.exit()
-
-
-def which(program):
-    def is_exe(fpath):
-        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
-
-    fpath, fname = os.path.split(program)
-
-    cur_path = os.path.dirname(os.path.abspath(__file__))
-    if is_exe(os.path.join(cur_path, fname)):
-        return os.path.join(cur_path, fname)
-
-    if fpath:
-        if is_exe(program):
-            return program
-    elif "PATH" in os.environ:
-        for path in os.environ["PATH"].split(os.pathsep):
-            path = path.strip('"')
-            exe_file = os.path.join(path, program)
-            if is_exe(exe_file):
-                return exe_file
-    return None
+        error_msg = f'{e}\n' if str(e) else 'Options validation failed!'
+        log.error(error_msg, to_stderr=True)
 
 
 def gen_graphs_from_smiles_tsv(args, main_out_dir,
@@ -145,27 +124,26 @@ def gen_graphs_from_smiles_tsv(args, main_out_dir,
 
 def copy_prediction_list(args, main_out_dir):
     new_prediction_path = os.path.join(main_out_dir, "prediction.info")
-    f = open(new_prediction_path, 'w')
-    with open(args.predictions[0]) as fr:
-        for line in fr:
-            line_parts = line.split()
-            file = line_parts[0]
-            if (file[0] != '/'):
-                file = os.path.join(os.path.dirname(os.path.abspath(args.predictions[0])), file)
-            f.write(file + "\n")
-    f.close()
+    with open(new_prediction_path, 'w') as f:
+        with open(args.predictions[0]) as fr:
+            for line in fr:
+                line_parts = line.split()
+                file = line_parts[0]
+                if (file[0] != '/'):
+                    file = os.path.join(os.path.dirname(os.path.abspath(args.predictions[0])), file)
+                f.write(file + "\n")
     return new_prediction_path
 
 
 def get_antismash_list(args):
     aouts = []
-    if (args.antismash_out is not None):
+    if args.antismash_out is not None:
         with open(args.antismash_out) as f:
             for dir in f:
                 aouts.append(dir)
 
     is_one = False
-    if (args.antismash is not None):
+    if args.antismash is not None:
         for filename in os.listdir(args.antismash):
             if filename.endswith(".json"):
                 is_one = True
@@ -179,9 +157,8 @@ def get_antismash_list(args):
 
     return aouts
 
-def run(args, log):
-    validate_arguments(args, log)
 
+def run(args, log):
     output_dir = nerpa_utils.set_up_output_dir(output_dirpath=args.output_dir)
     log.set_up_file_handler(output_dir)
     log.start()
@@ -189,7 +166,7 @@ def run(args, log):
     if args.predictions is not None:
         path_predictions = copy_prediction_list(args, output_dir)
     else:
-        path_predictions = handle_TE.create_predictions_by_antiSAMSHout(get_antismash_list(args), output_dir)
+        path_predictions = handle_TE.create_predictions_by_antiSMASHout(get_antismash_list(args), output_dir)
 
     input_configs_dir = args.configs_dir if args.configs_dir else nerpa_init.configs_dir
     current_configs_dir = os.path.join(output_dir, "configs")
@@ -227,7 +204,7 @@ def run(args, log):
 if __name__ == "__main__":
     log = logger.NerpaLogger()
     try:
-        args = parse_args()
+        args = parse_args(log)
         run(args, log)
     except Exception:
         _, exc_value, _ = sys.exc_info()

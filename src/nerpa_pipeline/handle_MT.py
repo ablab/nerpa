@@ -1,19 +1,17 @@
 #!/usr/bin/env python
-import sys
-import os
-import shutil
-import csv
+
 import handle_helper
+
 
 def get_MT_AA(dirname):
     MT_AA_list = []
-    #ctg_orf, ctg_orf_Aid, domain_type(AMP-binding, PCP, MT)
+    # ctg_orf, ctg_orf_Aid, domain_type(AMP-binding, PCP, MT)
     domains=handle_helper.get_domains_list(dirname)
     orf_ori = handle_helper.get_orf_orientation(dirname)
 
-    #reverse domains on - strand
+    # reverse domains on - strand
     for i in range(len(domains)):
-        if (len(domains[i]) > 0):
+        if len(domains[i]) > 0:
             if orf_ori[domains[i][0][0]] == '-':
                 domains[i].reverse()
 
@@ -32,7 +30,6 @@ def get_MT_AA(dirname):
 
             if orfds[i][-1] == "MT":
                 has_mt = True
-
 
         if has_mt:
             MT_AA_list.append(orfds[cur_i][0] + "_" + orfds[cur_i][1].split('_')[-1])
