@@ -199,8 +199,6 @@ def run(args, log):
     # automatically remove old files from the temporary workspace
     shutil.copytree(input_configs_dir, current_configs_dir, copy_function=shutil.copy)
 
-    path_to_AA = os.path.join(current_configs_dir, "aminoacids.tsv")
-
     path_to_graphs = os.path.join(output_dir, 'path_to_graphs')
     local_monomers_cfg = os.path.join(current_configs_dir, "monomers.tsv")
     if args.graphs:
@@ -217,7 +215,7 @@ def run(args, log):
         os.makedirs(details_mol_dir)
 
     command = [os.path.join(nerpa_init.bin_dir, "NRPsMatcher"),
-               path_predictions, path_to_graphs, path_to_AA, '--configs_dir', current_configs_dir]
+               path_predictions, path_to_graphs, '--configs_dir', current_configs_dir]
     log.info("\n======= Nerpa matching")
     nerpa_utils.sys_call(command, log, cwd=output_dir)
     log.info("RESULTS:")

@@ -3,6 +3,7 @@
 #include "cxxopts.hpp"
 
 struct nerpa_config {
+    std::string amino_acids_cfg;
     std::string modification_cfg;
     std::string monomer_cfg;
     std::string monomer_logP_cfg;

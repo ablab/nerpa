@@ -4,6 +4,7 @@
 void load(nerpa_config &cfg, const cxxopts::Options& options) {
     std::string configs_dir = options["configs_dir"].as<std::string>() + "/";
 
+    cfg.amino_acids_cfg = configs_dir + "aminoacids.tsv";
     cfg.modification_cfg = configs_dir + "modifications.tsv";
     cfg.monomer_cfg = configs_dir + "monomers.tsv";
     cfg.monomer_logP_cfg = configs_dir + "monomersLogP.tsv";

@@ -22,7 +22,6 @@ cxxopts::Options parse_options(int argc, char **argv) {
             ("h,help", "Print help")
             ("p,predictions", "File listing paths to antiSMASH predictions", cxxopts::value<std::string>(), "FILE")
             ("s,structures", "File with parsed NRP structures", cxxopts::value<std::string>(), "FILE")
-            ("a,amino_acids", "File with amino acids", cxxopts::value<std::string>(), "FILE")
             ("C,configs_dir", "Dir with all essential configuration files", cxxopts::value<std::string>()->default_value("./configs/"), "DIR");
 
     options.add_options("Advanced")
@@ -37,7 +36,7 @@ cxxopts::Options parse_options(int argc, char **argv) {
     const std::vector<std::string> all_groups({"", "Advanced"});
 
     try {
-        options.parse_positional(std::vector<std::string>({"predictions", "structures", "amino_acids"}));
+        options.parse_positional(std::vector<std::string>({"predictions", "structures"}));
         options.parse(argc, argv);
     } catch (const cxxopts::OptionException &e) {
         std::cout << "error parsing options: " << e.what() << std::endl;
@@ -51,8 +50,7 @@ cxxopts::Options parse_options(int argc, char **argv) {
     }
     for (const auto &required : std::vector<std::pair<std::string, std::string>>{
             {"predictions",   "Predictions file"},
-            {"structures",   "Structures file"},
-            {"amino_acids", "AA file"}}) {
+            {"structures",   "Structures file"}}) {
         if (options.count(required.first) != 1) {
             std::cout << required.second << " should be specified" << std::endl << std::endl;
             std::cout << options.help(all_groups) << std::endl;
@@ -207,10 +205,8 @@ int main(int argc, char* argv[]) {
     if (options.count("debug") > 0)
         config::get_writable().debug = true;
 
-    std::string AA_file_name = options["amino_acids"].as<std::string>();
-
     int start_from = std::max(0, options["start_from"].as<int>());
-    aminoacid::AminoacidInfo::init(AA_file_name, "NRPSPREDICTOR2", config::get().aminoacid_info_default_logp);
+    aminoacid::AminoacidInfo::init(config::get().amino_acids_cfg, "NRPSPREDICTOR2", config::get().aminoacid_info_default_logp);
     aminoacid::ModificationInfo::init(config::get().modification_cfg);
     aminoacid::MonomerInfo::init(config::get().monomer_cfg, config::get().monomer_logP_cfg, config::get().monomer_info_default_logp);
 
