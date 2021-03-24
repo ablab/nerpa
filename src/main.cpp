@@ -11,8 +11,52 @@
 #include <ArgParse/Args.h>
 #include <Aminoacid/ModificationInfo.h>
 #include "utils/openmp_wrapper.h"
+#include "utils/cxxopts.hpp"
 #include <Matcher/OrderedGenesMatcher.h>
 #include <Aminoacid/MonomerInfo.h>
+
+cxxopts::Options parse_options(int argc, char **argv) {
+    cxxopts::Options options(argv[0],
+                             " <file_with_predictions> <file_with_structures> <file_with_aa> <config_file> - matching BGC predictions with NRPs");
+    options.add_options()
+            ("h,help", "Print help")
+            ("p,predictions", "File listing paths to antiSMASH predictions", cxxopts::value<std::string>(), "FILE")
+            ("s,structures", "File with parsed NRP structures", cxxopts::value<std::string>(), "FILE")
+            ("a,amino_acids", "File with amino acids", cxxopts::value<std::string>(), "FILE")
+            ("c,config", "Configuration file", cxxopts::value<std::string>(), "FILE");
+
+    options.add_options("Advanced")
+            ("start_from", "Starting molecule index in the list of NRP structures", cxxopts::value<int>()->default_value("0"), "N");
+
+    const std::vector<std::string> all_groups({"", "Advanced"});
+
+    try {
+        options.parse_positional(std::vector<std::string>({"predictions", "structures", "amino_acids", "config"}));
+        options.parse(argc, argv);
+    } catch (const cxxopts::OptionException &e) {
+        std::cout << "error parsing options: " << e.what() << std::endl;
+        std::cout << options.help(all_groups) << std::endl;
+        exit(1);
+    }
+
+    if (options.count("help")) {
+        std::cout << options.help(all_groups) << std::endl;
+        exit(0);
+    }
+    for (const auto &required : std::vector<std::pair<std::string, std::string>>{
+            {"predictions",   "Predictions file"},
+            {"structures",   "Structures file"},
+            {"amino_acids", "AA file"},
+            {"config",   "Config file"}}) {
+        if (options.count(required.first) != 1) {
+            std::cout << required.second << " should be specified" << std::endl << std::endl;
+            std::cout << options.help(all_groups) << std::endl;
+            exit(0);
+        }
+    }
+
+    return options;
+}
 
 void getPredictor(nrpsprediction::PredictionBuilderBase*& predictionBuilder) {
     predictionBuilder = new nrpsprediction::Nrpspredictor2Builder();
@@ -26,7 +70,7 @@ std::string get_file_name(std::string cur_line) {
     return res;
 }
 
-std::vector<nrpsprediction::BgcPrediction>  save_predictions(char* file_name) {
+std::vector<nrpsprediction::BgcPrediction>  save_predictions(const std::string& file_name) {
     std::vector<nrpsprediction::BgcPrediction> preds;
     std::ifstream in_predictions_files(file_name);
 
@@ -56,7 +100,7 @@ std::vector<nrpsprediction::BgcPrediction>  save_predictions(char* file_name) {
     return preds;
 }
 
-std::vector<std::shared_ptr<nrp::NRP>> load_nrps_from_monomeric_info(char* file_name) {
+std::vector<std::shared_ptr<nrp::NRP>> load_nrps_from_monomeric_info(const std::string& file_name) {
     std::vector<std::shared_ptr<nrp::NRP>> nrps;
     std::ifstream in_nrps_files(file_name);
     std::string cur_line;
@@ -151,15 +195,13 @@ std::string gen_filename(std::string ifile, std::string prefix) {
 int main(int argc, char* argv[]) {
     logging::create_console_logger("");
 
-    std::string AA_file_name = argv[3];
-    std::string cfg_filename = argv[4];
+    cxxopts::Options options = parse_options(argc, argv);
+
+    std::string AA_file_name = options["amino_acids"].as<std::string>();
+    std::string cfg_filename = options["config"].as<std::string>();
     Args args(cfg_filename);
 
-    int start_from = 0;
-    if (argc > 5) {
-        std::stringstream ss(argv[5]);
-        ss >> start_from;
-    }
+    int start_from = std::max(0, options["start_from"].as<int>());
     aminoacid::AminoacidInfo::init(AA_file_name, "NRPSPREDICTOR2", args.aminoacid_info_default_logp);
     aminoacid::ModificationInfo::init(args.modification_cfg);
     aminoacid::MonomerInfo::init(args.monomer_cfg, args.monomer_logP_cfg, args.monomer_info_default_logp);
@@ -175,9 +217,9 @@ int main(int argc, char* argv[]) {
 
     INFO("NRPs Matcher START");
     INFO("Saving predictions");
-    std::vector<nrpsprediction::BgcPrediction> preds = save_predictions(argv[1]);
+    std::vector<nrpsprediction::BgcPrediction> preds = save_predictions(options["predictions"].as<std::string>());
     INFO("Saving NRPs structures");
-    std::vector<std::shared_ptr<nrp::NRP>> mols = load_nrps_from_monomeric_info(argv[2]);
+    std::vector<std::shared_ptr<nrp::NRP>> mols = load_nrps_from_monomeric_info(options["structures"].as<std::string>());
 
     if (start_from == 0) {
         std::ofstream out_csv("report.csv");

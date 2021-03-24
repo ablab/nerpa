@@ -3,6 +3,7 @@ include_directories(.)
 add_subdirectory(Logger)
 set(SOURCE_FILES main.cpp
         utils/openmp_wrapper.h
+        utils/cxxopts.hpp
         Aminoacid/Aminoacid.cpp
         Aminoacid/Aminoacid.h
         NRPsPrediction/AAdomainPrediction.cpp
