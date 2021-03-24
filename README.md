@@ -1,36 +1,38 @@
 # Nerpa
 
-NRP Matcher is a tool which links gene cluster to known natural products.
+Nerpa is a tool for linking biosynthetic gene clusters (BGCs) to known nonribosomal peptides (NRPs).
+BGCs are predicted in genome sequences (FASTA or GBK) with [antiSMASH](https://antismash.secondarymetabolites.org/). 
+Known NRPs are accepted in the [SMILES format](https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system)
+ and processed with [rBAN](https://web.expasy.org/rban/).
 
 ## Dependencies
 
-NRP Matcher requires a 64-bit Linux system or MAC OS and Python 3,
-g++ (version 5.2 or higher) and cmake (version 3.5 or higher) to be
-pre-installed on it.
+### Required
+* 64-bit Linux system or macOS
+* g++ v.5.2+ or clang v.3.2+
+* cmake v.3.5+
+* Python v.3.6+
+* Python libraries:
+    * [RDKit](https://www.rdkit.org/docs/Install.html)
+    * [networkx](https://networkx.org/documentation/stable/install.html)
 
-Also https://github.com/ablab/dereplicator/ must be
-added to PATH. Folders "Fragmentation_rule" and "configs" must be
-located in one of the paths:
-- \<DEREPLICATOR INSTALL DIR\>/
-- \<DEREPLICATOR INSTALL DIR\>/../
-- \<DEREPLICATOR INSTALL DIR\>/../../
-- \<DEREPLICATOR INSTALL DIR\>/../share/
-- \<DEREPLICATOR INSTALL DIR\>/../share/npdtools/
-
+### Conditionally required
+The following dependencies are required only for specific input data types.
+* java (only if NRPs are provided as SMILES)
 
 ## Installation
 
-To compile NRP Matcher you can download the NRP Matcher source code:
+Get source code from GitHub:
 
-    git clone https://github.com/olga24912/NRPsMatcher.git
-    cd NRPsMatcher
+    git clone https://github.com/ablab/nerpa.git
+    cd nerpa
 
 and build it with the following script:
 
     ./install.sh
 
-NRP Matcher will be built in the directory ./bin. If you wish to install
-NRP Matcher into another directory, you can specify full path of destination folder
+Nerpa will be built in the directory ./bin. If you wish to install
+the tool into another directory, you can specify destination folder
 by running the following command in bash or sh:
 
     PREFIX=<destination_dir> ./install.sh
@@ -39,86 +41,72 @@ for example:
 
     PREFIX=/usr/local ./install.sh
 
-which will install NRP Matcher into /usr/local/bin.
+which will install Nerpa into `/usr/local/bin/`.
 
-Note: you should use absolute path for <destination_dir>.
+Note: you should use absolute path for `<destination_dir>`.
 
-After installation you will get NRPsMatcher and run_nrp_matcher.py
-files in ./bin (or <destination_dir>/bin if you specified PREFIX)
+After installation you should get `NRPsMatcher` and `nerpa.py`
+files in `./bin` (or `<destination_dir>/bin` if you specified PREFIX)
 directory.
 
-We also suggest adding NRP Matcher installation directory to PATH variable.
 
 ## Running
+### Minimal working example
+
+```
+python3 bin/nerpa.py -a test_data/NCBI_subset/genome_predictions/ --graphs test_data/NCBI_subset/structure.info.monomers`
+less nerpa_results/latest/report.csv
+```
+
+
 ### Input
-NRP Matcher takes as input file with list of paths to gene cluster prediction files
-and file with paths to files with NRP structure in MOL format.
+Nerpa takes as input BGC predictions generated with [antiSMASH](https://antismash.secondarymetabolites.org/) 
+and NRP structures in the SMILES format.
 
-#### Predictions
+#### BGC predictions
 
-**TODO:**  нужен скрипт и бинарник antismash что бы получить нужное предсказание.
-Или... долго описывать как нужный файлик получать. Или вообще передавать список геномов
-и самостоятельно запускать antismash...
+The most convenient way to get antiSMASH predictions of BGC in your genomic data with antiSMASH is to upload your 
+FASTA or GBK file to their [webserver](https://antismash.secondarymetabolites.org/). 
+When the server job is completed, you may download archive with results, unpack it and 
+provide the path to the unpacked directory or just the main JSON file from it to Nerpa via option `-a`. 
 
-#### NRPs structures
+You can also use [the command-line version](https://docs.antismash.secondarymetabolites.org/install/) of antiSMASH.
+Nerpa supports outputs from v.3 and v.5. The recommended running parameters for v.5.1.1 are:  
+`python run_antismash.py <your_genome.fasta> --output-dir <your_output_dir> --genefinding-tool prodigal --skip-zip-file --enable-nrps-pks --minimal`    
 
-By using command line interface you need specify info file,
-where each line described one NRP in following format:
+Note that you may specify an unlimited number of antiSMASH output files by using `-a` multiple times or by specifying a root directory with many inputs inside.
+You may also write paths to all antiSMASH outputs in a single file and provide it via option `--antismash_output_list`.
 
-    <path to file with NRP structure in MOL format> <any extra information about NRP>
+#### NRP structures
 
-for example:
+NRP molecules should be specified in the [SMILES format](https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system).
+One option is to provide them as a space-separated list of SMILES strings via option `--smiles`.
+Another way is to write all structures in a multi-column file and specify it via `--smiles-tsv`. 
+Default column separator (`\t`), names of the SMILES column (`SMILES`) and the column with molecule IDs 
+could be adjusted via option `--sep`, `--col_smiles`, and `--col_id`, respectively.
 
-    streptomedb/streptomedb.1.mol geranylphenazinediol 348.184 1
-
-You can read about MOL format [here](https://en.wikipedia.org/wiki/Chemical_table_file#Molfile).
-
-If you have NRP structure in some other format we recommend use [molconvert](https://docs.chemaxon.com/display/docs/Molecule+file+conversion+with+Molconverter).
-To convert smile string to required MOL file you can run:
-
-    molconvert mol:V3+H --smiles <smile string> -o <nrp file>
-
-
-Example of info and mols file you can find in
-
-    <installing_dir>/share/library.info.streptomedb
-    <installing_dir>/share/streptomedb/
 
 ### Command line options
 
-To run NRP Matcher from the command line type
+To get the full list of Nerpa options type
 
-    python3 run_nrp_matcher.py [options]
+`python3 bin/nerpa.py --help`
 
-#### Options
-
-<p>
-<code>-h</code> (or <code>--help</code>)    Print help
-</p>
-
-<p>
-    <code>-p</code> (or <code>--predictions</code>) <code>&lt;file_name></code>  File with paths to prediction files. Required option.
-</p>
-
-<p>
-    <code>--lib_info &lt;file_name></code>  File with paths to nrp structure description files in MOL format. Required option.
-</p>
-
-<p>
-    <code>-o</code> (or <code>--local_output_dir</code>) <code>&lt;output_dir></code> Specify the output directory.
-</p>
 
 ### Output
 
-NRP Matcher stores all output files in current directory or in <code>&lt;output_dir</code> if it set by the user.
+Nerpa stores all output files in the user-defined directory if specified via `-o` (should not exist before the run) or 
+in `nerpa_results/results_YYYY_MM_DD_HH_MM_SS` otherwise. In the latter case, a symlink `nerpa_results/latest` pointing to the output directory is also created.
 
-Output files:
-* <code>&lt;output_dir>/reports.csv</code> description of matched pairs(nrp structure - gene cluster prediction). Each line describes one matched pair.
-* <code>&lt;output_dir>/details_mol</code> folder which contains files with detail description of matched predictions for each NRP structure file.
-* <code>&lt;output_dir>/details_prediction</code> folder which contains files with detail description of matched NRP structure for each prediction file.
+The key files/directories inside the output directory are:
+* `reports.csv` matched NRP-BGC pairs with scores
+* `details_mols` directory with detailed descriptions and exact alignments for each match. 
+Each file in the directory corresponds to an NRP and contains information on all matches with this NRP.
 
-### Example
+### More running examples
 
-To test NRP Matcher you can run the following command from NRP Matcher <code>bin</code> directory:
-
-    python3 run_nrp_matcher.py -p ../share/prediction.info --lib_info ../share/library.info.streptomedb -o test
+```
+./nerpa.py -a test_data/MIBiG_subset/genome_predictions --smiles-tsv test_data/MIBiG_subset/structures_info.tsv
+./nerpa.py -a test_data/NCBI_subset/genome_predictions/ --graphs test_data/NCBI_subset/structure.info.monomers
+./nerpa.py -a test_data/NCBI_subset/genome_predictions_v5/ --graphs test_data/NCBI_subset/structure.info.monomers
+```
