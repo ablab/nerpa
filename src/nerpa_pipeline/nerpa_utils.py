@@ -6,7 +6,7 @@ import subprocess
 import nerpa_config
 
 
-def set_up_output_dir(output_dirpath):
+def set_up_output_dir(output_dirpath, log):
     make_latest_symlink = False
 
     if not output_dirpath:  # 'output dir was not specified with -o option'
@@ -24,7 +24,9 @@ def set_up_output_dir(output_dirpath):
                 output_dirpath = str(base_dirpath) + '__' + str(i)
                 i += 1
 
-    if not os.path.isdir(output_dirpath):
+    if os.path.isdir(output_dirpath):
+        log.error(f"output directory ({output_dirpath}) already exists! Exiting..", to_stderr=True)
+    else:
         os.makedirs(output_dirpath)
 
     # 'latest' symlink

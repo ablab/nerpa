@@ -218,7 +218,7 @@ def get_antismash_v3_compatible_input_paths(listing_fpath, list_of_paths, output
 
 
 def run(args, log):
-    output_dir = nerpa_utils.set_up_output_dir(output_dirpath=args.output_dir)
+    output_dir = nerpa_utils.set_up_output_dir(output_dirpath=args.output_dir, log=log)
     log.set_up_file_handler(output_dir)
     log.start()
 
