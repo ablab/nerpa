@@ -1,5 +1,6 @@
 import os
 import json
+import glob
 from log_utils import error, info
 from codes_handler import get_prediction_from_signature
 
@@ -98,15 +99,26 @@ def __parse_location(location):
     return start, end, strand
 
 
+def get_main_json_fpath(dirpath):
+    if not os.path.isdir(dirpath):
+        return None
+    tentative_json_fpath = os.path.join(dirpath, os.path.basename(os.path.normpath(dirpath)) + '.json')
+    if os.path.isfile(tentative_json_fpath):
+        return tentative_json_fpath
+    all_jsons_in_dir = list(glob.glob(os.path.join(dirpath, "*.json")))
+    if len(all_jsons_in_dir) != 1:
+        return None
+    return all_jsons_in_dir[0]
+
+
 def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_codes, verbose=False):
     info('Processing ' + path, verbose=verbose)
     path = os.path.abspath(path)
     main_json_path = path
     if os.path.isdir(path):
-        # TODO: if there is a single JSON inside the dir, just take it independently of its name
-        main_json_path = os.path.join(path, os.path.basename(os.path.normpath(path)) + '.json')
-    if not os.path.isfile(main_json_path):
-        error('Main antiSMASH v.5 JSON file not found: %s. Skipping this input..' % main_json_path)
+        main_json_path = get_main_json_fpath(path)
+    if main_json_path is None or not os.path.isfile(main_json_path):
+        error('Main antiSMASH v.5 JSON file not found in %s. Skipping this input..' % path)
         return
     if output_dir is None:
         output_dir = os.path.dirname(main_json_path)
@@ -267,6 +279,7 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
                         nrps_pks_f.write(str(entry) + '\n')
 
     info('Done with %s, see results in %s' % (main_json_path, output_dir), verbose=verbose)
+    return output_dir
 
 
 def __get_entry_id(ctg_id, orf_idx, a_idx=None):

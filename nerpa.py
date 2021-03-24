@@ -17,17 +17,21 @@ import handle_TE
 import handle_rban
 import logger
 
+# for detecting and processing antiSMASH v.5 output
+site.addsitedir(os.path.join(nerpa_init.python_modules_dir, 'NRPSPredictor_utils'))
+from NRPSPredictor_utils.json_handler import get_main_json_fpath
+from NRPSPredictor_utils.main import main as convert_antiSMASH_v5
+
 
 def parse_args(log):
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
-    genomic_group = parser.add_argument_group('Genomic input', 'description')
-    genomic_group.add_argument("--predictions", "-p", nargs=1, dest="predictions",
-                                     help="path to file with paths to prediction files", type=str)
+    genomic_group = parser.add_argument_group('Genomic input', 'antiSMASH-processed genomes of NRP-producing organisms (i.e. BGC predictions)')
     genomic_group.add_argument("--antismash_output_list", dest="antismash_out",
-                               help="path to file with list of paths to antiSMASH output folders", type=str)
-    genomic_group.add_argument("--antismash", "-a", dest="antismash", help="path to antiSMASH output or to directory with many antiSMASH outputs", type=str)
+                               help="file with list of paths to antiSMASH output directories", type=str)
+    genomic_group.add_argument("--antismash", "-a", dest="antismash", action='append',
+                               help="single antiSMASH output directory or directory with many antiSMASH outputs")
 
-    struct_group = parser.add_argument_group('Chemical input', 'description')
+    struct_group = parser.add_argument_group('Chemical input', 'Structures of NRP molecules')
     struct_input_group = struct_group.add_mutually_exclusive_group(required=True)
     struct_input_group.add_argument("--smiles", dest="smiles", nargs='*',
                         help="string (or several strings) with structures in the SMILES format", type=str)
@@ -41,9 +45,15 @@ def parse_args(log):
     struct_group.add_argument("--sep", dest="sep",
                         help="separator in smiles-tsv", type=str, default='\t')
 
+    preprocessed_input_group = parser.add_argument_group('Advanced input', 'Preprocessed BGC predictions and NRP structures in custom Nerpa-compliant formats')
+    preprocessed_input_group.add_argument("--predictions", "-p", nargs=1, dest="predictions",
+                                          help="file with paths to preprocessed BGC prediction files", type=str)
+    preprocessed_input_group.add_argument("--structures", "-s", nargs=1, dest="structures",
+                                          help="file with rBAN-preprocessed NRP structures (NOT IMPLEMENTED YET)", type=str)
+    preprocessed_input_group.add_argument("--configs_dir", help="custom directory with adjusted Nerpa configs", action="store", type=str)
+
     # parser.add_argument("--insertion", help="insertion score [default=-2.8]", default=-2.8, action="store")
     # parser.add_argument("--deletion", help="deletion score [default=-5]", default=-5, action="store")
-    parser.add_argument("--configs_dir", help="custom directory with configs", action="store", type=str)
     parser.add_argument("--threads", default=1, type=int, help="number of threads for running Nerpa", action="store")
     parser.add_argument("--output_dir", "-o", help="output dir [default: nerpa_results/results_<datetime>]",
                         type=str, default=None)
@@ -135,27 +145,76 @@ def copy_prediction_list(args, main_out_dir):
     return new_prediction_path
 
 
-def get_antismash_list(args):
-    aouts = []
-    if args.antismash_out is not None:
-        with open(args.antismash_out) as f:
-            for dir in f:
-                aouts.append(dir)
+def get_antismash_v3_compatible_input_paths(listing_fpath, list_of_paths, output_dir, log):
+    '''
+    Parses all antiSMASH-related options,
+    detects all relevant output dirs (either with .json [aS v.5] or with ./txt/ & ./nrpspks_predictions_txt [aS v.3],
+    converts aS v.5 to aS v.3-compliants if needed,
+    returns list of paths to each v.3-compliant directory
+    :param args:
+    :return:
+    '''
 
-    is_one = False
-    if args.antismash is not None:
-        for filename in os.listdir(args.antismash):
-            if filename.endswith(".json"):
-                is_one = True
-            if filename == "nrpspks_predictions_txt":
-                is_one = True
-        if is_one:
-            aouts.append(args.antismash)
-        else:
-            for filename in os.listdir(args.antismash):
-                aouts.append(os.path.join(args.antismash, filename))
+    def _get_input_antiSMASH_paths(lookup_paths):
+        def _is_antiSMASHv3_path(path):
+            if os.path.isdir(path) and \
+               os.path.isdir(os.path.join(path, 'txt')) and \
+               os.path.isdir(os.path.join(path, 'nrpspks_predictions_txt')):
+                return True
+            return False
 
-    return aouts
+        def _is_antiSMASHv5_path(path):
+            if os.path.isfile(path) and path.endswith('.json'):
+                return True
+            if os.path.isdir(path) and get_main_json_fpath(dirpath=path) is not None:
+                return True
+            return False
+
+        antiSMASHv3_paths = []
+        antiSMASHv5_paths = []
+        for entry in lookup_paths:
+            if _is_antiSMASHv3_path(entry):
+                antiSMASHv3_paths.append(entry)
+            elif _is_antiSMASHv5_path(entry):
+                antiSMASHv5_paths.append(entry)
+            elif os.path.isdir(entry):
+                # excluding dirs in runtime in os.walk: https://stackoverflow.com/questions/19859840/excluding-directories-in-os-walk
+                for root, dirs, files in os.walk(entry, topdown=True):
+                    # always ignore files since a single json in a dir should be caught one step before when path was the dir
+                    # (see _is_antiSMASHv5_path() ) while multiple jsons in a dir probably means a false positive
+                    dirs_to_keep_walking = []
+                    for dir in dirs:
+                        full_dir_path = os.path.join(root, dir)
+                        if _is_antiSMASHv3_path(full_dir_path):
+                            antiSMASHv3_paths.append(full_dir_path)
+                        elif _is_antiSMASHv5_path(full_dir_path):
+                            antiSMASHv5_paths.append(full_dir_path)
+                        else:
+                            dirs_to_keep_walking.append(dir)
+                    dirs[:] = dirs_to_keep_walking
+        return antiSMASHv3_paths, antiSMASHv5_paths
+
+    lookup_locations = []
+    if listing_fpath is not None:
+        with open(listing_fpath) as f:
+            for path in f:
+                lookup_locations.append(path)
+
+    if list_of_paths:
+        lookup_locations += list_of_paths
+
+    antiSMASHv3_paths, antiSMASHv5_paths = _get_input_antiSMASH_paths(lookup_locations)
+    log.info("\n=== Genome predictions found: %d antiSMASH v3 inputs; %d antiSMASH v5 inputs" %
+             (len(antiSMASHv3_paths), len(antiSMASHv5_paths)))
+    if antiSMASHv5_paths:
+        log.info("\n======= Preprocessing antiSMASH v5 inputs")
+        converted_antiSMASH_v5_outputs_dir = os.path.join(output_dir, "converted_antiSMASH_v5_outputs")
+        log.info(f'results will be in {converted_antiSMASH_v5_outputs_dir}', indent=1)
+        converted_antiSMASH_v5_paths = convert_antiSMASH_v5(antiSMASHv5_paths + ['-o', converted_antiSMASH_v5_outputs_dir])
+        antiSMASHv3_paths += converted_antiSMASH_v5_paths
+        log.info("\n======= Done with Preprocessing antiSMASH v5 inputs")
+
+    return antiSMASHv3_paths
 
 
 def run(args, log):
@@ -166,7 +225,10 @@ def run(args, log):
     if args.predictions is not None:
         path_predictions = copy_prediction_list(args, output_dir)
     else:
-        path_predictions = handle_TE.create_predictions_by_antiSMASHout(get_antismash_list(args), output_dir)
+        path_predictions = handle_TE.create_predictions_by_antiSMASHout(
+            get_antismash_v3_compatible_input_paths(
+                listing_fpath=args.antismash_out, list_of_paths=args.antismash,
+                output_dir=output_dir, log=log), output_dir)
 
     input_configs_dir = args.configs_dir if args.configs_dir else nerpa_init.configs_dir
     current_configs_dir = os.path.join(output_dir, "configs")

@@ -96,9 +96,11 @@ def main(args):
         error('File with codes (--code) does not exist or its format cannot be recognized. Aborting..', exit=True)
 
     is_root_outdir = True if (args.output_dir is not None and len(args.inputs) > 1) else False
+    processed_output_dirs = []
     for input_path in args.inputs:
-        json_handler.handle_single_input(input_path, args.output_dir, is_root_outdir,
-                                         args.naming_style, known_codes, args.verbose)
+        processed_output_dirs.append(json_handler.handle_single_input(
+            input_path, args.output_dir, is_root_outdir, args.naming_style, known_codes, args.verbose))
+    return processed_output_dirs
 
 
 if __name__ == "__main__":

@@ -1,5 +1,4 @@
 import os
-import json
 from collections import Counter, OrderedDict
 from log_utils import error
 
