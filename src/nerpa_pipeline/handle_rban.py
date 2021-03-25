@@ -244,8 +244,14 @@ def generate_graphs_from_rban_output(path_to_rban_output, path_to_monomers_tsv, 
                 try:
                     graphs = process_single_record(rban_record, recognized_monomers, PNP_BONDS, hybrid_monomers_dict[i],
                                                    UNDEFINED_NAME, min_recognized_nodes=2)
+                    rban_graph_edges = [
+                        ','.join(map(str, b['bond']['monomers']))
+                        for b in rban_record['monomericGraph']['monomericGraph']['bonds']
+                    ]
+                    rban_graph_edges_str = ';'.join(rban_graph_edges)
                     for i, gr, pt in graphs:
-                        f_out.write(f'{i} {gr} {pt}\n')
+                        pt_str = ','.join(map(str, pt))
+                        f_out.write(f'{i} {gr} {pt_str};{rban_graph_edges_str}\n')
                 except NumNodesError as e:
                     log.warn(e)
 
