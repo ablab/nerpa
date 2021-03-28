@@ -61,13 +61,30 @@ def get_split_BGC(dirname):
                 if len(possible_BGC) > 0:
                     possible_BGC.append(cur_parts + possible_BGC[-1])
                 possible_BGC.append(cur_parts)
+
     return possible_BGC
 
-def gen_prediction_for_one_orfs_part(orf_part, prediction_dict, output_prefix, current_part, predictions_info_list):
+
+def reverse_prediction(pred_str):
+    pred_str = '\n'.join(pred_str.split('\n')[::-1])
+    pred_str = pred_str.lstrip('\n')
+    pred_str += '\n'
+    return pred_str
+
+def gen_prediction_for_one_orfs_part(orf_part, prediction_dict, output_prefix, current_part, predictions_info_list, orf_ori):
+    has_plus = False
     output_str = ""
     for current_orf in orf_part:
+        if orf_ori[current_orf] == "+":
+            has_plus = True
+
+    orf_order = 1 if has_plus else -1
+    for current_orf in orf_part[::orf_order]:
         if current_orf in prediction_dict:
-            output_str += prediction_dict[current_orf]
+            if orf_ori[current_orf] == "-":
+                output_str += reverse_prediction(prediction_dict[current_orf])
+            else:
+                output_str += prediction_dict[current_orf]
 
     if (output_str != ""):
         output_file = output_prefix + "_part" + str(current_part)
@@ -111,7 +128,7 @@ def gen_predictions(bgc_orfs_parts, input_file_name, output_prefix, current_part
             prediction_dict[cur_orf] += '\n'
 
     for orf_part in bgc_orfs_parts:
-        current_part = gen_prediction_for_one_orfs_part(orf_part, prediction_dict, output_prefix, current_part, predictions_info_list)
+        current_part = gen_prediction_for_one_orfs_part(orf_part, prediction_dict, output_prefix, current_part, predictions_info_list, orf_ori)
     return current_part
 
 def create_predictions_by_antiSAMSHout(antismashouts, outdir):
