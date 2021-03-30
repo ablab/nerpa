@@ -202,7 +202,7 @@ int main(int argc, char* argv[]) {
     config::create_instance(options);
 
     // an example of updating values in the config object
-    if (options.count("debug") > 0)
+    if (options.count("debug"))
         config::get_writable().debug = true;
 
     int start_from = std::max(0, options["start_from"].as<int>());
