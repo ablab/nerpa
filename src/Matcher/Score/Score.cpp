@@ -206,7 +206,7 @@ double matcher::Score::Mismatch(const aminoacid::Aminoacid &structure_aa,
     }
 }
 
-matcher::Score::Score(std::string &config) {
+matcher::Score::Score(const std::string &config) {
     std::ifstream in(config);
     std::string tmp;
     in >> tmp >> insertion >> tmp >> deletion;

@@ -1,0 +1,12 @@
+#sequence-id<tab>8A-signature<tab>stachelhaus-code<tab>3class-pred<tab>large-class-pred<tab>small-class-pred<tab>single-class-pred<tab>nearest stachelhaus code<tab>NRPS1pred-large-class-pred<tab>NRPS2pred-large-class-pred<tab>outside applicability domain?<tab>coords<tab>pfam-score
+ctg1_orf00012_A1	LAQAFDAWVFEMTVVVAGEVNAYGPTEATVWATY	DAFTVAAVWK	hydrophobic-aromatic	gly,ala,val,leu,ile,abu,iva	N/A	N/A	N/A	phe,trp,phg,tyr,bht	N/A	0	0:0	0.000000e+00
+ctg1_orf00012_A2	V--SFDASTMEGFVLCGGEIHCYGPTETTTYATT	DAMFLGCTYK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	ile	N/A	orn,lys,arg	orn,horn	0	0:0	0.000000e+00
+ctg1_orf00012_A3	RWMTFDVSVWEWHFVCSGEHNLYGPTEATVDVTA	DVWHVSLVDK	hydrophobic-aliphatic	ser,thr,dhpg,hpg	ser	ser	N/A	ser,thr,dhpg,hpg	ser	0	0:0	0.000000e+00
+ctg1_orf00012_A4	LE-AFDAS-VQVDCLVGGEYNVYGPTECTVDTTC	DAVDLGVVDK	hydrophilic	orn,lys,arg	N/A	N/A	N/A	orn,lys,arg	orn,horn	0	0:0	0.000000e+00
+ctg1_orf00012_A5	V--SFDASTMEGFVLCGGEIHCYGPTETTTYATT	DAMFLGCTYK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	ile	N/A	orn,lys,arg	orn,horn	0	0:0	0.000000e+00
+ctg1_orf00012_A6	V--SFDASTMEGFVLCGGEIHCYGPTETTTYATT	DAMFLGCTYK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	ile	N/A	orn,lys,arg	orn,horn	0	0:0	0.000000e+00
+ctg1_orf00019_A1	RWMTFDVSVWEWHFVCSGEHNLYGPTEATVDVTA	DVWHVSLVDK	hydrophobic-aliphatic	ser,thr,dhpg,hpg	ser	ser	N/A	ser,thr,dhpg,hpg	ser	0	0:0	0.000000e+00
+ctg1_orf00019_A2	LNDHFDFAVWEGNQVFGGDVNMYGITETCVHVTF	DFWNVGMVHK	hydrophobic-aliphatic	ser,thr,dhpg,hpg	thr	thr	N/A	ser,thr,dhpg,hpg	thr	0	0:0	0.000000e+00
+ctg1_orf00019_A3	FWATFDLAVFEANTNVAGECNLYGPSETTTYSTW	DLFNNALTYK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	gly,ala	ala	N/A	gly,ala,val,leu,ile,abu,iva	gly,ala	0	0:0	0.000000e+00
+ctg1_orf00019_A4	YAFSFDASTEEGDLVIAGELNAYGPTETTMIATL	DAEDVAAMIK	hydrophobic-aliphatic	N/A	N/A	N/A	N/A	N/A	N/A	0	0:0	0.000000e+00
+ctg1_orf00019_A5	V--SFDASTMEGFVLCGGEIHCYGPTETTTYATT	DAMFLGCTYK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	ile	N/A	orn,lys,arg	orn,horn	0	0:0	0.000000e+00

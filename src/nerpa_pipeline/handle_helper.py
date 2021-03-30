@@ -1,8 +1,9 @@
 import os
 import csv
 
+
 def get_domains_list(dirname):
-    #ctg_orf, ctg_orf_Aid, domain_type(AMP-binding, PCP, MT)
+    # ctg_orf, ctg_orf_Aid, domain_type(AMP-binding, PCP, MT)
     domains = []
     cur_orf = ""
     txt_folder = os.path.join(dirname, "txt")
@@ -25,6 +26,7 @@ def get_domains_list(dirname):
 
                     domains[-1].append([row[1], row[3], row[6]])
     return domains
+
 
 def get_orf_orientation(dirname):
     txt_folder = os.path.join(dirname, "txt")

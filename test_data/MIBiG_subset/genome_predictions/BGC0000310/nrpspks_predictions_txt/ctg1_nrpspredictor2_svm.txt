@@ -1,0 +1,13 @@
+#sequence-id<tab>8A-signature<tab>stachelhaus-code<tab>3class-pred<tab>large-class-pred<tab>small-class-pred<tab>single-class-pred<tab>nearest stachelhaus code<tab>NRPS1pred-large-class-pred<tab>NRPS2pred-large-class-pred<tab>outside applicability domain?<tab>coords<tab>pfam-score
+ctg1_orf00004_A1	V--SFDGSVFDGFILFGGEIHVYGPTESTVYATY	DGFFLGVVYK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	ile	N/A	orn,lys,arg	orn,horn	0	0:0	0.000000e+00
+ctg1_orf00004_A2	TDISFDLSVYDGNSLLSGDISLGGATEGSIWSIY	DLYNLSLIWK	hydrophobic-aliphatic	cys	cys	cys	N/A	cys	cys	0	0:0	0.000000e+00
+ctg1_orf00004_A3	LWHAFDAFVWEPFLLTGGDVNNYGPTENTVVATS	DAWFLGNVVK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	leu	N/A	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	0	0:0	0.000000e+00
+ctg1_orf00004_A4	LN-AFDASVKQADMIVGGDTNVYGPTECCVDAAS	DAKDIGVVDK	hydrophilic	asp,asn,glu,gln,aad	glu,gln	glu	N/A	orn,lys,arg	orn,horn	0	0:0	0.000000e+00
+ctg1_orf00004_A5	V--SFDGSVFDGFILFGGEIHVYGPTESTVYATY	DGFFLGVVYK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	ile	N/A	orn,lys,arg	orn,horn	0	0:0	0.000000e+00
+ctg1_orf00005_A1	YAFVFDAFSEEPSCISGGDYNSYGPTEATVCATY	DAESIGSVCK	hydrophilic	orn,lys,arg	N/A	lys	N/A	orn,lys,arg	val,leu,ile,abu,iva	0	0:0	0.000000e+00
+ctg1_orf00005_A2	AW-AFDVFAGDRESIMGSDINSYGVTEASVDSGY	DVGEIGSVDK	hydrophilic	orn,lys,arg	orn,horn	orn	N/A	orn,lys,arg	orn,horn	0	0:0	0.000000e+00
+ctg1_orf00006_A1	V--SFDGSVFDGFIFLGGEIHVYGPTESTVYATY	DGFFFGVVYK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	ile	N/A	orn,lys,arg	orn,horn	0	0:0	0.000000e+00
+ctg1_orf00006_A2	LAVAFDASAFEPTLVSAGSINAYGPTETTVCATA	DAFTVAAVCK	hydrophobic-aromatic	phe,trp,phg,tyr,bht	phe,trp	phe	N/A	phe,trp,phg,tyr,bht	phe,trp	0	0:0	0.000000e+00
+ctg1_orf00006_A3	TWRPFDSSVEDTLATVAGEFNEYGPTENSVCSTR	DSELTAEVCK	hydrophilic	phe,trp,phg,tyr,bht	tyr,bht	tyr	N/A	phe,trp,phg,tyr,bht	N/A	0	0:0	0.000000e+00
+ctg1_orf00006_A4	YWFSFDLGYTSSKLVLGGEMNHYGPTETTIGSVF	DLTKVGHIGK	hydrophilic	asp,asn,glu,gln,aad	asp,asn	asp	N/A	asp,asn,glu,gln,aad	asp,asn	0	0:0	0.000000e+00
+ctg1_orf00006_A5	YWASFDLTVTSTKLIVGGEYNEYGPTETVVGCMI	DLTKIGEVGK	hydrophilic	asp,asn,glu,gln,aad	asp,asn	asn	N/A	asp,asn,glu,gln,aad	asp,asn	0	0:0	0.000000e+00

@@ -1,14 +1,12 @@
-import sys
 import os
 import json
 import csv
 from collections import defaultdict
 from itertools import permutations
-import subprocess
-from logger import log
 import networkx as nx
 
 import handle_monomers
+import nerpa_utils
 
 
 # TODO: move this section to some sort of config file
@@ -131,7 +129,8 @@ def putative_backbones(G, min_nodes=2):
     return cycles, paths, singular_nodes
 
 
-def process_single_record(rban_record, recognized_monomers, backbone_bond_types, hybrid_monomers_dict, na=UNDEFINED_NAME, min_recognized_nodes=2):
+def process_single_record(log, rban_record, recognized_monomers, backbone_bond_types,
+                          hybrid_monomers_dict, na=UNDEFINED_NAME, min_recognized_nodes=2):
     G = build_nx_graph(rban_record, backbone_bond_types, recognized_monomers)
     structure_id = rban_record['id']
 
@@ -140,7 +139,7 @@ def process_single_record(rban_record, recognized_monomers, backbone_bond_types,
         for i, d in chirality.items():
             G.nodes[i]['isD'] = d
     except Exception as e:
-        log.warn(f'Unable to get isomeric information for {rban_record["id"]}')
+        log.warning(f'Unable to get isomeric information for {rban_record["id"]}')
 
     for i, name in hybrid_monomers_dict.items():
         G.nodes[i]['name'] = name
@@ -149,7 +148,7 @@ def process_single_record(rban_record, recognized_monomers, backbone_bond_types,
     try:
         cycles, paths, _ = putative_backbones(G, min_nodes=2)
     except Exception as e:
-        log.warn(f'Unable to linearize {rban_record["id"]}')
+        log.warning(f'Unable to linearize {rban_record["id"]}')
         return []
 
     def gen_nerpa_input(path, cyclic=False):
@@ -197,7 +196,7 @@ def process_single_record(rban_record, recognized_monomers, backbone_bond_types,
     return structures
 
 
-def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban):
+def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, log):
 
     # check all unrecognized monomers for PK involvement
     new_monomers = []
@@ -216,10 +215,7 @@ def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban):
     new_rban_input = os.path.join(main_out_dir, 'rban-putative-hybrids.input.json')
     generate_rban_input_from_list(new_monomers, new_rban_input)
     new_rban_output = os.path.join(main_out_dir, 'rban-putative-hybrids.output.json')
-    try:
-        run_rban(path_to_rban, new_rban_input, new_rban_output, main_out_dir)
-    except subprocess.CalledProcessError as e:
-        raise e
+    run_rban(path_to_rban, new_rban_input, new_rban_output, main_out_dir, log)
 
     hybrid_monomers_dict = defaultdict(dict)
     new_monomers_processed = json.loads(open(new_rban_output).read())
@@ -233,21 +229,22 @@ def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban):
     return hybrid_monomers_dict
 
 
-def generate_graphs_from_rban_output(path_to_rban_output, path_to_monomers_tsv, path_to_graphs, main_out_dir, path_to_rban):
+def generate_graphs_from_rban_output(path_to_rban_output, path_to_monomers_tsv, path_to_graphs,
+                                     main_out_dir, path_to_rban, log):
     recognized_monomers = [x.split()[0] for x in open(path_to_monomers_tsv)]
     recognized_monomers = set(recognized_monomers[1:])
-    hybrid_monomers_dict = rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban)
+    hybrid_monomers_dict = rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, log)
 
     with open(path_to_graphs, 'w') as f_out:
         with open(path_to_rban_output) as f_in:
             for i, rban_record in enumerate(json.load(f_in)):
                 try:
-                    graphs = process_single_record(rban_record, recognized_monomers, PNP_BONDS, hybrid_monomers_dict[i],
+                    graphs = process_single_record(log, rban_record, recognized_monomers, PNP_BONDS, hybrid_monomers_dict[i],
                                                    UNDEFINED_NAME, min_recognized_nodes=2)
                     for i, gr, pt in graphs:
                         f_out.write(f'{i} {gr} {pt}\n')
                 except NumNodesError as e:
-                    log.warn(e)
+                    log.warning(e)
 
 
 def generate_rban_input_from_smiles_string(smiles, path_to_rban_input):
@@ -280,27 +277,17 @@ def generate_rban_input_from_list(lst, path_to_rban_input):
         json.dump(dicts, f, indent=2)
 
 
-def run_rban(path_to_rban, path_to_rban_input, path_to_rban_output, main_out_dir, log=None):
+def run_rban(path_to_rban, path_to_rban_input, path_to_rban_output, main_out_dir, log):
     """
-    raises: subprocess.CalledProcessError
-
     :param path_to_rban:
     :param path_to_rban_input:
     :param path_to_rban_output:
     :param main_out_dir:
-    :param log:
     :return:
     """
     command = ['java', '-jar', path_to_rban,
                # '-monomersDB', '',
                '-inputFile', path_to_rban_input,
-               '-outputFolder', main_out_dir,
+               '-outputFolder', main_out_dir + '/',  # rBAN specifics
                '-outputFileName', os.path.basename(path_to_rban_output)]
-    p = subprocess.run(command, text=True, capture_output=True,
-                       # check=True
-                       )
-    if p.stderr and log:
-        log.err(p.stderr)
-    for line in p.stdout.split('\n'):
-        if line.startswith('WARNING') and log:
-            log.warn('rBAN ' + line)
+    nerpa_utils.sys_call(command, log)
