@@ -147,6 +147,6 @@ def create_predictions_by_antiSMASHout(antismashouts, outdir):
 
     with open(predictions_info_file, 'w') as f:
         for line in predictions_info_list:
-            f.write(line + "\n")
+            f.write(f'{line}\n')
 
     return predictions_info_file
