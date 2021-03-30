@@ -1,0 +1,2 @@
+genome accession	geneclusters
+BGC0001207	BGC0001207_c1

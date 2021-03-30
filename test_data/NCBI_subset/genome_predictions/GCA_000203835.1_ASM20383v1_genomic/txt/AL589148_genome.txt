@@ -1,0 +1,2 @@
+genome accession	geneclusters
+AL589148	AL589148_c28;AL589148_c29

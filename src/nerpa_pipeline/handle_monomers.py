@@ -18,6 +18,7 @@ class RDKitError(Exception):
 class PKError(Exception):
     pass
 
+
 def handle_RDKit_errors(suppress=True):
     def decorator(func):
         @wraps(func)
@@ -320,16 +321,16 @@ def find_aa_pk_bond(mol):
     for s in starts:
         for e in ends:
             for pth in nx.shortest_simple_paths(G, s, e):
-                try:
-                    for x in pth:
-                        if G.nodes[x]['atomic_num'] != 6:
-                            raise
+                all_atomic_nums_are_six = True
+                for x in pth:
+                    if G.nodes[x]['atomic_num'] != 6:
+                        all_atomic_nums_are_six = False
+                        break
+                if all_atomic_nums_are_six:
                     # exclude last carbon to support Proline & Homoproline
                     for x in pth[:-1]:
                         if x in cyclic_nodes:
-                            raise
-                except:
-                    pass
+                            break
                 if len(pth) > 3:
                     paths.append((len(pth), e, pth))
     if not paths:

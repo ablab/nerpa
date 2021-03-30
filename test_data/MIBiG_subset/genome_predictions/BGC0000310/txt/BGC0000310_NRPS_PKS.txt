@@ -1,0 +1,43 @@
+Cluster_ID	NRPSPKS_ID	annotation	aSDomain	score	evalue	domain_type	subtype	domain_start	domain_end	KR activity	KR stereochemistry	NRPSPredictor2	Stachelhaus	Minowa	pkssignature	consensus
+BGC0000310.1_c1	ctg1_orf00003	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf00003_Xdom01	164.0	1.80E-50	Thioesterase		413	1094							
+BGC0000310.1_c1	ctg1_orf00004	NRPS	nrpspksdomains_ctg1_orf00004_A1	381.0	1.30E-116	AMP-binding		1639	2833			ile	ile	ile		ile
+BGC0000310.1_c1	ctg1_orf00004	NRPS	nrpspksdomains_ctg1_orf00004_Xdom01	67.5	2.20E-21	PCP		3082	3289							
+BGC0000310.1_c1	ctg1_orf00004	NRPS	nrpspksdomains_ctg1_orf00004_Xdom02	304.5	2.20E-93	Heterocyclization		3346	4237							
+BGC0000310.1_c1	ctg1_orf00004	NRPS	nrpspksdomains_ctg1_orf00004_A2	326.1	6.40E-100	AMP-binding		4792	5944			cys	cys	cys		cys
+BGC0000310.1_c1	ctg1_orf00004	NRPS	nrpspksdomains_ctg1_orf00004_Xdom03	48.6	1.70E-15	PCP		6211	6412							
+BGC0000310.1_c1	ctg1_orf00004	NRPS	nrpspksdomains_ctg1_orf00004_Xdom04	299.3	6.40E-92	Condensation	Condensation_LCL	6457	7348							
+BGC0000310.1_c1	ctg1_orf00004	NRPS	nrpspksdomains_ctg1_orf00004_A3	388.8	5.80E-119	AMP-binding		7903	9064			leu	leu	leu		leu
+BGC0000310.1_c1	ctg1_orf00004	NRPS	nrpspksdomains_ctg1_orf00004_Xdom05	64.8	1.50E-20	PCP		9313	9502							
+BGC0000310.1_c1	ctg1_orf00004	NRPS	nrpspksdomains_ctg1_orf00004_Xdom06	325.5	6.80E-100	Condensation	Condensation_LCL	9565	10414							
+BGC0000310.1_c1	ctg1_orf00004	NRPS	nrpspksdomains_ctg1_orf00004_A4	388.2	8.70E-119	AMP-binding		10975	12187			glu	glu	glu		glu
+BGC0000310.1_c1	ctg1_orf00004	NRPS	nrpspksdomains_ctg1_orf00004_Xdom07	64.5	1.90E-20	PCP		12442	12646							
+BGC0000310.1_c1	ctg1_orf00004	NRPS	nrpspksdomains_ctg1_orf00004_Xdom08	491.1	1.20E-149	Epimerization		12676	13579							
+BGC0000310.1_c1	ctg1_orf00004	NRPS	nrpspksdomains_ctg1_orf00004_Xdom09	349.4	3.70E-107	Condensation	Condensation_DCL	14068	14968							
+BGC0000310.1_c1	ctg1_orf00004	NRPS	nrpspksdomains_ctg1_orf00004_A5	382.0	7.00E-117	AMP-binding		15526	16714			ile	ile	ile		ile
+BGC0000310.1_c1	ctg1_orf00004	NRPS	nrpspksdomains_ctg1_orf00004_Xdom10	55.0	1.70E-17	PCP		16963	17164							
+BGC0000310.1_c1	ctg1_orf00005	NRPS	nrpspksdomains_ctg1_orf00005_Xdom01	340.6	1.60E-104	Condensation	Condensation_LCL	17551	18409							
+BGC0000310.1_c1	ctg1_orf00005	NRPS	nrpspksdomains_ctg1_orf00005_A1	385.0	8.20E-118	AMP-binding		18967	20140			lys	lys	lys		lys
+BGC0000310.1_c1	ctg1_orf00005	NRPS	nrpspksdomains_ctg1_orf00005_Xdom02	75.7	5.90E-24	PCP		20392	20599							
+BGC0000310.1_c1	ctg1_orf00005	NRPS	nrpspksdomains_ctg1_orf00005_Xdom03	344.2	1.30E-105	Condensation	Condensation_LCL	20641	21499							
+BGC0000310.1_c1	ctg1_orf00005	NRPS	nrpspksdomains_ctg1_orf00005_A2	393.8	1.70E-120	AMP-binding		22057	23272			orn	orn	orn		orn
+BGC0000310.1_c1	ctg1_orf00005	NRPS	nrpspksdomains_ctg1_orf00005_Xdom04	70.6	2.40E-22	PCP		23521	23725							
+BGC0000310.1_c1	ctg1_orf00005	NRPS	nrpspksdomains_ctg1_orf00005_Xdom05	509.9	2.40E-155	Epimerization		23755	24658							
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom01	38.1	1.60E-12	NRPS-COM_Nterm		25260	25338							
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom02	364.2	1.20E-111	Condensation	Condensation_DCL	25272	26163							
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_A1	373.7	2.20E-114	AMP-binding		26712	27906			ile	ile	ile		ile
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom03	70.2	3.00E-22	PCP		28155	28362							
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom04	343.6	2.00E-105	Condensation	Condensation_LCL	28404	29262							
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_A2	407.0	1.80E-124	AMP-binding		29823	31002			phe	phe	phe		phe
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom05	70.4	2.60E-22	PCP		31251	31455							
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom06	474.0	1.60E-144	Epimerization		31485	32388							
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom07	362.8	3.20E-111	Condensation	Condensation_DCL	32880	33780							
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_A3	387.1	2.00E-118	AMP-binding		34335	35517			tyr	his	his		his
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom08	69.7	4.30E-22	PCP		35763	35967							
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom09	340.1	2.30E-104	Condensation	Condensation_LCL	36012	36870							
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_A4	376.1	4.40E-115	AMP-binding		37431	38643			asp	asp	asp		asp
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom10	68.9	8.00E-22	PCP		38889	39090							
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom11	489.8	2.90E-149	Epimerization		39123	40029							
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom12	349.5	3.40E-107	Condensation	Condensation_DCL	40521	41424							
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_A5	400.4	1.80E-122	AMP-binding		41976	43164			asn	asn	asn		asn
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom13	50.8	3.50E-16	PCP		43413	43617							
+BGC0000310.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom14	105.7	1.20E-32	Thioesterase		43686	44295							

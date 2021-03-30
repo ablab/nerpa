@@ -1,0 +1,85 @@
+\\
+ctg1_orf02624_AT1
+Substrate:	Score:
+Malonyl-CoA	77.8
+inactive	23.0
+trans-1,2-CPDA	0.0
+fatty_acid	0.0
+Propionyl-CoA	0.0
+Methylmalonyl-CoA	0.0
+Methoxymalonyl-CoA	0.0
+Isobutyryl-CoA	0.0
+Ethylmalonyl-CoA	0.0
+CHC-CoA	0.0
+Benzoyl-_CoA	0.0
+Acetyl-CoA	0.0
+3-Methylbutyryl-CoA	0.0
+2-Methylbutyryl-CoA	0.0
+\\
+ctg1_orf02633_AT1
+Substrate:	Score:
+Malonyl-CoA	31.7
+inactive	30.8
+Isobutyryl-CoA	9.6
+trans-1,2-CPDA	0.0
+fatty_acid	0.0
+Propionyl-CoA	0.0
+Methylmalonyl-CoA	0.0
+Methoxymalonyl-CoA	0.0
+Ethylmalonyl-CoA	0.0
+CHC-CoA	0.0
+Benzoyl-_CoA	0.0
+Acetyl-CoA	0.0
+3-Methylbutyryl-CoA	0.0
+2-Methylbutyryl-CoA	0.0
+\\
+ctg1_orf06424_AT1
+Substrate:	Score:
+Methoxymalonyl-CoA	118.9
+Methylmalonyl-CoA	116.6
+Malonyl-CoA	112.7
+Ethylmalonyl-CoA	100.2
+Isobutyryl-CoA	93.4
+Propionyl-CoA	74.9
+trans-1,2-CPDA	68.6
+2-Methylbutyryl-CoA	59.0
+Acetyl-CoA	52.1
+fatty_acid	49.1
+inactive	42.7
+Benzoyl-_CoA	39.3
+3-Methylbutyryl-CoA	32.0
+CHC-CoA	30.7
+\\
+ctg1_orf06959_AT1
+Substrate:	Score:
+Malonyl-CoA	163.2
+inactive	96.4
+Methoxymalonyl-CoA	61.3
+Methylmalonyl-CoA	45.4
+Propionyl-CoA	28.5
+Isobutyryl-CoA	22.1
+fatty_acid	20.4
+2-Methylbutyryl-CoA	14.3
+Ethylmalonyl-CoA	12.8
+CHC-CoA	12.5
+Acetyl-CoA	12.5
+Benzoyl-_CoA	11.8
+trans-1,2-CPDA	0.0
+3-Methylbutyryl-CoA	0.0
+\\
+ctg1_orf07438_AT1
+Substrate:	Score:
+Malonyl-CoA	166.3
+inactive	99.4
+Methoxymalonyl-CoA	67.6
+Propionyl-CoA	58.9
+Methylmalonyl-CoA	57.7
+fatty_acid	28.2
+CHC-CoA	25.8
+Ethylmalonyl-CoA	23.3
+2-Methylbutyryl-CoA	21.7
+Acetyl-CoA	16.5
+Isobutyryl-CoA	15.7
+Benzoyl-_CoA	9.1
+trans-1,2-CPDA	0.0
+3-Methylbutyryl-CoA	0.0

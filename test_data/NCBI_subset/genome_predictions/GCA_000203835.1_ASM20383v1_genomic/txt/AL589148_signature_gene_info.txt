@@ -1,0 +1,6 @@
+signature gene	pHMM hits	e-value	bit score	number of seeds
+ctg2_orf00380	phytoene_synt	1.2e-29	98.0	8
+ctg2_orf00445	A-OX	1.6e-15	50.8	15
+ctg2_orf00445	mmyO	5.8e-210	691.5	4
+ctg2_orf00448	AfsA	4.8e-24	79.0	34
+ctg2_orf00448	AfsA	2e-22	73.8	34

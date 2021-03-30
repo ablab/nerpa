@@ -1,0 +1,394 @@
+Cluster_ID	NRPSPKS_ID	annotation	aSDomain	score	evalue	domain_type	subtype	domain_start	domain_end	KR activity	KR stereochemistry	NRPSPredictor2	Stachelhaus	Minowa	pkssignature	consensus
+CP002869.1_c1	ctg1_orf01005	NRPS-like protein	nrpspksdomains_ctg1_orf01005_A1	387.4	1.60E-118	AMP-binding		766831	768070			gly,ala,val,leu,ile,abu,iva	leu	leu		leu
+CP002869.1_c1	ctg1_orf01005	NRPS-like protein	nrpspksdomains_ctg1_orf01005_Xdom01	52.7	9.00E-17	PCP		768343	768532							
+CP002869.1_c1	ctg1_orf01005	NRPS-like protein	nrpspksdomains_ctg1_orf01005_Xdom02	176.6	1.20E-54	NAD_binding_4		768661	769390							
+CP002869.1_c1	ctg1_orf01008	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf01008_Xdom01	144.4	1.20E-44	Aminotran_1_2		770367	771402							
+CP002869.1_c2	ctg1_orf02603	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf02603_KR1	49.6	1.10E-15	PKS_KR		1894745	1895228	inactive	C2					
+CP002869.1_c2	ctg1_orf02622	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf02622_Xdom01	20.4	8.30E-07	ACPS		1906721	1906889							
+CP002869.1_c2	ctg1_orf02624	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf02624_AT1	148.8	5.60E-46	PKS_AT		1907194	1907980					mal	mal	mal
+CP002869.1_c2	ctg1_orf02625	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02625_Xdom01	569.5	1.10E-173	PKS_KS		1909632	1910943							
+CP002869.1_c2	ctg1_orf02625	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02625_Xdom02	84.7	2.10E-26	Trans-AT_docking		1910991	1911471							
+CP002869.1_c2	ctg1_orf02625	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02625_Xdom03	208.9	1.80E-64	PKS_DH2		1911582	1912263							
+CP002869.1_c2	ctg1_orf02625	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02625_KR1	179.4	1.70E-55	PKS_KR		1912950	1913505	active	?					
+CP002869.1_c2	ctg1_orf02625	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02625_Xdom04	37.5	5.20E-12	ACP		1913799	1913991							
+CP002869.1_c2	ctg1_orf02625	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02625_Xdom05	568.9	1.80E-173	PKS_KS		1914180	1915494							
+CP002869.1_c2	ctg1_orf02625	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02625_Xdom06	182.9	1.20E-56	Trans-AT_docking		1915539	1916004							
+CP002869.1_c2	ctg1_orf02625	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02625_KR2	155.6	3.30E-48	PKS_KR		1916739	1917330	active	?					
+CP002869.1_c2	ctg1_orf02625	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02625_Xdom07	46.0	1.20E-14	ACP		1917618	1917828							
+CP002869.1_c2	ctg1_orf02625	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02625_Xdom08	406.1	4.50E-124	PKS_KS		1917987	1919202							
+CP002869.1_c2	ctg1_orf02626	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02626_Xdom01	57.3	3.80E-18	PKS_DH2		1919402	1919954							
+CP002869.1_c2	ctg1_orf02626	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02626_Xdom02	46.6	7.90E-15	ACP		1920308	1920509							
+CP002869.1_c2	ctg1_orf02626	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02626_Xdom03	534.8	4.00E-163	PKS_KS		1920626	1921937							
+CP002869.1_c2	ctg1_orf02626	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02626_Xdom04	130.7	1.40E-40	Trans-AT_docking		1922438	1922804							
+CP002869.1_c2	ctg1_orf02626	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02626_Xdom05	213.3	8.20E-66	PKS_DH2		1922924	1923611							
+CP002869.1_c2	ctg1_orf02626	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02626_KR1	146.0	2.90E-45	PKS_KR		1924460	1924997	inactive	C2					
+CP002869.1_c2	ctg1_orf02626	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02626_Xdom06	241.3	2.90E-74	MT	cMT	1925678	1926335							
+CP002869.1_c2	ctg1_orf02626	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02626_Xdom07	60.6	2.20E-19	ACP_beta		1926527	1926722							
+CP002869.1_c2	ctg1_orf02626	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02626_Xdom08	538.5	3.10E-164	PKS_KS		1926920	1928171							
+CP002869.1_c2	ctg1_orf02626	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02626_Xdom09	84.7	2.00E-26	Trans-AT_docking		1928210	1928675							
+CP002869.1_c2	ctg1_orf02626	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02626_Xdom10	68.0	2.00E-21	PKS_DH2		1928858	1929440							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_KR1	184.2	5.50E-57	PKS_KR		1930219	1930777	active	?					
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom01	33.0	1.30E-10	ACP		1931059	1931227							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom02	551.5	3.50E-168	PKS_KS		1931416	1932727							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom03	130.1	2.30E-40	Trans-AT_docking		1932775	1933222							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom04	30.9	6.00E-10	ACP		1933405	1933600							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom05	524.4	5.80E-160	PKS_KS		1933741	1934992							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom06	94.6	1.90E-29	Trans-AT_docking		1935037	1935511							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_KR2	179.6	1.50E-55	PKS_KR		1936321	1936864	active	?					
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom07	25.7	2.50E-08	ACP		1937158	1937356							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom08	512.1	3.10E-156	PKS_KS		1937512	1938766							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom09	103.4	3.60E-32	Trans-AT_docking		1938817	1939291							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom10	34.2	5.60E-11	ACP		1939546	1939744							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom11	536.4	1.30E-163	PKS_KS		1939960	1941274							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom12	181.7	2.80E-56	Trans-AT_docking		1941316	1941781							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom13	218.7	1.90E-67	PKS_DH2		1941919	1942612							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_KR3	164.1	8.40E-51	PKS_KR		1943287	1943845	active	?					
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom14	48.0	2.80E-15	ACP		1944106	1944316							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom15	473.7	1.40E-144	PKS_KS		1944541	1945843							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom16	126.0	4.10E-39	Trans-AT_docking		1945891	1946356							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom17	23.3	1.40E-07	ACP		1946449	1946605							
+CP002869.1_c2	ctg1_orf02632	Type I Trans-AT PKS	nrpspksdomains_ctg1_orf02632_Xdom18	119.7	6.40E-37	Thioesterase		1946758	1947592							
+CP002869.1_c2	ctg1_orf02633	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf02633_AT1	163.8	1.50E-50	PKS_AT		1947802	1948558					mal	N/A	pk
+CP002869.1_c4	ctg1_orf04251	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf04251_Xdom01	25.0	1.20E-08	MT	oMT	3130335	3130656							
+CP002869.1_c4	ctg1_orf04276	NRPS	nrpspksdomains_ctg1_orf04276_Xdom01	263.0	9.00E-81	Condensation	Condensation_Starter	3148914	3149799							
+CP002869.1_c4	ctg1_orf04276	NRPS	nrpspksdomains_ctg1_orf04276_A1	415.4	5.00E-127	AMP-binding		3150357	3151596			ser	ser	ser		ser
+CP002869.1_c4	ctg1_orf04276	NRPS	nrpspksdomains_ctg1_orf04276_Xdom02	80.7	1.60E-25	PCP		3151845	3152043							
+CP002869.1_c4	ctg1_orf04276	NRPS	nrpspksdomains_ctg1_orf04276_Xdom03	494.9	8.20E-151	Epimerization		3152079	3153099							
+CP002869.1_c4	ctg1_orf04276	NRPS	nrpspksdomains_ctg1_orf04276_Xdom04	356.1	3.50E-109	Condensation	Condensation_DCL	3153624	3154524							
+CP002869.1_c4	ctg1_orf04276	NRPS	nrpspksdomains_ctg1_orf04276_A2	398.1	9.10E-122	AMP-binding		3155079	3156303			thr	thr	thr		thr
+CP002869.1_c4	ctg1_orf04276	NRPS	nrpspksdomains_ctg1_orf04276_Xdom05	78.0	1.10E-24	PCP		3156552	3156759							
+CP002869.1_c4	ctg1_orf04276	NRPS	nrpspksdomains_ctg1_orf04276_Xdom06	328.2	9.90E-101	Condensation	Condensation_LCL	3156813	3157671							
+CP002869.1_c4	ctg1_orf04276	NRPS	nrpspksdomains_ctg1_orf04276_A3	409.4	3.30E-125	AMP-binding		3158250	3159531			orn	dab	orn		orn
+CP002869.1_c4	ctg1_orf04276	NRPS	nrpspksdomains_ctg1_orf04276_Xdom07	54.6	2.20E-17	PCP		3159780	3159984							
+CP002869.1_c4	ctg1_orf04276	NRPS	nrpspksdomains_ctg1_orf04276_Xdom08	472.0	6.80E-144	Epimerization		3160011	3160929							
+CP002869.1_c4	ctg1_orf04276	NRPS	nrpspksdomains_ctg1_orf04276_Xdom09	346.9	2.20E-106	Condensation	Condensation_DCL	3161430	3162330							
+CP002869.1_c4	ctg1_orf04276	NRPS	nrpspksdomains_ctg1_orf04276_A4	389.5	3.70E-119	AMP-binding		3162900	3164160			asp	asp	asp		asp
+CP002869.1_c4	ctg1_orf04276	NRPS	nrpspksdomains_ctg1_orf04276_Xdom10	86.6	2.30E-27	PCP		3164409	3164613							
+CP002869.1_c4	ctg1_orf04276	NRPS	nrpspksdomains_ctg1_orf04276_Xdom11	311.8	9.80E-96	Condensation	Condensation_LCL	3164658	3165507							
+CP002869.1_c4	ctg1_orf04276	NRPS	nrpspksdomains_ctg1_orf04276_A5	302.1	1.20E-92	AMP-binding		3166062	3167103			gly	gly	gly		gly
+CP002869.1_c4	ctg1_orf04277	Hybrid PKS-NRPS	nrpspksdomains_ctg1_orf04277_Xdom01	88.0	8.50E-28	PCP		3167390	3167594							
+CP002869.1_c4	ctg1_orf04277	Hybrid PKS-NRPS	nrpspksdomains_ctg1_orf04277_Xdom02	342.8	3.50E-105	Condensation	Condensation_LCL	3167642	3168494							
+CP002869.1_c4	ctg1_orf04279	NRPS	nrpspksdomains_ctg1_orf04279_A1	379.6	3.60E-116	AMP-binding		3170035	3171220			asn	asn	asn		asn
+CP002869.1_c4	ctg1_orf04279	NRPS	nrpspksdomains_ctg1_orf04279_Xdom01	80.2	2.30E-25	PCP		3171466	3171661							
+CP002869.1_c4	ctg1_orf04279	NRPS	nrpspksdomains_ctg1_orf04279_Xdom02	511.8	6.40E-156	Epimerization		3171697	3172612							
+CP002869.1_c4	ctg1_orf04279	NRPS	nrpspksdomains_ctg1_orf04279_Xdom03	339.9	2.90E-104	Condensation	Condensation_DCL	3173113	3174016							
+CP002869.1_c4	ctg1_orf04279	NRPS	nrpspksdomains_ctg1_orf04279_A2	407.4	1.30E-124	AMP-binding		3174571	3175828			asp	asp	asp		asp
+CP002869.1_c4	ctg1_orf04279	NRPS	nrpspksdomains_ctg1_orf04279_Xdom04	74.1	1.80E-23	PCP		3176077	3176278							
+CP002869.1_c4	ctg1_orf04279	NRPS	nrpspksdomains_ctg1_orf04279_Xdom05	491.7	7.80E-150	Epimerization		3176308	3177220							
+CP002869.1_c4	ctg1_orf04279	NRPS	nrpspksdomains_ctg1_orf04279_Xdom06	346.8	2.40E-106	Condensation	Condensation_DCL	3177724	3178624							
+CP002869.1_c4	ctg1_orf04279	NRPS	nrpspksdomains_ctg1_orf04279_A3	393.0	3.20E-120	AMP-binding		3179176	3180376			gly	gly	gly		gly
+CP002869.1_c4	ctg1_orf04279	NRPS	nrpspksdomains_ctg1_orf04279_Xdom07	84.8	8.40E-27	PCP		3180628	3180832							
+CP002869.1_c4	ctg1_orf04279	NRPS	nrpspksdomains_ctg1_orf04279_Xdom08	337.8	1.20E-103	Condensation	Condensation_LCL	3180880	3181732							
+CP002869.1_c4	ctg1_orf04281	NRPS	nrpspksdomains_ctg1_orf04281_A1	372.5	5.40E-114	AMP-binding		3183222	3184425			tyr	tyr	tyr		tyr
+CP002869.1_c4	ctg1_orf04281	NRPS	nrpspksdomains_ctg1_orf04281_Xdom01	89.8	2.40E-28	PCP		3184674	3184878							
+CP002869.1_c4	ctg1_orf04281	NRPS	nrpspksdomains_ctg1_orf04281_Xdom02	304.0	2.30E-93	Condensation	Condensation_LCL	3184932	3185787							
+CP002869.1_c4	ctg1_orf04281	NRPS	nrpspksdomains_ctg1_orf04281_A2	365.4	7.60E-112	AMP-binding		3186351	3187542			val,leu,ile,abu,iva	val	val		val
+CP002869.1_c4	ctg1_orf04281	NRPS	nrpspksdomains_ctg1_orf04281_Xdom03	71.4	1.30E-22	PCP		3187791	3187998							
+CP002869.1_c4	ctg1_orf04281	NRPS	nrpspksdomains_ctg1_orf04281_Xdom04	323.3	3.10E-99	Condensation	Condensation_LCL	3188046	3188901							
+CP002869.1_c4	ctg1_orf04281	NRPS	nrpspksdomains_ctg1_orf04281_A3	400.4	1.80E-122	AMP-binding		3189483	3190722			orn	dab	orn		orn
+CP002869.1_c4	ctg1_orf04281	NRPS	nrpspksdomains_ctg1_orf04281_Xdom05	88.2	7.10E-28	PCP		3190971	3191172							
+CP002869.1_c4	ctg1_orf04281	NRPS	nrpspksdomains_ctg1_orf04281_Xdom06	346.5	2.60E-106	Condensation	Condensation_LCL	3191223	3192075							
+CP002869.1_c4	ctg1_orf04281	NRPS	nrpspksdomains_ctg1_orf04281_A4	405.0	7.00E-124	AMP-binding		3192639	3193821			phe	phe	phe		phe
+CP002869.1_c4	ctg1_orf04281	NRPS	nrpspksdomains_ctg1_orf04281_Xdom07	61.7	1.40E-19	PCP		3194070	3194268							
+CP002869.1_c4	ctg1_orf04281	NRPS	nrpspksdomains_ctg1_orf04281_Xdom08	107.2	4.30E-33	Thioesterase		3194337	3194958							
+CP002869.1_c5	ctg1_orf06117	NRPS	nrpspksdomains_ctg1_orf06117_Xdom06	91.7	2.30E-28	Thioesterase		4452159	4452753							
+CP002869.1_c5	ctg1_orf06117	NRPS	nrpspksdomains_ctg1_orf06117_Xdom05	80.4	2.10E-25	PCP		4452813	4453020							
+CP002869.1_c5	ctg1_orf06117	NRPS	nrpspksdomains_ctg1_orf06117_A2	355.9	5.90E-109	AMP-binding		4453269	4454496			asp	asp	asp		asp
+CP002869.1_c5	ctg1_orf06117	NRPS	nrpspksdomains_ctg1_orf06117_Xdom04	349.4	3.50E-107	Condensation	Condensation_LCL	4455063	4455924							
+CP002869.1_c5	ctg1_orf06117	NRPS	nrpspksdomains_ctg1_orf06117_Xdom03	79.4	4.10E-25	PCP		4455966	4456173							
+CP002869.1_c5	ctg1_orf06117	NRPS	nrpspksdomains_ctg1_orf06117_A1	363.1	3.70E-111	AMP-binding		4456425	4457616			val,leu,ile,abu,iva	ile	val		nrp
+CP002869.1_c5	ctg1_orf06117	NRPS	nrpspksdomains_ctg1_orf06117_Xdom02	348.6	6.00E-107	Condensation	Condensation_LCL	4458174	4459029							
+CP002869.1_c5	ctg1_orf06117	NRPS	nrpspksdomains_ctg1_orf06117_Xdom01	87.7	1.10E-27	PCP		4459077	4459281							
+CP002869.1_c5	ctg1_orf06118	NRPS	nrpspksdomains_ctg1_orf06118_Xdom05	365.4	5.10E-112	Condensation	Condensation_DCL	4461598	4462489							
+CP002869.1_c5	ctg1_orf06118	NRPS	nrpspksdomains_ctg1_orf06118_Xdom04	444.4	1.50E-135	Epimerization		4462990	4463902							
+CP002869.1_c5	ctg1_orf06118	NRPS	nrpspksdomains_ctg1_orf06118_Xdom03	83.2	2.80E-26	PCP		4463935	4464136							
+CP002869.1_c5	ctg1_orf06118	NRPS	nrpspksdomains_ctg1_orf06118_A2	347.7	1.80E-106	AMP-binding		4464376	4465546			tyr,bht	tyr	tyr		tyr
+CP002869.1_c5	ctg1_orf06118	NRPS	nrpspksdomains_ctg1_orf06118_Xdom02	347.2	1.70E-106	Condensation	Condensation_LCL	4466107	4466968							
+CP002869.1_c5	ctg1_orf06118	NRPS	nrpspksdomains_ctg1_orf06118_Xdom01	87.3	1.40E-27	PCP		4467016	4467220							
+CP002869.1_c5	ctg1_orf06118	NRPS	nrpspksdomains_ctg1_orf06118_A1	381.6	9.30E-117	AMP-binding		4467481	4468972			gly	gly	gly		gly
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_Xdom16	316.9	3.10E-97	Condensation	Condensation_DCL	4469792	4470620							
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_Xdom15	498.9	5.10E-152	Epimerization		4471124	4472027							
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_Xdom14	65.9	6.70E-21	PCP		4472063	4472261							
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_A7	396.1	3.70E-121	AMP-binding		4472513	4473707			ile	ile	ile		ile
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_Xdom13	326.9	2.50E-100	Condensation	Condensation_LCL	4474268	4475117							
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_Xdom12	77.8	1.30E-24	PCP		4475171	4475372							
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_A6	422.3	4.10E-129	AMP-binding		4475621	4476827			thr	thr	thr		thr
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_Xdom11	327.3	1.90E-100	Condensation	Condensation_LCL	4477400	4478255							
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_Xdom10	82.5	4.60E-26	PCP		4478306	4478504							
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_A5	382.5	4.90E-117	AMP-binding		4478765	4480256			gly	gly	gly		gly
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_Xdom09	328.1	1.10E-100	Condensation	Condensation_LCL	4480814	4481678							
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_Xdom08	84.5	1.00E-26	PCP		4481723	4481927							
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_A4	359.2	5.60E-110	AMP-binding		4482173	4483397			pro	pro	pro		pro
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_Xdom07	337.2	1.90E-103	Condensation	Condensation_LCL	4483955	4484810							
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_Xdom06	82.4	4.70E-26	PCP		4484852	4485059							
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_A3	360.7	2.00E-110	AMP-binding		4485314	4486517			val	val	val		val
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_Xdom05	327.4	1.70E-100	Condensation	Condensation_LCL	4487075	4487936							
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_Xdom04	83.9	1.60E-26	PCP		4487981	4488185							
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_A2	395.1	7.00E-121	AMP-binding		4488437	4489634			tyr	asn	tyr		tyr
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_Xdom03	349.6	3.00E-107	Condensation	Condensation_LCL	4490192	4491047							
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_Xdom02	69.6	4.90E-22	PCP		4491104	4491302							
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_A1	357.6	1.70E-109	AMP-binding		4491551	4492766			orn	orn	orn		orn
+CP002869.1_c5	ctg1_orf06121	NRPS	nrpspksdomains_ctg1_orf06121_Xdom01	228.4	3.10E-70	Condensation	Condensation_Starter	4493333	4494221							
+CP002869.1_c6	ctg1_orf06241	NRPS-like protein	nrpspksdomains_ctg1_orf06241_Xdom05	96.6	7.40E-30	Thioesterase		4582328	4582964							
+CP002869.1_c6	ctg1_orf06241	NRPS-like protein	nrpspksdomains_ctg1_orf06241_Xdom04	71.4	1.30E-22	PCP		4583042	4583240							
+CP002869.1_c6	ctg1_orf06241	NRPS-like protein	nrpspksdomains_ctg1_orf06241_A2	247.8	2.50E-76	AMP-binding		4583504	4585478			hydrophobic-aliphatic	gly	cys		nrp
+CP002869.1_c6	ctg1_orf06241	NRPS-like protein	nrpspksdomains_ctg1_orf06241_Xdom03	313.5	3.90E-96	Heterocyclization		4586312	4587203							
+CP002869.1_c6	ctg1_orf06241	NRPS-like protein	nrpspksdomains_ctg1_orf06241_Xdom02	72.9	4.40E-23	PCP		4587263	4587467							
+CP002869.1_c6	ctg1_orf06241	NRPS-like protein	nrpspksdomains_ctg1_orf06241_A1	326.2	5.80E-100	AMP-binding		4587713	4588619			thr	thr	thr		thr
+CP002869.1_c6	ctg1_orf06241	NRPS-like protein	nrpspksdomains_ctg1_orf06241_Xdom01	101.7	1.31E-32	MT	nMT	4588694	4589240							
+CP002869.1_c6	ctg1_orf06246	NRPS	nrpspksdomains_ctg1_orf06246_Xdom04	325.4	7.40E-100	Condensation	Condensation_LCL	4593076	4593931							
+CP002869.1_c6	ctg1_orf06246	NRPS	nrpspksdomains_ctg1_orf06246_Xdom03	78.4	8.50E-25	PCP		4595068	4595269							
+CP002869.1_c6	ctg1_orf06246	NRPS	nrpspksdomains_ctg1_orf06246_A1	360.3	2.60E-110	AMP-binding		4595542	4596709			cys	cys	cys		cys
+CP002869.1_c6	ctg1_orf06246	NRPS	nrpspksdomains_ctg1_orf06246_Xdom02	322.3	8.30E-99	Heterocyclization		4597276	4598170							
+CP002869.1_c6	ctg1_orf06246	NRPS	nrpspksdomains_ctg1_orf06246_Xdom01	51.1	2.70E-16	PCP		4598230	4598437							
+CP002869.1_c6	ctg1_orf06246	NRPS	nrpspksdomains_ctg1_orf06246_CAL1	457.4	1.50E-139	CAL_domain		4598752	4600084					fatty_acid		
+CP002869.1_c7	ctg1_orf06410	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf06410_Xdom01	86.3	5.50E-27	PKS_KS		4728402	4729395							
+CP002869.1_c7	ctg1_orf06412	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf06412_Xdom01	193.1	2.00E-59	PKS_KS		4729625	4730723							
+CP002869.1_c7	ctg1_orf06413	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf06413_Xdom01	24.8	4.80E-08	ACP		4730920	4731082							
+CP002869.1_c7	ctg1_orf06415	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf06415_KR1	89.5	6.50E-28	PKS_KR		4731355	4731871	inactive	C2					
+CP002869.1_c7	ctg1_orf06422	NRPS	nrpspksdomains_ctg1_orf06422_Xdom05	392.7	6.50E-120	Epimerization		4735114	4736014							
+CP002869.1_c7	ctg1_orf06422	NRPS	nrpspksdomains_ctg1_orf06422_Xdom04	75.5	6.60E-24	PCP		4736044	4736245							
+CP002869.1_c7	ctg1_orf06422	NRPS	nrpspksdomains_ctg1_orf06422_A2	356.6	3.50E-109	AMP-binding		4736494	4737757			cys	cys	cys		cys
+CP002869.1_c7	ctg1_orf06422	NRPS	nrpspksdomains_ctg1_orf06422_Xdom03	335.7	5.40E-103	Condensation	Condensation_LCL	4738324	4739284							
+CP002869.1_c7	ctg1_orf06422	NRPS	nrpspksdomains_ctg1_orf06422_Xdom02	80.2	2.30E-25	PCP		4739329	4739536							
+CP002869.1_c7	ctg1_orf06422	NRPS	nrpspksdomains_ctg1_orf06422_A1	393.1	2.90E-120	AMP-binding		4739779	4740997			hydrophobic-aliphatic	ala	ser		nrp
+CP002869.1_c7	ctg1_orf06422	NRPS	nrpspksdomains_ctg1_orf06422_Xdom01	301.1	1.80E-92	Condensation	Condensation_LCL	4741570	4742470							
+CP002869.1_c7	ctg1_orf06424	PKS-like protein	nrpspksdomains_ctg1_orf06424_Xdom03	28.8	2.70E-09	ACP		4742718	4742922							
+CP002869.1_c7	ctg1_orf06424	PKS-like protein	nrpspksdomains_ctg1_orf06424_KR1	211.0	3.30E-65	PKS_KR		4743237	4743819	active	?					
+CP002869.1_c7	ctg1_orf06424	PKS-like protein	nrpspksdomains_ctg1_orf06424_Xdom02	128.9	4.90E-40	PKS_DH2		4744695	4745343							
+CP002869.1_c7	ctg1_orf06424	PKS-like protein	nrpspksdomains_ctg1_orf06424_AT1	335.9	5.70E-103	PKS_AT		4745604	4746495					mxmal	mal	pk
+CP002869.1_c7	ctg1_orf06424	PKS-like protein	nrpspksdomains_ctg1_orf06424_Xdom01	614.9	2.00E-187	PKS_KS		4746831	4748121							
+CP002869.1_c7	ctg1_orf06426	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf06426_Xdom01	167.7	1.40E-51	Thioesterase		4748451	4749132							
+CP002869.1_c7	ctg1_orf06428	NRPS	nrpspksdomains_ctg1_orf06428_Xdom12	96.4	8.30E-30	Thioesterase		4749374	4749950							
+CP002869.1_c7	ctg1_orf06428	NRPS	nrpspksdomains_ctg1_orf06428_Xdom11	45.1	2.10E-14	PCP		4750019	4750217							
+CP002869.1_c7	ctg1_orf06428	NRPS	nrpspksdomains_ctg1_orf06428_A4	360.1	3.20E-110	AMP-binding		4750469	4751705			cys	cys	cys		cys
+CP002869.1_c7	ctg1_orf06428	NRPS	nrpspksdomains_ctg1_orf06428_Xdom10	338.1	1.00E-103	Condensation	Condensation_DCL	4752254	4753175							
+CP002869.1_c7	ctg1_orf06428	NRPS	nrpspksdomains_ctg1_orf06428_Xdom09	415.4	8.60E-127	Epimerization		4753703	4754624							
+CP002869.1_c7	ctg1_orf06428	NRPS	nrpspksdomains_ctg1_orf06428_Xdom08	76.3	3.80E-24	PCP		4754660	4754861							
+CP002869.1_c7	ctg1_orf06428	NRPS	nrpspksdomains_ctg1_orf06428_A3	347.1	2.80E-106	AMP-binding		4755119	4756352			val	val	val		val
+CP002869.1_c7	ctg1_orf06428	NRPS	nrpspksdomains_ctg1_orf06428_Xdom07	311.1	1.80E-95	Condensation	Condensation_DCL	4756910	4757834							
+CP002869.1_c7	ctg1_orf06428	NRPS	nrpspksdomains_ctg1_orf06428_Xdom06	386.2	6.00E-118	Epimerization		4758344	4759280							
+CP002869.1_c7	ctg1_orf06428	NRPS	nrpspksdomains_ctg1_orf06428_Xdom05	68.7	8.80E-22	PCP		4759319	4759511							
+CP002869.1_c7	ctg1_orf06428	NRPS	nrpspksdomains_ctg1_orf06428_A2	409.4	3.30E-125	AMP-binding		4759790	4761017			ser	ser	ser		ser
+CP002869.1_c7	ctg1_orf06428	NRPS	nrpspksdomains_ctg1_orf06428_Xdom04	333.1	3.20E-102	Condensation	Condensation_LCL	4761584	4762451							
+CP002869.1_c7	ctg1_orf06428	NRPS	nrpspksdomains_ctg1_orf06428_Xdom03	70.4	2.70E-22	PCP		4762520	4762727							
+CP002869.1_c7	ctg1_orf06428	NRPS	nrpspksdomains_ctg1_orf06428_A1	405.1	6.50E-124	AMP-binding		4763033	4764263			ser	ser	ser		ser
+CP002869.1_c7	ctg1_orf06428	NRPS	nrpspksdomains_ctg1_orf06428_Xdom02	341.6	9.00E-105	Condensation	Condensation_DCL	4764818	4765727							
+CP002869.1_c7	ctg1_orf06428	NRPS	nrpspksdomains_ctg1_orf06428_Xdom01	53.2	3.00E-17	NRPS-COM_Nterm		4765658	4765742							
+CP002869.1_c7	ctg1_orf06430	NRPS	nrpspksdomains_ctg1_orf06430_Xdom07	408.7	9.60E-125	Epimerization		4766277	4767177							
+CP002869.1_c7	ctg1_orf06430	NRPS	nrpspksdomains_ctg1_orf06430_Xdom06	60.6	3.00E-19	PCP		4767210	4767408							
+CP002869.1_c7	ctg1_orf06430	NRPS	nrpspksdomains_ctg1_orf06430_A3	372.9	3.90E-114	AMP-binding		4767708	4768911			val	val	val		val
+CP002869.1_c7	ctg1_orf06430	NRPS	nrpspksdomains_ctg1_orf06430_Xdom05	311.5	1.30E-95	Condensation	Condensation_LCL	4769469	4770330							
+CP002869.1_c7	ctg1_orf06430	NRPS	nrpspksdomains_ctg1_orf06430_Xdom04	67.0	3.10E-21	PCP		4770381	4770582							
+CP002869.1_c7	ctg1_orf06430	NRPS	nrpspksdomains_ctg1_orf06430_A2	378.3	9.00E-116	AMP-binding		4770825	4772052			gly	gly	ala		gly
+CP002869.1_c7	ctg1_orf06430	NRPS	nrpspksdomains_ctg1_orf06430_Xdom03	317.6	1.70E-97	Condensation	Condensation_LCL	4772619	4773474							
+CP002869.1_c7	ctg1_orf06430	NRPS	nrpspksdomains_ctg1_orf06430_Xdom02	80.9	1.40E-25	PCP		4773543	4773747							
+CP002869.1_c7	ctg1_orf06430	NRPS	nrpspksdomains_ctg1_orf06430_A1	393.3	2.50E-120	AMP-binding		4773990	4775196			thr	thr	thr		thr
+CP002869.1_c7	ctg1_orf06430	NRPS	nrpspksdomains_ctg1_orf06430_Xdom01	305.0	1.20E-93	Condensation	Condensation_DCL	4775748	4776648							
+CP002869.1_c7	ctg1_orf06433	NRPS	nrpspksdomains_ctg1_orf06433_Xdom04	383.6	3.50E-117	Epimerization		4777281	4778241							
+CP002869.1_c7	ctg1_orf06433	NRPS	nrpspksdomains_ctg1_orf06433_Xdom03	79.3	4.50E-25	PCP		4778268	4778472							
+CP002869.1_c7	ctg1_orf06433	NRPS	nrpspksdomains_ctg1_orf06433_A1	366.1	4.80E-112	AMP-binding		4778721	4780005			cys	cys	cys		cys
+CP002869.1_c7	ctg1_orf06433	NRPS	nrpspksdomains_ctg1_orf06433_Xdom02	273.4	4.90E-84	Condensation	Condensation_LCL	4780563	4781424							
+CP002869.1_c7	ctg1_orf06433	NRPS	nrpspksdomains_ctg1_orf06433_Xdom01	60.5	3.30E-19	PCP		4781469	4781676							
+CP002869.1_c7	ctg1_orf06433	NRPS	nrpspksdomains_ctg1_orf06433_CAL1	404.8	1.20E-123	CAL_domain		4782006	4783326					fatty_acid		
+CP002869.1_c7	ctg1_orf06439	NRPS	nrpspksdomains_ctg1_orf06439_Xdom06	99.9	7.50E-31	Thioesterase		4786832	4787414							
+CP002869.1_c7	ctg1_orf06439	NRPS	nrpspksdomains_ctg1_orf06439_Xdom05	64.0	2.70E-20	PCP		4787489	4787690							
+CP002869.1_c7	ctg1_orf06439	NRPS	nrpspksdomains_ctg1_orf06439_A2	370.9	1.60E-113	AMP-binding		4787930	4789169			cys	cys	cys		cys
+CP002869.1_c7	ctg1_orf06439	NRPS	nrpspksdomains_ctg1_orf06439_Xdom04	344.8	9.50E-106	Condensation	Condensation_DCL	4789712	4790606							
+CP002869.1_c7	ctg1_orf06439	NRPS	nrpspksdomains_ctg1_orf06439_Xdom03	77.3	1.90E-24	PCP		4790735	4790933							
+CP002869.1_c7	ctg1_orf06439	NRPS	nrpspksdomains_ctg1_orf06439_A1	356.4	4.10E-109	AMP-binding		4791185	4792481			leu	leu	leu		leu
+CP002869.1_c7	ctg1_orf06439	NRPS	nrpspksdomains_ctg1_orf06439_Xdom02	340.2	2.40E-104	Condensation	Condensation_DCL	4793027	4793942							
+CP002869.1_c7	ctg1_orf06439	NRPS	nrpspksdomains_ctg1_orf06439_Xdom01	46.3	4.40E-15	NRPS-COM_Nterm		4793873	4793963							
+CP002869.1_c7	ctg1_orf06442	NRPS	nrpspksdomains_ctg1_orf06442_Xdom12	443.0	3.90E-135	Epimerization		4794622	4795534							
+CP002869.1_c7	ctg1_orf06442	NRPS	nrpspksdomains_ctg1_orf06442_Xdom11	71.4	1.30E-22	PCP		4795567	4795765							
+CP002869.1_c7	ctg1_orf06442	NRPS	nrpspksdomains_ctg1_orf06442_A5	401.8	6.70E-123	AMP-binding		4796017	4797307			ser	ser	ser		ser
+CP002869.1_c7	ctg1_orf06442	NRPS	nrpspksdomains_ctg1_orf06442_Xdom10	305.7	7.10E-94	Condensation	Condensation_LCL	4797868	4798735							
+CP002869.1_c7	ctg1_orf06442	NRPS	nrpspksdomains_ctg1_orf06442_Xdom09	70.1	3.30E-22	PCP		4798783	4798987							
+CP002869.1_c7	ctg1_orf06442	NRPS	nrpspksdomains_ctg1_orf06442_A4	404.7	8.80E-124	AMP-binding		4799242	4800502			ser	ser	ser		ser
+CP002869.1_c7	ctg1_orf06442	NRPS	nrpspksdomains_ctg1_orf06442_Xdom08	297.3	2.70E-91	Condensation	Condensation_LCL	4801060	4801921							
+CP002869.1_c7	ctg1_orf06442	NRPS	nrpspksdomains_ctg1_orf06442_Xdom07	81.0	1.30E-25	PCP		4801969	4802173							
+CP002869.1_c7	ctg1_orf06442	NRPS	nrpspksdomains_ctg1_orf06442_A3	364.2	1.70E-111	AMP-binding		4802431	4803658			pro	pro	pro		pro
+CP002869.1_c7	ctg1_orf06442	NRPS	nrpspksdomains_ctg1_orf06442_Xdom06	286.6	4.60E-88	Condensation	Condensation_LCL	4804228	4805137							
+CP002869.1_c7	ctg1_orf06442	NRPS	nrpspksdomains_ctg1_orf06442_Xdom05	73.6	2.70E-23	PCP		4805191	4805398							
+CP002869.1_c7	ctg1_orf06442	NRPS	nrpspksdomains_ctg1_orf06442_A2	373.0	3.60E-114	AMP-binding		4805647	4806874			tyr	tyr	tyr		tyr
+CP002869.1_c7	ctg1_orf06442	NRPS	nrpspksdomains_ctg1_orf06442_Xdom04	262.4	1.10E-80	Condensation	Condensation_LCL	4807432	4808299							
+CP002869.1_c7	ctg1_orf06442	NRPS	nrpspksdomains_ctg1_orf06442_Xdom03	82.3	5.30E-26	PCP		4808356	4808560							
+CP002869.1_c7	ctg1_orf06442	NRPS	nrpspksdomains_ctg1_orf06442_A1	403.6	1.90E-123	AMP-binding		4808821	4810072			thr	thr	thr		thr
+CP002869.1_c7	ctg1_orf06442	NRPS	nrpspksdomains_ctg1_orf06442_Xdom02	319.2	6.00E-98	Condensation	Condensation_DCL	4810618	4811527							
+CP002869.1_c7	ctg1_orf06442	NRPS	nrpspksdomains_ctg1_orf06442_Xdom01	33.7	3.60E-11	NRPS-COM_Nterm		4811476	4811548							
+CP002869.1_c7	ctg1_orf06443	NRPS	nrpspksdomains_ctg1_orf06443_Xdom08	105.8	1.10E-32	Thioesterase		4811744	4812359							
+CP002869.1_c7	ctg1_orf06443	NRPS	nrpspksdomains_ctg1_orf06443_Xdom07	63.9	2.80E-20	PCP		4812428	4812632							
+CP002869.1_c7	ctg1_orf06443	NRPS	nrpspksdomains_ctg1_orf06443_A3	370.3	2.40E-113	AMP-binding		4812878	4814117			cys	cys	cys		cys
+CP002869.1_c7	ctg1_orf06443	NRPS	nrpspksdomains_ctg1_orf06443_Xdom06	347.4	1.60E-106	Condensation	Condensation_DCL	4814666	4815578							
+CP002869.1_c7	ctg1_orf06443	NRPS	nrpspksdomains_ctg1_orf06443_Xdom05	432.1	7.90E-132	Epimerization		4816148	4817060							
+CP002869.1_c7	ctg1_orf06443	NRPS	nrpspksdomains_ctg1_orf06443_Xdom04	68.4	1.10E-21	PCP		4817096	4817291							
+CP002869.1_c7	ctg1_orf06443	NRPS	nrpspksdomains_ctg1_orf06443_A2	282.7	9.90E-87	AMP-binding		4817537	4818404			leu	leu	leu		leu
+CP002869.1_c7	ctg1_orf06443	NRPS	nrpspksdomains_ctg1_orf06443_Xdom03	91.4	1.73E-29	MT	nMT	4818518	4819067							
+CP002869.1_c7	ctg1_orf06443	NRPS	nrpspksdomains_ctg1_orf06443_Xdom02	319.3	5.10E-98	Condensation	Condensation_LCL	4820138	4820996							
+CP002869.1_c7	ctg1_orf06443	NRPS	nrpspksdomains_ctg1_orf06443_Xdom01	75.3	7.90E-24	PCP		4821047	4821254							
+CP002869.1_c7	ctg1_orf06443	NRPS	nrpspksdomains_ctg1_orf06443_A1	381.5	9.70E-117	AMP-binding		4821533	4822814			val	val	val		val
+CP002869.1_c7	ctg1_orf06446	NRPS	nrpspksdomains_ctg1_orf06446_Xdom08	305.6	7.50E-94	Condensation	Condensation_LCL	4824237	4825095							
+CP002869.1_c7	ctg1_orf06446	NRPS	nrpspksdomains_ctg1_orf06446_Xdom07	73.5	2.80E-23	PCP		4825137	4825341							
+CP002869.1_c7	ctg1_orf06446	NRPS	nrpspksdomains_ctg1_orf06446_A3	383.2	2.90E-117	AMP-binding		4825593	4826841			val	val	val		val
+CP002869.1_c7	ctg1_orf06446	NRPS	nrpspksdomains_ctg1_orf06446_Xdom06	313.6	2.90E-96	Condensation	Condensation_LCL	4827408	4828338							
+CP002869.1_c7	ctg1_orf06446	NRPS	nrpspksdomains_ctg1_orf06446_Xdom05	76.2	4.20E-24	PCP		4828383	4828587							
+CP002869.1_c7	ctg1_orf06446	NRPS	nrpspksdomains_ctg1_orf06446_A2	297.7	2.60E-91	AMP-binding		4828842	4829787			val	val	val		val
+CP002869.1_c7	ctg1_orf06446	NRPS	nrpspksdomains_ctg1_orf06446_Xdom04	326.9	2.40E-100	Condensation	Condensation_LCL	4831455	4832313							
+CP002869.1_c7	ctg1_orf06446	NRPS	nrpspksdomains_ctg1_orf06446_Xdom03	87.7	1.10E-27	PCP		4832373	4832565							
+CP002869.1_c7	ctg1_orf06446	NRPS	nrpspksdomains_ctg1_orf06446_A1	401.0	1.20E-122	AMP-binding		4832817	4834167			thr	thr	thr		thr
+CP002869.1_c7	ctg1_orf06446	NRPS	nrpspksdomains_ctg1_orf06446_Xdom02	280.4	4.00E-86	Condensation	Condensation_DCL	4834722	4835643							
+CP002869.1_c7	ctg1_orf06446	NRPS	nrpspksdomains_ctg1_orf06446_Xdom01	33.5	4.40E-11	NRPS-COM_Nterm		4835592	4835664							
+CP002869.1_c8	ctg1_orf06550	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf06550_Xdom01	152.3	4.30E-47	PKS_ER		4920331	4921273							
+CP002869.1_c8	ctg1_orf06577	NRPS	nrpspksdomains_ctg1_orf06577_Xdom03	231.9	2.30E-71	Condensation	Condensation_DCL	4940720	4941629							
+CP002869.1_c8	ctg1_orf06577	NRPS	nrpspksdomains_ctg1_orf06577_Xdom02	62.5	7.60E-20	PCP		4941803	4942001							
+CP002869.1_c8	ctg1_orf06577	NRPS	nrpspksdomains_ctg1_orf06577_A1	333.1	4.70E-102	AMP-binding		4942256	4943474			hydrophobic-aliphatic	hty	ala		nrp
+CP002869.1_c8	ctg1_orf06577	NRPS	nrpspksdomains_ctg1_orf06577_Xdom01	359.8	2.40E-110	Condensation	Condensation_LCL	4944056	4944956							
+CP002869.1_c8	ctg1_orf06579	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf06579_Xdom02	46.5	7.50E-15	PCP		4945153	4945360							
+CP002869.1_c8	ctg1_orf06579	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf06579_Xdom01	539.3	1.80E-164	PKS_KS		4946479	4947757							
+CP002869.1_c8	ctg1_orf06580	NRPS	nrpspksdomains_ctg1_orf06580_Xdom04	77.8	1.30E-24	PCP		4947936	4948137							
+CP002869.1_c8	ctg1_orf06580	NRPS	nrpspksdomains_ctg1_orf06580_A2	399.6	3.00E-122	AMP-binding		4948389	4949619			gly	gly	gly		gly
+CP002869.1_c8	ctg1_orf06580	NRPS	nrpspksdomains_ctg1_orf06580_Xdom03	321.1	1.50E-98	Condensation	Condensation_LCL	4950186	4951053							
+CP002869.1_c8	ctg1_orf06580	NRPS	nrpspksdomains_ctg1_orf06580_Xdom02	82.4	4.90E-26	PCP		4951095	4951302							
+CP002869.1_c8	ctg1_orf06580	NRPS	nrpspksdomains_ctg1_orf06580_A1	387.4	1.60E-118	AMP-binding		4951554	4952781			glu,gln	ser	dab		nrp
+CP002869.1_c8	ctg1_orf06580	NRPS	nrpspksdomains_ctg1_orf06580_Xdom01	200.9	7.70E-62	Condensation	Condensation_Starter	4953342	4954230							
+CP002869.1_c8	ctg1_orf06589	NRPS	nrpspksdomains_ctg1_orf06589_Xdom10	89.3	1.30E-27	Thioesterase		4957504	4958125							
+CP002869.1_c8	ctg1_orf06589	NRPS	nrpspksdomains_ctg1_orf06589_Xdom09	69.5	5.10E-22	PCP		4958173	4958377							
+CP002869.1_c8	ctg1_orf06589	NRPS	nrpspksdomains_ctg1_orf06589_A5	386.1	3.90E-118	AMP-binding		4958623	4959871			phe	phe	phe		phe
+CP002869.1_c8	ctg1_orf06589	NRPS	nrpspksdomains_ctg1_orf06589_Xdom08	331.8	7.80E-102	Condensation	Condensation_LCL	4960429	4961302							
+CP002869.1_c8	ctg1_orf06589	NRPS	nrpspksdomains_ctg1_orf06589_Xdom07	64.0	2.70E-20	PCP		4961347	4961554							
+CP002869.1_c8	ctg1_orf06589	NRPS	nrpspksdomains_ctg1_orf06589_A4	371.1	1.40E-113	AMP-binding		4961803	4962979			asp,asn,glu,gln,aad	arg	ala		nrp
+CP002869.1_c8	ctg1_orf06589	NRPS	nrpspksdomains_ctg1_orf06589_Xdom06	309.6	4.80E-95	Condensation	Condensation_LCL	4963549	4964425							
+CP002869.1_c8	ctg1_orf06589	NRPS	nrpspksdomains_ctg1_orf06589_Xdom05	79.5	3.90E-25	PCP		4964470	4964674							
+CP002869.1_c8	ctg1_orf06589	NRPS	nrpspksdomains_ctg1_orf06589_A3	393.6	2.10E-120	AMP-binding		4964926	4966105			tyr,bht	phe	phe		phe
+CP002869.1_c8	ctg1_orf06589	NRPS	nrpspksdomains_ctg1_orf06589_Xdom04	296.1	6.20E-91	Condensation	Condensation_LCL	4966663	4967536							
+CP002869.1_c8	ctg1_orf06589	NRPS	nrpspksdomains_ctg1_orf06589_Xdom03	66.2	5.40E-21	PCP		4967584	4967788							
+CP002869.1_c8	ctg1_orf06589	NRPS	nrpspksdomains_ctg1_orf06589_A2	400.4	1.70E-122	AMP-binding		4968034	4969228			val,leu,ile,abu,iva	ile	ile		ile
+CP002869.1_c8	ctg1_orf06589	NRPS	nrpspksdomains_ctg1_orf06589_Xdom02	322.7	4.70E-99	Condensation	Condensation_LCL	4969792	4970671							
+CP002869.1_c8	ctg1_orf06589	NRPS	nrpspksdomains_ctg1_orf06589_Xdom01	85.7	4.40E-27	PCP		4970716	4970920							
+CP002869.1_c8	ctg1_orf06589	NRPS	nrpspksdomains_ctg1_orf06589_A1	395.8	4.30E-121	AMP-binding		4971172	4972363			val	val	val		val
+CP002869.1_c8	ctg1_orf06591	NRPS	nrpspksdomains_ctg1_orf06591_Xdom07	342.9	3.60E-105	Condensation	Condensation_DCL	4972921	4973824							
+CP002869.1_c8	ctg1_orf06591	NRPS	nrpspksdomains_ctg1_orf06591_Xdom06	479.4	4.00E-146	Epimerization		4974322	4975234							
+CP002869.1_c8	ctg1_orf06591	NRPS	nrpspksdomains_ctg1_orf06591_Xdom05	71.7	1.00E-22	PCP		4975267	4975468							
+CP002869.1_c8	ctg1_orf06591	NRPS	nrpspksdomains_ctg1_orf06591_A2	405.9	3.80E-124	AMP-binding		4975723	4976938			orn	orn	orn		orn
+CP002869.1_c8	ctg1_orf06591	NRPS	nrpspksdomains_ctg1_orf06591_Xdom04	339.2	4.80E-104	Condensation	Condensation_DCL	4977508	4978408							
+CP002869.1_c8	ctg1_orf06591	NRPS	nrpspksdomains_ctg1_orf06591_Xdom03	493.8	1.70E-150	Epimerization		4978903	4979815							
+CP002869.1_c8	ctg1_orf06591	NRPS	nrpspksdomains_ctg1_orf06591_Xdom02	69.4	5.50E-22	PCP		4979854	4980049							
+CP002869.1_c8	ctg1_orf06591	NRPS	nrpspksdomains_ctg1_orf06591_A1	369.4	4.60E-113	AMP-binding		4980298	4981480			phe	phe	phe		phe
+CP002869.1_c8	ctg1_orf06591	NRPS	nrpspksdomains_ctg1_orf06591_Xdom01	251.9	2.10E-77	Condensation	Condensation_Starter	4982038	4982923							
+CP002869.1_c9	ctg1_orf06950	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf06950_Xdom01	69.6	6.90E-22	Aminotran_1_2		5304748	5305648							
+CP002869.1_c9	ctg1_orf06954	NRPS	nrpspksdomains_ctg1_orf06954_Xdom04	91.4	2.90E-28	Thioesterase		5306803	5307409							
+CP002869.1_c9	ctg1_orf06954	NRPS	nrpspksdomains_ctg1_orf06954_Xdom03	55.6	1.10E-17	PCP		5307466	5307664							
+CP002869.1_c9	ctg1_orf06954	NRPS	nrpspksdomains_ctg1_orf06954_A1	421.5	7.20E-129	AMP-binding		5307913	5309101			hydrophobic-aliphatic	tyr	tyr		tyr
+CP002869.1_c9	ctg1_orf06954	NRPS	nrpspksdomains_ctg1_orf06954_Xdom02	319.3	5.50E-98	Condensation	Condensation_DCL	5309656	5310559							
+CP002869.1_c9	ctg1_orf06954	NRPS	nrpspksdomains_ctg1_orf06954_Xdom01	22.2	1.40E-07	NRPS-COM_Nterm		5310493	5310583							
+CP002869.1_c9	ctg1_orf06957	NRPS	nrpspksdomains_ctg1_orf06957_Xdom03	444.8	1.10E-135	Epimerization		5311140	5312049							
+CP002869.1_c9	ctg1_orf06957	NRPS	nrpspksdomains_ctg1_orf06957_Xdom02	70.8	1.90E-22	PCP		5312082	5312280							
+CP002869.1_c9	ctg1_orf06957	NRPS	nrpspksdomains_ctg1_orf06957_A1	356.8	3.10E-109	AMP-binding		5312529	5313711			val,leu,ile,abu,iva	tyr	ala		nrp
+CP002869.1_c9	ctg1_orf06957	NRPS	nrpspksdomains_ctg1_orf06957_Xdom01	312.1	8.40E-96	Condensation	Condensation_LCL	5314269	5315163							
+CP002869.1_c9	ctg1_orf06959	PKS-like protein	nrpspksdomains_ctg1_orf06959_Xdom02	70.0	3.50E-22	PCP		5316672	5316879							
+CP002869.1_c9	ctg1_orf06959	PKS-like protein	nrpspksdomains_ctg1_orf06959_KR1	108.7	7.90E-34	PKS_KR		5317152	5317740	inactive	C1					
+CP002869.1_c9	ctg1_orf06959	PKS-like protein	nrpspksdomains_ctg1_orf06959_AT1	312.2	9.30E-96	PKS_AT		5318781	5319660					mal	mal	ohmal
+CP002869.1_c9	ctg1_orf06959	PKS-like protein	nrpspksdomains_ctg1_orf06959_Xdom01	531.3	4.70E-162	PKS_KS		5319975	5321217							
+CP002869.1_c9	ctg1_orf06960	NRPS	nrpspksdomains_ctg1_orf06960_Xdom02	56.3	6.50E-18	PCP		5321396	5321597							
+CP002869.1_c9	ctg1_orf06960	NRPS	nrpspksdomains_ctg1_orf06960_A1	367.5	1.80E-112	AMP-binding		5321864	5323085			gly,ala,val,leu,ile,abu,iva	bht	phe		nrp
+CP002869.1_c9	ctg1_orf06960	NRPS	nrpspksdomains_ctg1_orf06960_Xdom01	202.6	2.30E-62	Condensation	Condensation_Starter	5323649	5324543							
+CP002869.1_c10	ctg1_orf07235	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf07235_Xdom01	76.1	7.00E-24	Aminotran_1_2		5529180	5530113							
+CP002869.1_c10	ctg1_orf07264	NRPS	nrpspksdomains_ctg1_orf07264_Xdom05	90.8	4.50E-28	Thioesterase		5547537	5548131							
+CP002869.1_c10	ctg1_orf07264	NRPS	nrpspksdomains_ctg1_orf07264_Xdom04	71.4	1.30E-22	PCP		5548185	5548386							
+CP002869.1_c10	ctg1_orf07264	NRPS	nrpspksdomains_ctg1_orf07264_A2	405.1	6.60E-124	AMP-binding		5548638	5549859			orn,horn	arg	orn		nrp
+CP002869.1_c10	ctg1_orf07264	NRPS	nrpspksdomains_ctg1_orf07264_Xdom03	345.8	4.40E-106	Condensation	Condensation_LCL	5550417	5551275							
+CP002869.1_c10	ctg1_orf07264	NRPS	nrpspksdomains_ctg1_orf07264_Xdom02	68.7	8.80E-22	PCP		5551320	5551521							
+CP002869.1_c10	ctg1_orf07264	NRPS	nrpspksdomains_ctg1_orf07264_A1	366.7	2.90E-112	AMP-binding		5551770	5553021			cys	cys	cys		cys
+CP002869.1_c10	ctg1_orf07264	NRPS	nrpspksdomains_ctg1_orf07264_Xdom01	275.7	1.20E-84	Condensation	Condensation_Starter	5553573	5554461							
+CP002869.1_c10	ctg1_orf07274	NRPS	nrpspksdomains_ctg1_orf07274_Xdom02	243.9	4.80E-75	Condensation	Condensation_LCL	5561448	5562306							
+CP002869.1_c10	ctg1_orf07274	NRPS	nrpspksdomains_ctg1_orf07274_Xdom01	59.8	5.30E-19	PCP		5562357	5562561							
+CP002869.1_c10	ctg1_orf07274	NRPS	nrpspksdomains_ctg1_orf07274_A1	278.9	1.40E-85	AMP-binding		5562813	5563668			hydrophobic-aromatic	ser	dab		nrp
+CP002869.1_c10	ctg1_orf07276	NRPS	nrpspksdomains_ctg1_orf07276_Xdom10	321.7	9.90E-99	Condensation	Condensation_LCL	5564882	5565746							
+CP002869.1_c10	ctg1_orf07276	NRPS	nrpspksdomains_ctg1_orf07276_Xdom09	66.8	3.50E-21	PCP		5565794	5566001							
+CP002869.1_c10	ctg1_orf07276	NRPS	nrpspksdomains_ctg1_orf07276_A4	382.9	3.70E-117	AMP-binding		5566253	5567435			phe	phe	phe		phe
+CP002869.1_c10	ctg1_orf07276	NRPS	nrpspksdomains_ctg1_orf07276_Xdom08	334.4	1.50E-102	Condensation	Condensation_DCL	5567993	5568896							
+CP002869.1_c10	ctg1_orf07276	NRPS	nrpspksdomains_ctg1_orf07276_Xdom07	428.7	8.20E-131	Epimerization		5569403	5570300							
+CP002869.1_c10	ctg1_orf07276	NRPS	nrpspksdomains_ctg1_orf07276_Xdom06	73.5	2.80E-23	PCP		5570330	5570528							
+CP002869.1_c10	ctg1_orf07276	NRPS	nrpspksdomains_ctg1_orf07276_A3	366.2	4.20E-112	AMP-binding		5570777	5571977			ile	ile	ile		ile
+CP002869.1_c10	ctg1_orf07276	NRPS	nrpspksdomains_ctg1_orf07276_Xdom05	328.3	9.40E-101	Condensation	Condensation_LCL	5572535	5573396							
+CP002869.1_c10	ctg1_orf07276	NRPS	nrpspksdomains_ctg1_orf07276_Xdom04	65.0	1.30E-20	PCP		5573444	5573645							
+CP002869.1_c10	ctg1_orf07276	NRPS	nrpspksdomains_ctg1_orf07276_A2	338.9	8.60E-104	AMP-binding		5573894	5575127			cys	cys	cys		cys
+CP002869.1_c10	ctg1_orf07276	NRPS	nrpspksdomains_ctg1_orf07276_Xdom03	341.6	9.30E-105	Condensation	Condensation_DCL	5575691	5576588							
+CP002869.1_c10	ctg1_orf07276	NRPS	nrpspksdomains_ctg1_orf07276_Xdom02	65.3	1.10E-20	PCP		5576714	5576915							
+CP002869.1_c10	ctg1_orf07276	NRPS	nrpspksdomains_ctg1_orf07276_A1	374.0	1.90E-114	AMP-binding		5577173	5578397			glu,gln	ser	ser		ser
+CP002869.1_c10	ctg1_orf07276	NRPS	nrpspksdomains_ctg1_orf07276_Xdom01	260.2	6.70E-80	Condensation	Condensation_Starter	5578949	5579837							
+CP002869.1_c10	ctg1_orf07280	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf07280_Xdom01	26.0	1.10E-08	NAD_binding_4		5581653	5581944							
+CP002869.1_c10	ctg1_orf07282	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf07282_Xdom01	21.0	7.50E-07	ACP		5583830	5583986							
+CP002869.1_c11	ctg1_orf07356	NRPS	nrpspksdomains_ctg1_orf07356_Xdom07	101.2	3.00E-31	Thioesterase		5642200	5642803							
+CP002869.1_c11	ctg1_orf07356	NRPS	nrpspksdomains_ctg1_orf07356_Xdom06	80.8	1.50E-25	PCP		5642869	5643067							
+CP002869.1_c11	ctg1_orf07356	NRPS	nrpspksdomains_ctg1_orf07356_A3	397.5	1.40E-121	AMP-binding		5643316	5644573			orn	dab	orn		orn
+CP002869.1_c11	ctg1_orf07356	NRPS	nrpspksdomains_ctg1_orf07356_Xdom05	358.4	6.80E-110	Condensation	Condensation_DCL	5645137	5646037							
+CP002869.1_c11	ctg1_orf07356	NRPS	nrpspksdomains_ctg1_orf07356_Xdom04	534.9	6.80E-163	Epimerization		5646538	5647447							
+CP002869.1_c11	ctg1_orf07356	NRPS	nrpspksdomains_ctg1_orf07356_Xdom03	77.3	1.90E-24	PCP		5647486	5647681							
+CP002869.1_c11	ctg1_orf07356	NRPS	nrpspksdomains_ctg1_orf07356_A2	393.0	3.10E-120	AMP-binding		5647930	5649130			ile	ile	ile		ile
+CP002869.1_c11	ctg1_orf07356	NRPS	nrpspksdomains_ctg1_orf07356_Xdom02	342.9	3.50E-105	Condensation	Condensation_LCL	5649709	5650564							
+CP002869.1_c11	ctg1_orf07356	NRPS	nrpspksdomains_ctg1_orf07356_Xdom01	66.8	3.50E-21	PCP		5650612	5650810							
+CP002869.1_c11	ctg1_orf07356	NRPS	nrpspksdomains_ctg1_orf07356_A1	370.6	2.00E-113	AMP-binding		5651065	5652256			val	val	val		val
+CP002869.1_c11	ctg1_orf07358	Hybrid PKS-NRPS	nrpspksdomains_ctg1_orf07358_Xdom02	325.9	5.00E-100	Condensation	Condensation_LCL	5653770	5654625							
+CP002869.1_c11	ctg1_orf07358	Hybrid PKS-NRPS	nrpspksdomains_ctg1_orf07358_Xdom01	85.1	6.80E-27	PCP		5654673	5654874							
+CP002869.1_c11	ctg1_orf07360	NRPS	nrpspksdomains_ctg1_orf07360_A4	280.0	6.50E-86	AMP-binding		5655475	5656459			ser	ser	ser		ser
+CP002869.1_c11	ctg1_orf07360	NRPS	nrpspksdomains_ctg1_orf07360_Xdom07	345.2	6.60E-106	Condensation	Condensation_LCL	5657020	5657878							
+CP002869.1_c11	ctg1_orf07360	NRPS	nrpspksdomains_ctg1_orf07360_Xdom06	75.3	7.60E-24	PCP		5657920	5658127							
+CP002869.1_c11	ctg1_orf07360	NRPS	nrpspksdomains_ctg1_orf07360_A3	394.1	1.50E-120	AMP-binding		5658376	5659555			phe,trp	val	phe		nrp
+CP002869.1_c11	ctg1_orf07360	NRPS	nrpspksdomains_ctg1_orf07360_Xdom05	356.8	2.10E-109	Condensation	Condensation_DCL	5660113	5661025							
+CP002869.1_c11	ctg1_orf07360	NRPS	nrpspksdomains_ctg1_orf07360_Xdom04	521.7	6.30E-159	Epimerization		5661526	5662432							
+CP002869.1_c11	ctg1_orf07360	NRPS	nrpspksdomains_ctg1_orf07360_Xdom03	73.1	3.80E-23	PCP		5662471	5662666							
+CP002869.1_c11	ctg1_orf07360	NRPS	nrpspksdomains_ctg1_orf07360_A2	415.3	5.30E-127	AMP-binding		5662918	5664160			orn	dab	orn		orn
+CP002869.1_c11	ctg1_orf07360	NRPS	nrpspksdomains_ctg1_orf07360_Xdom02	345.7	4.60E-106	Condensation	Condensation_LCL	5664727	5665588							
+CP002869.1_c11	ctg1_orf07360	NRPS	nrpspksdomains_ctg1_orf07360_Xdom01	83.1	2.80E-26	PCP		5665636	5665840							
+CP002869.1_c11	ctg1_orf07360	NRPS	nrpspksdomains_ctg1_orf07360_A1	398.6	6.40E-122	AMP-binding		5666089	5667328			ser	ser	ser		ser
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom18	353.9	1.50E-108	Condensation	Condensation_LCL	5668845	5669697							
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom17	90.8	1.10E-28	PCP		5669745	5669946							
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_A6	398.6	6.40E-122	AMP-binding		5670195	5671434			ser	ser	ser		ser
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom16	347.8	1.20E-106	Condensation	Condensation_DCL	5671995	5672892							
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom15	517.0	1.70E-157	Epimerization		5673396	5674299							
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom14	71.0	1.70E-22	PCP		5674332	5674533							
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_A5	398.1	9.00E-122	AMP-binding		5674782	5675961			phe,trp	val	phe		nrp
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom13	356.6	2.40E-109	Condensation	Condensation_DCL	5676519	5677419							
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom12	499.3	3.80E-152	Epimerization		5677923	5678865							
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom11	77.5	1.60E-24	PCP		5678898	5679096							
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_A4	381.1	1.30E-116	AMP-binding		5679321	5680506			ser	ser	ser		ser
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom10	354.9	8.20E-109	Condensation	Condensation_DCL	5681061	5681961							
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom09	527.2	1.40E-160	Epimerization		5682459	5683368							
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom08	75.0	9.50E-24	PCP		5683398	5683599							
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_A3	399.6	3.10E-122	AMP-binding		5683848	5685042			ile	ile	ile		ile
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom07	355.2	6.30E-109	Condensation	Condensation_DCL	5685597	5686500							
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom06	485.4	6.10E-148	Epimerization		5687004	5687922							
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom05	75.3	7.70E-24	PCP		5687958	5688156							
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_A2	396.3	3.20E-121	AMP-binding		5688405	5689641			orn	dab	orn		orn
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom04	366.8	1.90E-112	Condensation	Condensation_DCL	5690193	5691093							
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom03	466.6	2.90E-142	Epimerization		5691594	5692491							
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom02	70.0	3.60E-22	PCP		5692524	5692722							
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_A1	403.2	2.60E-123	AMP-binding		5692971	5694150			phe	phe	phe		phe
+CP002869.1_c11	ctg1_orf07365	NRPS	nrpspksdomains_ctg1_orf07365_Xdom01	273.6	5.60E-84	Condensation	Condensation_Starter	5694711	5695605							
+CP002869.1_c11	ctg1_orf07368	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf07368_Xdom01	245.2	2.40E-75	Aminotran_3		5700008	5701010							
+CP002869.1_c12	ctg1_orf07405	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf07405_Xdom01	216.8	1.30E-66	PKS_KS		5726901	5728119							
+CP002869.1_c12	ctg1_orf07433	NRPS	nrpspksdomains_ctg1_orf07433_Xdom03	125.2	1.40E-38	Thioesterase		5745956	5746670							
+CP002869.1_c12	ctg1_orf07433	NRPS	nrpspksdomains_ctg1_orf07433_Xdom02	63.1	5.10E-20	PCP		5746736	5746940							
+CP002869.1_c12	ctg1_orf07433	NRPS	nrpspksdomains_ctg1_orf07433_A1	402.6	3.90E-123	AMP-binding		5747192	5748419			asp,asn,glu,gln,aad	gly	orn		nrp
+CP002869.1_c12	ctg1_orf07433	NRPS	nrpspksdomains_ctg1_orf07433_Xdom01	347.7	1.10E-106	Condensation	Condensation_LCL	5748983	5749886							
+CP002869.1_c12	ctg1_orf07438	PKS-like protein	nrpspksdomains_ctg1_orf07438_Xdom03	65.9	6.90E-21	PCP		5753229	5753430							
+CP002869.1_c12	ctg1_orf07438	PKS-like protein	nrpspksdomains_ctg1_orf07438_KR1	23.3	1.20E-07	PKS_KR		5753793	5754210	inactive	C2					
+CP002869.1_c12	ctg1_orf07438	PKS-like protein	nrpspksdomains_ctg1_orf07438_Xdom02	39.6	1.30E-12	PKS_DHt		5754480	5755041							
+CP002869.1_c12	ctg1_orf07438	PKS-like protein	nrpspksdomains_ctg1_orf07438_AT1	312.5	7.50E-96	PKS_AT		5755086	5755965					mal	mal	ohmal
+CP002869.1_c12	ctg1_orf07438	PKS-like protein	nrpspksdomains_ctg1_orf07438_Xdom01	547.3	6.20E-167	PKS_KS		5756274	5757555							
+CP002869.1_c12	ctg1_orf07439	NRPS	nrpspksdomains_ctg1_orf07439_Xdom04	75.0	9.90E-24	PCP		5757713	5757917							
+CP002869.1_c12	ctg1_orf07439	NRPS	nrpspksdomains_ctg1_orf07439_A2	335.8	7.10E-103	AMP-binding		5758190	5759513			hydrophobic-aliphatic	hpg	ala		nrp
+CP002869.1_c12	ctg1_orf07439	NRPS	nrpspksdomains_ctg1_orf07439_Xdom03	358.8	4.80E-110	Condensation	Condensation_LCL	5760065	5760968							
+CP002869.1_c12	ctg1_orf07439	NRPS	nrpspksdomains_ctg1_orf07439_Xdom02	87.8	9.90E-28	PCP		5761049	5761253							
+CP002869.1_c12	ctg1_orf07439	NRPS	nrpspksdomains_ctg1_orf07439_A1	373.9	2.00E-114	AMP-binding		5761517	5762744			asp,asn,glu,gln,aad	lys	asp		nrp
+CP002869.1_c12	ctg1_orf07439	NRPS	nrpspksdomains_ctg1_orf07439_Xdom01	351.8	6.60E-108	Condensation	Condensation_LCL	5763293	5764187							
+CP002869.1_c12	ctg1_orf07441	NRPS	nrpspksdomains_ctg1_orf07441_Xdom03	97.1	1.20E-30	PCP		5764393	5764600							
+CP002869.1_c12	ctg1_orf07441	NRPS	nrpspksdomains_ctg1_orf07441_A1	371.9	7.80E-114	AMP-binding		5764873	5766103			asp,asn,glu,gln,aad	lys	asp		nrp
+CP002869.1_c12	ctg1_orf07441	NRPS	nrpspksdomains_ctg1_orf07441_Xdom02	228.3	2.70E-70	Condensation	Condensation_LCL	5766703	5767585							
+CP002869.1_c12	ctg1_orf07441	NRPS	nrpspksdomains_ctg1_orf07441_Xdom01	22.4	2.80E-07	ACP		5767657	5767846							
+CP002869.1_c12	ctg1_orf07441	NRPS	nrpspksdomains_ctg1_orf07441_CAL1	374.2	2.10E-114	CAL_domain		5768260	5769601					NH2		
+CP002869.1_c14	ctg1_orf07613	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf07613_KR1	49.7	9.90E-16	PKS_KR		5892253	5892595	inactive	C1					
+CP002869.1_c15	ctg1_orf09011	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf09011_KR1	38.7	2.40E-12	PKS_KR		6895090	6895603	inactive	C2					
+CP002869.1_c16	ctg1_orf10130	NRPS-like protein	nrpspksdomains_ctg1_orf10130_A1	104.5	7.30E-33	AMP-binding		7747268	7748027			val,leu,ile,abu,iva	N/A	cys		nrp
+CP002869.1_c16	ctg1_orf10138	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf10138_Xdom01	314.5	2.00E-96	Aminotran_3		7757275	7758304							

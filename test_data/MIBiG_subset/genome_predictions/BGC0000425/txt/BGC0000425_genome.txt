@@ -1,0 +1,2 @@
+genome accession	geneclusters
+BGC0000425	BGC0000425_c1

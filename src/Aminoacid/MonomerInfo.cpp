@@ -15,7 +15,7 @@ namespace aminoacid {
     double MonomerInfo::DEFAULT_LOG_P = -6.2;
     std::unordered_map<int, double> MonomerInfo::LogP;
 
-    void MonomerInfo::init(std::string& filename, std::string& logp_filename, double default_logp) {
+    void MonomerInfo::init(const std::string& filename, const std::string& logp_filename, double default_logp) {
         std::cout << "INIT\n";
         DEFAULT_LOG_P = default_logp;
         std::fstream in(filename);
