@@ -13,7 +13,7 @@ def get_double_orfs_and_AA(dirname):
 
     # reverse domains on - strand
     for i in range(len(domains)):
-        if len(domains[i]) > 0:
+        if domains[i]:
             if orf_ori[domains[i][0][0]] == '-':
                 domains[i].reverse()
 
