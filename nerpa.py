@@ -32,28 +32,33 @@ def parse_args(log):
                                help="single antiSMASH output directory or directory with many antiSMASH outputs")
 
     struct_group = parser.add_argument_group('Chemical input', 'Structures of NRP molecules')
-    struct_input_group = struct_group.add_mutually_exclusive_group(required=True)
+    struct_input_group = struct_group.add_mutually_exclusive_group()
+    struct_input_group.add_argument("--rban-json", dest="rban_output",
+                                    help="json file with rBAN-preprocessed NRP structures", type=str)
     struct_input_group.add_argument("--smiles", dest="smiles", nargs='*',
                         help="string (or several strings) with structures in the SMILES format", type=str)
     struct_input_group.add_argument("--smiles-tsv", dest="smiles_tsv",
                         help="multi-column file containing structures in the SMILES format", type=str)
-    struct_input_group.add_argument("--graphs", dest="graphs", help="", type=str)
-    struct_group.add_argument("--col_smiles", dest="col_smiles",
-                        help="name of column with structures in the SMILES format [default: 'SMILES']", type=str, default='SMILES')
-    struct_group.add_argument("--col_id", dest="col_id",
-                        help="name of col with ids (if not provided, id=[number of row])", type=str)
+    struct_group.add_argument("--col-smiles", dest="col_smiles",
+                        help="column name in smiles-tsv for structures in the SMILES format [default: 'SMILES']",
+                        type=str, default='SMILES')
+    struct_group.add_argument("--col-id", dest="col_id",
+                        help="column name in smiles-tsv for structure identifier (if not provided, row index will be used)",
+                        type=str)
     struct_group.add_argument("--sep", dest="sep",
-                        help="separator in smiles-tsv", type=str, default='\t')
+                        help="column separator in smiles-tsv", type=str, default='\t')
 
     preprocessed_input_group = parser.add_argument_group('Advanced input', 'Preprocessed BGC predictions and NRP structures in custom Nerpa-compliant formats')
     preprocessed_input_group.add_argument("--predictions", "-p", nargs=1, dest="predictions",
                                           help="file with paths to preprocessed BGC prediction files", type=str)
-    preprocessed_input_group.add_argument("--structures", "-s", nargs=1, dest="structures",
-                                          help="file with rBAN-preprocessed NRP structures (NOT IMPLEMENTED YET)", type=str)
+    preprocessed_input_group.add_argument("--structures", "-s", dest="structures",
+                                          help="file with Nerpa-preprocessed NRP structures", type=str)
     preprocessed_input_group.add_argument("--configs_dir", help="custom directory with adjusted Nerpa configs", action="store", type=str)
 
     # parser.add_argument("--insertion", help="insertion score [default=-2.8]", default=-2.8, action="store")
     # parser.add_argument("--deletion", help="deletion score [default=-5]", default=-5, action="store")
+    parser.add_argument("--process-hybrids", dest="process_hybrids", action="store_true", default=False,
+                        help="process NRP-PK hybrid monomers (requires use of rBAN)")
     parser.add_argument("--threads", default=1, type=int, help="number of threads for running Nerpa", action="store")
     parser.add_argument("--output_dir", "-o", help="output dir [default: nerpa_results/results_<datetime>]",
                         type=str, default=None)
@@ -81,10 +86,17 @@ def validate(expr, msg=''):
 def validate_arguments(args, parser, log):
     try:
         if not (args.predictions or args.antismash or args.antismash_out):
-            raise ValidationError(f'one of the arguments --predictions --antismash/-a --antismash_output_list is required')
+            raise ValidationError(f'one of the arguments --predictions --antismash/-a --antismash_output_list '
+                                  f'is required')
         if args.predictions and (args.antismash or args.antismash_out):
-            raise ValidationError(f'argument --predictions: not allowed with argument --antismash/-a or --antismash_output_list')
-
+            raise ValidationError(f'argument --predictions: not allowed with argument --antismash/-a '
+                                  f'or --antismash_output_list')
+        if not (args.structures or args.smiles or args.smiles_tsv or args.rban_output):
+            raise ValidationError(f'one of the arguments --rban-json --smiles-tsv --smiles --structures/-s'
+                                  f'is required')
+        if args.structures and (args.smiles or args.smiles_tsv or args.rban_output):
+            raise ValidationError('argument --structures/-s: not allowed with argument --rban-json or --smiles '
+                                  'or --smiles-tsv')
         if args.smiles_tsv:
             try:
                 with open(args.smiles_tsv, newline='') as f_in:
@@ -109,27 +121,19 @@ def validate_arguments(args, parser, log):
         log.error(error_msg, to_stderr=True)
 
 
-def gen_graphs_from_smiles_tsv(args, main_out_dir,
-                               path_to_monomers_tsv, path_to_graphs, path_to_rban_jar, path_to_monomers,
-                               log):
+def run_rban_on_smiles(args, main_out_dir, path_to_rban_jar, path_to_monomers_db, log):
     path_to_rban_input = os.path.join(main_out_dir, 'rban.input.json')
     if args.smiles_tsv:
         handle_rban.generate_rban_input_from_smiles_tsv(
             args.smiles_tsv, path_to_rban_input, sep=args.sep, id_col_name=args.col_id, smi_col_name=args.col_smiles)
     else:
-        handle_rban.generate_rban_input_from_smiles_string(args.smiles, path_to_rban_input)
+        handle_rban.generate_rban_input_from_smiles_strings(args.smiles, path_to_rban_input)
 
     path_to_rban_output = os.path.join(main_out_dir, 'rban.output.json')
     log.info('\n======= Structures preprocessing with rBAN')
-    command = ['java', '-jar', path_to_rban_jar,
-               '-monomersDB', path_to_monomers,
-               '-inputFile', path_to_rban_input,
-               '-outputFolder', main_out_dir + '/',  # rBAN specifics
-               '-outputFileName', os.path.basename(path_to_rban_output)]
-    nerpa_utils.sys_call(command, log)
-
-    handle_rban.generate_graphs_from_rban_output(path_to_rban_output, path_to_monomers_tsv, path_to_graphs,
-                                                 main_out_dir, path_to_rban_jar, log)
+    handle_rban.run_rban(path_to_rban_jar, path_to_rban_input, path_to_rban_output, path_to_monomers_db, main_out_dir, log)
+    log.info("\n======= Done with Structures preprocessing with rBAN")
+    return path_to_rban_output
 
 
 def copy_prediction_list(args, main_out_dir):
@@ -240,14 +244,20 @@ def run(args, log):
 
     path_to_graphs = os.path.join(output_dir, 'path_to_graphs')
     local_monomers_cfg = os.path.join(current_configs_dir, "monomers.tsv")
-    if args.graphs:
-        shutil.copyfile(args.graphs, path_to_graphs)
+    path_to_rban = os.path.join(nerpa_init.external_tools_dir, 'rBAN', 'rBAN-1.0.jar')
+    path_to_monomers_db = os.path.join(nerpa_init.external_tools_dir, 'rBAN', 'nrproMonomers_nerpa.json')
+    if args.structures:
+        shutil.copyfile(args.structures, path_to_graphs)
     else:
-        path_to_rban = os.path.join(nerpa_init.external_tools_dir, 'rBAN', 'rBAN-1.0.jar')
-        path_to_monomers = os.path.join(nerpa_init.external_tools_dir, 'rBAN', 'nrproMonomers_nerpa.json')
-        gen_graphs_from_smiles_tsv(args, output_dir,
-                                   local_monomers_cfg, path_to_graphs, path_to_rban, path_to_monomers,
-                                   log)
+        if args.rban_output:
+            path_rban_output = args.rban_output
+        else:
+            path_rban_output = run_rban_on_smiles(args, output_dir, path_to_rban, path_to_monomers_db, log)
+
+        handle_rban.generate_info_from_rban_output(
+            path_rban_output, local_monomers_cfg, path_to_graphs, output_dir, path_to_rban, path_to_monomers_db, log,
+            process_hybrids=args.process_hybrids
+        )
 
     details_mol_dir = os.path.join(output_dir, 'details_mols')
     if not os.path.exists(details_mol_dir):

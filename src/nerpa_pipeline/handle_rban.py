@@ -139,7 +139,8 @@ def process_single_record(log, rban_record, recognized_monomers, backbone_bond_t
         for i, d in chirality.items():
             G.nodes[i]['isD'] = d
     except Exception as e:
-        log.warning(f'Unable to get isomeric information for {rban_record["id"]}')
+        log.warning(f'Structure "{rban_record["id"]}": unexpected error while determining stereoisomeric configuration '
+                    f'of monomers. Stereoisomeric configuration will be omitted.')
 
     for i, name in hybrid_monomers_dict.items():
         G.nodes[i]['name'] = name
@@ -148,7 +149,8 @@ def process_single_record(log, rban_record, recognized_monomers, backbone_bond_t
     try:
         cycles, paths, _ = putative_backbones(G, min_nodes=2)
     except Exception as e:
-        log.warning(f'Unable to linearize {rban_record["id"]}')
+        log.warning(f'Structure "{rban_record["id"]}": unable to determine backbone sequence. '
+                    f'Skipping "{rban_record["id"]}".')
         return []
 
     def gen_nerpa_input(path, cyclic=False):
@@ -196,8 +198,7 @@ def process_single_record(log, rban_record, recognized_monomers, backbone_bond_t
     return structures
 
 
-def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, log):
-
+def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, path_to_monomers_db, log):
     # check all unrecognized monomers for PK involvement
     new_monomers = []
     with open(path_to_rban_output) as f_in:
@@ -211,11 +212,19 @@ def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, log):
                         new_id = f'{struct_id}_{monomer_id}'
                         new_monomers.append((aa_smi, new_id))
                     except handle_monomers.PKError:
-                        pass
+                        pass # it's okay
+                    except:
+                        log.warn(f'\nStructure "{struct_id}": unexpected error while resolving NRP-PK hybrid monomer '
+                                 f'candidate. Skipping.')
+
+    if not new_monomers:
+        return defaultdict(dict)
+
+    log.info('\n=== Resolving NRP-PK hybrid monomers candidates')
     new_rban_input = os.path.join(main_out_dir, 'rban-putative-hybrids.input.json')
     generate_rban_input_from_list(new_monomers, new_rban_input)
     new_rban_output = os.path.join(main_out_dir, 'rban-putative-hybrids.output.json')
-    run_rban(path_to_rban, new_rban_input, new_rban_output, main_out_dir, log)
+    run_rban(path_to_rban, new_rban_input, new_rban_output, path_to_monomers_db, main_out_dir, log)
 
     hybrid_monomers_dict = defaultdict(dict)
     new_monomers_processed = json.loads(open(new_rban_output).read())
@@ -229,11 +238,15 @@ def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, log):
     return hybrid_monomers_dict
 
 
-def generate_graphs_from_rban_output(path_to_rban_output, path_to_monomers_tsv, path_to_graphs,
-                                     main_out_dir, path_to_rban, log):
+def generate_info_from_rban_output(path_to_rban_output, path_to_monomers_tsv, path_to_graphs,
+                                     main_out_dir, path_to_rban, path_to_monomers_db, log, process_hybrids=False):
+    log.info('\n======= Processing rBAN output')
+    log.info(f'results will be in {path_to_graphs}', indent=1)
     recognized_monomers = [x.split()[0] for x in open(path_to_monomers_tsv)]
     recognized_monomers = set(recognized_monomers[1:])
-    hybrid_monomers_dict = rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, log)
+    hybrid_monomers_dict = defaultdict(dict)
+    if process_hybrids:
+        hybrid_monomers_dict = rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, path_to_monomers_db, log)
 
     with open(path_to_graphs, 'w') as f_out:
         with open(path_to_rban_output) as f_in:
@@ -251,9 +264,9 @@ def generate_graphs_from_rban_output(path_to_rban_output, path_to_monomers_tsv, 
                         f_out.write(f'{i} {gr} {pt_str};{rban_graph_edges_str}\n')
                 except NumNodesError as e:
                     log.warning(e)
+    log.info('\n======= Done with Processing rBAN output')
 
-
-def generate_rban_input_from_smiles_string(smiles, path_to_rban_input):
+def generate_rban_input_from_smiles_strings(smiles, path_to_rban_input):
     with open(path_to_rban_input, 'w') as f:
         json.dump([{'id': i, 'smiles': smi.strip()} for i, smi in enumerate(smiles)], f, indent=2)
 
@@ -283,16 +296,16 @@ def generate_rban_input_from_list(lst, path_to_rban_input):
         json.dump(dicts, f, indent=2)
 
 
-def run_rban(path_to_rban, path_to_rban_input, path_to_rban_output, main_out_dir, log):
+def run_rban(path_to_rban_jar, path_to_rban_input, path_to_rban_output, path_to_monomers, main_out_dir, log):
     """
-    :param path_to_rban:
+    :param path_to_rban_jar:
     :param path_to_rban_input:
     :param path_to_rban_output:
     :param main_out_dir:
     :return:
     """
-    command = ['java', '-jar', path_to_rban,
-               # '-monomersDB', '',
+    command = ['java', '-jar', path_to_rban_jar,
+               '-monomersDB', path_to_monomers,
                '-inputFile', path_to_rban_input,
                '-outputFolder', main_out_dir + '/',  # rBAN specifics
                '-outputFileName', os.path.basename(path_to_rban_output)]
