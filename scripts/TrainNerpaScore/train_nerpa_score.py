@@ -112,11 +112,103 @@ def getMonomersLogP(args, mapMnName, mnList):
     df1.to_csv(opath, sep="\t", index=False)
 
 
+def getInsertion(args):
+    df = pd.read_csv(args.details, sep=",")
+    cntIns = 0
+    cntNotIns = 0
+    for i in range(len(df)):
+        preds = df["PRED_TOP5"].iloc[i]
+        if len(str(preds)) > 3:
+            aar = str(df["rBan AA"].iloc[i]).split("+")[0]
+            if aar == "-":
+                cntIns += 1
+                continue
+
+            if len(aar) > 1:
+                cntNotIns += 1
+
+    print(cntIns, cntNotIns)
+    logP = math.log(cntIns/(cntIns + cntNotIns))
+
+    with open(os.path.join(args.output, "prob_gen.cfg"), "w") as fw:
+        fw.write("insertion " + str(logP) + "\n")
+
+
+def getDeletion(args):
+    df = pd.read_csv(args.details, sep=",")
+    cntDel = 0
+    cntNotDel = 0
+    for i in range(len(df)):
+        preds = df["CONTIG"].iloc[i]
+        if len(str(preds)) > 1:
+            aar = str(df["rBan AA"].iloc[i]).split("+")[0]
+            if len(aar) > 1:
+                cntNotDel += 1
+        if preds == "-":
+            aar = str(df["rBan AA"].iloc[i]).split("+")[0]
+            if len(aar) > 1:
+                cntDel += 1
+
+
+    print(cntDel, cntNotDel)
+    logP = math.log(cntDel/(cntDel + cntNotDel))
+
+    with open(os.path.join(args.output, "prob_gen.cfg"), "a") as fw:
+        fw.write("deletion " + str(logP) + "\n")
+
+def getProbGen_In_correct(args):
+    df = pd.read_csv(args.details, sep=",")
+    cntScore = {100: 0, 90: 0, 80: 0, 70: 0, 60: 0}
+    sumScore = {100: 0, 90: 0, 80: 0, 70: 0, 60: 0}
+    for i in range(len(df)):
+        preds = df["PRED_TOP5"].iloc[i]
+        if len(str(preds)) > 3:
+            preds = preds.split(";")[0]
+            aap = preds.split("(")[0]
+            preds = max(60, int(float(preds.split("(")[-1].split(")")[0])))
+
+            aar = str(df["rBan AA"].iloc[i]).split("+")[0]
+            if len(aar) < 2:
+                continue
+
+            sumScore[preds] += 1
+            if aap != aar:
+                cntScore[preds] += 1
+
+    keys = [100, 90, 80, 70, 60]
+    logP = [str(math.log(cntScore[k]/sumScore[k])) for k in keys]
+    logPCor = [str(math.log(1 - cntScore[k]/sumScore[k])) for k in keys]
+    with open(os.path.join(args.output, "prob_gen.cfg"), "a") as fw:
+        fw.write("ProbGenCorrect " + " ".join(logPCor) + "\n")
+        fw.write("ProbGenIncorrect " + " ".join(logP) + "\n")
+
+
+def getProbGetScore(args):
+    df = pd.read_csv(args.details, sep=",")
+    cntScore = {100: 0, 90: 0, 80: 0, 70: 0, 60: 0}
+    for i in range(len(df)):
+        preds = df["PRED_TOP5"].iloc[i]
+        if len(str(preds)) > 3:
+            preds = preds.split(";")[0]
+            preds = max(60, int(float(preds.split("(")[-1].split(")")[0])))
+            cntScore[preds] += 1
+
+    sumScore = sum([x for x in cntScore.values()])
+    keys = [100, 90, 80, 70, 60]
+    logP = [str(math.log(cntScore[k]/sumScore)) for k in keys]
+    with open(os.path.join(args.output, "prob_gen.cfg"), "a") as fw:
+        fw.write("ProbGetScore " + " ".join(logP))
+
+
 def main():
     args = parse_args()
     get_modifications_csv(args)
     mapMnName, mnList = getMnIds(args)
     getMonomersLogP(args, mapMnName, mnList)
+    getInsertion(args)
+    getDeletion(args)
+    getProbGen_In_correct(args)
+    getProbGetScore(args)
 
 
 if __name__ == "__main__":
