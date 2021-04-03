@@ -33,7 +33,7 @@ def build_nx_graph(rban_record, backbone_bonds, recognized_monomers, cut_lipids=
         idx = monomer['monomer']['index']
         name =  monomer['monomer']['monomer']['monomer']
         attr = {
-            'name': name,
+            'name': name.replace('C10:0-NH2(2)-Ep(9)-oxo(8)', 'Aeo'),
             'isIdentified': name in recognized_monomers
             # 'isIdentified': monomer['monomer']['monomer']['isIdentified']
         }
@@ -305,8 +305,9 @@ def run_rban(path_to_rban_jar, path_to_rban_input, path_to_rban_output, path_to_
     :return:
     """
     command = ['java', '-jar', path_to_rban_jar,
-               '-monomersDB', path_to_monomers,
                '-inputFile', path_to_rban_input,
                '-outputFolder', main_out_dir + '/',  # rBAN specifics
                '-outputFileName', os.path.basename(path_to_rban_output)]
+    if path_to_monomers:
+        command += ['-monomersDB', path_to_monomers]
     nerpa_utils.sys_call(command, log)

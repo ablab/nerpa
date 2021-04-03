@@ -57,6 +57,8 @@ def parse_args(log):
 
     # parser.add_argument("--insertion", help="insertion score [default=-2.8]", default=-2.8, action="store")
     # parser.add_argument("--deletion", help="deletion score [default=-5]", default=-5, action="store")
+    parser.add_argument('--rban-monomers-db', dest='rban_monomers', type=str, default=None,
+                        help='file with custom monomers in rBAN compatible format')
     parser.add_argument("--process-hybrids", dest="process_hybrids", action="store_true", default=False,
                         help="process NRP-PK hybrid monomers (requires use of rBAN)")
     parser.add_argument("--threads", default=1, type=int, help="number of threads for running Nerpa", action="store")
@@ -134,6 +136,29 @@ def run_rban_on_smiles(args, main_out_dir, path_to_rban_jar, path_to_monomers_db
     handle_rban.run_rban(path_to_rban_jar, path_to_rban_input, path_to_rban_output, path_to_monomers_db, main_out_dir, log)
     log.info("\n======= Done with Structures preprocessing with rBAN")
     return path_to_rban_output
+
+
+def create_merged_monomers_db(path_to_rban, path_to_nerpa_monomers, path_to_user_monomers, output_dir):
+    from zipfile import ZipFile
+    import json
+    with ZipFile(path_to_rban) as zf:
+        default_db = json.loads(zf.read('molecules/monomer/nrproMonomers.json'))
+
+    def _append_db(path):
+        if not path:
+            return []
+        start_id = 1 + max(m['id'] for m in default_db)
+        with open(path_to_nerpa_monomers) as f:
+            custom_db = json.loads(f.read())
+        return [{**m, 'id':i} for i, m in enumerate(custom_db, start=start_id)]
+
+    default_db += _append_db(path_to_nerpa_monomers)
+    default_db += _append_db(path_to_user_monomers)
+
+    path_to_merged_db = os.path.join(output_dir, 'rban_monomers_db.json')
+    with open(path_to_merged_db, 'w') as f:
+        f.write(json.dumps(default_db))
+    return path_to_merged_db
 
 
 def copy_prediction_list(args, main_out_dir):
@@ -245,7 +270,8 @@ def run(args, log):
     path_to_graphs = os.path.join(output_dir, 'path_to_graphs')
     local_monomers_cfg = os.path.join(current_configs_dir, "monomers.tsv")
     path_to_rban = os.path.join(nerpa_init.external_tools_dir, 'rBAN', 'rBAN-1.0.jar')
-    path_to_monomers_db = os.path.join(nerpa_init.external_tools_dir, 'rBAN', 'nrproMonomers_nerpa.json')
+    path_to_monomers_db = create_merged_monomers_db(
+        path_to_rban, os.path.join(current_configs_dir, "monomersdb_nerpa.json"), args.rban_monomers, output_dir)
     if args.structures:
         shutil.copyfile(args.structures, path_to_graphs)
     else:

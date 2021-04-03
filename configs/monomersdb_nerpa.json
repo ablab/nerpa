@@ -1,0 +1,600 @@
+[ {
+  "id" : 0,
+  "cid" : "78120397",
+  "monomer" : "bhEnd",
+  "codes" : [ "bhEnd" ],
+  "names" : [ "(3S)-3-Hydroxy-L-enduracididine" ],
+  "smiles" : "C1C([NH+]=C(N1)N)C(C(C(=O)[O-])[NH3+])O",
+  "mwHeavyAtoms" : 175.99703986,
+  "isNew" : false,
+  "isIdentified" : true,
+  "compounds" : null,
+  "compoundsCount" : 0
+}, {
+    "id": 911,
+    "cid": "0",
+    "monomer": "btCl-Leu",
+    "codes": [
+      "btCl-Leu"
+    ],
+    "names": [
+      "beta-(4S)-5,5,5-trichloro-leucine"
+    ],
+    "smiles": "C(C(C(C)C(Cl)(Cl)Cl)N)C(=O)O",
+    "mwHeavyAtoms": 222.89946128,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 912,
+    "cid": "73811698",
+    "monomer": "tCl-Leu",
+    "codes": [
+      "tCl-Leu"
+    ],
+    "names": [
+      "(4S)-5,5,5-trichloro-leucine"
+    ],
+    "smiles": "NC(CC(C)C(Cl)(Cl)Cl)C(=O)O",
+    "mwHeavyAtoms": 222.89946128,
+    "isNew": false,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 913,
+    "cid": "21718867",
+    "monomer": "NAc-Dht",
+    "codes": [
+      "NAc-Dht"
+    ],
+    "names": [
+      "N-acetyl-dehydro-threonine",
+      "N-acetyl-2,3-dehydroaminobutyric acid"
+    ],
+    "smiles": "N(C(C(=O)C)C(=O)O)C(=O)C",
+    "mwHeavyAtoms": 149.98273248,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 914,
+    "cid": "0",
+    "monomer": "NAc-4PPro",
+    "codes": [
+      "NAc-4PPro"
+    ],
+    "names": [
+      "N-acetyl-4-propyl-proline",
+      "N-acetyl-4-Propylpyrrolidine-2-carboxylic acid"
+    ],
+    "smiles": "N1(CC(CCC)CC1C(=O)O)C(=O)C",
+    "mwHeavyAtoms": 181.98781786,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 915,
+    "cid": "0",
+    "monomer": "NFo-Hyv",
+    "codes": [
+      "NFo-Hyv"
+    ],
+    "names": [
+      "N-formyl-4-hydroxy-L-valine"
+    ],
+    "smiles": "N(C(C(CO)C)C(=O)O)C=O",
+    "mwHeavyAtoms": 149.98273248,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 916,
+    "cid": "64146874",
+    "monomer": "NFo-3PAL",
+    "codes": [
+      "NFo-3PAL"
+    ],
+    "names": [
+      "N-formyl-3-(3-pyridyl)-l-alanine"
+    ],
+    "smiles": "c1cc(cnc1)CC(C(=O)O)NC=O",
+    "mwHeavyAtoms": 183.99089186,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 917,
+    "cid": "76085219",
+    "monomer": "NMe-3PAL",
+    "codes": [
+      "NMe-3PAL"
+    ],
+    "names": [
+      "N-methyl-3-(3-pyridyl)-l-alanine"
+    ],
+    "smiles": "c1cc(cnc1)CC(C(=O)O)NC",
+    "mwHeavyAtoms": 167.99597724,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 918,
+    "cid": "622688",
+    "monomer": "Lyserg",
+    "codes": [
+      "Lyserg"
+    ],
+    "names": [
+      "lysergic acid"
+    ],
+    "smiles": "CN1CC(C=C2C1Cc3c[nH]c4cccc2c34)C(=O)O",
+    "mwHeavyAtoms": 251.99597724,
+    "isNew": false,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 919,
+    "cid": "12439044",
+    "monomer": "NMe-Hyv",
+    "codes": [
+      "NMe-Hyv"
+    ],
+    "names": [
+      "N-methyl-4-hydroxy-L-valine"
+    ],
+    "smiles": "N(C(C(CO)C)C(=O)O)C",
+    "mwHeavyAtoms": 133.98781786,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 920,
+    "cid": "76102544",
+    "monomer": "NAc-Hyv",
+    "codes": [
+      "NAc-Hyv"
+    ],
+    "names": [
+      "N-acetyl-4-hydroxy-L-valine"
+    ],
+    "smiles": "N(C(C(CO)C)C(=O)O)C(=O)C",
+    "mwHeavyAtoms": 161.98273248,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 921,
+    "cid": "22121739",
+    "monomer": "NMe-Dht",
+    "codes": [
+      "NMe-Dht"
+    ],
+    "names": [
+      "N-methyl-dehydro-threonine",
+      "N-methyl-2,3-dehydroaminobutyric acid"
+    ],
+    "smiles": "N(C(C(=O)C)C(=O)O)C",
+    "mwHeavyAtoms": 121.98781786,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 922,
+    "cid": "0",
+    "monomer": "NAc-Piz",
+    "codes": [
+      "NAc-Piz"
+    ],
+    "names": [
+      "N-acetyl-piperazic acid"
+    ],
+    "smiles": "C1CC(N(NC1)C(=O)C)C(=O)O",
+    "mwHeavyAtoms": 159.99089186,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 923,
+    "cid": "314100",
+    "monomer": "3PAL",
+    "codes": [
+      "3PAL"
+    ],
+    "names": [
+      "3-(3-pyridyl)-l-alanine"
+    ],
+    "smiles": "c1cc(cnc1)CC(C(=O)O)N",
+    "mwHeavyAtoms": 155.99597724,
+    "isNew": false,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 924,
+    "cid": "757",
+    "monomer": "GlyA",
+    "codes": [
+      "GlyA"
+    ],
+    "names": [
+      "glycolic acid",
+      "2-hydroxyacetic acid"
+    ],
+    "smiles": "C(C(=O)O)O",
+    "mwHeavyAtoms": 71.98474386000001,
+    "isNew": false,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 925,
+    "cid": "57186738",
+    "monomer": "NFo-Dht",
+    "codes": [
+      "NFo-Dht"
+    ],
+    "names": [
+      "N-formyl-dehydro-threonine",
+      "N-formyl-2,3-dehydroaminobutyric acid"
+    ],
+    "smiles": "N(C(C(=O)C)C(=O)O)C=O",
+    "mwHeavyAtoms": 137.98273248,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 926,
+    "cid": "21198456",
+    "monomer": "bHyv",
+    "codes": [
+      "bHyv"
+    ],
+    "names": [
+      "beta-4-hydroxy-L-valine"
+    ],
+    "smiles": "C(C(CO)(C)N)C(=O)O",
+    "mwHeavyAtoms": 121.98781786,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 927,
+    "cid": "49",
+    "monomer": "Oiv",
+    "codes": [
+      "Oiv"
+    ],
+    "names": [
+      "2-oxo-isovaleric-acid",
+      "3-methyl-2-oxobutanoic acid"
+    ],
+    "smiles": "O=C(C(C)C)C(=O)O",
+    "mwHeavyAtoms": 107.98474386000001,
+    "isNew": false,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 928,
+    "cid": "20365722",
+    "monomer": "NMe-4PPro",
+    "codes": [
+      "NMe-4PPro"
+    ],
+    "names": [
+      "N-methyl-4-propyl-proline",
+      "N-methyl-4-Propylpyrrolidine-2-carboxylic acid"
+    ],
+    "smiles": "N1(CC(CCC)CC1C(=O)O)C",
+    "mwHeavyAtoms": 153.99290324,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 929,
+    "cid": "0",
+    "monomer": "NFo-4PPro",
+    "codes": [
+      "NFo-4PPro"
+    ],
+    "names": [
+      "N-formyl-4-propyl-proline",
+      "N-formyl-4-Propylpyrrolidine-2-carboxylic acid"
+    ],
+    "smiles": "N1(CC(CCC)CC1C(=O)O)C=O",
+    "mwHeavyAtoms": 169.98781786,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 930,
+    "cid": "2762538",
+    "monomer": "Piz",
+    "codes": [
+      "Piz"
+    ],
+    "names": [
+      "piperazic acid"
+    ],
+    "smiles": "C1CC(NNC1)C(=O)O",
+    "mwHeavyAtoms": 119.99597724,
+    "isNew": false,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 931,
+    "cid": "17781088",
+    "monomer": "NAc-3PAL",
+    "codes": [
+      "NAc-3PAL"
+    ],
+    "names": [
+      "N-acetyl-3-(3-pyridyl)-l-alanine"
+    ],
+    "smiles": "c1cc(cnc1)CC(C(=O)O)NC(=O)C",
+    "mwHeavyAtoms": 195.99089186,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 932,
+    "cid": "219",
+    "monomer": "Dht",
+    "codes": [
+      "Dht"
+    ],
+    "names": [
+      "dehydro-threonine",
+      "2,3-dehydroaminobutyric acid"
+    ],
+    "smiles": "NC(C(=O)C)C(=O)O",
+    "mwHeavyAtoms": 109.98781786,
+    "isNew": false,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 933,
+    "cid": "338",
+    "monomer": "Sal",
+    "codes": [
+      "Sal"
+    ],
+    "names": [
+      "salicylic acid"
+    ],
+    "smiles": "Oc1ccccc1C(=O)O",
+    "mwHeavyAtoms": 131.98474386,
+    "isNew": false,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 934,
+    "cid": "0",
+    "monomer": "NMe-tCl-Leu",
+    "codes": [
+      "NMe-tCl-Leu"
+    ],
+    "names": [
+      "N-methyl-(4S)-5,5,5-trichloro-leucine"
+    ],
+    "smiles": "N(C(CC(C)C(Cl)(Cl)Cl)C(=O)O)C",
+    "mwHeavyAtoms": 234.89946128,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 935,
+    "cid": "3606547",
+    "monomer": "b3PAL",
+    "codes": [
+      "b3PAL"
+    ],
+    "names": [
+      "beta-3-(3-pyridyl)-l-alanine"
+    ],
+    "smiles": "c1cc(cnc1)C(CC(=O)O)N",
+    "mwHeavyAtoms": 155.99597724,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 936,
+    "cid": "69867",
+    "monomer": "ICA",
+    "codes": [
+      "ICA"
+    ],
+    "names": [
+      "Indole-3-carboxylic acid"
+    ],
+    "smiles": "c1ccc2c(c1)c(c[nH]2)C(=O)O",
+    "mwHeavyAtoms": 153.99290324,
+    "isNew": false,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 937,
+    "cid": "0",
+    "monomer": "NAc-tCl-Leu",
+    "codes": [
+      "NAc-tCl-Leu"
+    ],
+    "names": [
+      "N-acetyl-(4S)-5,5,5-trichloro-leucine"
+    ],
+    "smiles": "N(C(CC(C)C(Cl)(Cl)Cl)C(=O)O)C(=O)C",
+    "mwHeavyAtoms": 262.8943759,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 938,
+    "cid": "0",
+    "monomer": "NFo-Piz",
+    "codes": [
+      "NFo-Piz"
+    ],
+    "names": [
+      "N-formyl-piperazic acid"
+    ],
+    "smiles": "C1CC(N(NC1)C=O)C(=O)O",
+    "mwHeavyAtoms": 147.99089186,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 939,
+    "cid": "865",
+    "monomer": "LDAP",
+    "codes": [
+      "LDAP"
+    ],
+    "names": [
+      "diaminopimelic acid"
+    ],
+    "smiles": "NC(CCCC(N)C(=O)O)C(=O)O",
+    "mwHeavyAtoms": 175.98580648,
+    "isNew": false,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 940,
+    "cid": "15927951",
+    "monomer": "Hyv",
+    "codes": [
+      "Hyv"
+    ],
+    "names": [
+      "4-hydroxy-L-valine"
+    ],
+    "smiles": "NC(C(CO)C)C(=O)O",
+    "mwHeavyAtoms": 121.98781786,
+    "isNew": false,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 941,
+    "cid": "5126",
+    "monomer": "Alaol",
+    "codes": [
+      "Alaol"
+    ],
+    "names": [
+      "alaninol"
+    ],
+    "smiles": "NC(C)CO",
+    "mwHeavyAtoms": 65.99798862,
+    "isNew": false,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 942,
+    "cid": "152627589",
+    "monomer": "NMe-Piz",
+    "codes": [
+      "NMe-Piz"
+    ],
+    "names": [
+      "N-methyl-piperazic acid"
+    ],
+    "smiles": "C1CC(N(NC1)C)C(=O)O",
+    "mwHeavyAtoms": 131.99597724,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 943,
+    "cid": "0",
+    "monomer": "NFo-tCl-Leu",
+    "codes": [
+      "NFo-tCl-Leu"
+    ],
+    "names": [
+      "N-formyl-(4S)-5,5,5-trichloro-leucine"
+    ],
+    "smiles": "N(C(CC(C)C(Cl)(Cl)Cl)C(=O)O)C=O",
+    "mwHeavyAtoms": 250.8943759,
+    "isNew": true,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+  },
+  {
+    "id": 944,
+    "cid": "14311265",
+    "monomer": "4PPro",
+    "codes": [
+      "4PPro"
+    ],
+    "names": [
+      "4-propyl-proline",
+      "4-Propylpyrrolidine-2-carboxylic acid"
+    ],
+    "smiles": "N1CC(CCC)CC1C(=O)O",
+    "mwHeavyAtoms": 141.99290324,
+    "isNew": false,
+    "isIdentified": true,
+    "compounds": null,
+    "compoundsCount": 0
+} ]
