@@ -15,5 +15,4 @@ echo "It tooks $DIFF_TIME seconds" > $RES_DIR/running_time
 SOURCE="$( dirname ${BASH_SOURCE[0]} )"
 
 python3 $SOURCE/test_nerpa.py $RES_DIR $TEST_MIBIG_DATA_PATH
-python3 $SOURCE/test_nerpa_details.py $RES_DIR $TEST_MIBIG_DATA_PATH
-python3 $SOURCE/merge_details_with_base.py $RES_DIR $TEST_MIBIG_DATA_PATH
+python3 $SOURCE/extract_true_align_table.py $RES_DIR $TEST_MIBIG_DATA_PATH
