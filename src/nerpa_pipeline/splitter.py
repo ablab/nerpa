@@ -153,7 +153,7 @@ def generate_all_perm(BGC, orf_ori, orf_pos, orf_domains):
     Perm_BGC = []
     row_perm_BGC = list(itertools.permutations(BGC))
     for bgc in row_perm_BGC:
-        if is_correct(BGC, orf_ori, orf_pos, orf_domains):
+        if is_correct(bgc, orf_ori, orf_pos, orf_domains):
             Perm_BGC.append(bgc)
     return Perm_BGC
 
