@@ -1,0 +1,2 @@
+genome accession	geneclusters
+BGC0000310	BGC0000310_c1

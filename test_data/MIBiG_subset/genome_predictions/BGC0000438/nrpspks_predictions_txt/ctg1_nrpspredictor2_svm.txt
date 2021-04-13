@@ -1,0 +1,23 @@
+#sequence-id<tab>8A-signature<tab>stachelhaus-code<tab>3class-pred<tab>large-class-pred<tab>small-class-pred<tab>single-class-pred<tab>nearest stachelhaus code<tab>NRPS1pred-large-class-pred<tab>NRPS2pred-large-class-pred<tab>outside applicability domain?<tab>coords<tab>pfam-score
+ctg1_orf00002_A1	LATHFDFSVWEGNQIFGGEVNMYGITETTVHVTY	DFWNIGMVHK	hydrophobic-aliphatic	ser,thr,dhpg,hpg	thr	thr	N/A	ser,thr,dhpg,hpg	thr	0	0:0	0.000000e+00
+ctg1_orf00002_A2	LWAAFDVAFQESYMITAGEHNHYGPTESHVVTAL	DVQYIAHVVK	hydrophobic-aliphatic	pro,pip	pro	pro	N/A	pro,pip	pro	0	0:0	0.000000e+00
+ctg1_orf00002_A3	L--SFDASTLDAWMIVGGDLNGYGPTEATTFSAT	DALWIGGTFK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	val	N/A	orn,lys,arg	orn,horn	0	0:0	0.000000e+00
+ctg1_orf00002_A4	L--SFDASTLDAWLIVGGDLNGYGPTEATTFSTT	DALWIGGTFK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	val	N/A	orn,lys,arg	orn,horn	0	0:0	0.000000e+00
+ctg1_orf00002_A5	FWATFDLAVYEANTNVAGECNLYGPSETTTYSSW	DLYNNALTYK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	gly,ala	ala	N/A	gly,ala,val,leu,ile,abu,iva	gly,ala	0	0:0	0.000000e+00
+ctg1_orf00005_A1	FWATFDLAVYEANTNVAGECNLYGPSETTTYSSW	DLYNNALTYK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	gly,ala	ala	N/A	gly,ala,val,leu,ile,abu,iva	gly,ala	0	0:0	0.000000e+00
+ctg1_orf00005_A2	L--SFDASTLDAWMIVGGDLNGYGPTEATTFSAT	DALWIGGTFK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	val	N/A	orn,lys,arg	orn,horn	0	0:0	0.000000e+00
+ctg1_orf00005_A3	L--SFDASTLDAWMIVGGDLNGYGPTEATTFSAT	DALWIGGTFK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	val	N/A	orn,lys,arg	orn,horn	0	0:0	0.000000e+00
+ctg1_orf00005_A4	LATHFDFSVWEGNQIFGGEVNMYGITETTVHVTY	DFWNIGMVHK	hydrophobic-aliphatic	ser,thr,dhpg,hpg	thr	thr	N/A	ser,thr,dhpg,hpg	thr	0	0:0	0.000000e+00
+ctg1_orf00005_A5	FWATFDLAVYEANTNVAGECNLYGPSETTTYSSW	DLYNNALTYK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	gly,ala	ala	N/A	gly,ala,val,leu,ile,abu,iva	gly,ala	0	0:0	0.000000e+00
+ctg1_orf00012_A1	L--SFDASTLDAWMIVGGDLNGYGPTEATTFSTT	DALWIGGTFK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	val,leu,ile,abu,iva	val	N/A	orn,lys,arg	orn,horn	0	0:0	0.000000e+00
+ctg1_orf00012_A2	FWATFDLAVYEANTNVAGECNLYGPSETTTYSSW	DLYNNALTYK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	gly,ala	ala	N/A	gly,ala,val,leu,ile,abu,iva	gly,ala	0	0:0	0.000000e+00
+ctg1_orf00012_A3	FWATFDLAVYEANTNVAGECNLYGPSETTTYSSW	DLYNNALTYK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	gly,ala	ala	N/A	gly,ala,val,leu,ile,abu,iva	gly,ala	0	0:0	0.000000e+00
+ctg1_orf00012_A4	LATHFDFSVWEGNQIFGGEVNMYGITETTVHVTY	DFWNIGMVHK	hydrophobic-aliphatic	ser,thr,dhpg,hpg	thr	thr	N/A	ser,thr,dhpg,hpg	thr	0	0:0	0.000000e+00
+ctg1_orf00012_A5	LATHFDFSVWEGNQIFGGEVNMYGITETTVHVTY	DFWNIGMVHK	hydrophobic-aliphatic	ser,thr,dhpg,hpg	thr	thr	N/A	ser,thr,dhpg,hpg	thr	0	0:0	0.000000e+00
+ctg1_orf00012_A6	RWATFDVSVWELHFLCSGEHNLYGPTEAAIDVTA	DVWHLSLIDK	hydrophobic-aliphatic	ser,thr,dhpg,hpg	ser	ser	N/A	ser,thr,dhpg,hpg	ser	0	0:0	0.000000e+00
+ctg1_orf00012_A7	FWATFDLAVYEANTNVAGECNLYGPSETTTYSSW	DLYNNALTYK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	gly,ala	ala	N/A	gly,ala,val,leu,ile,abu,iva	gly,ala	0	0:0	0.000000e+00
+ctg1_orf00012_A8	LATHFDFSVWEGNQIFGGEVNMYGITETTVHVTY	DFWNIGMVHK	hydrophobic-aliphatic	ser,thr,dhpg,hpg	thr	thr	N/A	ser,thr,dhpg,hpg	thr	0	0:0	0.000000e+00
+ctg1_orf00012_A9	FWATFDLAVYEANTNVAGECNLYGPSETTTYSSW	DLYNNALTYK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	gly,ala	ala	N/A	gly,ala,val,leu,ile,abu,iva	gly,ala	0	0:0	0.000000e+00
+ctg1_orf00012_A10	YDANFDLSVEEPHLNVTGDINTYGPTEATVSCTA	DLEHNTTVSK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	N/A	N/A	N/A	N/A	gly,ala	0	0:0	0.000000e+00
+ctg1_orf00012_A11	YDANFDLSVEEPHLNVTGDINTYGPTEATVSCTA	DLEHNTTVSK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	N/A	N/A	N/A	N/A	gly,ala	0	0:0	0.000000e+00
+ctg1_orf00012_A12	L--SFDASSPEGFSECGGEFNGYGPTEATTCATR	DAPFEGGTCK	hydrophobic-aromatic	phe,trp,phg,tyr,bht	N/A	N/A	N/A	orn,lys,arg	orn,horn	0	0:0	0.000000e+00

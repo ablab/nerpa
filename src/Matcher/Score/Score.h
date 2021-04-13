@@ -24,7 +24,7 @@ namespace matcher {
 
         double probGenAA(const aminoacid::Aminoacid &nrpAA) const;
     public:
-        explicit Score(std::string &config);
+        explicit Score(const std::string &config);
 
         explicit Score(double insertion = -1, double deletion = -1) {
             this->insertion = insertion;

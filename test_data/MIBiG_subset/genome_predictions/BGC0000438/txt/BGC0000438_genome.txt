@@ -1,0 +1,2 @@
+genome accession	geneclusters
+BGC0000438	BGC0000438_c1

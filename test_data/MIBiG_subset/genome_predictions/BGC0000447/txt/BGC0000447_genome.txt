@@ -1,0 +1,2 @@
+genome accession	geneclusters
+BGC0000447	BGC0000447_c1

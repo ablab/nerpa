@@ -9,7 +9,6 @@ import handle_MT
 import handle_E
 import splitter
 import handle_helper
-from logger import log
 
 def gen_prediction_for_one_orfs_part(orf_part, prediction_dict, output_prefix, current_part, predictions_info_list):
     output_str = ""
@@ -62,8 +61,8 @@ def gen_predictions(bgc_orfs_parts, input_file_name, output_prefix, current_part
         current_part = gen_prediction_for_one_orfs_part(orf_part, prediction_dict, output_prefix, current_part, predictions_info_list)
     return current_part
 
-def create_predictions_by_antiSAMSHout(antismashouts, outdir):
-    log.log("Start create predictions by antiSMASH")
+def create_predictions_by_antiSAMSHout(antismashouts, outdir, log):
+    log.info("Start create predictions by antiSMASH")
 
     dir_for_predictions = os.path.join(outdir, "predictions")
     if not os.path.exists(dir_for_predictions):

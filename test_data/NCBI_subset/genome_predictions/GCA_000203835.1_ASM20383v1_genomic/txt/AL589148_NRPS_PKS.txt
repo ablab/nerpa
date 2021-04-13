@@ -1,0 +1,3 @@
+Cluster_ID	NRPSPKS_ID	annotation	aSDomain	score	evalue	domain_type	subtype	domain_start	domain_end	KR activity	KR stereochemistry	NRPSPredictor2	Stachelhaus	Minowa	pkssignature	consensus
+AL589148.1_c29	ctg2_orf00432	PKS/NRPS-like protein	nrpspksdomains_ctg2_orf00432_Xdom01	31.0	5.80E-10	ACP		239363	239525							
+AL589148.1_c29	ctg2_orf00446	PKS/NRPS-like protein	nrpspksdomains_ctg2_orf00446_Xdom01	83.4	8.10E-26	Thioesterase		245510	246218							

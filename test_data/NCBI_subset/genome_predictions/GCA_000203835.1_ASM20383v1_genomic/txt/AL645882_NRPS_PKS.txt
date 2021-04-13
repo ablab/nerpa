@@ -1,0 +1,174 @@
+Cluster_ID	NRPSPKS_ID	annotation	aSDomain	score	evalue	domain_type	subtype	domain_start	domain_end	KR activity	KR stereochemistry	NRPSPredictor2	Stachelhaus	Minowa	pkssignature	consensus
+AL645882.2_c1	ctg1_orf00162	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf00162_KR1	35.9	1.70E-11	PKS_KR		92000	92480	inactive	C2					
+AL645882.2_c1	ctg1_orf00180	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf00180_Xdom01	254.6	1.90E-78	NAD_binding_4		103792	104617							
+AL645882.2_c1	ctg1_orf00184	PKS-like protein	nrpspksdomains_ctg1_orf00184_Xdom01	385.7	7.30E-118	PKS_KS		106723	108082							
+AL645882.2_c1	ctg1_orf00184	PKS-like protein	nrpspksdomains_ctg1_orf00184_AT1	219.2	2.10E-67	PKS_AT		108469	109357					mal	mal	ccmal
+AL645882.2_c1	ctg1_orf00184	PKS-like protein	nrpspksdomains_ctg1_orf00184_KR1	153.0	2.00E-47	PKS_KR		111265	111937	active	?					
+AL645882.2_c1	ctg1_orf00184	PKS-like protein	nrpspksdomains_ctg1_orf00184_Xdom02	25.4	4.00E-08	PKS_DH		112090	112528							
+AL645882.2_c1	ctg1_orf00187	PKS-like protein	nrpspksdomains_ctg1_orf00187_Xdom01	352.1	9.02E-108	PKS_KS		112946	115136							
+AL645882.2_c1	ctg1_orf00187	PKS-like protein	nrpspksdomains_ctg1_orf00187_AT1	91.4	1.70E-28	PKS_AT		115835	116513					mxmal	N/A	pk
+AL645882.2_c2	ctg1_orf00286	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf00286_Xdom01	60.2	4.68E-19	PKS_ER		167503	168445							
+AL645882.2_c2	ctg1_orf00304	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf00304_Xdom01	20.9	2.00E-07	MT	oMT	180578	180668							
+AL645882.2_c2	ctg1_orf00319	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf00319_Xdom01	74.2	2.58E-23	PKS_ER		189205	189841							
+AL645882.2_c3	ctg1_orf00426	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf00426_KR1	34.2	5.60E-11	PKS_KR		246015	246357	inactive	C1					
+AL645882.2_c3	ctg1_orf00431	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf00431_Xdom01	27.8	3.40E-09	PKS_ER		249033	249408							
+AL645882.2_c3	ctg1_orf00446	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf00446_Xdom01	28.4	5.30E-09	Thioesterase		255382	255922							
+AL645882.2_c4	ctg1_orf00834	NRPS	nrpspksdomains_ctg1_orf00834_Xdom07	49.1	1.20E-15	PCP		513997	514207							
+AL645882.2_c4	ctg1_orf00834	NRPS	nrpspksdomains_ctg1_orf00834_A3	310.8	2.90E-95	AMP-binding		514465	515677			orn,lys,arg	orn	orn		orn
+AL645882.2_c4	ctg1_orf00834	NRPS	nrpspksdomains_ctg1_orf00834_Xdom06	262.9	8.30E-81	Condensation	Condensation_DCL	516205	517072							
+AL645882.2_c4	ctg1_orf00834	NRPS	nrpspksdomains_ctg1_orf00834_Xdom05	250.3	7.20E-77	Epimerization		517429	518248							
+AL645882.2_c4	ctg1_orf00834	NRPS	nrpspksdomains_ctg1_orf00834_Xdom04	39.0	1.70E-12	PCP		518293	518488							
+AL645882.2_c4	ctg1_orf00834	NRPS	nrpspksdomains_ctg1_orf00834_A2	371.5	1.00E-113	AMP-binding		518728	519967			thr	thr	thr		thr
+AL645882.2_c4	ctg1_orf00834	NRPS	nrpspksdomains_ctg1_orf00834_Xdom03	271.5	2.00E-83	Condensation	Condensation_DCL	520495	521344							
+AL645882.2_c4	ctg1_orf00834	NRPS	nrpspksdomains_ctg1_orf00834_Xdom02	346.8	4.80E-106	Epimerization		521845	522742							
+AL645882.2_c4	ctg1_orf00834	NRPS	nrpspksdomains_ctg1_orf00834_Xdom01	57.0	3.90E-18	PCP		522775	522979							
+AL645882.2_c4	ctg1_orf00834	NRPS	nrpspksdomains_ctg1_orf00834_A1	356.0	5.40E-109	AMP-binding		523228	524431			orn	orn	orn		orn
+AL645882.2_c6	ctg1_orf02088	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf02088_Xdom01	164.6	7.90E-51	PKS_ER		1270967	1271849							
+AL645882.2_c6	ctg1_orf02127	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf02127_Xdom01	332.3	7.50E-102	Aminotran_3		1293782	1294742							
+AL645882.2_c7	ctg1_orf03244	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf03244_Xdom01	88.7	9.40E-28	Aminotran_5		1997169	1997883							
+AL645882.2_c7	ctg1_orf03247	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf03247_Xdom01	236.4	1.20E-72	Aminotran_3		1999196	2000207							
+AL645882.2_c7	ctg1_orf03252	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf03252_Xdom01	73.5	3.90E-23	Aminotran_5		2002065	2002896							
+AL645882.2_c9	ctg1_orf04904	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf04904_Xdom01	27.0	5.10E-09	Aminotran_5		3036063	3036435							
+AL645882.2_c10	ctg1_orf05731	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf05731_Xdom01	100.9	2.00E-31	Aminotran_1_2		3539378	3540413							
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_Xdom01	337.4	2.00E-103	Condensation	Condensation_Starter	3543355	3544288							
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_A1	414.3	1.10E-126	AMP-binding		3544822	3546055			ser	ser	ser		ser
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_Xdom02	85.1	6.60E-27	PCP		3546610	3546814							
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_Xdom03	371.9	5.10E-114	Condensation	Condensation_LCL	3546856	3547774							
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_A2	411.5	7.40E-126	AMP-binding		3548419	3549697			thr	thr	thr		thr
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_Xdom04	86.9	1.90E-27	PCP		3549940	3550144							
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_Xdom05	379.8	1.90E-116	Condensation	Condensation_LCL	3550186	3551089							
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_A3	364.0	2.00E-111	AMP-binding		3551686	3552886			trp	trp	trp		trp
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_Xdom06	62.6	7.00E-20	PCP		3553135	3553333							
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_Xdom07	436.3	4.10E-133	Epimerization		3553381	3554287							
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_Xdom08	371.7	6.30E-114	Condensation	Condensation_DCL	3554806	3555700							
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_A4	329.7	5.30E-101	AMP-binding		3556243	3557377			asp	asp	asp		asp
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_Xdom09	90.9	1.10E-28	PCP		3557626	3557833							
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_Xdom10	385.1	4.80E-118	Condensation	Condensation_LCL	3557872	3558775							
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_A5	335.3	1.00E-102	AMP-binding		3559363	3560497			asp	asp	asp		asp
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_Xdom11	84.8	8.20E-27	PCP		3560746	3560947							
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_Xdom12	387.4	9.20E-119	Condensation	Condensation_LCL	3560992	3561895							
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_A6	379.2	4.90E-116	AMP-binding		3562477	3563737			hpg	hpg	hpg		hpg
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_Xdom13	74.3	1.60E-23	PCP		3563992	3564193							
+AL645882.2_c10	ctg1_orf05739	NRPS	nrpspksdomains_ctg1_orf05739_Xdom14	370.2	4.10E-113	Epimerization		3564241	3565171							
+AL645882.2_c10	ctg1_orf05742	Glycopeptide NRPS	nrpspksdomains_ctg1_orf05742_Xdom01	390.6	1.10E-119	Condensation	Cglyc	3565755	3566649							
+AL645882.2_c10	ctg1_orf05742	Glycopeptide NRPS	nrpspksdomains_ctg1_orf05742_A1	332.8	6.10E-102	AMP-binding		3567198	3568329			asp	asp	asp		asp
+AL645882.2_c10	ctg1_orf05742	Glycopeptide NRPS	nrpspksdomains_ctg1_orf05742_Xdom02	84.8	8.20E-27	PCP		3568572	3568776							
+AL645882.2_c10	ctg1_orf05742	Glycopeptide NRPS	nrpspksdomains_ctg1_orf05742_Xdom03	402.6	2.20E-123	Condensation	Condensation_LCL	3568818	3569721							
+AL645882.2_c10	ctg1_orf05742	Glycopeptide NRPS	nrpspksdomains_ctg1_orf05742_A2	343.6	3.20E-105	AMP-binding		3570297	3571446			gly	gly	gly		gly
+AL645882.2_c10	ctg1_orf05742	Glycopeptide NRPS	nrpspksdomains_ctg1_orf05742_Xdom04	91.8	5.70E-29	PCP		3571719	3571926							
+AL645882.2_c10	ctg1_orf05742	Glycopeptide NRPS	nrpspksdomains_ctg1_orf05742_Xdom05	399.5	1.90E-122	Condensation	Condensation_LCL	3571965	3572868							
+AL645882.2_c10	ctg1_orf05742	Glycopeptide NRPS	nrpspksdomains_ctg1_orf05742_A3	348.7	9.10E-107	AMP-binding		3573486	3574710			asn	asn	asn		asn
+AL645882.2_c10	ctg1_orf05742	Glycopeptide NRPS	nrpspksdomains_ctg1_orf05742_Xdom06	75.0	9.40E-24	PCP		3574968	3575166							
+AL645882.2_c10	ctg1_orf05742	Glycopeptide NRPS	nrpspksdomains_ctg1_orf05742_Xdom07	422.8	5.10E-129	Epimerization		3575253	3576168							
+AL645882.2_c10	ctg1_orf05746	NRPS	nrpspksdomains_ctg1_orf05746_Xdom01	34.6	2.00E-11	NRPS-COM_Nterm		3576740	3576818							
+AL645882.2_c10	ctg1_orf05746	NRPS	nrpspksdomains_ctg1_orf05746_Xdom02	379.0	3.70E-116	Condensation	Condensation_DCL	3576752	3577640							
+AL645882.2_c10	ctg1_orf05746	NRPS	nrpspksdomains_ctg1_orf05746_A1	340.9	2.00E-104	AMP-binding		3578198	3579428			asp,asn	glu	asn		nrp
+AL645882.2_c10	ctg1_orf05746	NRPS	nrpspksdomains_ctg1_orf05746_Xdom03	85.0	7.10E-27	PCP		3579674	3579878							
+AL645882.2_c10	ctg1_orf05746	NRPS	nrpspksdomains_ctg1_orf05746_Xdom04	391.8	4.20E-120	Condensation	Condensation_LCL	3579920	3580823							
+AL645882.2_c10	ctg1_orf05746	NRPS	nrpspksdomains_ctg1_orf05746_A2	365.1	9.10E-112	AMP-binding		3581420	3582614			trp	trp	trp		trp
+AL645882.2_c10	ctg1_orf05746	NRPS	nrpspksdomains_ctg1_orf05746_Xdom05	93.7	1.40E-29	PCP		3582860	3583064							
+AL645882.2_c10	ctg1_orf05746	NRPS	nrpspksdomains_ctg1_orf05746_Xdom06	130.7	2.80E-40	Thioesterase		3583121	3583841							
+AL645882.2_c10	ctg1_orf05774	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf05774_Xdom01	168.1	8.20E-52	PKS_KS		3600866	3601883							
+AL645882.2_c10	ctg1_orf05775	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf05775_Xdom01	27.6	6.60E-09	ACP		3602152	3602299							
+AL645882.2_c11	ctg1_orf09014	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf09014_Xdom01	128.3	8.40E-40	PKS_ER		5511312	5512209							
+AL645882.2_c11	ctg1_orf09023	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf09023_Xdom01	176.1	2.40E-54	PKS_ER		5515287	5516223							
+AL645882.2_c11	ctg1_orf09026	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf09026_Xdom01	111.8	9.00E-35	PKS_ER		5517033	5517729							
+AL645882.2_c11	ctg1_orf09044	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf09044_KR1	38.5	2.70E-12	PKS_KR		5529342	5529699	inactive	C1					
+AL645882.2_c11	ctg1_orf09046	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf09046_Xdom01	185.3	4.70E-57	PKS_KS		5529941	5531111							
+AL645882.2_c11	ctg1_orf09047	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf09047_Xdom01	95.6	8.00E-30	PKS_KS		5531377	5532292							
+AL645882.2_c11	ctg1_orf09048	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf09048_Xdom01	43.4	7.50E-14	ACP		5532487	5532691							
+AL645882.2_c11	ctg1_orf09051	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf09051_Xdom01	42.6	1.60E-13	Polyketide_cyc	Polyketide_cyc	5532750	5533080							
+AL645882.2_c11	ctg1_orf09056	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf09056_Xdom01	35.1	1.00E-11	MT	oMT	5535873	5536164							
+AL645882.2_c11	ctg1_orf09060	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf09060_KR1	32.3	2.20E-10	PKS_KR		5538278	5538734	inactive	C2					
+AL645882.2_c13	ctg1_orf09449	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf09449_Xdom01	50.5	5.90E-16	Polyketide_cyc	Polyketide_cyc	5786196	5786571							
+AL645882.2_c13	ctg1_orf09450	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf09450_Xdom01	25.8	2.30E-08	ACP		5786620	5786770							
+AL645882.2_c13	ctg1_orf09452	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf09452_Xdom01	86.8	3.90E-27	PKS_KS		5786974	5788030							
+AL645882.2_c13	ctg1_orf09455	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf09455_Xdom01	168.7	5.30E-52	PKS_KS		5788308	5789472							
+AL645882.2_c14	ctg1_orf10335	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf10335_Xdom01	202.7	1.80E-62	Aminotran_3		6339347	6340253							
+AL645882.2_c15	ctg1_orf10474	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf10474_Xdom01	142.8	3.70E-44	PKS_KS		6433922	6435083							
+AL645882.2_c15	ctg1_orf10474	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf10474_Xdom02	281.1	4.10E-86	PKS_KS		6435227	6436595							
+AL645882.2_c15	ctg1_orf10490	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf10490_Xdom01	193.3	1.80E-59	PKS_KS		6442761	6443757							
+AL645882.2_c15	ctg1_orf10492	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf10492_Xdom01	25.5	2.90E-08	ACP		6443999	6444164							
+AL645882.2_c15	ctg1_orf10497	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf10497_Xdom01	189.0	3.50E-58	Aminotran_1_2		6446762	6447785							
+AL645882.2_c15	ctg1_orf10499	NRPS-like protein	nrpspksdomains_ctg1_orf10499_A1	348.6	9.60E-107	AMP-binding		6448042	6449302			ala	cys	cys		cys
+AL645882.2_c15	ctg1_orf10502	PKS-like protein	nrpspksdomains_ctg1_orf10502_CAL1	408.3	1.00E-124	CAL_domain		6449728	6451072					NH2		
+AL645882.2_c15	ctg1_orf10502	PKS-like protein	nrpspksdomains_ctg1_orf10502_Xdom01	54.0	3.90E-17	ACP		6451660	6451864							
+AL645882.2_c15	ctg1_orf10502	PKS-like protein	nrpspksdomains_ctg1_orf10502_Xdom02	546.7	9.50E-167	PKS_KS		6451945	6453175							
+AL645882.2_c15	ctg1_orf10502	PKS-like protein	nrpspksdomains_ctg1_orf10502_AT1	316.9	3.60E-97	PKS_AT		6453496	6454408					mal	mal	mal
+AL645882.2_c15	ctg1_orf10502	PKS-like protein	nrpspksdomains_ctg1_orf10502_Xdom03	22.3	3.00E-07	ACP		6454651	6454858							
+AL645882.2_c15	ctg1_orf10502	PKS-like protein	nrpspksdomains_ctg1_orf10502_Xdom04	180.6	1.20E-55	Aminotran_1_2		6455398	6456427							
+AL645882.2_c15	ctg1_orf10504	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf10504_Xdom01	71.3	1.70E-22	NAD_binding_4		6456496	6457027							
+AL645882.2_c15	ctg1_orf10505	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf10505_Xdom01	175.2	6.90E-54	Thioesterase		6457574	6458243							
+AL645882.2_c18	ctg1_orf11102	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf11102_Xdom01	180.0	1.90E-55	Aminotran_1_2		6843201	6844281							
+AL645882.2_c19	ctg1_orf11184	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf11184_KR1	35.4	2.40E-11	PKS_KR		6889668	6890205	inactive	C2					
+AL645882.2_c19	ctg1_orf11205	Type I Modular PKS	nrpspksdomains_ctg1_orf11205_Xdom05	326.7	1.80E-100	TD		6901257	6901977							
+AL645882.2_c19	ctg1_orf11205	Type I Modular PKS	nrpspksdomains_ctg1_orf11205_Xdom04	94.8	7.20E-30	ACP		6902106	6902316							
+AL645882.2_c19	ctg1_orf11205	Type I Modular PKS	nrpspksdomains_ctg1_orf11205_KR1	207.0	5.80E-64	PKS_KR		6902631	6903168	active	B1					
+AL645882.2_c19	ctg1_orf11205	Type I Modular PKS	nrpspksdomains_ctg1_orf11205_Xdom03	183.8	7.90E-57	PKS_DH		6904101	6904587							
+AL645882.2_c19	ctg1_orf11205	Type I Modular PKS	nrpspksdomains_ctg1_orf11205_AT1	336.9	2.80E-103	PKS_AT		6904794	6905661					mal	mal	ccmal
+AL645882.2_c19	ctg1_orf11205	Type I Modular PKS	nrpspksdomains_ctg1_orf11205_Xdom02	570.7	5.10E-174	PKS_KS		6905982	6907251							
+AL645882.2_c19	ctg1_orf11205	Type I Modular PKS	nrpspksdomains_ctg1_orf11205_Xdom01	46.7	4.10E-15	PKS_Docking_Nterm		6907266	6907347							
+AL645882.2_c19	ctg1_orf11206	Type I Modular PKS	nrpspksdomains_ctg1_orf11206_Xdom08	63.5	5.80E-20	PKS_Docking_Cterm		6907421	6907637							
+AL645882.2_c19	ctg1_orf11206	Type I Modular PKS	nrpspksdomains_ctg1_orf11206_Xdom07	89.7	2.80E-28	ACP		6907670	6907886							
+AL645882.2_c19	ctg1_orf11206	Type I Modular PKS	nrpspksdomains_ctg1_orf11206_KR2	195.5	1.90E-60	PKS_KR		6908195	6908732	active	?					
+AL645882.2_c19	ctg1_orf11206	Type I Modular PKS	nrpspksdomains_ctg1_orf11206_Xdom06	132.4	4.80E-41	PKS_DH		6909665	6910076							
+AL645882.2_c19	ctg1_orf11206	Type I Modular PKS	nrpspksdomains_ctg1_orf11206_AT2	336.1	5.20E-103	PKS_AT		6910280	6911147					mal	mal	ccmal
+AL645882.2_c19	ctg1_orf11206	Type I Modular PKS	nrpspksdomains_ctg1_orf11206_Xdom05	607.1	4.70E-185	PKS_KS		6911486	6912761							
+AL645882.2_c19	ctg1_orf11206	Type I Modular PKS	nrpspksdomains_ctg1_orf11206_Xdom04	99.3	2.70E-31	ACP		6912824	6913043							
+AL645882.2_c19	ctg1_orf11206	Type I Modular PKS	nrpspksdomains_ctg1_orf11206_KR1	204.1	4.50E-63	PKS_KR		6913355	6913892	active	B1					
+AL645882.2_c19	ctg1_orf11206	Type I Modular PKS	nrpspksdomains_ctg1_orf11206_Xdom03	186.4	1.30E-57	PKS_DH		6914801	6915320							
+AL645882.2_c19	ctg1_orf11206	Type I Modular PKS	nrpspksdomains_ctg1_orf11206_AT1	332.8	5.30E-102	PKS_AT		6915530	6916409					mal	mal	ccmal
+AL645882.2_c19	ctg1_orf11206	Type I Modular PKS	nrpspksdomains_ctg1_orf11206_Xdom02	595.9	1.10E-181	PKS_KS		6916763	6918038							
+AL645882.2_c19	ctg1_orf11206	Type I Modular PKS	nrpspksdomains_ctg1_orf11206_Xdom01	33.5	5.40E-11	PKS_Docking_Nterm		6918053	6918134							
+AL645882.2_c19	ctg1_orf11210	Type I Modular PKS	nrpspksdomains_ctg1_orf11210_Xdom09	40.2	1.10E-12	PKS_Docking_Cterm		6918294	6918498							
+AL645882.2_c19	ctg1_orf11210	Type I Modular PKS	nrpspksdomains_ctg1_orf11210_Xdom08	101.2	6.90E-32	ACP		6918528	6918744							
+AL645882.2_c19	ctg1_orf11210	Type I Modular PKS	nrpspksdomains_ctg1_orf11210_KR2	205.1	2.10E-63	PKS_KR		6919065	6919602	active	B1					
+AL645882.2_c19	ctg1_orf11210	Type I Modular PKS	nrpspksdomains_ctg1_orf11210_Xdom07	187.4	6.30E-58	PKS_DH		6920511	6921009							
+AL645882.2_c19	ctg1_orf11210	Type I Modular PKS	nrpspksdomains_ctg1_orf11210_AT3	353.3	2.90E-108	PKS_AT		6921204	6922101					mal	mal	ccmal
+AL645882.2_c19	ctg1_orf11210	Type I Modular PKS	nrpspksdomains_ctg1_orf11210_Xdom06	605.4	1.50E-184	PKS_KS		6922419	6923697							
+AL645882.2_c19	ctg1_orf11210	Type I Modular PKS	nrpspksdomains_ctg1_orf11210_Xdom05	89.9	2.30E-28	ACP		6923766	6923979							
+AL645882.2_c19	ctg1_orf11210	Type I Modular PKS	nrpspksdomains_ctg1_orf11210_KR1	195.6	1.70E-60	PKS_KR		6924303	6924840	active	B1					
+AL645882.2_c19	ctg1_orf11210	Type I Modular PKS	nrpspksdomains_ctg1_orf11210_Xdom04	186.6	1.10E-57	PKS_DH		6925710	6926220							
+AL645882.2_c19	ctg1_orf11210	Type I Modular PKS	nrpspksdomains_ctg1_orf11210_AT2	349.5	4.30E-107	PKS_AT		6926421	6927312					mal	mal	ccmal
+AL645882.2_c19	ctg1_orf11210	Type I Modular PKS	nrpspksdomains_ctg1_orf11210_Xdom03	579.2	1.30E-176	PKS_KS		6927633	6928908							
+AL645882.2_c19	ctg1_orf11210	Type I Modular PKS	nrpspksdomains_ctg1_orf11210_Xdom02	66.0	6.80E-21	ACP		6928974	6929190							
+AL645882.2_c19	ctg1_orf11210	Type I Modular PKS	nrpspksdomains_ctg1_orf11210_AT1	355.3	7.10E-109	PKS_AT		6929472	6930315					mal	mal	mal
+AL645882.2_c19	ctg1_orf11210	Type I Modular PKS	nrpspksdomains_ctg1_orf11210_Xdom01	542.5	1.90E-165	PKS_KS		6930633	6931899							
+AL645882.2_c19	ctg1_orf11217	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf11217_Xdom01	211.4	4.70E-65	Aminotran_3		6936232	6937450							
+AL645882.2_c19	ctg1_orf11225	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf11225_KR1	31.3	4.40E-10	PKS_KR		6941985	6942495	inactive	C2					
+AL645882.2_c19	ctg1_orf11231	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf11231_Xdom01	167.1	2.10E-51	Thioesterase		6946667	6947339							
+AL645882.2_c20	ctg1_orf11494	NRPS	nrpspksdomains_ctg1_orf11494_A1	339.2	6.90E-104	AMP-binding		7108347	7109532			val,leu,ile,abu,iva	N/A	ser		nrp
+AL645882.2_c20	ctg1_orf11494	NRPS	nrpspksdomains_ctg1_orf11494_Xdom01	60.8	2.70E-19	PCP		7109790	7109991							
+AL645882.2_c20	ctg1_orf11494	NRPS	nrpspksdomains_ctg1_orf11494_Xdom02	342.7	4.20E-105	Condensation	Condensation_DCL	7110102	7111008							
+AL645882.2_c20	ctg1_orf11494	NRPS	nrpspksdomains_ctg1_orf11494_Xdom03	48.1	2.50E-15	PCP		7111536	7111728							
+AL645882.2_c20	ctg1_orf11496	NRPS-like protein	nrpspksdomains_ctg1_orf11496_Xdom01	170.4	1.60E-52	Heterocyclization		7112114	7113014							
+AL645882.2_c20	ctg1_orf11496	NRPS-like protein	nrpspksdomains_ctg1_orf11496_A1	323.7	3.30E-99	AMP-binding		7113578	7114796			cys	cys	cys		cys
+AL645882.2_c20	ctg1_orf11496	NRPS-like protein	nrpspksdomains_ctg1_orf11496_Xdom02	59.4	7.30E-19	PCP		7115102	7115306							
+AL645882.2_c20	ctg1_orf11496	NRPS-like protein	nrpspksdomains_ctg1_orf11496_Xdom03	52.7	1.90E-16	Thioesterase		7115354	7115738							
+AL645882.2_c21	ctg1_orf11940	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf11940_Xdom01	69.8	5.20E-22	ACPS		7414604	7414796							
+AL645882.2_c22	ctg1_orf12108	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf12108_Xdom01	297.9	2.20E-91	Aminotran_3		7527706	7528672							
+AL645882.2_c23	ctg1_orf12210	PKS-like protein	nrpspksdomains_ctg1_orf12210_Xdom05	50.4	5.00E-16	ACP		7591502	7591715							
+AL645882.2_c23	ctg1_orf12210	PKS-like protein	nrpspksdomains_ctg1_orf12210_Xdom04	50.4	5.00E-16	ACP		7591925	7592138							
+AL645882.2_c23	ctg1_orf12210	PKS-like protein	nrpspksdomains_ctg1_orf12210_KR1	192.8	1.30E-59	PKS_KR		7592573	7593146	active	?					
+AL645882.2_c23	ctg1_orf12210	PKS-like protein	nrpspksdomains_ctg1_orf12210_Xdom03	343.6	2.40E-105	PKS_ER		7593212	7594145							
+AL645882.2_c23	ctg1_orf12210	PKS-like protein	nrpspksdomains_ctg1_orf12210_Xdom02	98.4	1.40E-30	PKS_DH		7595306	7595804							
+AL645882.2_c23	ctg1_orf12210	PKS-like protein	nrpspksdomains_ctg1_orf12210_AT1	345.1	9.40E-106	PKS_AT		7596020	7596911					mmal	mmal	redmmal
+AL645882.2_c23	ctg1_orf12210	PKS-like protein	nrpspksdomains_ctg1_orf12210_Xdom01	575.6	1.70E-175	PKS_KS		7597235	7598510							
+AL645882.2_c23	ctg1_orf12215	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf12215_KR1	36.9	8.50E-12	PKS_KR		7601047	7601533	inactive	C2					
+AL645882.2_c25	ctg1_orf12900	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf12900_Xdom01	70.6	3.60E-22	Polyketide_cyc	Polyketide_cyc	8010999	8011362							
+AL645882.2_c26	ctg1_orf13353	NRPS-like protein	nrpspksdomains_ctg1_orf13353_A1	85.5	6.80E-27	AMP-binding		8282507	8283305			hydrophobic-aliphatic	N/A	glu		nrp
+AL645882.2_c27	ctg1_orf13712	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf13712_Xdom01	124.9	9.50E-39	PKS_ER		8491212	8491863							
+AL645882.2_c27	ctg1_orf13738	NRPS-like protein	nrpspksdomains_ctg1_orf13738_A1	299.5	7.60E-92	AMP-binding		8504682	8505969			dhb	dhb	dhb		dhb
+AL645882.2_c27	ctg1_orf13742	NRPS-like protein	nrpspksdomains_ctg1_orf13742_Xdom01	27.0	1.00E-08	ACP		8506324	8506453							
+AL645882.2_c27	ctg1_orf13742	NRPS-like protein	nrpspksdomains_ctg1_orf13742_Xdom02	326.5	4.40E-100	Heterocyclization		8506597	8507503							
+AL645882.2_c27	ctg1_orf13742	NRPS-like protein	nrpspksdomains_ctg1_orf13742_A1	349.5	5.10E-107	AMP-binding		8508061	8509249			arg	gly	cys		nrp
+AL645882.2_c27	ctg1_orf13742	NRPS-like protein	nrpspksdomains_ctg1_orf13742_Xdom03	54.9	1.90E-17	PCP		8509504	8509702							
+AL645882.2_c27	ctg1_orf13742	NRPS-like protein	nrpspksdomains_ctg1_orf13742_Xdom04	374.2	1.30E-114	Heterocyclization		8509777	8510683							
+AL645882.2_c27	ctg1_orf13742	NRPS-like protein	nrpspksdomains_ctg1_orf13742_A2	331.6	1.40E-101	AMP-binding		8511244	8512438			cys	cys	cys		cys
+AL645882.2_c27	ctg1_orf13742	NRPS-like protein	nrpspksdomains_ctg1_orf13742_Xdom05	47.0	5.40E-15	PCP		8512723	8512927							
+AL645882.2_c27	ctg1_orf13744	NRPS-like protein	nrpspksdomains_ctg1_orf13744_Xdom01	333.1	4.30E-102	Heterocyclization		8513163	8514102							
+AL645882.2_c27	ctg1_orf13744	NRPS-like protein	nrpspksdomains_ctg1_orf13744_A1	361.1	1.60E-110	AMP-binding		8514657	8515866			cys	cys	cys		cys
+AL645882.2_c27	ctg1_orf13744	NRPS-like protein	nrpspksdomains_ctg1_orf13744_Xdom02	113.4	1.60E-35	MT	cMT	8516445	8517027							
+AL645882.2_c27	ctg1_orf13744	NRPS-like protein	nrpspksdomains_ctg1_orf13744_Xdom03	57.2	3.40E-18	PCP		8517288	8517507							
+AL645882.2_c27	ctg1_orf13744	NRPS-like protein	nrpspksdomains_ctg1_orf13744_Xdom04	53.0	1.50E-16	Thioesterase		8517609	8518464							
+AL645882.2_c27	ctg1_orf13750	PKS/NRPS-like protein	nrpspksdomains_ctg1_orf13750_Xdom01	173.1	3.00E-53	Thioesterase		8523011	8523686							

@@ -1,0 +1,58 @@
+Cluster_ID	NRPSPKS_ID	annotation	aSDomain	score	evalue	domain_type	subtype	domain_start	domain_end	KR activity	KR stereochemistry	NRPSPredictor2	Stachelhaus	Minowa	pkssignature	consensus
+BGC0000447.1_c1	ctg1_orf00005	NRPS	nrpspksdomains_ctg1_orf00005_Xdom01	297.2	3.50E-91	Condensation	Condensation_Starter	4818	5712							
+BGC0000447.1_c1	ctg1_orf00005	NRPS	nrpspksdomains_ctg1_orf00005_A1	418.6	5.20E-128	AMP-binding		6255	7479			thr	thr	thr		thr
+BGC0000447.1_c1	ctg1_orf00005	NRPS	nrpspksdomains_ctg1_orf00005_Xdom02	89.5	2.80E-28	PCP		7734	7935							
+BGC0000447.1_c1	ctg1_orf00005	NRPS	nrpspksdomains_ctg1_orf00005_Xdom03	433.4	1.10E-132	Condensation	Condensation_Dual	8076	8958							
+BGC0000447.1_c1	ctg1_orf00005	NRPS	nrpspksdomains_ctg1_orf00005_A2	354.1	2.00E-108	AMP-binding		9525	10758			pro	pro	pro		pro
+BGC0000447.1_c1	ctg1_orf00005	NRPS	nrpspksdomains_ctg1_orf00005_Xdom04	94.9	5.90E-30	PCP		11016	11214							
+BGC0000447.1_c1	ctg1_orf00005	NRPS	nrpspksdomains_ctg1_orf00005_Xdom05	448.7	2.40E-137	Condensation	Condensation_Dual	11358	12243							
+BGC0000447.1_c1	ctg1_orf00005	NRPS	nrpspksdomains_ctg1_orf00005_A3	395.8	4.40E-121	AMP-binding		12789	13989			ser	ser	ser		ser
+BGC0000447.1_c1	ctg1_orf00005	NRPS	nrpspksdomains_ctg1_orf00005_Xdom06	69.0	7.20E-22	PCP		14235	14433							
+BGC0000447.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom01	431.0	5.80E-132	Condensation	Condensation_Dual	14777	15659							
+BGC0000447.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_A1	368.8	6.90E-113	AMP-binding		16205	17384			leu	leu	leu		leu
+BGC0000447.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom02	96.5	1.90E-30	PCP		17630	17831							
+BGC0000447.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom03	440.1	1.00E-134	Condensation	Condensation_Dual	17972	18860							
+BGC0000447.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_A2	363.1	3.60E-111	AMP-binding		19418	20600			val	val	val		val
+BGC0000447.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom04	92.3	3.90E-29	PCP		20849	21050							
+BGC0000447.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom05	449.9	1.00E-137	Condensation	Condensation_Dual	21191	22076							
+BGC0000447.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_A3	414.7	8.10E-127	AMP-binding		22628	23828			ser	ser	ser		ser
+BGC0000447.1_c1	ctg1_orf00006	NRPS	nrpspksdomains_ctg1_orf00006_Xdom06	74.8	1.10E-23	PCP		24074	24272							
+BGC0000447.1_c1	ctg1_orf00007	NRPS	nrpspksdomains_ctg1_orf00007_Xdom01	434.2	6.20E-133	Condensation	Condensation_Dual	24616	25501							
+BGC0000447.1_c1	ctg1_orf00007	NRPS	nrpspksdomains_ctg1_orf00007_A1	358.0	1.40E-109	AMP-binding		26062	27241			leu	leu	leu		leu
+BGC0000447.1_c1	ctg1_orf00007	NRPS	nrpspksdomains_ctg1_orf00007_Xdom02	92.9	2.60E-29	PCP		27475	27676							
+BGC0000447.1_c1	ctg1_orf00007	NRPS	nrpspksdomains_ctg1_orf00007_Xdom03	453.0	1.20E-138	Condensation	Condensation_Dual	27817	28705							
+BGC0000447.1_c1	ctg1_orf00007	NRPS	nrpspksdomains_ctg1_orf00007_A2	361.4	1.30E-110	AMP-binding		29254	30436			val	val	val		val
+BGC0000447.1_c1	ctg1_orf00007	NRPS	nrpspksdomains_ctg1_orf00007_Xdom04	93.6	1.50E-29	PCP		30685	30886							
+BGC0000447.1_c1	ctg1_orf00007	NRPS	nrpspksdomains_ctg1_orf00007_Xdom05	421.2	5.80E-129	Condensation	Condensation_Dual	31027	31915							
+BGC0000447.1_c1	ctg1_orf00007	NRPS	nrpspksdomains_ctg1_orf00007_A3	361.0	1.70E-110	AMP-binding		32467	33649			val	val	val		val
+BGC0000447.1_c1	ctg1_orf00007	NRPS	nrpspksdomains_ctg1_orf00007_Xdom06	93.0	2.40E-29	PCP		33898	34099							
+BGC0000447.1_c1	ctg1_orf00008	NRPS	nrpspksdomains_ctg1_orf00008_Xdom01	93.0	2.40E-29	PCP		34350	34551							
+BGC0000447.1_c1	ctg1_orf00008	NRPS	nrpspksdomains_ctg1_orf00008_Xdom02	459.8	1.00E-140	Condensation	Condensation_Dual	34692	35577							
+BGC0000447.1_c1	ctg1_orf00008	NRPS	nrpspksdomains_ctg1_orf00008_A1	398.7	5.80E-122	AMP-binding		36138	37329			glu,gln	gln	ala		nrp
+BGC0000447.1_c1	ctg1_orf00008	NRPS	nrpspksdomains_ctg1_orf00008_Xdom03	91.0	9.70E-29	PCP		37572	37773							
+BGC0000447.1_c1	ctg1_orf00008	NRPS	nrpspksdomains_ctg1_orf00008_Xdom04	428.1	4.40E-131	Condensation	Condensation_Dual	37914	38799							
+BGC0000447.1_c1	ctg1_orf00008	NRPS	nrpspksdomains_ctg1_orf00008_A2	360.0	3.20E-110	AMP-binding		39360	40539			leu	leu	leu		leu
+BGC0000447.1_c1	ctg1_orf00008	NRPS	nrpspksdomains_ctg1_orf00008_Xdom05	90.5	1.40E-28	PCP		40779	40977							
+BGC0000447.1_c1	ctg1_orf00008	NRPS	nrpspksdomains_ctg1_orf00008_Xdom06	407.4	8.90E-125	Condensation	Condensation_Dual	41121	42000							
+BGC0000447.1_c1	ctg1_orf00008	NRPS	nrpspksdomains_ctg1_orf00008_A3	352.5	6.20E-108	AMP-binding		42552	43734			val	val	val		val
+BGC0000447.1_c1	ctg1_orf00008	NRPS	nrpspksdomains_ctg1_orf00008_Xdom07	76.9	2.50E-24	PCP		43983	44184							
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_Xdom01	452.6	1.50E-138	Condensation	Condensation_Dual	44842	45727							
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_A1	410.2	1.90E-125	AMP-binding		46279	47503			thr	thr	thr		thr
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_Xdom02	88.7	5.00E-28	PCP		47758	47959							
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_Xdom03	443.2	1.20E-135	Condensation	Condensation_Dual	48103	48988							
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_A2	413.8	1.50E-126	AMP-binding		49543	50767			thr	thr	thr		thr
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_Xdom04	92.1	4.40E-29	PCP		51022	51220							
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_Xdom05	439.6	1.40E-134	Condensation	Condensation_Dual	51364	52249							
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_A3	376.2	4.00E-115	AMP-binding		52804	53983			leu	leu	leu		leu
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_Xdom06	89.9	2.10E-28	PCP		54217	54421							
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_Xdom07	379.9	1.80E-116	Condensation	Condensation_LCL	54466	55366							
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_A4	402.5	4.20E-123	AMP-binding		55924	57124			asp,asn,glu,gln,aad	lys	ala		nrp
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_Xdom08	90.4	1.50E-28	PCP		57367	57568							
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_Xdom09	391.4	5.90E-120	Condensation	Condensation_LCL	57616	58498							
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_A5	366.2	4.40E-112	AMP-binding		59062	60277			gly,ala,val,leu,ile,abu,iva	dab	dab		dab
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_Xdom10	90.0	2.00E-28	PCP		60532	60733							
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_Xdom11	392.6	3.00E-120	Condensation	Condensation_Dual	60874	61744							
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_A6	402.3	4.80E-123	AMP-binding		62296	63520			N/A	trp	arg		nrp
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_Xdom12	71.1	1.60E-22	PCP		63772	63970							
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_Xdom13	87.1	6.10E-27	Thioesterase		64036	64801							
+BGC0000447.1_c1	ctg1_orf00010	NRPS	nrpspksdomains_ctg1_orf00010_Xdom14	82.9	1.20E-25	Thioesterase		64909	65665							

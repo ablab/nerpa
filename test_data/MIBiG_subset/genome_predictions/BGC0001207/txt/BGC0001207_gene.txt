@@ -1,0 +1,11 @@
+gene ID	gene start	gene end	gene strand	smCOG	locus_tag	annotation
+ctg1_orf00001	85	850	+		ctg1_orf00001	unannotated orf
+ctg1_orf00002	1561	3106	+		ctg1_orf00002	unannotated orf
+ctg1_orf00004	3112	4333	+		ctg1_orf00004	unannotated orf
+ctg1_orf00006	4319	7445	+		ctg1_orf00006	unannotated orf
+ctg1_orf00012	8135	27245	+		ctg1_orf00012	unannotated orf
+ctg1_orf00019	27249	46377	+		ctg1_orf00019	unannotated orf
+ctg1_orf00020	46451	48293	+		ctg1_orf00020	unannotated orf
+ctg1_orf00021	48324	49377	+		ctg1_orf00021	unannotated orf
+ctg1_orf00022	49443	50619	+		ctg1_orf00022	unannotated orf
+ctg1_orf00024	50634	51732	-		ctg1_orf00024	unannotated orf
