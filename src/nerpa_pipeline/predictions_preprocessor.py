@@ -50,13 +50,13 @@ def gen_predictions(bgc_orfs_parts, input_file_name, output_prefix, current_part
             else:
                 prediction_dict[ctgorf] = line
 
-    orf_ori = handle_helper.get_orf_orientation(base_antismashout_name)
-    for cur_orf in orf_ori.keys():
-        if orf_ori[cur_orf] == '-' and (cur_orf in prediction_dict):
-            prediction_dict[cur_orf] = '\n'.join(prediction_dict[cur_orf].split('\n')[::-1])
-            if prediction_dict[cur_orf][0] == '\n':
-                prediction_dict[cur_orf] = prediction_dict[cur_orf][1:]
-            prediction_dict[cur_orf] += '\n'
+    #orf_ori = handle_helper.get_orf_orientation(base_antismashout_name)
+    # for cur_orf in orf_ori.keys():
+    #     if orf_ori[cur_orf] == '-' and (cur_orf in prediction_dict):
+    #         prediction_dict[cur_orf] = '\n'.join(prediction_dict[cur_orf].split('\n')[::-1])
+    #         if prediction_dict[cur_orf][0] == '\n':
+    #             prediction_dict[cur_orf] = prediction_dict[cur_orf][1:]
+    #         prediction_dict[cur_orf] += '\n'
 
     for orf_part in bgc_orfs_parts:
         current_part = gen_prediction_for_one_orfs_part(orf_part, prediction_dict, output_prefix, current_part, predictions_info_list)
@@ -87,17 +87,17 @@ def create_predictions_by_antiSAMSHout(antismashouts, outdir):
         parts = handle_helper.get_parts(dirname)
         handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
 
-        print("====SPLIT BY DIST:")
+        #print("====SPLIT BY DIST:")
         parts = splitter.split_by_dist(parts, orf_pos)
-        handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
+        #handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
 
-        print("====SPLIT BY SINGLE ORF WITH Starter-TE")
+        #print("====SPLIT BY SINGLE ORF WITH Starter-TE")
         parts = splitter.split_by_one_orf_Starter_TE(parts, orf_ori, orf_domains)
-        handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
+        #handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
 
-        print("====REMOVE SINGLE DOMAINs ORFS")
+        #print("====REMOVE SINGLE DOMAINs ORFS")
         parts = splitter.split_by_single_domain_orf(parts, orf_ori, orf_domains)
-        handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
+        #handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
 
         print("====SPLIT AND REORDER")
         parts = splitter.split_and_reorder(parts, orf_ori, orf_pos, orf_domains)
