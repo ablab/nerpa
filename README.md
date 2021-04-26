@@ -17,7 +17,8 @@ Known NRPs are accepted in the [SMILES format](https://en.wikipedia.org/wiki/Sim
     * [networkx](https://networkx.org/documentation/stable/install.html)
 
 ### Conditionally required
-The following dependencies are required only for specific input data types.
+The following dependencies are required only for specific input data types.   
+
 * java (only if NRPs are provided as SMILES)
 
 ## Installation
@@ -54,7 +55,7 @@ directory.
 ### Minimal working example
 
 ```
-python3 bin/nerpa.py -a test_data/NCBI_subset/genome_predictions/ --graphs test_data/NCBI_subset/structure.info.monomers`
+python3 bin/nerpa.py -a test_data/NCBI_subset/genome_predictions/ --structures test_data/NCBI_subset/structure.info.monomers`
 less nerpa_results/latest/report.csv
 ```
 
@@ -82,8 +83,7 @@ You may also write paths to all antiSMASH outputs in a single file and provide i
 NRP molecules should be specified in the [SMILES format](https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system).
 One option is to provide them as a space-separated list of SMILES strings via option `--smiles`.
 Another way is to write all structures in a multi-column file and specify it via `--smiles-tsv`. 
-Default column separator (`\t`), names of the SMILES column (`SMILES`) and the column with molecule IDs 
-could be adjusted via option `--sep`, `--col_smiles`, and `--col_id`, respectively.
+Default column separator (`\t`), names of the SMILES column (`SMILES`) and the column with molecule IDs (*row index*) could be adjusted via option `--sep`, `--col_smiles`, and `--col_id`, respectively.
 
 
 ### Command line options
@@ -107,6 +107,6 @@ Each file in the directory corresponds to an NRP and contains information on all
 
 ```
 ./nerpa.py -a test_data/MIBiG_subset/genome_predictions --smiles-tsv test_data/MIBiG_subset/structures_info.tsv
-./nerpa.py -a test_data/NCBI_subset/genome_predictions/ --graphs test_data/NCBI_subset/structure.info.monomers
-./nerpa.py -a test_data/NCBI_subset/genome_predictions_v5/ --graphs test_data/NCBI_subset/structure.info.monomers
+./nerpa.py -a test_data/NCBI_subset/genome_predictions/ --structures test_data/NCBI_subset/structure.info.monomers -o NCBI_v3_out_dir
+./nerpa.py -a test_data/NCBI_subset/genome_predictions_v5/ --structures test_data/NCBI_subset/structure.info.monomers -o NCBI_v5_out_dir
 ```
