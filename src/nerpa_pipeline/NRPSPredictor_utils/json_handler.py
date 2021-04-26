@@ -266,13 +266,18 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
                                 NRPS_PKS_type = last_CDS_before_aSDomain['qualifiers']['NRPS_PKS'][-1]
                                 entry.annotation = NRPS_PKS_type.split(' ')[1]
                         entry.aSDomain = feature['qualifiers']['domain_id'][0].replace(locus_tag, entry.NRPSPKS_ID)
+                        if 'AMP-binding.' in entry.aSDomain and naming_style == 'v3':
+                            entry.aSDomain = entry.aSDomain.replace('AMP-binding.', 'A')
                         entry.score = feature['qualifiers']['score'][0]
                         entry.evalue = feature['qualifiers']['evalue'][0]
                         entry.domain_type = feature['qualifiers']['aSDomain'][0]
-                        if entry.domain_type.startswith('Condensation'):  # special case
+                        # processing special cases with subtypes
+                        if entry.domain_type.startswith('Condensation'):
                             entry.subtype = entry.domain_type
                             entry.domain_type = entry.domain_type.split('_')[0]
-                        # TODO: process MT->oMT, MT->nMT, etc domain types-subtypes
+                        elif entry.domain_type.endswith('MT'):
+                            entry.subtype = entry.domain_type
+                            entry.domain_type = 'MT'
                         entry.domain_start = start
                         entry.domain_end = end
                         # TODO: process the rest fields (KR_activity, etc for PK and NRPSPredictor2, etc for AMP-binding)
