@@ -48,12 +48,14 @@ def parse_args(log):
     struct_group.add_argument("--sep", dest="sep",
                         help="column separator in smiles-tsv", type=str, default='\t')
 
-    preprocessed_input_group = parser.add_argument_group('Advanced input', 'Preprocessed BGC predictions and NRP structures in custom Nerpa-compliant formats')
-    preprocessed_input_group.add_argument("--predictions", "-p", nargs=1, dest="predictions",
+    advanced_input_group = parser.add_argument_group('Advanced input', 'Preprocessed BGC predictions and NRP structures in custom Nerpa-compliant formats')
+    advanced_input_group.add_argument("--predictions", "-p", nargs=1, dest="predictions",
                                           help="file with paths to preprocessed BGC prediction files", type=str)
-    preprocessed_input_group.add_argument("--structures", "-s", dest="structures",
+    advanced_input_group.add_argument("--structures", "-s", dest="structures",
                                           help="file with Nerpa-preprocessed NRP structures", type=str)
-    preprocessed_input_group.add_argument("--configs_dir", help="custom directory with adjusted Nerpa configs", action="store", type=str)
+    advanced_input_group.add_argument("--configs_dir", help="custom directory with adjusted Nerpa configs", action="store", type=str)
+    advanced_input_group.add_argument("--force-existing-outdir", dest="output_dir_reuse", action="store_true", default=False,
+                                      help="don't crash if the output dir already exists")
 
     # parser.add_argument("--insertion", help="insertion score [default=-2.8]", default=-2.8, action="store")
     # parser.add_argument("--deletion", help="deletion score [default=-5]", default=-5, action="store")
@@ -227,7 +229,7 @@ def get_antismash_v3_compatible_input_paths(listing_fpath, list_of_paths, output
     if listing_fpath is not None:
         with open(listing_fpath) as f:
             for path in f:
-                lookup_locations.append(path)
+                lookup_locations.append(path.strip())
 
     if list_of_paths:
         lookup_locations += list_of_paths
@@ -247,7 +249,8 @@ def get_antismash_v3_compatible_input_paths(listing_fpath, list_of_paths, output
 
 
 def run(args, log):
-    output_dir = nerpa_utils.set_up_output_dir(output_dirpath=args.output_dir, log=log)
+    output_dir = nerpa_utils.set_up_output_dir(output_dirpath=args.output_dir,
+                                               crash_if_exists=not args.output_dir_reuse, log=log)
     log.set_up_file_handler(output_dir)
     log.start()
 
