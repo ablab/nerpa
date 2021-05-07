@@ -123,9 +123,9 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
     if output_dir is None:
         output_dir = os.path.dirname(main_json_path)
     elif is_root_outdir:
-        output_dir = os.path.join(output_dir, os.path.basename(os.path.dirname(main_json_path)))
+        output_dir = os.path.join(output_dir, os.path.splitext(os.path.basename(main_json_path))[0])
     output_dir = os.path.abspath(output_dir)
-    __create_output_dirs(output_dir)
+    output_dir = __create_output_dirs(output_dir)
     info('Processing JSON %s, saving results to %s' % (main_json_path, output_dir), verbose=verbose)
     with open(main_json_path, 'r') as f:
         data = json.load(f)
@@ -303,8 +303,17 @@ def __get_contig_output_fpath(output_dir, ctg_id, type='codes'):
 
 
 def __create_output_dirs(base_output_dir):
+    # rather rare and trange case, but we should be ready to change the dir name if it is already occupied
+    if os.path.isdir(base_output_dir):
+        i = 2
+        base_dirpath = base_output_dir
+        while os.path.isdir(base_output_dir):
+            base_output_dir = str(base_dirpath) + '__' + str(i)
+            i += 1
+
     for subdir in [PREDICTIONS_TXT_DIR, FEATURES_TXT_DIR]:
         output_dir = os.path.join(base_output_dir, subdir)
         if not os.path.isdir(output_dir):
             os.makedirs(output_dir)
 
+    return base_output_dir
