@@ -15,37 +15,7 @@ FEATURES_TXT_DIR = 'txt'
 
 
 def __get_svm_results(domain_prediction):
-    '''
-    # example1 (domain_prediction):
-   {'method': 'NRPSPredictor2',
-    'angstrom_code': 'FEQSFDASIFEQFIVFGGECNAYGPTEATIMANI',
-    'physicochemical_class': 'hydrophobic-aliphatic',
-    'large_cluster_pred': ['gly', 'ala', 'val', 'leu', 'ile', 'abu', 'iva'],
-    'small_cluster_pred': ['N/A'],
-    'single_amino_pred': 'N/A',
-    'stachelhaus_predictions': ['phe'],
-    'uncertain': False,
-    'stachelhaus_seq': 'DAFfVgAimK',
-    'stachelhaus_match_count': 6}
 
-    # example2 (domain_prediction):
-   {'method': 'NRPSPredictor2',
-    'angstrom_code': 'RWMTFDVSVWEWHFFVSGEHNLYGPTEASVDVTS',
-    'physicochemical_class': 'hydrophobic-aliphatic',
-    'large_cluster_pred': ['ser', 'thr', 'dhpg', 'hpg'],
-    'small_cluster_pred': ['ser'],
-    'single_amino_pred': 'ser',
-    'stachelhaus_predictions': ['ser'],
-    'uncertain': False,
-    'stachelhaus_seq': 'DVWHFSLVDK',
-    'stachelhaus_match_count': 10}
-
-    # example (output):
-#sequence-id<tab>8A-signature<tab>stachelhaus-code<tab>3class-pred<tab>large-class-pred<tab>small-class-pred<tab>single-class-pred<tab>nearest stachelhaus code<tab>NRPS1pred-large-class-pred<tab>NRPS2pred-large-class-pred<tab>outside applicability domain?<tab>coords<tab>pfam-score
-ctg1_orf00225_A1	FEQSFDASIFEQFIVFGGECNAYGPTEATIMANI	DAFFVGAIMK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	N/A	N/A	N/A	gly,ala,val,leu,ile,abu,iva	N/A	0	0:0	0.000000e+00
-ctg1_orf00225_A2	RWMTFDVSVWEWHFFVSGEHNLYGPTEASVDVTS	DVWHFSLVDK	hydrophobic-aliphatic	ser,thr,dhpg,hpg	ser	ser	N/A	ser,thr,dhpg,hpg	ser	0	0:0	0.000000e+00
-
-    '''
     return '\t'.join([domain_prediction['angstrom_code'],
                       domain_prediction['stachelhaus_seq'].upper(),
                       domain_prediction['physicochemical_class'],
@@ -57,6 +27,60 @@ ctg1_orf00225_A2	RWMTFDVSVWEWHFFVSGEHNLYGPTEASVDVTS	DVWHFSLVDK	hydrophobic-aliph
                       '0:0', '0.000000e+00'  # seems that these columns are always the same
                       ])
 
+
+class SVM_entry:
+    '''
+        # example1 (domain_prediction):
+       {'method': 'NRPSPredictor2',
+        'angstrom_code': 'FEQSFDASIFEQFIVFGGECNAYGPTEATIMANI',
+        'physicochemical_class': 'hydrophobic-aliphatic',
+        'large_cluster_pred': ['gly', 'ala', 'val', 'leu', 'ile', 'abu', 'iva'],
+        'small_cluster_pred': ['N/A'],
+        'single_amino_pred': 'N/A',
+        'stachelhaus_predictions': ['phe'],
+        'uncertain': False,
+        'stachelhaus_seq': 'DAFfVgAimK',
+        'stachelhaus_match_count': 6}
+
+        # example2 (domain_prediction):
+       {'method': 'NRPSPredictor2',
+        'angstrom_code': 'RWMTFDVSVWEWHFFVSGEHNLYGPTEASVDVTS',
+        'physicochemical_class': 'hydrophobic-aliphatic',
+        'large_cluster_pred': ['ser', 'thr', 'dhpg', 'hpg'],
+        'small_cluster_pred': ['ser'],
+        'single_amino_pred': 'ser',
+        'stachelhaus_predictions': ['ser'],
+        'uncertain': False,
+        'stachelhaus_seq': 'DVWHFSLVDK',
+        'stachelhaus_match_count': 10}
+
+        # example (output):
+    #sequence-id<tab>8A-signature<tab>stachelhaus-code<tab>3class-pred<tab>large-class-pred<tab>small-class-pred<tab>single-class-pred<tab>nearest stachelhaus code<tab>NRPS1pred-large-class-pred<tab>NRPS2pred-large-class-pred<tab>outside applicability domain?<tab>coords<tab>pfam-score
+    ctg1_orf00225_A1	FEQSFDASIFEQFIVFGGECNAYGPTEATIMANI	DAFFVGAIMK	hydrophobic-aliphatic	gly,ala,val,leu,ile,abu,iva	N/A	N/A	N/A	gly,ala,val,leu,ile,abu,iva	N/A	0	0:0	0.000000e+00
+    ctg1_orf00225_A2	RWMTFDVSVWEWHFFVSGEHNLYGPTEASVDVTS	DVWHFSLVDK	hydrophobic-aliphatic	ser,thr,dhpg,hpg	ser	ser	N/A	ser,thr,dhpg,hpg	ser	0	0:0	0.000000e+00
+
+        '''
+
+    def __init__(self, domain_prediction):
+        self.angstrom_code = domain_prediction['angstrom_code']
+        self.stachelhaus_seq = domain_prediction['stachelhaus_seq']
+        self.physicochemical_class = domain_prediction['physicochemical_class']
+        self.large_cluster_pred = domain_prediction['large_cluster_pred']
+        self.small_cluster_pred = domain_prediction['small_cluster_pred']
+        self.single_amino_pred = domain_prediction['single_amino_pred']
+        self.uncertain = domain_prediction['uncertain']
+
+    def __str__(self):
+        return '\t'.join([self.angstrom_code,
+                          self.stachelhaus_seq.upper(),
+                          self.physicochemical_class,
+                          ','.join(self.large_cluster_pred),
+                          ','.join(self.small_cluster_pred),
+                          self.single_amino_pred,
+                          'N/A', 'N/A', 'N/A',  # can't determine from antiSMASH v.5 output
+                          str(int(bool(self.uncertain))),
+                          '0:0', '0.000000e+00'  # seems that these columns are always the same
+                          ])
 
 class NRPS_PKS_entry:
     def __init__(self):
@@ -111,7 +135,7 @@ def get_main_json_fpath(dirpath):
     return all_jsons_in_dir[0]
 
 
-def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_codes, verbose=False):
+def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_codes, scoring_mode, verbose=False):
     info('Processing ' + path, verbose=verbose)
     path = os.path.abspath(path)
     main_json_path = path
@@ -150,7 +174,7 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
                         parsed_predictions.append({"v5_name": prediction,
                                                    "orf": int(orf_idx), "A": int(a_idx),
                                                    "signature": stachelhaus_seq,
-                                                   "svm": __get_svm_results(domain_predictions[prediction]["NRPSPredictor2"])})
+                                                   "svm": SVM_entry(domain_predictions[prediction]["NRPSPredictor2"])})
 
                         # example:
                         # {'nrpspksdomains_ctg1_5_AMP-binding.1':
@@ -172,9 +196,6 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
                         #             'stachelhaus_match_count': 10}},
 
             if parsed_predictions:
-                # FIXME: remove: for debugging purposes only
-                # if ctg_id == 'ctg12':
-                #     t = 1
                 seq_entry_id = contig_data['id']
                 info('\tprocessing contig (%s): %s' % (seq_entry_id, ctg_id), verbose=verbose)
                 parsed_predictions.sort(key=lambda x: (x["orf"], x["A"]))
@@ -188,9 +209,11 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
                         for prediction in parsed_predictions:
                             entry_id = __get_entry_id(ctg_id, prediction["orf"], prediction["A"]) \
                                 if naming_style == 'v3' else prediction["v5_name"]
-                            main_aa_pred, aa_pred_list = get_prediction_from_signature(prediction["signature"], known_codes)
+                            main_aa_pred, aa_pred_list = get_prediction_from_signature(prediction["signature"],
+                                                                                       known_codes, prediction["svm"],
+                                                                                       scoring_mode)
                             codes_f.write('\t'.join([entry_id, main_aa_pred, aa_pred_list]) + '\n')
-                            svm_f.write('\t'.join([entry_id, prediction["svm"]]) + '\n')
+                            svm_f.write('\t'.join([entry_id, str(prediction["svm"])]) + '\n')
                             info('\t\tprocessed (%s) ORF: %s, A-domain: %s, Stachelhaus code: %s' %
                                  (prediction["v5_name"], prediction["orf"], prediction["A"], prediction["signature"]),
                                  verbose=verbose)

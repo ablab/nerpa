@@ -60,9 +60,9 @@ def main(args):
     )
     parser.add_argument(
         '-m', '--mode',
-        choices=['classic', 'weighted', 'hybrid'],
-        default='classic',
-        help='Scoring mode, default: "%(default)s"'
+        choices=['stachelhaus', 'hybrid'],
+        default='stachelhaus',
+        help='Scoring mode (hybrid takes into account both SVM and Stachelhaus code), default: "%(default)s"'
     )
     parser.add_argument(
         '--verbose',
@@ -99,7 +99,8 @@ def main(args):
     processed_output_dirs = []
     for input_path in args.inputs:
         processed_output_dirs.append(json_handler.handle_single_input(
-            input_path, args.output_dir, is_root_outdir, args.naming_style, known_codes, args.verbose))
+            input_path, args.output_dir, is_root_outdir, args.naming_style,
+            known_codes, scoring_mode=args.mode, verbose=args.verbose))
     return processed_output_dirs
 
 

@@ -1,4 +1,5 @@
 import os
+import itertools
 from collections import Counter, OrderedDict
 from log_utils import error
 
@@ -128,7 +129,7 @@ def __get_aa_fullname(code_metadata, mode='classic'):
         error('Internal bug: not defined mode (%s) for aa fullname pretty print!' % mode, exit=True)
 
 
-def __get_score(signature, code, mode='classic'):
+def __get_stachelhaus_score(signature, code, mode='classic'):
     if mode == 'classic':
         score = 0  # always making +1 for the last 'K' in 10aa code
         num_chars = min(len(signature), len(code))
@@ -145,7 +146,24 @@ def __get_score(signature, code, mode='classic'):
     return float(score)
 
 
-def get_prediction_from_signature(signature, known_codes):
+def __get_svm_score(aa, svm):
+    # TODO -- check the 'aa' is always in proper format, e.g. just 'cys' not '@Lcys+me+h'
+    if aa not in config.SVM_DETECTABLE_AA:
+        return None
+    if aa == svm.single_amino_pred:
+        return config.SVM_LEVEL_TO_SCORE['single_amino_pred']
+    elif aa in svm.small_cluster_pred:
+        return config.SVM_LEVEL_TO_SCORE['small_cluster_pred']
+    elif aa in svm.large_cluster_pred:
+        return config.SVM_LEVEL_TO_SCORE['large_cluster_pred']
+    elif svm.physicochemical_class in config.PHYSICOCHEMICAL_CLASSES and \
+            aa in config.PHYSICOCHEMICAL_CLASSES[svm.physicochemical_class]:
+        return config.SVM_LEVEL_TO_SCORE['physicochemical_class']
+    return config.SVM_LEVEL_TO_SCORE['not_matched']
+
+
+def get_prediction_from_signature(signature, known_codes, svm_prediction, scoring_mode):
+    # TODO: actually signature == svm_prediction['stachelhaus_seq'].upper() -- refactor out the excessive parameter
     scores = dict()
     aa_name_to_sorting_index = dict()  # to define some sorting order for amino acids with exactly the same score
 
@@ -156,9 +174,19 @@ def get_prediction_from_signature(signature, known_codes):
         if aa_name not in aa_name_to_sorting_index:
             aa_name_to_sorting_index[aa_name] = config.KNOWN_AA_SIGNATURES.index(code_metadata['aa'])
         code = code_metadata['code']
-        score = __get_score(signature, code, mode='classic')
+        score = __get_stachelhaus_score(signature, code, mode='classic')
         if aa_name not in scores or score > scores[aa_name]:  # FIXME: should we count how many times the top score per AA was reached?
             scores[aa_name] = score
+
+    if scoring_mode == 'hybrid':
+        for aa_name in scores.keys():
+            stachelhaus_score = scores[aa_name]
+            svm_score = __get_svm_score(aa_name, svm_prediction)
+            if svm_score is not None:
+                hybrid_score = (stachelhaus_score + svm_score) / 2.0
+            else:
+                hybrid_score = stachelhaus_score  # TODO: think of it: shouldn't we penalize the score in this case?
+            scores[aa_name] = hybrid_score
 
     # TODO sort scores appropriately
     sorted_scores = OrderedDict(sorted(scores.items(),
