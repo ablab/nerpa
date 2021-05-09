@@ -72,8 +72,12 @@ def parse_args(log):
 
 
 def check_tsv_ids_duplicates(reader, col_id):
-    ids = [row[col_id] for row in reader]
-    return len(ids) == len(set(ids))
+    from collections import defaultdict
+    counts = defaultdict(int)
+    for row in reader:
+        counts[row[col_id]] += 1
+    duplicates = [(k, v) for k,v in counts.items() if v > 1]
+    return duplicates
 
 
 class ValidationError(Exception):
@@ -108,8 +112,8 @@ def validate_arguments(args, parser, log):
                     if args.col_id:
                         validate(args.col_id in reader.fieldnames,
                             f'Column "{args.col_id}" was specified but does not exist in {args.smiles_tsv}.')
-                        validate(check_tsv_ids_duplicates(reader, args.col_id),
-                            f'Duplicate IDs are found.')
+                        duplicates = check_tsv_ids_duplicates(reader, args.col_id)
+                        validate(len(duplicates) == 0, f'Duplicate IDs are found: {duplicates}')
             except FileNotFoundError:
                 raise ValidationError(f'No such file: "{args.smiles_tsv}".')
             except csv.Error as e:
