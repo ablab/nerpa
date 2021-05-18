@@ -166,6 +166,7 @@ def get_prediction_from_signature(signature, known_codes, svm_prediction, scorin
     # TODO: actually signature == svm_prediction['stachelhaus_seq'].upper() -- refactor out the excessive parameter
     scores = dict()
     aa_name_to_sorting_index = dict()  # to define some sorting order for amino acids with exactly the same score
+    aa_name_to_raw_aa = dict()
 
     for code_metadata in known_codes:
         aa_name = __get_aa_fullname(code_metadata, mode='classic')
@@ -173,6 +174,8 @@ def get_prediction_from_signature(signature, known_codes, svm_prediction, scorin
             continue
         if aa_name not in aa_name_to_sorting_index:
             aa_name_to_sorting_index[aa_name] = config.KNOWN_AA_SIGNATURES.index(code_metadata['aa'])
+        if aa_name not in aa_name_to_raw_aa:
+            aa_name_to_raw_aa[aa_name] = __get_aa_fullname(code_metadata, mode='raw')
         code = code_metadata['code']
         score = __get_stachelhaus_score(signature, code, mode='classic')
         if aa_name not in scores or score > scores[aa_name]:  # FIXME: should we count how many times the top score per AA was reached?
@@ -181,7 +184,7 @@ def get_prediction_from_signature(signature, known_codes, svm_prediction, scorin
     if scoring_mode == 'hybrid':
         for aa_name in scores.keys():
             stachelhaus_score = scores[aa_name]
-            svm_score = __get_svm_score(aa_name, svm_prediction)
+            svm_score = __get_svm_score(aa_name_to_raw_aa[aa_name], svm_prediction)
             if svm_score is not None:
                 hybrid_score = (stachelhaus_score + svm_score) / 2.0
             else:
