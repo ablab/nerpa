@@ -12,6 +12,12 @@ ORF_ID_COLUMN_NAME = 'ORF'
 DOMAIN_TYPE_COLUMN_NAME = 'A-ID'
 PRED_COLUMN_NAME = 'PRED_TOP5'
 
+'''
+TODO: 
+1) process not only A-domains but also other domains in the table (TE)
+2) update also START/END_POS (for each domain), STRAND, D/L, MT -- probably need a special mode in NRPSPredictor_utils 
+'''
+
 
 def main():
     if len(sys.argv) != 4:
@@ -69,8 +75,7 @@ def main():
                                          x[domain_type_column][0] if x[domain_type_column] else '',  # 'A' for A-domains and e.g. 'T' for 'TE'
                                          int(x[domain_type_column][1:]) if len(x[domain_type_column]) > 1 and
                                                                            x[domain_type_column][1:].isdigit() else 0))
-    tmp = [row for row in original_content if row[bgc_id_column] == 'BGC0001214']
-    tmp2 = updated_predictions_content['BGC0001214']
+
     with open(new_full_tsv, 'w') as f:
         csv_writer = csv.writer(f, delimiter=DELIMITER)
         csv_writer.writerow(header)
