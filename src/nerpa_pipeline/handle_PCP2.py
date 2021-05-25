@@ -3,7 +3,7 @@
 import handle_helper
 
 
-def get_double_orfs_and_AA(dirname):
+def get_double_orfs_and_AA(dirname, orfs_order):
     double_orf_list = []
     double_AA_list = []
 
@@ -16,6 +16,13 @@ def get_double_orfs_and_AA(dirname):
         if domains[i]:
             if orf_ori[domains[i][0][0]] == '-':
                 domains[i].reverse()
+
+    order_dom = []
+    for corf in orfs_order:
+        for j in range(len(domains)):
+            if domains[j][0][0] == corf:
+                order_dom.append(domains[j])
+    domains = order_dom
 
     is_AA = lambda dlst : ("PKS" in dlst[2]) or ("AMP-binding" == dlst[2])
     # check dpuble PCP in the end for double orf list

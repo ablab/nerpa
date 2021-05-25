@@ -3,7 +3,7 @@
 import handle_helper
 
 
-def get_D_AA(dirname):
+def get_D_AA(dirname, orfs_order):
     D_AA_list = []
     # ctg_orf, ctg_orf_Aid, domain_type(AMP-binding, PCP, MT)
     domains=handle_helper.get_domains_list(dirname)
@@ -14,6 +14,13 @@ def get_D_AA(dirname):
         if domains[i]:
             if orf_ori[domains[i][0][0]] == '-':
                 domains[i].reverse()
+
+    order_dom = []
+    for corf in orfs_order:
+        for j in range(len(domains)):
+            if domains[j][0][0] == corf:
+                order_dom.append(domains[j])
+    domains = order_dom
 
     is_AA = lambda dlst : ("PKS" in dlst[2]) or ("AMP-binding" == dlst[2])
 

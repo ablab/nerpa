@@ -10,23 +10,11 @@ import handle_E
 import splitter
 import handle_helper
 
-def gen_prediction_for_one_orfs_part(orf_part, prediction_dict, output_prefix, current_part, predictions_info_list):
-    output_str = ""
-    for current_orf in orf_part:
-        if current_orf in prediction_dict:
-            output_str += prediction_dict[current_orf]
+def gen_prediction_dict(orf_part, input_file_name, dirname):
+    double_orf, double_aa = handle_PCP2.get_double_orfs_and_AA(dirname, orf_part)
+    mt_aa = handle_MT.get_MT_AA(dirname, orf_part)
+    d_aa = handle_E.get_D_AA(dirname, orf_part)
 
-    if (output_str != ""):
-        output_file = output_prefix + "_part" + str(current_part)
-        with open(output_file, 'w') as wf:
-            wf.write(output_str)
-        current_part += 1
-        predictions_info_list.append(output_file)
-
-    return current_part
-
-def gen_predictions(bgc_orfs_parts, input_file_name, output_prefix, current_part,
-                    predictions_info_list, double_orf, double_aa, mt_aa, d_aa, base_antismashout_name):
     prediction_dict = {}
     with open(input_file_name, 'r') as rf:
         for line in rf:
@@ -48,17 +36,31 @@ def gen_predictions(bgc_orfs_parts, input_file_name, output_prefix, current_part
                 prediction_dict[ctgorf] += line
             else:
                 prediction_dict[ctgorf] = line
+    return prediction_dict
 
-    #orf_ori = handle_helper.get_orf_orientation(base_antismashout_name)
-    # for cur_orf in orf_ori.keys():
-    #     if orf_ori[cur_orf] == '-' and (cur_orf in prediction_dict):
-    #         prediction_dict[cur_orf] = '\n'.join(prediction_dict[cur_orf].split('\n')[::-1])
-    #         if prediction_dict[cur_orf][0] == '\n':
-    #             prediction_dict[cur_orf] = prediction_dict[cur_orf][1:]
-    #         prediction_dict[cur_orf] += '\n'
 
+def gen_prediction_for_one_orfs_part(orf_part, input_file_name, output_prefix,
+                                     current_part, predictions_info_list, base_antismashout_name):
+    prediction_dict = gen_prediction_dict(orf_part, input_file_name, base_antismashout_name)
+
+    output_str = ""
+    for current_orf in orf_part:
+        if current_orf in prediction_dict:
+            output_str += prediction_dict[current_orf]
+
+    if (output_str != ""):
+        output_file = output_prefix + "_part" + str(current_part)
+        with open(output_file, 'w') as wf:
+            wf.write(output_str)
+        current_part += 1
+        predictions_info_list.append(output_file)
+
+    return current_part
+
+def gen_predictions(bgc_orfs_parts, input_file_name, output_prefix, current_part,
+                    predictions_info_list, base_antismashout_name):
     for orf_part in bgc_orfs_parts:
-        current_part = gen_prediction_for_one_orfs_part(orf_part, prediction_dict, output_prefix, current_part, predictions_info_list)
+        current_part = gen_prediction_for_one_orfs_part(orf_part, input_file_name, output_prefix, current_part, predictions_info_list, base_antismashout_name)
     return current_part
 
 def create_predictions_by_antiSAMSHout(antismashouts, outdir, log):
@@ -73,10 +75,6 @@ def create_predictions_by_antiSAMSHout(antismashouts, outdir, log):
     for dirname in antismashouts:
         if dirname[-1] == '\n':
             dirname = dirname[:-1]
-
-        double_orf, double_aa = handle_PCP2.get_double_orfs_and_AA(dirname)
-        mt_aa = handle_MT.get_MT_AA(dirname)
-        d_aa = handle_E.get_D_AA(dirname)
 
         orf_pos = handle_helper.get_orf_position(dirname)
         orf_ori = handle_helper.get_orf_orientation(dirname)
@@ -102,6 +100,7 @@ def create_predictions_by_antiSAMSHout(antismashouts, outdir, log):
         parts = splitter.split_and_reorder(parts, orf_ori, orf_pos, orf_domains)
         handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
 
+
         nrpspred_dir = os.path.join(dirname, "nrpspks_predictions_txt")
         if os.path.isdir(nrpspred_dir):
             for filename in os.listdir(nrpspred_dir):
@@ -112,7 +111,7 @@ def create_predictions_by_antiSAMSHout(antismashouts, outdir, log):
                     #shutil.copyfile(os.path.join(nrpspred_dir, filename), os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name))
                     gen_predictions(parts, os.path.join(nrpspred_dir, filename),
                                     os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name)[:-4],
-                                    0, predictions_info_list, double_orf, double_aa, mt_aa, d_aa, dirname)
+                                    0, predictions_info_list, dirname)
 
     f = open(predictions_info_file, 'w')
     for line in predictions_info_list:

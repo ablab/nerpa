@@ -25,6 +25,10 @@ def get_domains_list(dirname):
                         row[6] = row[7]
 
                     domains[-1].append([row[1], row[3], row[6]])
+
+    for i in range(len(domains)):
+        for j in range(len(domains[i])):
+            domains[i][j][1] = "".join(domains[i][j][1].split("MP-binding."))
     return domains
 
 
