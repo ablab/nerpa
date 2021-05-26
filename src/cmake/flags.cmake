@@ -38,12 +38,11 @@ else()
 endif()
 
 # Handle OpenMP flags
-if (OPENMP_FOUND)
+if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" OR NOT OPENMP_FOUND)
+  add_compile_options(-Wno-unknown-pragmas)
+else ()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
 endif()
 
 # Setup warnings
 add_compile_options(-Wall -Wextra -Wconversion -Wno-sign-conversion -Wno-long-long -Wwrite-strings)
-if (NOT OPENMP_FOUND)
-    add_compile_options(-Wno-unknown-pragmas)
-endif()
