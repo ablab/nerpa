@@ -1,4 +1,5 @@
 import os
+import shutil
 import datetime
 import shlex
 import subprocess
@@ -6,7 +7,7 @@ import subprocess
 import nerpa_config
 
 
-def set_up_output_dir(output_dirpath, log):
+def set_up_output_dir(output_dirpath, crash_if_exists, log):
     make_latest_symlink = False
 
     if not output_dirpath:  # 'output dir was not specified with -o option'
@@ -24,9 +25,13 @@ def set_up_output_dir(output_dirpath, log):
                 output_dirpath = str(base_dirpath) + '__' + str(i)
                 i += 1
 
-    if os.path.isdir(output_dirpath):
-        log.error(f"output directory ({output_dirpath}) already exists! Exiting..", to_stderr=True)
+    if os.path.isdir(output_dirpath) and crash_if_exists:
+        log.error(f"output directory ({output_dirpath}) already exists! "
+                  f"Rerun with --force-existing-outdir if you still want to use it as the output dir "
+                  f"OR specify another (nonexistent) directory. Exiting now..", to_stderr=True)
     else:
+        if os.path.isdir(output_dirpath):  # TODO: check whether we want to completely remove it always
+            shutil.rmtree(output_dirpath)
         os.makedirs(output_dirpath)
 
     # 'latest' symlink

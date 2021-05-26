@@ -1,3 +1,4 @@
+import itertools
 from collections import OrderedDict
 from os.path import abspath, dirname, realpath, join
 
@@ -60,3 +61,42 @@ CONF_MODS = ['allo', 'D', 'L']
 # b-lys+me+me      # beta-lysine with dimethylation
 
 MIN_SCORE_TO_REPORT = 40.5  # for classic NRPSPredictor2 representation of a single AA in front of the ranked list of AAs
+
+# NRPSPredictor2 SVM classes and clusters (from Roettig et al, 2011)
+PHYSICOCHEMICAL_CLASSES = {'hydrophobic-aliphatic': ['ala', 'gly', 'val', 'leu', 'ile', 'abu', 'iva', 'ser',
+                                                     'thr', 'hpg', 'dhpg', 'cys', 'pro', 'pip'],
+                           'hydrophilic': ['arg', 'asp', 'glu', 'his', 'asn', 'lys', 'gln', 'orn', 'aad'],
+                           'hydrophobic-aromatic': ['phe', 'tyr', 'trp', 'dhb', 'phg', 'bht']}
+
+LARGE_CLUSTERS = {'Hydroxy-benzoic acid derivates': ['dhb', 'sal'],
+                  'Polar, uncharged (aliphatic with -SH)': ['cys'],
+                  'Aliphatic chain or phenyl group with -OH': ['ser', 'thr', 'dhpg', 'hpg'],
+                  'Aliphatic chain with H-bond donor': ['asp', 'asn', 'glu', 'gln', 'aad'],
+                  'Apolar, aliphatic': ['gly', 'ala', 'val', 'leu', 'ile', 'abu', 'iva'],
+                  'Aromatic side chain': ['phe', 'trp', 'phg', 'tyr', 'bht'],
+                  'Cyclic aliphatic chain (polar NH2 group)': ['pro', 'pip'],
+                  'Long positively charged side chain': ['orn', 'lys', 'arg']}
+
+SMALL_CLUSTERS = {'2-amino-adipic acid': ['aad'],
+                  'Dhb, Sal': ['dhb', 'sal'],
+                  'Polar, uncharged (hydroxy-phenyl)': ['dhpg', 'hpg'],
+                  'Cys': ['cys'],
+                  'Serine-specific': ['ser'],
+                  'Threonine-specific': ['thr'],
+                  'Asp-Asn': ['asp', 'asn'],
+                  'Orn and hydroxy-Orn specific': ['orn'],
+                  'Aliphatic, branched hydrophobic': ['val', 'leu', 'ile', 'abu', 'iva'],
+                  'Tiny, hydrophilic, transition to aliphatic': ['gly', 'ala'],
+                  'Pro-specific': ['pro'],
+                  'Polar aromatic ring': ['tyr', 'bht'],
+                  'Glu-Gln': ['glu', 'gln'],
+                  'Arg-specific': ['arg'],
+                  'Unpolar aromatic ring': ['phe', 'trp']}
+
+SVM_LEVEL_TO_SCORE = {'single_amino_pred': 100.0,
+                      'small_cluster_pred': 90.0,
+                      'large_cluster_pred': 80.0,
+                      'physicochemical_class': 50.0,
+                      'not_matched': 0.0}
+
+SVM_DETECTABLE_AA = set(itertools.chain.from_iterable(PHYSICOCHEMICAL_CLASSES.values()))

@@ -52,7 +52,11 @@ namespace aminoacid {
             double log_p = 0;
             ss >> nameId >> log_p;
             std::cout << nameId << " " << log_p << " " << aminoacid::AminoacidInfo::getIdByNameId(nameId) << "\n";
-            LogP[aminoacid::AminoacidInfo::getIdByNameId(nameId)] = log_p;
+            if (nameId == "none") { // TODO: make it nicer
+                DEFAULT_LOG_P = log_p;
+            } else {
+                LogP[aminoacid::AminoacidInfo::getIdByNameId(nameId)] = log_p;
+            }
         }
     }
 

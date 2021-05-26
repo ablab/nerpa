@@ -125,27 +125,27 @@ double getModificationScore(const aminoacid::Aminoacid &nrpAA,
 
 double matcher::Score::probGenAA(const aminoacid::Aminoacid &nrpAA) const {
     return aminoacid::MonomerInfo::getLogP(nrpAA.get_id());
-
-    std::vector<double> l_list;
-    for (int i = 0; i < ProbGenCorrect.size(); ++i) {
-        double cur_score = ProbGetScore[i] + ProbGenCorrect[i] + aminoacid::AminoacidInfo::LogP[nrpAA.get_id()];
-        //std::cout <<"AA" << nrpAA.get_name() << " " << nrpAA.get_id() << " " << aminoacid::AminoacidInfo::LogP[nrpAA.get_id()] << "\n";
-        l_list.push_back(cur_score);
-        cur_score = ProbGetScore[i]  + ProbGenIncorrect[i] + aminoacid::MonomerInfo::getLogP(nrpAA.get_id());
-        //std::cout << "Mono" << nrpAA.get_name() << " " << nrpAA.get_id() << " " <<  aminoacid::MonomerInfo::getLogP(nrpAA.get_id()) << "\n";
-
-        l_list.push_back(cur_score);
-    }
-
-    double exp_val = 0;
-    for (int i = 0; i < l_list.size(); ++i) {
-        exp_val += exp(l_list[i]);
-    }
-
-    //std::cout << exp_val << "\n";
-    //std::cout << log(exp_val) << "\n";
-
-    return log(exp_val);
+//
+//    std::vector<double> l_list;
+//    for (int i = 0; i < ProbGenCorrect.size(); ++i) {
+//        double cur_score = ProbGetScore[i] + ProbGenCorrect[i] + aminoacid::AminoacidInfo::LogP[nrpAA.get_id()];
+//        //std::cout <<"AA" << nrpAA.get_name() << " " << nrpAA.get_id() << " " << aminoacid::AminoacidInfo::LogP[nrpAA.get_id()] << "\n";
+//        l_list.push_back(cur_score);
+//        cur_score = ProbGetScore[i]  + ProbGenIncorrect[i] + aminoacid::MonomerInfo::getLogP(nrpAA.get_id());
+//        //std::cout << "Mono" << nrpAA.get_name() << " " << nrpAA.get_id() << " " <<  aminoacid::MonomerInfo::getLogP(nrpAA.get_id()) << "\n";
+//
+//        l_list.push_back(cur_score);
+//    }
+//
+//    double exp_val = 0;
+//    for (int i = 0; i < l_list.size(); ++i) {
+//        exp_val += exp(l_list[i]);
+//    }
+//
+//    //std::cout << exp_val << "\n";
+//    //std::cout << log(exp_val) << "\n";
+//
+//    return log(exp_val);
 }
 
 
@@ -173,9 +173,12 @@ bool matcher::Score::getScore(const aminoacid::Aminoacid &nrpAA, const aminoacid
         } else {
             double md_score = getModificationScore(nrpAA, prob.modificatins);
             double dl_score = getLDScore(nrpAA, prob.aminoacid);
-            int ind = std::min(int(10 - prob.prob/10), 4);
-            //std::cout << nrpAA.get_name() << " " << ind << " " << Score::ProbGenCorrect[ind] << "\n";
-            score = Score::ProbGenCorrect[ind];
+
+            auto prob_gen_it = Score::ProbGenCorrect.lower_bound(prob.prob);
+            if (prob_gen_it == Score::ProbGenCorrect.end())
+                --prob_gen_it;
+
+            score = prob_gen_it->second;
             score += md_score;
             score += dl_score;
             score -= probGenAA(nrpAA);
@@ -199,8 +202,12 @@ double matcher::Score::Mismatch(const aminoacid::Aminoacid &structure_aa,
         if (!aa_prediction.getAAPrediction().empty()) {
             cur_prob = aa_prediction.getAAPrediction()[0].prob;
         }
-        int ind = std::min(int(10 - cur_prob/10), 4);
-        double score = Score::ProbGenIncorrect[ind] + aminoacid::MonomerInfo::getLogP(structure_aa.get_id());
+
+        auto prob_gen_it = Score::ProbGenIncorrect.lower_bound(cur_prob);
+        if (prob_gen_it == Score::ProbGenIncorrect.end())
+            --prob_gen_it;
+
+        double score = prob_gen_it->second + aminoacid::MonomerInfo::getLogP(structure_aa.get_id());
         score -= probGenAA(structure_aa);
         return (score + md_score + dl_score);
     }
@@ -210,21 +217,31 @@ matcher::Score::Score(const std::string &config) {
     std::ifstream in(config);
     std::string tmp;
     in >> tmp >> insertion >> tmp >> deletion;
+    std::getline(in, tmp);
 
-    auto read_line_to_vec = [&in] (size_t n) -> std::vector<double> {
+    auto read_line_to_vec = [&in] () -> std::vector<double> {
         std::vector<double> res;
         double w;
-        std::string tmp;
-        in >> tmp;
-        for (size_t i = 0; i != n; ++i) {
-            in >> w;
+        std::string tmp, line;
+        std::getline(in, line);
+        std::istringstream iss(line);
+        iss >> tmp;
+        while (iss >> w) {
             res.push_back(w);
         }
         return res;
     };
 
-    size_t n_params = 5;
-    ProbGenCorrect = read_line_to_vec(n_params);
-    ProbGenIncorrect = read_line_to_vec(n_params);
-    ProbGetScore = read_line_to_vec(n_params);
+    std::vector<double> thresholds = read_line_to_vec();
+    std::vector<double> w_correct = read_line_to_vec();
+    std::vector<double> w_incorrect = read_line_to_vec();
+    if ((thresholds.size() != w_correct.size()) || (thresholds.size() != w_incorrect.size())) {
+        throw std::runtime_error("Bad format in prob_gen.cfg");
+    }
+
+    for (size_t i = 0; i != thresholds.size(); ++i) {
+        double key = thresholds[i];
+        ProbGenCorrect[key] = w_correct[i];
+        ProbGenIncorrect[key] = w_incorrect[i];
+    }
 }
