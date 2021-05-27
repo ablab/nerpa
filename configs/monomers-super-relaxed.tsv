@@ -42,7 +42,7 @@ NMe-Cys	cys	MT
 N2Me-Asn	asn	MT
 Fo-OH-Orn	orn	unk
 Met	met	-
-bOH-Cl-Tyr	tyr	unk
+bOH-Cl-Tyr	bht	unk
 3OH-Leu	leu	unk
 Ph-Ser	ser	unk
 bAla	b-ala	-
@@ -149,7 +149,7 @@ NMe-Cl-Trp	trp	MT+unk
 Br-Phe	phe	unk
 NFo-4oxo-Pro	pro	unk
 NOMe-Ac-Val	val	MT+unk
-NMe-bOH-Cl-Tyr	tyr	MT+unk
+NMe-bOH-Cl-Tyr	bht	MT+unk
 NFo-Cl-Hpg	hpg	unk
 NMe-Glu	glu	MT
 bCysA	cysa	unk
@@ -188,7 +188,7 @@ NAc-bOH-Gln	gln	unk
 NMe-Cl-Trp	trp	MT+unk
 NAc-Cl2-Pro	pro	unk
 NMe-N2Me-Asn	asn	MT
-NMe-bOH-Tyr	tyr	MT+unk
+NMe-bOH-Tyr	bht	MT+unk
 NAc-Cl-Hpg	hpg	unk
 NMe-bOMe-Asp	asp	MT
 bbMe-NMe-Trp	trp	MT
@@ -212,7 +212,7 @@ bMe-Asn	asn	MT
 NMe-3Me-Pro	pro	MT
 NAc-3Me-Hty	hty	MT+unk
 NAc-O2-Met	met	unk
-NFo-bOH-Tyr	tyr	unk
+NFo-bOH-Tyr	bht	unk
 NAc-Br-OH-Trp	trp	unk
 NFo-Bmt	bmt	unk
 NMe-Asp	asp	MT
@@ -230,7 +230,7 @@ NMe-4OH-Pro	pro	MT+unk
 NFo-bOH-Br-Phe	phe	unk
 NAc-Tyr	tyr	unk
 bHis	his	unk
-NAc-bOH-Cl-Tyr	tyr	unk
+NAc-bOH-Cl-Tyr	bht	unk
 NAc-OH-His	his	unk
 NAc-3OH-5Me-Pro	pro	MT+unk
 NMe-Dpr	dpr	MT
@@ -316,7 +316,7 @@ NMe-bMe-Asp	asp	MT
 bGlu	glu	unk
 NFo-Phe	phe	unk
 b3Me-Phe	phe	MT
-bbOH-Cl-Tyr	tyr	unk
+bbOH-Cl-Tyr	bht	unk
 NFo-1Me-Trp	trp	MT+unk
 bbOH-Gln	gln	unk
 NMe-5Me-Pro	pro	MT
@@ -415,7 +415,7 @@ NFo-OMe-Trp	trp	MT+unk
 NAc-Hpr	pip	unk
 N1-COOH-bhTrp	trp	unk
 b4Cl-Thr	thr	unk
-NFo-bOH-Cl-Tyr	tyr	unk
+NFo-bOH-Cl-Tyr	bht	unk
 NAc-Hil	ile	unk
 NFo-Iser	ser	unk
 NFo-bOH-Val	val	unk
@@ -444,7 +444,7 @@ NFo-bMe-Asp	asp	MT+unk
 NMe-Ac-OH-Orn	orn	MT+unk
 v-Tyr	tyr	unk
 Ac-Val	val	unk
-NAc-bOH-Tyr	tyr	unk
+NAc-bOH-Tyr	bht	unk
 NFo-Br-Tyr	tyr	unk
 NFo-N2Me-bOH-Asn	asn	MT+unk
 NFo-OH-Asn	asn	unk
@@ -510,7 +510,7 @@ NMe-OMe-Asp	asp	MT
 NFo-5OH-Cap	cap	unk
 Cl2-NMe-Leu	leu	MT+unk
 bAc-OH-Orn	orn	unk
-bbOH-Tyr	tyr	unk
+bbOH-Tyr	bht	unk
 NAc-5OH-Cap	cap	unk
 NMe-3NO2-Tyr	tyr	MT+unk
 NMe-MeO-Glu	glu	MT
