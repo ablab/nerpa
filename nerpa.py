@@ -10,10 +10,11 @@ import shutil
 import nerpa_init
 nerpa_init.init()
 
+
 site.addsitedir(nerpa_init.python_modules_dir)
 
+import predictions_preprocessor
 import nerpa_utils
-import handle_TE
 import handle_rban
 import logger
 
@@ -262,10 +263,9 @@ def run(args, log):
     if args.predictions is not None:
         path_predictions = copy_prediction_list(args, output_dir)
     else:
-        path_predictions = handle_TE.create_predictions_by_antiSMASHout(
-            get_antismash_v3_compatible_input_paths(
+        path_predictions = predictions_preprocessor.create_predictions_by_antiSAMSHout(get_antismash_v3_compatible_input_paths(
                 listing_fpath=args.antismash_out, list_of_paths=args.antismash,
-                output_dir=output_dir, log=log), output_dir)
+                output_dir=output_dir, log=log), output_dir, log)
 
     input_configs_dir = args.configs_dir if args.configs_dir else nerpa_init.configs_dir
     current_configs_dir = os.path.join(output_dir, "configs")

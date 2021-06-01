@@ -9,7 +9,7 @@ matplotlib.use('Agg')
 
 MAX_ELEM=100
 
-def calcFDR(score_iswrong, top_cnt=0):
+def calcFDR(score_iswrong, top_cnt=0, printF=False):
     FDR=[] # (sum wrong)/(sum all)
     scores=[]
     cnt=[]
@@ -31,6 +31,8 @@ def calcFDR(score_iswrong, top_cnt=0):
         cnt.append(cnt_all)
         scores.append(x[0])
         FDR.append(cnt_wrong/cnt_all)
+        if x[1] == 1 and printF:
+            print("FP: ", x)
 
     return cnt, scores, FDR
 
@@ -86,7 +88,7 @@ def showAllFDR(data_path, res_dir, score_iswrong):
     showFDR(cntg, scoresg, FDR, res_dir, "FDR_garlic_")
     showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir)
     
-    cnt, scores, FDR = calcFDR(score_iswrong, 1)
+    cnt, scores, FDR = calcFDR(score_iswrong, 1, True)
     cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong(garlic_report_path), 1)
     
     showFDR(cnt, scores, FDR, res_dir, "FDR_top1_mol_")
