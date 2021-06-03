@@ -27,10 +27,11 @@ def getRank(all_res, BGC, score, for_structure=False):
     return rank
 
 with open(os.path.join(data_path, 'base.csv'), 'r') as f:
-    csv_reader = csv.reader(f, delimiter='\t')
+    csv_reader = csv.reader(f, delimiter=',')
     for row in csv_reader:
         if (row[0] == 'Accession' or row[0] == "Id"):
             continue
+    
         AA_info[row[0]] = [row[2], row[3], 1, 1]
         list_AA.append(row[0])
         
@@ -56,11 +57,12 @@ with open( res_dir + "/mibig_cmp.csv", 'w' ) as fw:
         csv_reader = csv.reader(f, delimiter=',')
         for row in csv_reader:
             row[5] = row[5].split("_")[0]
+            splBGC = "_".join(row[6].split("/")[-1].split('_')[:-4])
             if (row[5].split('/')[-1].split('.')[0] in row[6]):
-                score_iswrong.append((float(row[0]), False, row[5].split('/')[-1], row[6]))
+                score_iswrong.append((float(row[0]), False, row[5].split('/')[-1], splBGC))
                 result_match[row[5].split('/')[-1]] = [row[0], row[3]]
             elif row[0] != 'score':
-                score_iswrong.append((float(row[0]), True, row[5].split('/')[-1], row[6]))
+                score_iswrong.append((float(row[0]), True, row[5].split('/')[-1], splBGC))
 
     for mol_name in list_AA:
         cnt_all += 1
