@@ -7,9 +7,43 @@ import garlic_res_utils
 
 matplotlib.use('Agg')
 
-MAX_ELEM=100
+MAX_ELEM=250
+
+def FilterScore(score_iswrong, top_cnt):
+    bstPred = {x[2]: [] for x in score_iswrong}
+    for x in score_iswrong:
+        bstPred[x[2]].append(x)
+
+    res = []
+    for bgc in bstPred.keys():
+        rank = [0] * len(bstPred[bgc])
+        cnt = 1
+        for i in range(1, len(bstPred[bgc])):
+            if bstPred[bgc][i - 1][0] != bstPred[bgc][i][0]:
+                for j in range(i - cnt, i):
+                    rank[j] = (2*i - cnt)/2
+                cnt = 0
+            cnt += 1
+        
+        for j in range(len(bstPred[bgc]) - cnt, len(bstPred[bgc])):
+            rank[j] = (2*len(bstPred[bgc]) - cnt)/2
+
+        rs = 0
+        for i in range(0, len(bstPred[bgc])):
+            if rank[i] < top_cnt:
+                if bstPred[bgc][i][1] == False:
+                    rs = i
+        if rank[0] < top_cnt:
+            res.append(bstPred[bgc][rs])
+        
+    res.sort(key=lambda x: (-x[0], x[1]))
+    return res  
+             
 
 def calcFDR(score_iswrong, top_cnt=0, printF=False):
+    if (top_cnt > 0):
+        score_iswrong = FilterScore(score_iswrong, top_cnt)
+    
     FDR=[] # (sum wrong)/(sum all)
     scores=[]
     cnt=[]
@@ -80,26 +114,22 @@ def showFDRwithGARLIC(cnt_nerpa, cnt_garlic, FDR_nerpa, FDR_garlic, res_dir, out
 def showAllFDR(data_path, res_dir, score_iswrong):
     garlic_report_path = os.path.join(data_path, "base_line/GARLIC/report.csv")
     
+    print(score_iswrong[:100])
+
     score_iswrong.sort(key=lambda x: (-x[0], x[1]))
     cnt, scores, FDR = calcFDR(score_iswrong)
     cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong(garlic_report_path))
     
-    showFDR(cnt, scores, FDR, res_dir)
-    showFDR(cntg, scoresg, FDR, res_dir, "FDR_garlic_")
     showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir)
     
     cnt, scores, FDR = calcFDR(score_iswrong, 1, True)
     cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong(garlic_report_path), 1)
     
-    showFDR(cnt, scores, FDR, res_dir, "FDR_top1_mol_")
-    showFDR(cntg, scoresg, FDRg, res_dir, "FDR_top1_mol_garlic_")
     showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir, "FDR_top1_mol_")
     
     cnt, scores, FDR = calcFDR(score_iswrong, 3)
     cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong(garlic_report_path), 3)
     
-    showFDR(cnt, scores, FDR, res_dir, "FDR_top3_mol_")
-    showFDR(cntg, scoresg, FDRg, res_dir, "FDR_top3_mol_garlic_")
     showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir, "FDR_top3_mol_")
     
     for i in range(len(score_iswrong)):
@@ -112,13 +142,9 @@ def showAllFDR(data_path, res_dir, score_iswrong):
     cnt, scores, FDR = calcFDR(score_iswrong, 1)
     cntg, scoresg, FDRg = calcFDR(garlic_score, 1)
     
-    showFDR(cnt, scores, FDR, res_dir, "FDR_top1_genome_")
-    showFDR(cntg, scoresg, FDRg, res_dir, "FDR_top1_genome_garlic_")
     showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir, "FDR_top1_genome_")
     
-    cnt, scores, FDR = calcFDR(score_iswrong, 3)
-    cntg, scoresg, FDRg = calcFDR(garlic_score, 3)
+    cnt, scores, FDR = calcFDR(score_iswrong, 10)
+    cntg, scoresg, FDRg = calcFDR(garlic_score, 10)
     
-    showFDR(cnt, scores, FDR, res_dir, "FDR_top3_genome_")
-    showFDR(cntg, scoresg, FDRg, res_dir, "FDR_top3_genome_garlic_")
-    showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir, "FDR_top3_genome_")
+    showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir, "FDR_top10_genome_")
