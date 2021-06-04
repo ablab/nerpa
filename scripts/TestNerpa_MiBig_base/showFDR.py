@@ -33,6 +33,8 @@ def FilterScore(score_iswrong, top_cnt):
             if rank[i] < top_cnt:
                 if bstPred[bgc][i][1] == False:
                     rs = i
+        #print(rank[0])
+        #print(bstPred[bgc])
         if rank[0] < top_cnt:
             res.append(bstPred[bgc][rs])
         
@@ -111,40 +113,40 @@ def showFDRwithGARLIC(cnt_nerpa, cnt_garlic, FDR_nerpa, FDR_garlic, res_dir, out
     plt.clf()
 
 
-def showAllFDR(data_path, res_dir, score_iswrong):
+def showAllFDR(data_path, res_dir, score_iswrong, setAA):
     garlic_report_path = os.path.join(data_path, "base_line/GARLIC/report.csv")
     
     print(score_iswrong[:100])
 
     score_iswrong.sort(key=lambda x: (-x[0], x[1]))
-    cnt, scores, FDR = calcFDR(score_iswrong)
-    cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong(garlic_report_path))
+    #cnt, scores, FDR = calcFDR(score_iswrong)
+    #cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong(garlic_report_path))
     
-    showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir)
+    #showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir)
     
-    cnt, scores, FDR = calcFDR(score_iswrong, 1, True)
-    cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong(garlic_report_path), 1)
+    #cnt, scores, FDR = calcFDR(score_iswrong, 1, True)
+    #cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong(garlic_report_path), 1)
     
-    showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir, "FDR_top1_mol_")
+    #showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir, "FDR_top1_mol_")
     
-    cnt, scores, FDR = calcFDR(score_iswrong, 3)
-    cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong(garlic_report_path), 3)
+    #cnt, scores, FDR = calcFDR(score_iswrong, 3)
+    #cntg, scoresg, FDRg = calcFDR(garlic_res_utils.get_score_iswrong(garlic_report_path), 3)
     
-    showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir, "FDR_top3_mol_")
+    #showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir, "FDR_top3_mol_")
     
     for i in range(len(score_iswrong)):
         score_iswrong[i]  = (score_iswrong[i][0], score_iswrong[i][1], score_iswrong[i][3], score_iswrong[i][2]) 
         
-    garlic_score = garlic_res_utils.get_score_iswrong(garlic_report_path)
+    garlic_score = garlic_res_utils.get_score_iswrong(garlic_report_path, setAA)
     for i in range(len(garlic_score)):
         garlic_score[i] = (garlic_score[i][0], garlic_score[i][1], garlic_score[i][3], garlic_score[i][2])
         
-    cnt, scores, FDR = calcFDR(score_iswrong, 1)
-    cntg, scoresg, FDRg = calcFDR(garlic_score, 1)
+    #cnt, scores, FDR = calcFDR(score_iswrong, 1)
+    #cntg, scoresg, FDRg = calcFDR(garlic_score, 1)
     
-    showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir, "FDR_top1_genome_")
+    #showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir, "FDR_top1_genome_")
     
-    cnt, scores, FDR = calcFDR(score_iswrong, 10)
-    cntg, scoresg, FDRg = calcFDR(garlic_score, 10)
+    cnt, scores, FDR = calcFDR(score_iswrong, 20, True)
+    cntg, scoresg, FDRg = calcFDR(garlic_score, 20, True)
     
-    showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir, "FDR_top10_genome_")
+    showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir, "FDR_top20_genome_")

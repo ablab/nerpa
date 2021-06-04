@@ -26,6 +26,8 @@ def getRank(all_res, BGC, score, for_structure=False):
             rank += 1
     return rank
 
+setAA = set()
+
 with open(os.path.join(data_path, 'base.csv'), 'r') as f:
     csv_reader = csv.reader(f, delimiter=',')
     for row in csv_reader:
@@ -34,6 +36,7 @@ with open(os.path.join(data_path, 'base.csv'), 'r') as f:
     
         AA_info[row[0]] = [row[2], row[3], 1, 1]
         list_AA.append(row[0])
+        setAA.add(row[0].split('.')[0])
         
 all_res = []
 with open( res_dir + "/report.csv", 'r') as f:
@@ -56,8 +59,13 @@ with open( res_dir + "/mibig_cmp.csv", 'w' ) as fw:
     with open( res_dir + "/report.csv", 'r') as f:
         csv_reader = csv.reader(f, delimiter=',')
         for row in csv_reader:
-            row[5] = row[5].split("_")[0]
+            if row[0] == "score":
+                continue
+            if len(row[5].split("_")) > 0: 
+                row[5] = "_".join(row[5].split("_")[:-1])
             splBGC = "_".join(row[6].split("/")[-1].split('_')[:-4])
+            if splBGC not in setAA:
+                continue
             if (row[5].split('/')[-1].split('.')[0] in row[6]):
                 score_iswrong.append((float(row[0]), False, row[5].split('/')[-1], splBGC))
                 result_match[row[5].split('/')[-1]] = [row[0], row[3]]
@@ -79,7 +87,7 @@ with open( res_dir + "/mibig_cmp.csv", 'w' ) as fw:
             csv_writer.writerow([mol_name] + AA_info[mol_name] + ['False', '0', '0', '0', '-1', '-1'])
 
 
-showFDR.showAllFDR(data_path, res_dir, score_iswrong)
+showFDR.showAllFDR(data_path, res_dir, score_iswrong, setAA)
 
 print("Find " + str(cnt_found) + " (out of " + str(cnt_all) + ")")
 print("Find " + str(cnt_05per) + " (out of " + str(cnt_all) + ") half matched")
