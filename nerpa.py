@@ -298,7 +298,9 @@ def run(args, log):
         os.makedirs(details_mol_dir)
 
     command = [os.path.join(nerpa_init.bin_dir, "NRPsMatcher"),
-               path_predictions, path_to_graphs, '--configs_dir', current_configs_dir]
+               path_predictions, path_to_graphs,
+               '--configs_dir', current_configs_dir,
+               "--threads", str(args.threads)]
     log.info("\n======= Nerpa matching")
     nerpa_utils.sys_call(command, log, cwd=output_dir)
     log.info("RESULTS:")
