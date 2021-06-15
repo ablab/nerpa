@@ -6,6 +6,7 @@ import argparse
 import csv
 import site
 import shutil
+import json
 
 import nerpa_init
 nerpa_init.init()
@@ -130,6 +131,22 @@ def validate_arguments(args, parser, log):
         log.error(error_msg, to_stderr=True)
 
 
+def validate_rban_output(path_to_rban_input, path_to_rban_output):
+    """
+    Checks whether the output is produced. Needed since rBAN silently crashes on certain inputs.
+
+    :param path_to_rban_input: rban input json
+    :param path_to_rban_output: rban output json
+    :return:
+    """
+    with open(path_to_rban_input) as f:
+        ids_in = set(x['id'] for x in json.load(f))
+    with open(path_to_rban_output) as f:
+        ids_out = set(x['id'] for x in json.load(f))
+    for idx in ids_in - ids_out:
+        log.warning(f'No rBAN output for structure "{idx}"')
+
+
 def run_rban_on_smiles(args, main_out_dir, path_to_rban_jar, path_to_monomers_db, log):
     path_to_rban_input = os.path.join(main_out_dir, 'rban.input.json')
     if args.smiles_tsv:
@@ -141,6 +158,7 @@ def run_rban_on_smiles(args, main_out_dir, path_to_rban_jar, path_to_monomers_db
     path_to_rban_output = os.path.join(main_out_dir, 'rban.output.json')
     log.info('\n======= Structures preprocessing with rBAN')
     handle_rban.run_rban(path_to_rban_jar, path_to_rban_input, path_to_rban_output, path_to_monomers_db, main_out_dir, log)
+    validate_rban_output(path_to_rban_input, path_to_rban_output)
     log.info("\n======= Done with Structures preprocessing with rBAN")
     return path_to_rban_output
 
