@@ -6,7 +6,7 @@ import matplotlib
 import garlic_res_utils
 
 matplotlib.use('Agg')
-
+dpath = ""
 MAX_ELEM=250
 
 def FilterScore(score_iswrong, top_cnt):
@@ -42,6 +42,19 @@ def FilterScore(score_iswrong, top_cnt):
     return res  
              
 
+
+def getBGCProduct(Bid):
+    global dpath
+    with open(os.path.join(dpath, "base.csv")) as f:
+        csv_reader = csv.reader(f, delimiter=',')
+        for row in csv_reader:
+            if Bid in row[0]:
+                return row[2]
+    return ""
+
+def getOrganism
+
+
 def calcFDR(score_iswrong, top_cnt=0, printF=False):
     if (top_cnt > 0):
         score_iswrong = FilterScore(score_iswrong, top_cnt)
@@ -68,7 +81,9 @@ def calcFDR(score_iswrong, top_cnt=0, printF=False):
         scores.append(x[0])
         FDR.append(cnt_wrong/cnt_all)
         if x[1] == 1 and printF:
-            print("FP: ", x)
+            print("FP: ", x,",", getBGCProduct(x[2]), ",", getBGCProduct(x[3]))
+        elif printF:
+            print("TP: ", x)
 
     return cnt, scores, FDR
 
@@ -114,6 +129,8 @@ def showFDRwithGARLIC(cnt_nerpa, cnt_garlic, FDR_nerpa, FDR_garlic, res_dir, out
 
 
 def showAllFDR(data_path, res_dir, score_iswrong, setAA):
+    global dpath
+    dpath = data_path
     garlic_report_path = os.path.join(data_path, "base_line/GARLIC/report.csv")
     
     print(score_iswrong[:100])
@@ -146,7 +163,7 @@ def showAllFDR(data_path, res_dir, score_iswrong, setAA):
     
     #showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir, "FDR_top1_genome_")
     
-    cnt, scores, FDR = calcFDR(score_iswrong, 20, True)
-    cntg, scoresg, FDRg = calcFDR(garlic_score, 20, True)
+    cnt, scores, FDR = calcFDR(score_iswrong, 10, True)
+    cntg, scoresg, FDRg = calcFDR(garlic_score, 10, True)
     
-    showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir, "FDR_top20_genome_")
+    showFDRwithGARLIC(cnt, cntg, FDR, FDRg, res_dir, "FDR_top10_genome_")

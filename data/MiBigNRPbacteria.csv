@@ -1,0 +1,195 @@
+Accession,SMILES,Main product,Organism
+BGC0000412,[H][C@@]1(CSC(=N1)C1=CC=CC=C1O)[C@@]1([H])SC[C@H](N1C)C(O)=O,pyochelin,Pseudomonas aeruginosa PAO1
+BGC0000335,CC(C)CCCCC[C@@H](N)CC(=O)N[C@H](CC(N)=O)C(=O)N[C@@H]([C@@H](O)C(N)=O)C(=O)N[C@H]([C@@H](O)C1=CC=CC=C1)C(O)=O,cystomanamide A,Cystobacter fuscus
+BGC0000408,CCC(C)CCCCC(=O)NC(CCN)C(=O)NC(C(C)O)C(=O)NC(CCN)C(=O)NC1CCNC(=O)C(NC(=O)C(NC(=O)C(NC(=O)C(NC(=O)C(NC(=O)C(NC1=O)CCN)CC2=CC=CC=C2)CC(C)C)CCN)CCN)C(C)O.OS(=O)(=O)O,polymyxin,Paenibacillus polymyxa
+BGC0000439,O=C(N[C@H](C(N[C@@H](C(N[C@@H](CC(O)=O)C(N[C@H](C(NCC(N[C@H](C(N[C@@H](CC(O)=O)C(N[C@H](C)C(N[C@H](C(NCC(N[C@@H](C(N[C@H](C(N[C@H]1CC(C2=CC=C(Cl)C=C2N)=O)=O)[C@H](C)CC(O)=O)=O)C)=O)=O)CC(O)=O)=O)=O)=O)CCCN)=O)=O)[C@@H](C)OC1=O)=O)=O)CC(N)=O)=O)CC3=CNC4=C3C=CC(Cl)=C4)/C=C/C=C/CCC,taromycin A,Saccharomonospora sp. CNQ490
+BGC0001657,CC[C@H](C)[C@H]1C(=O)N[C@H](C(=O)O[C@@H]([C@@H](C(=O)N[C@@H](C(=O)N[C@H](C(=O)NCC(=O)N([C@@H](C(=O)N[C@H](C(=O)N[C@@H](C(=O)N[C@H](C(=O)N[C@@H](C(=O)N[C@@H](C(=O)N1)CC2=CNC3=CC=CC=C32)CCC(=O)N)CCC(=O)O)CCCN=C(N)N)CC(C)C)CC4=CC=CC=C4)C)CO)CCCN=C(N)N)NC(=O)C[C@@H](CC(C)C)O)C)[C@@H](C)O,lysocin,Lysobacter sp. RH2180-5
+BGC0000445,CSCC1N(C)C(=O)C2CSSCC(N(C)C(=O)CNC(=O)C(CSC1=O)NC(=O)C1=NC3=CC=CC=C3C=C1O)C(=O)N(C)C(CSC)C(=O)SCC(NC(=O)C1=C(O)C=C3C=CC=CC3=N1)C(=O)NCC(=O)N2C,thiocoraline,Micromonospora sp. ML1
+BGC0001133,CC(C)CCCC(=O)N[C@H]1[C@@H](C)OC(=O)[C@H](C)NC(=O)[C@H](CC(C)C)NC(=O)[C@@H](CC(C)C)NC(=O)[C@@H](CC(C)C)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](C)NC1=O,taxlllaid A,Xenorhabdus bovienii SS-2004
+BGC0000414,CN1[C@H]2C[C@H]([C@@H]1[C@@H]3CC4=C([C@H]5N3[C@@H]2OC5)C(=CC=C4)OC)C(=O)O,quinocarcin,Streptomyces melanovinaceus
+BGC0000467,CC(C)(C(O)C1CSC(N1)C1CSC(=N1)C1=CC=CC=C1O)C1=NC(C)(CS1)C(O)=O,yersiniabactin,Yersinia enterocolitica
+BGC0000428,CN[C@H]1[C@H](C)O[C@@H](OC2=CC3=C(N[C@H](O)[C@@H]4CC(\C=C\C)=CN4C3=O)C(O)=C2C)[C@H](O)[C@]1(C)O,sibiromycin,Streptosporangium sibiricum
+BGC0000329,CCCCCCCC(CC(=N/C(=C\C)/C(=O)N1CCC[C@H]1C(=N[C@@H](C)C(=N[C@@H](C)C(=N[C@@H](C)C(=N[C@@H](C(C)C)C(=N[C@@H](C(C)C)C(=N/C(=C\C)/C(=N[C@@H](CCO)C(=N[C@@H](C(C)C)C(=N[C@@H]([C@H](C)CC)C(=NC(=C)C(=N[C@@H](C)C(=N[C@@H](C)C(=N[C@@H](C)C(=N[C@@H](C(C)C)C(=N/C(=C\C)/C(=N[C@H]2[C@@H](OC(=O)[C@@H](N=C([C@@H](N=C([C@@H](N=C([C@@H](N=C2O)C)O)CCN)O)CO)O)[C@@H](C)CC)C)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O,corpeptin A,Pseudomonas corrugata
+BGC0000448,COC1NC2=C(C=C(OC)C(O)=C2)C(=O)N2CC(CC12)=CC,tomaymycin,Streptomyces achromogenes
+BGC0000376,C[C@@H](NC(=O)[C@@]1(C)COC(=N1)C1=CN(C)C2=CC(Cl)=C(C)C(O)=C12)C(=O)N[C@@H](CO)C(O)=O,JBIR-34,Streptomyces sp. Sp080513GE-23
+BGC0001873,O=C1C=C(NC(=O)CCCCC)N2CCCC12,pyrrolizixenamide A,Xenorhabdus szentirmaii DSM 16338
+BGC0000397,CC[C@H](C)[C@@H]1NC(=O)[C@@H](CCC(N)=O)NC(=O)CNC(=O)[C@H](CC2=CC=C(O)C=C2)\N=C\[C@H](CC2=CC=CC=C2)NC(=O)[C@@H]2C[C@H](C)CN2C(=O)[C@H](CO)NC1=O,nostocyclopeptide A2,Nostoc sp. ATCC 53789
+BGC0000386,NCCCCNC(=O)[C@H](CCCN(O)C=O)NC(=O)[C@H](CO)NC(=O)[C@H](NC(=O)[C@H](CCCN(=O)=O)NC=O)[C@@H](O)C(O)=O,malleobactin A,Burkholderia thailandensis E264
+BGC0001448,C[C@@H]1C[C@H]2C(=O)NC([C@@H](C(=O)N[C@@H](C(=O)N[C@H](C(=O)N[C@H](C(=O)N[C@H](C(=O)NCC(=O)N[C@@H](C(=O)N[C@H](C(=O)N2C1)C(C)C)C(C)C(=O)O)CC(=O)O)C(C(=O)O)O)CCCCN)C(C)C)NC(=O)[C@H](C(C)C(=O)O)NC(=O)/C=C/C=C\CCC(C)C)C,malacidin A,uncultured bacterium
+BGC0000373,CC(=O)NC1=C2SSC=C2NC1=O,holomycin,Streptomyces clavuligerus ATCC 27064
+BGC0001628,CC(C)[C@H](O)[C@@H](NC(=O)[C@H](C)NC(=O)[C@@H](CC(O)=O)NC(=O)[C@@H](NC(=O)CC1=CC=CC=C1)C(C)C)C(=O)NCC(=O)N[C@H](C)C(=O)N[C@@H](CC1=CC=CC=C1)C(O)=O,JBIR-78,Kibdelosporangium sp. AK-AA56
+BGC0001153,CCC(C)CCCCC(=O)N[C@@H](CCN)C(=O)N[C@@H]([C@@H](C)O)C(=O)N[C@@H](CCN)C(=O)N[C@H]1CCNC(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@H](NC(=O)[C@@H](NC1=O)CCN)CC2=CC=CC=C2)CC(C)C)CCN)CCN)[C@@H](C)O,polymyxin B,Paenibacillus polymyxa
+BGC0001341,CC(C)[C@@H]1NC(=O)C(C)OC(=O)[C@H](NC(=O)[C@H](OC(=O)[C@@H](NC(=O)[C@H](C)OC(=O)[C@H](NC(=O)[C@H](OC(=O)[C@@H](NC(=O)[C@H](C)OC(=O)[C@H](NC(=O)[C@H](OC1=O)C(C)C)C(C)C)C(C)C)C(C)C)C(C)C)C(C)C)C(C)C)C(C)C,valinomycin,Rothia nasimurium
+BGC0000413,NC(=O)CCC(NC(=O)C(CCCN(O)C=O)NC(=O)C1CCN=C(N1)C(CO)NC(=O)[C@@H]1CCNC2=C(NC(=O)CCC(O)=O)C=C3C=C(O)C(O)=CC3=[N+]12)C(=O)NC(CCC(N)=O)C(=O)NC(CCCN(O)C=O)C(=O)NCC(O)=O,pyoverdin,Pseudomonas protegens Pf-5
+BGC0000461,CC(C)CCCC1CC(=O)NC(CO)C(=O)NC(C(O)C(N)=O)C(=O)NC(CO)C(=O)NCC(=O)N(C)C(CC2=CC=CC=C2)C(=O)NC(CC(C)C)C(=O)NC(CCCN)C(=O)NC(CCC(O)=O)C(=O)NC(CC(N)=O)C(=O)NC(CC2=CNC3=C2C=CC=C3)C(=O)NC(CCCN)C(=O)N(C)C(C(C)C)C(=O)O1,WAP-8294A2,Lysobacter enzymogenes
+BGC0001521,CC[C@H](C)[C@H](O)C(=O)N[C@@H](CC1=CC(Cl)=C(O)C=C1)C(=O)CC,auriculamide,Herpetosiphon aurantiacus DSM 785
+BGC0000301,CC[C@@H]([C@H]1C(NCCCC[C@@H](NC(N[C@H](C(O)=O)CCCNC(N)=N)=O)C(N[C@@H](C(C)C)C(N[C@@H](CCC2=CC=C(O)C=C2)C(N(C)[C@@H](CCC3=CC=C(O)C=C3)C(N1)=O)=O)=O)=O)=O)C,anabaenopeptin 908,Planktothrix agardhii NIVA-CYA 126/8
+BGC0001370,CCCC1OC1C(=O)N[C@@H](CO)C(=O)N[C@@H]([C@@H](C)O)C(=O)N[C@@H](CC1=CNC2=C1C=CC=C2)C(=O)N[C@@H](CC(O)=O)C(=O)N[C@@H](CC(O)=O)C(=O)N[C@@H](C(=O)N[C@@H](CC(O)=O)C(=O)NCC(=O)N[C@H](C(O)CON)C(=O)N[C@@H](CCC(O)=O)C(=O)N[C@@H](CC1=CNC2=C1C=CC=C2)C(O)=O)C1=CC=C(O)C=C1,lipopeptide 8D1-1,Streptomyces rochei
+BGC0001192,CC[C@@H](C)CCCCC(=O)N[C@@H](CCN)C(=O)N[C@@H]([C@@H](C)O)C(=O)N[C@@H](CCN)C(=O)N[C@H]1CCNC(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@H](NC(=O)[C@@H](NC1=O)CCN)CC(C)C)CC(C)C)CCN)CCN)[C@@H](C)O,colistin A,Paenibacillus alvei
+BGC0001833,CCCCCCCC1CC(=O)NC(CO)C(=O)NC(CC(C)C)C(=O)OC(CCCCC)CC(=O)NC(CC(C)C)C(=O)NC(CO)C(=O)O1,icosalide A,Burkholderia gladioli
+BGC0000433,[H][C@@]1(CCC(O)=O)NC(=O)CC(CCCCCCCCCCC)OC(=O)[C@]([H])(CC(C)C)NC(=O)[C@@]([H])(CC(C)C)NC(=O)[C@]([H])(CC(O)=O)NC(=O)[C@@]([H])(NC(=O)[C@@]([H])(CC(C)C)NC(=O)[C@]([H])(CC(C)C)NC1=O)C(C)C,surfactin,Bacillus velezensis FZB42
+BGC0001193,CN1C(=O)C(NC(C)=O)=C2SSC=C12,thiolutin,Saccharothrix algeriensis
+BGC0000349,CC(=O)N[C@H](CCCN(O)C(C)=O)C(=O)N[C@H](CO)C(=O)N(O)CCC[C@@H]1NC(=O)[C@H](CCCN(O)C(C)=O)NC1=O,erythrochelin,Saccharopolyspora erythraea NRRL 2338
+BGC0001185,C[C@@H]1[C@@H](C(=O)O[C@@H]([C@@H](C(=O)O[C@@H]([C@@H](C(=O)O1)NC(=O)CNC(=O)C2=C(C(=CC=C2)O)O)C)NC(=O)CNC(=O)C3=C(C(=CC=C3)O)O)C)NC(=O)CNC(=O)C4=C(C(=CC=C4)O)O,bacillibactin,Bacillus velezensis FZB42
+BGC0001345,OC[C@H](CCCCNC(=O)C1=CC=CC(O)=C1O)NC(=O)C1=CC=CC(O)=C1O,myxochelin A,Stigmatella aurantiaca Sg a15
+BGC0000305,CCCCCCC[C@H](O)CC(N[C@@H](C(N[C@@H](C(N[C@H]([C@H](OC([C@@H](NC([C@@H](NC([C@@H](NC([C@@H](CO)NC(C(CC(C)C)N1)=O)=O)[C@@H](C)CC)=O)[C@@H](C)CC)=O)CC(O)=O)=O)C)C(N[C@@H](C(N[C@H](CC(C)C)C(N[C@H](CO)C1=O)=O)=O)CC(C)C)=O)=O)CC(O)=O)=O)CC(C)C)=O,arthrofactin A,Pseudomonas sp. MIS38
+BGC0000382,CCCCCC[C@H]1[C@H](C[C@H](C\C=C/C\C=C/CCCCC)OC(=O)[C@H](CC(C)C)NC=O)OC1=O,lipstatin,Streptomyces toxytricini
+BGC0001379,[H][C@]12N\C(N[C@]1([H])C(=O)N(C)CC2O)=N/[C@@H]1OC(CO)[C@H](OC(N)=O)[C@H](O)C1N(C)C(=O)CNC=N,BD-12,Streptomyces luteocolor
+BGC0001502,N[C@@H](CCCCNC(=O)CNC(=O)C1=CC=CC(O)=C1O)C(=O)N[C@@H](CCCCNC(=O)C1=CC=CC(O)=C1O)C(=O)N[C@@H](CC1=CC=CC=C1)C(O)=O,amonabactin P 750,Aeromonas hydrophila subsp. hydrophila ATCC 7966
+BGC0000384,CC(C)[C@H]1C(=O)N[C@@H](CC2=CNC3=C(C=CC(=C23)N1C)[C@](C)(CCC=C(C)C)C=C)CO,lyngbyatoxin,Lyngbya majuscula
+BGC0001095,CCCCCCCCCCCCCC(CC(=O)NC(CCC(=O)O)C(=O)NC(CCCN)C(=O)NC1CC2=CC=C(C=C2)OC(=O)C(NC(=O)C(NC(=O)C(NC(=O)C3CCCN3C(=O)C(NC(=O)C(NC(=O)C(NC1=O)C(C)O)CCC(=O)O)C)CCC(=O)N)CC4=CC=C(C=C4)O)C(C)CC)O,fengycin,Bacillus velezensis FZB42
+BGC0000367,C[C@@H](C(=O)N[C@H](CC(C)C)C(=O)N[C@@H](C)C(=O)N[C@H](C(C)C)C(=O)N[C@@H](C(C)C)C(=O)N[C@@H](C(C)C)C(=O)N[C@@H](CC1=CNC2=CC=CC=C21)C(=O)N[C@H](CC(C)C)C(=O)N[C@@H](CC3=CNC4=CC=CC=C43)C(=O)N[C@H](CC(C)C)C(=O)N[C@@H](CC5=CNC6=CC=CC=C65)C(=O)N[C@H](CC(C)C)C(=O)N[C@@H](CC7=CNC8=CC=CC=C87)C(=O)NCCO)NC(=O)CNC(=O)[C@H](C(C)C)NC=O,gramicidin,Brevibacillus brevis NBRC 100599
+BGC0000463,CCCCCCCC(O)CC(NC(CC(C)C)C(NC(CCC(O)=O)C(NC(CCC(N)=O)C(NC(C(C)C)C(NC(CC(C)C)C(NC(CCC(N)=O)C(NC(CO1)C(NC(C(C)C)C(NC(CC(C)C)C(NC(CCC(N)=O)C(NC(CC(C)C)C(NC(CC(C)C)C(NC(CCC(N)=O)C(NC(C(CC)C)C1=O)=O)=O)=O)=O)=O)=O)=O)=O)=O)=O)=O)=O)=O)=O,xantholysin A,Pseudomonas putida
+BGC0000444,[H][C@@]1(CC2=CNC3=CC=CC(=C23)N(=O)=O)N(C)C(=O)[C@](O)(CC2=CC=CC(O)=C2)N(C)C1=O,thaxtomin A,Streptomyces turgidiscabies Car8
+BGC0000362,CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC(CC(=O)N[C@H](CC1=CC=CC=C1)C(=O)N[C@H]([C@@H](C)OC2[C@@H]([C@@H]([C@@H]([C@@H](O2)C)O)O)O[C@H]3[C@@H]([C@@H]([C@H]([C@@H](O3)C)O)O[C@H]4[C@@H]([C@H]([C@H]5[C@H](O4)CO[C@](O5)(C)C(=O)O)OC)O)O)C(=O)N[C@H](C)C(=O)N[C@@H](C)COC6[C@@H]([C@@H]([C@H]([C@@H](O6)C)OC)OC)O)O.O,glycopeptidolipid,Mycobacterium avium
+BGC0000311,CNC(CC(C)C)C(=O)NC1C(O)C2=CC=C(OC3=C(OC4O[C@H](CO)C(O)[C@H](O)C4O)C4=CC(=C3)C(NC(=O)C(CC(N)=O)NC1=O)C(=O)NC1C3=CC(=C(O)C=C3)C3=C(O)C=C(O)C=C3C(NC(=O)C(NC1=O)C(OC1C[C@](C)(N)C(=O)C(C)O1)C1=CC=C(O4)C(Cl)=C1)C(O)=O)C(Cl)=C2,balhimycin,Amycolatopsis balhimycina DSM 5908
+BGC0001479,CC[C@H](C)[C@@H]1NC(=O)[C@@H](CCCCNC(=O)[C@H](CCC2=CC=C(O)C=C2)NC(=O)CN(C)C(=O)[C@H](CCC2=CC=C(O)C=C2)NC1=O)NC(=O)N[C@@H](CC1=CC=CC=C1)C(O)=O,anabaenopeptin NZ857,Nostoc punctiforme PCC 73102
+BGC0001196,CC[C@@H](C)[C@H]1C(=O)N[C@H](C(=O)NCC(=O)N[C@H](C(=O)N[C@H](C(=O)N[C@@H](C(=O)N1)CC(C)C)CC(C)C)CC2=CNC3=CC=CC=C32)CC(=O)N,desotamide,Streptomyces scopuliridis
+BGC0000352,CC(=O)N(O)CCCCNC(=O)[C@H](COC(=O)C1=C(O)C(O)=CC=C1)NC(=O)[C@@H]1COC(=N1)C1=C(O)C(O)=CC=C1,fimsbactin A,Acinetobacter sp. ADP1
+BGC0000440,C1[C@@H]2C(=O)N[C@@H](C3=CC(=CC(=C3)O)OC4=C(C=CC(=C4)[C@H](C(=O)N2)N)O)C(=O)N[C@@H]5C6=CC(=C(C(=C6)OC7=C(C=C(C=C7)[C@H]([C@H]8C(=O)NC(C9=CC(=CC(=C9C2=C(C=CC(=C2)[C@H](C(=O)N8)NC5=O)O)O)O)C(=O)O)O)Cl)O)OC2=C(C=C1C=C2)Cl,teicoplanin,Actinoplanes teichomyceticus
+BGC0000434,CC1CC11N(C)C(=O)C2CSSCC(N(C)C(=O)C(C)NC(=O)C(COC1=O)NC(=O)C1=NC3=C(C=CC=C3)C=C1O)C(=O)N(C)C1(CC1C)C(=O)OCC(NC(=O)C1=NC3=C(C=CC=C3)C=C1O)C(=O)NC(C)C(=O)N2C,SW-163C,Streptomyces sp. SNA15896
+BGC0001225,COC(C)C(NC(=O)[C@@H]1CCCN1C)[C@H]1O[C@H](SCCOC(=O)C2=CC=CC=C2O)[C@H](O)[C@@H](O)[C@H]1O,celesticetin,Streptomyces caelestis
+BGC0001346,O=C(C(CC(C)C)NC(CC(O)CCCCCCCCC)=O)NC(CC(O)=O)C(NC(C(OC(C(CC(C)C)NC1=O)=O)C)C(NC(C(C)CC)C(NC(CC(C)C)C(NC(CCC(N)=O)C(NC1CC(C)C)=O)=O)=O)=O)=O,bananamide 1,Pseudomonas fluorescens
+BGC0000396,CO[C@@H](CC1=CC=CC=C1)[C@@H](C)\C=C(/C)\C=C\[C@@H]1NC(=O)[C@H](CCCNC(N)=N)NC(=O)[C@@H](C)[C@@H](NC(=O)\C(=C\C)N(C)C(=O)CC[C@@H](NC(=O)[C@H]1C)C(O)=O)C(O)=O,nodularin,Nostoc sp. 73.1
+BGC0001415,COC1=CC(=O)N(C1)C(=O)C2CSC(=N2)C(CO)NC(=O)C3=CSC(=CN=O)N3,althiomycin,Serratia marcescens subsp. marcescens Db11
+BGC0000374,CC[C@H](C)[C@@H](C(N1C[C@@H](/C=C\C)C[C@H]1C2=O)=O)NC([C@H]([C@@H](C3=CC=CC=C3)C)NC([C@H](NC([C@H]([C@H](C)C4=CC=CC=C4)NC([C@@H]([C@@H](C)O2)NC([C@H](C[C@H]5[C@H]([N+]([O-])=O)C5)NC(C6=CC=C(Cl)N6O)=O)=O)=O)=O)C[C@H]7[C@H]([N+]([O-])=O)C7)=O)=O,hormaomycin,Streptomyces griseoflavus
+BGC0000400,CCCCCCCCCCCCCCC(=O)N[C@@H](CCCN)C(=O)N[C@@H](C(C)C)C(=O)N[C@H]1[C@H](OC(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@@H]2CCCN2C(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@@H](NC1=O)CCCN)CO)C(C)C)CCCCN)CO)[C@@H](C)CC)C(C)C)CCCCN)[C@@H](C)CC)C,paenibacterin,Paenibacillus sp. OSY-SE
+BGC0000341,CO[C@H](C(O)[C@@H](O)[C@@H](C)O)[C@@H]1CC2=CC3=CC(OC4CC(OC5CC(O)C(OC)C(C)O5)C(O)C(C)O4)=C(C)C(O)=C3C(O)=C2C(=O)[C@H]1OC1CC(OC2CC(OC3CC(C)(O)C(O)C(C)O3)C(O)C(C)O2)C(O)C(C)O1,enduracidin,Streptomyces fungicidicus
+BGC0000325,C[C@@H](O)[C@@H](NC(=O)[C@H](N)CCCN(O)C=O)C(=O)N(O)CCC[C@H](NC(=O)[C@H](N)CCCN(O)C=O)C(O)=O,coelichelin,Streptomyces coelicolor A3(2)
+BGC0000298,[H]C12CC(N(C(=O)[C@H](NC(=O)C(O)CC3=CC(Cl)=C(O)C=C3)[C@H](C)CC)C1([H])CC(CC2)OS(O)(=O)=O)C(=O)NCCCCNC(N)=N,aeruginosin 98-A,Microcystis aeruginosa NIES-98
+BGC0001451,CCC(=O)N[C@@H]([C@@H](C(C)C)O)C(=O)O[C@@H]([C@H]1C(=O)N([C@H](C(=O)O[C@@H]([C@@H](C(=O)O[C@@H](C(=O)N(C(=C)C(=O)N[C@H](C(=O)N([C@H](C(=O)N1)C)C)C)C)CC2=CC=CC=C2)NC(=O)C)C(C)C)[C@@H](C)OC)C)C(C)C,FR900359,Candidatus Burkholderia crenata
+BGC0000389,CCCCCCC[C@@H](O)CC(=O)NC(CC(C)C)C(=O)NC(CCC(O)=O)C(=O)NC1C(C)OC(=O)C(NC(=O)C(CO)NC(=O)C(CC(C)C)NC(=O)C(CO)NC(=O)C(CC(C)C)NC(=O)C(NC1=O)C(C)CC)C(C)CC,massetolide A,Pseudomonas fluorescens SS101
+BGC0000319,CO[C@]1(NC(=O)CCCC(N)C(O)=O)C2SCC(COC(N)=O)=C(N2C1=O)C(O)=O,cephamycin C,Streptomyces clavuligerus ATCC 27064
+BGC0001127,CCCCCCCCCCC[C@H](CC(=O)N/C(=C\C)/C(=O)N[C@H]1[C@H](OC(=O)[C@@H](NC(=O)[C@@H](NC(=O)/C(=C/C)/NC(=O)CNC(=O)[C@H](NC(=O)[C@H](NC(=O)[C@H](NC1=O)[C@@H](C)O)CC2=CC=C(C=C2)O)CCC(=O)N)[C@H](C)O)CC3=CN=CN3)C)O,jagaricin,Janthinobacterium agaricidamnosum
+BGC0001117,[H][C@@]12NC3=CC=C(C=C3[C@]1(O)C[C@@H]1N2C(=O)[C@H](NC(=O)[C@H](CC(C)C)NC(=O)[C@H]2C[C@@H](O)CNN2C(=O)[C@@H](OC(=O)[C@H](NC1=O)C(C)C)C(C)C)[C@H](C)O)C1=CC=C2N[C@@]3([H])N4[C@@H](C[C@@]3(O)C2=C1)C(=O)N[C@H](C(C)C)C(=O)O[C@@H](C(C)C)C(=O)N1NC[C@H](O)C[C@@H]1C(=O)N[C@@H](CC(C)C)C(=O)N[C@H]([C@H](C)O)C4=O,himastatin,Streptomyces himastatinicus ATCC 53653
+BGC0000294,CC1OC(=NC1C(=O)N(O)CCC1=CNC=N1)C1=CC=CC(O)=C1O,acinetobactin,Acinetobacter baumannii
+BGC0000299,C[C@H](CC)[C@@H]1NC([C@@H](NC([C@@H](NC([C@H](C(C)C)NC([C@H]([C@H](OC1=O)C)NC(/C=C/C=C/C=C/C=C/C2=CC=C(C=C2)O)=O)=O)=O)CC(N)=O)=O)CC(N)=O)=O,alterochromide A,Pseudoalteromonas piscicida JCM 20779
+BGC0000949,O[C@@H]1[C@H](OC)[C@@]([H])([C@H](C(N)=O)O[C@H]2OC(C(N[C@@H]3C(N[C@H](C)CCC3)=O)=O)=C[C@H](O)[C@@H]2O)O[C@H]1N(C=C4)C(NC4=O)=O,A-500359 A,Streptomyces griseus
+BGC0001434,CCC(C)C(=O)C(=O)NCCC1=CNC2=CC=CC=C12,nematophin,Xenorhabdus budapestensis
+BGC0000406,CP(=O)(CCC(C(=O)[O-])[NH3+])[O-],phosphinothricintripeptide,Streptomyces viridochromogenes
+BGC0000893,OCC(NC(=O)C(Cl)Cl)C(O)C1=CC=C(C=C1)N(=O)=O,chloramphenicol,Streptomyces venezuelae ATCC 10712
+BGC0001842,CCCCCCC[C@@H](O)CC(N[C@H](CC(C)C)C(N[C@H](CC(O)=O)C(N[C@@H](C(N[C@@H]([C@H](C)CC)C(N[C@@H](C(N[C@H](CCC(N)=O)C(N[C@@H](C(N[C@H]1CC(C)C)=O)COC([C@H]([C@H](CC)C)NC([C@@H](CO)NC([C@H](CC(C)C)NC1=O)=O)=O)=O)=O)=O)CC(C)C)=O)=O)CCC(N)=O)=O)=O)=O,gacamide A,Pseudomonas fluorescens Pf0-1
+BGC0001766,[H][C@]1(NC(=O)[C@@H](CC2=CC=CC=C2)N(C)C(=O)[C@@H]2NC(=O)[C@@H](NC(=O)[C@H](NC(=O)[C@@H](C)[C@@H](O)C(C)C)[C@H](C)OC(=O)[C@@H](COC(=O)CNC(=O)\C=C\[C@@]3(CO3)[C@H](C)OC3=CC=C2C=C3)NC1=O)[C@H](C)CC)[C@H](C)O,salinamide A,Streptomyces sp. CNB091
+BGC0001671,C[C@H]1[C@@H](C(=O)N1S(=O)(=O)[O-])NC(=O)/C(=N\OC(C)(C)C(=O)O)/C2=CSC(=N2)[NH3+],monobactam,Agrobacterium tumefaciens
+BGC0000350,CC1=C(C(=C2[C@@H]3[C@@H]4[C@H]5C6=C([C@@H](N4[C@H]([C@@H](N3C)CC2=C1)O)COC(=O)[C@@]7(CS5)C8=CC(=C(C=C8CCN7)O)OC)C9=C(C(=C6OC(=O)C)C)OCO9)O)OC,ET-743,uncultured organism
+BGC0001692,CCC(C)C(=O)C(=O)NCCC1=CNC2=CC=CC=C12,nematophin,Xenorhabdus nematophila ATCC 19061
+BGC0001822,C\C=C1/NC(=O)C2CSC(=N2)C2CC(C)N2C(=O)C(CC(C)C)NC(=O)C(C)NC(=O)C(O)COC(=O)C(C(C)C)N(C)C(=O)C(NC(=O)C2CCCCN2C1=O)C(C)O,vioprolide A,Cystobacter sp.
+BGC0000316,O=C(N[C@@H](CNC(C[C@H](N)CCCN)=O)C(N/C(C(N[C@@H]([C@H]1CCN=C(N)N1)C(NC[C@H](N)C(N2)=O)=O)=O)=C\NC(N)=O)=O)[C@@H]2CO,capreomycin IA,Saccharothrix mutabilis subsp. capreolus
+BGC0001695,[H][C@]1(OC(=O)C(C)(C)[C@@H](O)[C@@H](CC2=CC=CC=C2)OC(=O)[C@@H](OC(=O)[C@@H](NC(=O)C2=C(O)C(NC=O)=CC=C2)[C@H](C)OC1=O)C(C)C)[C@@H](C)CC,neoantimycin,Streptomyces conglobatus
+BGC0000290,N[C@@H]1C2=CC=C(OS(O)(=O)=O)C(OC3=CC(=CC(O)=C3)[C@@H]3NC(=O)[C@@H](CC4=CC(Cl)=C(OC5=C(O)C6=CC(=C5)[C@@H](NC3=O)C(=O)N[C@@H]3C5=CC(Cl)=C(O)C(=C5)C5=C(O)C=C(O)C=C5[C@H](NC(=O)[C@@H](NC3=O)[C@H](O)C3=CC=C(O6)C(Cl)=C3)C(O)=O)C=C4)NC1=O)=C2,A-47934,Streptomyces toyocaensis
+BGC0000438,CCCCCCCC(CC(=N/C(=C\C)/C(=O)N1CCC[C@H]1C(=N[C@@H](C(C)C)C(=N[C@@H](C)C(=N[C@@H](C)C(=N[C@@H](C(C)C)C(=N[C@@H](CC(C)C)C(=N[C@@H](C)C(=N[C@@H](C)C(=N/C(=C\C)/C(=N[C@@H](C(C)C)C(=N/C(=C\C)/C(=N[C@@H](C)C(=N[C@@H](C(C)C)C(=N[C@@H](C)C(=N[C@@H](C)C(=N/C(=C\C)/C(=N[C@H]2C(OC(=O)[C@@H](N=C([C@@H](N=C([C@@H](N=C([C@@H](N=C([C@@H](N=C([C@@H](N=C([C@@H](N=C2O)CO)O)C)O)C(C)C)O)C)O)CCN)O)CCN)O)CC3=CC=C(C=C3)O)C)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O,syringopeptin 25A,Pseudomonas syringae pv. syringae
+BGC0000368,C[C@H]1OC(=O)[C@@H](NC(=O)[C@H](CCCNC(N)=N)NC(=O)C2=CC=CC(O)=C2O)[C@@H](C)OC(=O)[C@@H](NC(=O)[C@H](CCCNC(N)=N)NC(=O)C2=CC=CC(O)=C2O)[C@@H](C)OC(=O)[C@H]1NC(=O)[C@H](CCCNC(N)=N)NC(=O)C1=CC=CC(O)=C1O,streptobactin,Streptomyces sp. ATCC 700974
+BGC0001825,C[C@H]1OC(=O)CCNC(=O)C(CC2=CNC3=C2C=CC=C3)NC(=O)C(CC2=CNC3=C2C=CC=C3)NC(=O)[C@H]1NC(=O)CC1=CC=CC=C1,xenematide,Xenorhabdus nematophila AN6/1
+BGC0001132,CC(C)[C@H]1NC(=O)[C@@H](NC(=O)[C@H](NC(=O)[C@@H](NC1=O)C(C)C)C(C)C)CC(C)C,xenotetrapeptide,Xenorhabdus nematophila ATCC 19061
+BGC0000424,O=C(NC(C(O)C(O)=O)C(NC(CO)C(NC(C(O)C(O)=O)C(NC(C(C)O)C(NC(CO)C(NC1CCCN(O)C1=O)=O)=O)=O)=O)=O)CCCCCCCCCCCCC,serobactin C,Herbaspirillum seropedicae SmR1
+BGC0000296,[H][C@@]12CCCN1C(=O)[C@]([H])(NC(=O)[C@@]([H])(NC(=O)C1=CC=C(C)C3=C1N=C1C(O3)=C(C)C(=O)C(N)=C1C(=O)N[C@]1([H])C(=O)N[C@]([H])(C(C)C)C(=O)N3CCC[C@@]3([H])C(=O)N(C)CC(=O)N(C)[C@@]([H])(C(C)C)C(=O)O[C@]1([H])C)[C@@]([H])(C)OC(=O)[C@]([H])(C(C)C)N(C)C(=O)CN(C)C2=O)C(C)C,actinomycin D,Streptomyces anulatus
+BGC0001228,O=C(NC1C(NC(C)C(N(C)C2C(N(C)C3(C(C)C3)C(OC(C)C(NC(C4=NC5=CC=CC=C5C=C4O)=O)C(NC(C)C(N(C)C(C(S(C)=O)SC2)C(N(C)C6(C(C)C6)C(OC1C)=O)=O)=O)=O)=O)=O)=O)=O)C7=NC8=CC=CC=C8C=C7O,retimycin A,Salinispora arenicola CNT005
+BGC0001818,CC(C)[C@H](N)C(=O)NC(C1CC(O)C2CN12)C(O)=O,vazabitide A,Streptomyces sp. SANK 60404
+BGC0000377,[H][C@]1(N=C[C@@H](NC(=O)[C@@H](CC2=CC=CC=C2)NC(=O)[C@@H](NC(=O)[C@@H](CC2=CC=CC=C2)NC(=O)[C@@H](CC(C)C)NC(=O)[C@@H](CC(C)C)NC1=O)C(C)C)C(C)C)[C@@H](C)O,koranimine,Bacillus sp. NK2003
+BGC0000436,CC(C)C(NC(=O)NC(C(C)C)C(=O)NC1\C=C/CCNC(=O)\C=C/C(NC1=O)C(C)C)C(O)=O,syringolin A,Rhizobium sp. AP16
+BGC0000447,CCCCCC(CC(=O)N/C(=C\C)/C(=O)N1CCC[C@@H]1C(=O)N[C@@H](CO)C(=O)N[C@@H](CC(C)C)C(=O)N[C@H](C(C)C)C(=O)N[C@H](CO)C(=O)N[C@H](CC(C)C)C(=O)N[C@H](C(C)C)C(=O)N[C@@H](C(C)C)C(=O)N[C@H](CCC(=O)N)C(=O)N[C@@H](CC(C)C)C(=O)N[C@H](C(C)C)C(=O)N/C(=C\C)/C(=O)N[C@@H]2[C@H](OC(=O)[C@@H](NC(=O)[C@H](NC(=O)[C@@H](NC(=O)[C@@H](NC2=O)[C@@H](C)CC)CCO)CCN)CCCCN)C)O,tolaasin I,Pseudomonas costantinii
+BGC0001459,CC1C(C(C(C(O1)OC2C(C(C(OC2OC3=C4C=C5C=C3OC6=C(C=C(C=C6)C(C(C(=O)NC(C(=O)NC5C(=O)NC7C8=CC(=C(C=C8)O)C9=C(C=C(C=C9C(NC(=O)C(C(C1=CC=C(O4)C=C1)OC1CC(C(C(O1)C)O)(C)N)NC7=O)C(=O)O)O)O)CC(=O)N)NC(=O)C(CC(C)C)NC)O)Cl)CO)O)O)O)O)O,decaplanin,Amycolatopsis regifaucium
+BGC0000309,C[C@@H]1[C@@H](C(=O)O[C@@H]([C@@H](C(=O)O[C@@H]([C@@H](C(=O)O1)NC(=O)CNC(=O)C2=C(C(=CC=C2)O)O)C)NC(=O)CNC(=O)C3=C(C(=CC=C3)O)O)C)NC(=O)CNC(=O)C4=C(C(=CC=C4)O)O,bacillibactin,Bacillus subtilis subsp. subtilis str. 168
+BGC0000464,O=C(N[C@H](C(N[C@H](C(C)C)C(N[C@@H](C(C)C)C(N[C@H](C)C(NCCC1=O)=O)=O)=O)=O)C(C)C)[C@@H]([C@H](OC([C@@H](NC([C@@H]2N1CCC2)=O)C(C)C)=O)C)NC([C@H]([C@H](C)CC)NC([C@@H](CC(C)C)NC([C@H](C(C)C)NC([C@@H](C)NC([C@H]3N(C(CCC)=O)CCC3)=O)=O)=O)=O)=O,xenoamicin A,Xenorhabdus doucetiae
+BGC0000327,CN1C=C(NC(=O)C2=CC(NC(=O)CNC(N)=N)=CN2C)C=C1C(=O)NCCC(N)=N,netropsin,Streptomyces ambofaciens ATCC 23877
+BGC0000441,C1[C@@H]2C(=O)N[C@@H](C3=CC(=CC(=C3)O)OC4=C(C=CC(=C4)[C@H](C(=O)N2)N)O)C(=O)N[C@@H]5C6=CC(=C(C(=C6)OC7=C(C=C(C=C7)[C@H]([C@H]8C(=O)NC(C9=CC(=CC(=C9C2=C(C=CC(=C2)[C@H](C(=O)N8)NC5=O)O)O)O)C(=O)O)O)Cl)O)OC2=C(C=C1C=C2)Cl,teicoplanin,Actinoplanes teichomyceticus
+BGC0001462,C[C@H]1[C@@H]([C@@H](C[C@@H](O1)O[C@H]2[C@H]3C(=O)N[C@@H](C4=CC(=CC(=C4C5=C(C=CC(=C5)[C@H](C(=O)N3)NC(=O)[C@H]6C7=CC(=C(C(=C7)OC8=C(C=C2C=C8)Cl)O[C@H]9C([C@H]([C@@H]([C@H](O9)CO)O)O)O[C@H]1C[C@H]([C@H]([C@@H](O1)C)O)N)OC1=CC=C(C=C1)[C@H]([C@H](C(=O)N[C@H](C(=O)N6)C1=CC=C(C=C1)O)NC(=O)[C@@H](C1=CC=C(C=C1)O[C@H]1[C@@H]([C@@H]([C@H]([C@@H](O1)C)O)O)O)NC)O)O)O)O)C(=O)O)N)O,avoparcin,Amycolatopsis coloradensis
+BGC0001805,C1C[C@H]2[C@@H](NC3=C(C=CC=C3O)C(=O)N2C1)C4=CNC5=CC=CC=C54,tilivalline,Klebsiella oxytoca
+BGC0000340,COC(=O)[C@H]1O[C@@H](OC2=C(C=C(O)C(=C2O)C2=CC=CC=C2)C2=CC=CC=C2)[C@H](O)[C@@H](O)[C@@H]1O,echoside A,Streptomyces sp. LZ35
+BGC0000423,CN[C@@H](CCCN(O)C=O)C(=O)N[C@@H](CO)C(=O)N(O)CCC[C@H](NC)C(=O)N[C@@H](CCCN)C(=O)N[C@@H]1CCCN(O)C1=O,scabichelin,Streptomyces scabiei 87.22
+BGC0001796,CC(C)CCCCCC(=O)N[C@H](CC1=CC=C(O)C=C1)C(=O)N[C@@H](CO)C(=O)N[C@H](CC(C)C)C(=O)N[C@@H](CC1=CNC2=C1C=CC=C2)C(=O)N[C@@H](CCCNC(N)=N)C(O)=O,tauramamide,Brevibacillus laterosporus DSM 25
+BGC0000330,CCCCCCCCCC(=O)N[C@@H]([C@H](O)C(O)=O)C(=O)N[C@@H](CCN)C(=O)N[C@@H]([C@H](O)C(O)=O)C(=O)NCC(=O)N[C@@H](CCCN(O)C(=O)C[C@H](C)O)C(O)=O,cupriachelin,Cupriavidus necator H16
+BGC0001672,C[C@H]1[C@@H](C(=O)N1S(=O)(=O)[O-])NC(=O)/C(=N\OC(C)(C)C(=O)O)/C2=CSC(=N2)[NH3+],monobactam,[Flexibacter] sp. ATCC 35103
+BGC0000427,O[C@](CC(NCC(O)=O)=C/1OC)(CO)CC1=N/[C@@H](CO)C(O)=O,shinorine,Trichormus variabilis ATCC 29413
+BGC0000422,CC1=C(C(=O)C2=C(C1=O)C[C@H]3[C@H]4C5=C(C[C@H](N4C)[C@@H](N3[C@H]2CNC(=O)C(=O)C)C#N)C(=O)C(=C(C5=O)OC)C)OC,saframycin A,Streptomyces lavendulae
+BGC0000288,COC1C(OC(N)=O)C(OC1C(OC1OC(=CC(O)C1O)C(=O)NC1CCCC(C)NC1=O)C(N)=O)N1C=CC(=O)NC1=O,A-503083 A,Streptomyces sp. SANK 62799
+BGC0000385,CC[C@H](C)[C@@H]1NC(=O)[C@@H](CCCNC(N)=N)NC(=O)[C@H](CC(C)C)NC(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@H](CC(C)C)NC(=O)[C@H](N)CC(C)C)[C@H](OC(=O)[C@H](CO)NC(=O)[C@@H](NC(=O)CNC(=O)[C@@H](NC1=O)[C@H](C)O)[C@H](O)C(N)=O)C1=CC=CC=C1)[C@H](O)C(C)C,lysobactin,Lysobacter sp. ATCC 53042
+BGC0000306,CCCCCCCCCCCCCCCC(=O)N(C)[C@H](CO)C(=O)N[C@H](C)C(=O)NCC(=O)N(C)[C@H]1C2=CC(=C(C=C2)O)C3=C(C=CC(=C3)C[C@H](NC(=O)[C@@H](NC1=O)C)C(=O)O)O,arylomycin,Streptomyces filamentosus NRRL 11379
+BGC0001792,CC[C@H](C)[C@@H]1NC(=O)[C@@H](CC(C)C)NC(=O)[C@@H](CC2=CC=CC=C2)NC(=O)[C@@H](NC(=O)[C@H](CCCCN)NC(=O)[C@H](NC(=O)[C@@H](NC(=O)[C@@H](C)NC1=O)[C@@H](C)CC)[C@H](C)CC)[C@@H](C)CC,surugamide A,Streptomyces albidoflavus
+BGC0000360,NC(=O)OCC(O)CC(NC(=O)C1NCCCC1O)C(=O)NC(CC1=CN=C(N)N1)C(=O)NC(C(O)C1=NC=C(Cl)N1)C(O)=O,GE81112,Streptomyces sp. L-49973
+BGC0001393,CC(C)C[C@@H]1C(=O)N[C@H](C(=O)N[C@@H](C(=O)N[C@H](C2N[C@@H](CS2)C(=O)N[C@@H](C(=O)N[C@H](C(=O)N1)CC3=CNC4=CC=CC=C43)C(C)C)C(C)C)C(C)C)C(C)C,lugdunin,Staphylococcus lugdunensis N920143
+BGC0000375,C\1=C(C(=O)NC(=O)/C1=C/2\C=C(C(=O)NC2=O)N)N,indigoidine,Streptomyces chromofuscus
+BGC0000354,C[C@@H]1[C@@H](C(=O)N2CCCC[C@@H]2C(=O)N[C@H](C(=O)N[C@H](C(=O)NCC(=O)N[C@H](C(=O)NCC(=O)N[C@@H](C(=O)N[C@@H](C(=O)N3CCC[C@H]3C(=O)N1)C(C)C)[C@@H](C)N)CC(=O)O)CC(=O)O)[C@H](C)C(=O)O)NC(=O)[C@H](CC(=O)N)NC(=O)C/C=C\CCCCCCC(C)C,friulimicin A,Actinoplanes friuliensis
+BGC0001806,CCC(C)C1NC(=O)C(NC(=O)C(\NC(=O)C(NC(=O)C(CC(C)C)NC(=O)C(CCC(N)=O)NC(=O)C(NC(=O)C(NC(=O)C(CC(C)C)NC(=O)C(CO)NC(=O)C(NC(=O)C(CC(C)C)NC(=O)C(CO)NC(=O)C2CCCN2C(=O)C(\NC(=O)CCCC(O)=O)=C\C)C(C)C)C(C)C)C(C)C)C(C)C)=C\C)C(C)OC(=O)C(CCCCN)NC(=O)C(CCN)NC(=O)C(CCO)NC1=O,tolaasin A,Pseudomonas tolaasii
+BGC0000332,CC[C@H](C)[C@H]1C(=O)O[C@@H]([C@@H](C(=O)N[C@H](C(=O)N[C@H]2CC[C@H](N(C2=O)[C@H](C(=O)N([C@H](C(=O)N1)CC3=CC=CC=C3)C)[C@@H](C)CC)O)CCCN=C(N)N)NC(=O)[C@@H](COS(=O)(=O)O)O)C,cyanopeptolin,Microcystis sp. NIVA-CYA 172/5
+BGC0000336,CCCCCCCCCC(=O)N[C@@H](CC1=CNC2=CC=CC=C21)C(=O)N[C@H](CC(=O)N)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@H]3[C@H](OC(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@H](NC(=O)CNC(=O)[C@@H](NC(=O)[C@H](NC(=O)[C@@H](NC(=O)[C@@H](NC(=O)CNC3=O)CCCN)CC(=O)O)C)CC(=O)O)CO)[C@H](C)CC(=O)O)CC(=O)C4=CC=CC=C4N)C,daptomycin,Streptomyces filamentosus NRRL 11379
+BGC0000443,CCCCCCCCCCCCC(C(CC(=O)NC1COC(=O)C(NC(=O)C(NC(=O)/C(=C\C)/NC(=O)C(CC(=O)C(NC(=O)C(NC(=O)C(NC(=O)C(NC1=O)(CCCN)O)CC(=O)O)CCO)CC2=C3C=CNC3=CC=C2)C(C)O)C(C(=O)O)O)C(CCl)O)O)O,thanamycin,Pseudomonas sp. SHC52
+BGC0000326,CN1[C@@H](CC2=CC=C(OC3=CC4=CC(=C3O)C3=CC5=C(C=C3)C(C[C@@H](NC(=O)C(=O)C3=CC(Cl)=C(O)C(Cl)=C3)C(=O)N[C@H](C3=CC(Cl)=C(O)C(Cl)=C3)C(=O)N[C@H]4C(=O)N[C@H](C3=CC(Cl)=C(O)C(Cl)=C3)C1=O)=CN5)C=C2)C(=O)N[C@@H](C(O)=O)C1=CC=C(O)C=C1,isocomplestatin,Streptomyces lavendulae
+BGC0000416, CC(C)C[C@H](NC)C(=O)N(C)[C@@H](C(C)C)C(=O)N[C@@H](C(C)C)C(=O)N(C)[C@@H](C(C)C)C(=O)NCCc1ccccc1,rhabdopeptide 1,Xenorhabdus nematophila ATCC 19061
+BGC0000359,C1C[C@@H](C(=O)OC[C@@H](C(=O)N(C1)O)NC(=O)CNC(=O)CNC(=O)[C@@H](CCCN=C(N)N)NC(=O)C2=C(C(=CC=C2)O)O)NC(=O)CNC(=O)CNC(=O)[C@@H](CCCN=C(N)N)NC(=O)C3=C(C(=CC=C3)O)O,fuscachelin A,Thermobifida fusca YX
+BGC0001215,C[C@@H]1C[C@H](C)[C@H](CC2=CN=CO2)OC(=O)\C(C)=C/[C@H](C)C[C@H](C)[C@H](CC2=CN=CO2)OC(=O)\C(C)=C/1,conglobatin,Streptomyces conglobatus
+BGC0000415,CC1C(=O)N(C2CSC(C(C(=O)N(C(C(=O)OCC(C(=O)N1)NC(=O)C3=NC4=CC=CC=C4N=C3)C(C)C)C)N(C(=O)C(NC(=O)C(COC(=O)C(N(C2=O)C)C(C)C)NC(=O)C5=NC6=CC=CC=C6N=C5)C)C)SC)C,quinomycin,Streptomyces griseovariabilis subsp. bandungensis
+BGC0001214,[H][C@@]12CCCNN1C(=O)[C@]([H])(NC(=O)[C@@H](CC1=CC=C(OC)C=C1)NC(=O)[C@@H](NC(=O)[C@@H](NC=O)C(C)C)[C@@H](C)OC(=O)[C@H](C(C)C)N(C)C(=O)[C@H](CC(C)C)NC2=O)[C@@H](C)CC,marformycin A,Streptomyces drozdowiczii
+BGC0001614,C/C=C1NC(C(NC(C(NC(C(C(OC(C(NC(C(N(C(CNC(C(NC\1=O)CCC(N)=O)=O)=O)C)C(OC2OC(C(C(C2O)O)O)CO)C)=O)CCC(N)=O)=O)C)NC(C(C(O)C)NC(C(C(CCCCCCCCCCCCC)O)O)=O)=O)=O)C(O)C)=O)Cc3ccc(O)cc3)=O,hassallidin E,Planktothrix serta PCC 8927
+BGC0001233,CC(C)C(NC(=O)C(NC(=O)C(N)C1=CC=C(O)C=C1)C1=CC(O)=CC(O)=C1)C(=O)NC(C(=O)NC(C(=O)NC(C(=O)NC(C(=O)NC(C(=O)NC(C(C)C)C(=O)NC(C(=O)NC(C(=O)NC(CC1=CC=CC=C1)C(=O)NC(CC(O)=O)C(O)=O)C1=CC=C(O)C=C1)C1=CC(O)=CC(O)=C1)C1=CC(O)=CC(O)=C1)C1=CC=C(O)C=C1)C1=CC(O)=CC(O)=C1)C1=CC=C(O)C=C1)C1=CC(O)=CC(O)=C1,feglymycin,Streptomyces sp. DSM 11171
+BGC0000466,COC1=CC2=C(NC(=C2)C(=O)N2CC3CC33C4=C(NC(=C4)C(=O)N4CCC5=C6C=C(NC6=C(OC)C(O)=C45)SC(C)=O)C(=O)C=C23)C=C1O,yatakemycin,Streptomyces sp. TP-A2060
+BGC0000379,CCC(C)[C@@H]1NC(=O)[C@H](NC(=O)CNC(=O)[C@H](CC(O)=O)NC(=O)CNC(=O)[C@H](CC(O)=O)NC(=O)CNC(=O)C2CCCCN2C(=O)[C@H](CNC(=O)[C@@H]2CCCN2C1=O)NC(=O)[C@H](CC(O)=O)NC(=O)\C=C\CCCCCCCCCC(C)C)C(C)O,glycinocin A,Streptomyces viridochromogenes
+BGC0000418,CC1C(C(CC(O1)OC2C3C(=O)NC(C4=CC(=CC(=C4C5=C(C=CC(=C5)C(C(=O)N3)NC(=O)C6C7=CC(=C(C(=C7)OC8=CC=C2C=C8)OC9C(C(C(C(O9)COC1C(C(C(C(O1)C)O)O)O)O)O)OC1C(C(C(C(O1)CO)O)O)OC1C(C(C(CO1)O)O)O)OC1=CC=C(C=C1)C(C1C(=O)NC(C2=CC(=C(C(=C2)O)C)OC2=C(C=CC(=C2)C(C(=O)N1)N)O)C(=O)N6)O)O)OC1C(C(C(C(O1)CO)O)O)O)O)C(=O)OC)N)O,ristocetin,Amycolatopsis lurida
+BGC0000399,CCCCCCCCCCCC(O)CC(=O)N[C@@H](CC(C)C)C(=O)N[C@H](CCC(O)=O)C(=O)N[C@@H]1[C@@H](C)OC(=O)[C@@H](NC(=O)[C@@H](CO)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CC(C)C)NC(=O)[C@@H](CO)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](NC1=O)C(C)CC)C(C)C,orfamide A,Pseudomonas protegens Pf-5
+BGC0000426,O=C(NC(C)C(NC(CC1=CNC2=C1C=CC=C2)C(O)=O)=O)C(N)CC3=CC=CC=C3,sevadicin,Paenibacillus larvae
+BGC0001710,OC1=C(O)C(=CC=C1)C(=O)N[C@H]1[C@@H](CC2=CC=C(C=C2)N(=O)=O)OC1=O,obafluorin,Pseudomonas fluorescens
+BGC0000454,NC(=N)NCCC[C@@H](NC(=O)C1=CC=CC(O)=C1O)C(=O)N[C@@H](CO)C(O)=O,vanchrobactin,Vibrio anguillarum RV22
+BGC0000465,CN[C@@H](CC(C)C)C(=O)N(C)[C@@H](CC1=CC=CC=C1)C(=O)NCCC1=CC=CC=C1,xenortide A,Xenorhabdus nematophila ATCC 19061
+BGC0000371,NC(NCCC[C@@H](NC(=O)C1=C(O)C(O)=CC=C1)C(=O)NCC(=O)N[C@H]1CCCN(O)C1=O)=NC(=O)C1=CC=CC(O)=C1O,heterobactin A,Rhodococcus erythropolis PR4
+BGC0000388,C[C@H]([C@H]1C(=O)N[C@@H](C(=O)N[C@H](C(=O)N[C@@H](C(=O)N[C@H](C(=O)NCC(=O)N1)CO)[C@H]([C@@H]2CNC(=[N+]2[C@@H]3[C@H]([C@H]([C@@H]([C@H](O3)O)O)O)O)N)O)[C@H]([C@@H]4C[NH+]=C(N4)N)O)CC5=CC=C(C=C5)O[C@@H]6[C@H]([C@H]([C@@H]([C@H](O6)CO)O[C@@H]7[C@H]([C@H]([C@@H]([C@H](O7)CO)O)OC(=O)CC(C)C)O)O)O)C8=CC=CC=C8,mannopeptimycin,Streptomyces hygroscopicus
+BGC0000366,C1C[C@@H](C(=O)N(C1)O)NC(=O)[C@H](CO)NC(=O)[C@@H](CCCCN)NC(=O)[C@H](CC2=CN=CN2)NC(=O)[C@@H]3COC(=N3)C4=CC=CC=C4O,gobichelin A,Streptomyces sp. NRRL F-4415
+BGC0001131,CC(C)C[C@@H]1NC(=O)[C@@H](CC2=CC=CC=C2)NC(=O)[C@H](CCC(N)=O)NC(=O)[C@@H](CO)NC(=O)[C@H](CCCCN)NC(=O)[C@@H](CC2=CC=CC=C2)NC1=O,ambactin,Xenorhabdus miraniensis
+BGC0000315,O=C(N[C@@H](CC(O)=O)C(N[C@H](C1=CC=C(O)C=C1)C(N[C@@H](CC(O)=O)C(NCC(N[C@@H](C(N[C@@H](CCC(O)=O)C(N[C@@H](CC2=CNC3=C2C=CC=C3)C(O[C@H](C)[C@@H]4NC([C@H](CO)NC(C(O5)C5CCC)=O)=O)=O)=O)=O)[C@H](OP(O)(O)=O)C(N)=O)=O)=O)=O)=O)[C@H](CC(O)=O)NC([C@@H](CC6=CNC7=C6C=CC=C7)NC4=O)=O,CDA1b,Streptomyces coelicolor A3(2)
+BGC0000432,C1[C@H]([C@@H]2[C@@H](C(=O)N1)N=C(N2)N[C@H]3[C@@H]([C@@H]([C@H]([C@H](O3)CO)OC(=O)N)O)NC(=O)C[C@H](CCCNC(=O)C[C@H](CCCNC(=O)C[C@H](CCCNC(=O)C[C@H](CCCNC(=O)C[C@H](CCCNC(=O)C[C@H](CCCN)N)N)N)N)N)N)O,streptothricin,Streptomyces rochei
+BGC0001189,CCCCCCCCCCCC(=O)N[C@@H]([C@@H](C(=O)O)O)C(=O)N[C@H]([C@@H](C)O)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@H](CCCN(C(=O)C[C@H](C)O)O)C(=O)N[C@@H](CO)C(=O)N[C@H]1CCCN(C1=O)O,taiwachelin,Cupriavidus taiwanensis LMG 19424
+BGC0000417,CC(OC(=O)[C@@H](N)CCCN(O)C=O)[C@H](NC(=O)C1=C(O)C(O)=CC=C1)C(=O)N[C@@H](CCCN(O)C=O)C(O)=O,rhodochelin,Rhodococcus jostii RHA1
+BGC0001178,O=C1N[C@@H](C2=CC(O3)=CC(OS(O)(=O)=O)=C2)C(N[C@@H](C(N[C@@H]45)=O)C6=CC(OC7=C(Cl)C=C(C[C@@H]1NC(C(C8=CC3=C(O)C(Cl)=C8)=O)=O)C=C7)=C(O[C@@H]9[C@H](OC%10O[C@@H](C)[C@@H](O)[C@](N)(C)C%10)[C@@H](O)[C@H](O)[C@@H](CO)O9)C(OC%11=CC=C([C@@H](O)[C@H](NC4=O)C(N[C@@H](C(O)=O)C%12=CC(O)=CC(O)=C%12C%13=CC5=CC(Cl)=C%13O)=O)C=C%11Cl)=C6)=O,"UK-68,597",Actinoplanes sp. ATCC 53533
+BGC0001368,[H][C@@]1(CCCN1)[C@H](NC(=O)[C@]1(C)COC(=N1)C1=CN(C)C2=CC(Cl)=CC(O)=C12)C(=O)NC(C)(CO)C(O)=O,JBIR-126,Streptomyces sp. NRRL F-4474
+BGC0000446,C1C[C@H]2[C@@H](NC3=C(C=CC=C3O)C(=O)N2C1)C4=CNC5=CC=CC=C54,tilivalline,Klebsiella oxytoca
+BGC0001460,CC1C(C(C(C(O1)OC2C(C(C(OC2OC3=C4C=C5C=C3OC6=C(C=C(C=C6)C(C(C(=O)NC(C(=O)NC5C(=O)NC7C8=CC(=C(C=C8)O)C9=C(C=C(C=C9C(NC(=O)C(C(C1=CC=C(O4)C=C1)OC1CC(C(C(O1)C)O)(C)N)NC7=O)C(=O)O)O)O)CC(=O)N)NC(=O)C(CC(C)C)NC)O)Cl)CO)O)O)O)O)O,decaplanin,Amycolatopsis decaplanina DSM 44594
+BGC0000409,COC1=CC=CC2=C1NC(O)C1CC(C=CC(=O)N(C)C)=CN1C2=O,porothramycin A,Streptomyces albus subsp. albus
+BGC0000343,OC1=C(O)C(=CC=C1)C(=O)NC1COC(=O)C(COC(=O)C(COC1=O)NC(=O)C1=CC=CC(O)=C1O)NC(=O)C1=CC=CC(O)=C1O,enterobactin,Pseudomonas sp. J465
+BGC0001593,CC(C)C(C(=O)NC(C1CC(C2N1C2)N=C(N)N)C(=O)O)N,ficellomycin,Streptomyces ficellus
+BGC0000378,[H][C@@]12NC3=C(C=CC(Cl)=C3Cl)[C@]1(O)C[C@@H]1N2C(=O)[C@H](NC(=O)[C@H](COC)NC(=O)[C@@H]2C[C@@H](Cl)CNN2C(=O)[C@@H](OC(=O)[C@H](NC1=O)C1(C)CC1)C(C)(C)C)[C@@H](O)CC(O)=O,kutzneride 2,Kutzneria sp. 744
+BGC0000287,CO\C=C\[C@H](N)C(O)=O,L-2-amino-4-methoxy-trans-3-butenoic acid,Pseudomonas aeruginosa PAO1
+BGC0001562,CC[C@H](C)[C@@H]3NC(=O)[C@@H](CC(C)C)NC(=O)[C@@H](C(C)C)NC(=O)[C@H](Cc1c[nH]c2ccc(Cl)cc12)NC(=O)C(C(O)C(N)=O)NC(=O)[C@H](CCCN)NC3=O,curacomycin,Streptomyces curacoi
+BGC0000391,CC[C@H](C)[C@H]1C(=O)N[C@@H](CC2=CNC3=C(C=CC(=C23)N1C)C(C)(C)C=C)CO,methylpendolmycin,Marinactinospora thermotolerans
+BGC0000455,C[C@H]1[C@H]([C@@](C[C@@H](O1)O[C@@H]2[C@H]([C@@H]([C@H](O[C@H]2OC3=C4C=C5C=C3OC6=C(C=C(C=C6)[C@H]([C@H](C(=O)N[C@H](C(=O)N[C@H]5C(=O)N[C@@H]7C8=CC(=C(C=C8)O)C9=C(C=C(C=C9[C@H](NC(=O)[C@H]([C@@H](C1=CC(=C(O4)C=C1)Cl)O)NC7=O)C(=O)O)O)O)CC(=O)N)NC(=O)[C@@H](CC(C)C)NC)O)Cl)CO)O)O)(C)N)O,vancomycin,Amycolatopsis orientalis HCCB10007
+BGC0000323,O=C(N[C@@H](CC(C)C)C(N[C@@H](CC(C)C)C(N[C@@H](CCC(N)=O)C(N[C@@H](CC(C)C)C(N[C@@H](CCC(N)=O)C(N[C@@H](C(C)C)C(N[C@@H](CC(C)C)C(N[C@@H](CC(C)C)C(O)=O)=O)=O)=O)=O)=O)=O)=O)[C@H](CC1=CNC=N1)NC(CC(O)CCCCCCC)=O,cichofactin A,Pseudomonas cichorii
+BGC0001437,OC1=C(O)C(=CC=C1)C(=O)N[C@H]1[C@@H](CC2=CC=C(C=C2)N(=O)=O)OC1=O,obafluorin,Pseudomonas fluorescens
+BGC0001442,[H][C@@](CCCCC)(CC(=O)NO)C(=O)N[C@@]([H])(C(C)C)C(=O)N1CCC[C@H]1CO,actinonin,Streptomyces sp. strain ATCC 14903
+BGC0000295,CCCCC\C=C\C(=O)N(O)CCCNC(=O)CC(O)(CC(=O)NCCCN(O)C(=O)\C=C\CCCCC)C(O)=O,acinetoferrin,Acinetobacter haemolyticus
+BGC0001457,C\C=C(/C)\C=C\C(=O)N[C@@H]([C@H](C)C1=CC=CC=C1)C(=O)O[C@H](C)[C@@H](C)C(O)=O,jomthonic acid A,Streptomyces caniferus
+BGC0001780,COC1=C(O)C=C(\C=C\C2=NC(C(=O)CC3=NC(C(=O)NC\C=C\C=C)=C(C)O3)=C(C)O2)C=C1,siphonazole,Herpetosiphon sp. B060
+BGC0000450,CC(C)C1N(C)C(=O)C2CSSCC(N(C)C(=O)C(C)NC(=O)C(COC1=O)NC(=O)C1=CN=C3C=CC=CC3=N1)C(=O)N(C)C(C(C)C)C(=O)OCC(NC(=O)C1=CN=C3C=CC=CC3=N1)C(=O)NC(C)C(=O)N2C,triostin A,Streptomyces triostinicus
+BGC0001790,C[C@H](C(=O)N[C@]1(CN(C1=O)S(=O)(=O)O)OC)NC(=O)CC[C@H](C(=O)O)N,sulfazecin,Pseudomonas acidophila
+BGC0000453,CC(C)[C@@H]1NC(=O)C(C)OC(=O)[C@H](NC(=O)[C@H](OC(=O)[C@@H](NC(=O)[C@H](C)OC(=O)[C@H](NC(=O)[C@H](OC(=O)[C@@H](NC(=O)[C@H](C)OC(=O)[C@H](NC(=O)[C@H](OC1=O)C(C)C)C(C)C)C(C)C)C(C)C)C(C)C)C(C)C)C(C)C)C(C)C,valinomycin,Streptomyces tsusimaensis
+BGC0001599,CCCCCCCC(=O)NCC(C(C)C)N(N=O)O,fragin,Burkholderia cenocepacia H111
+BGC0000300,OC[C@@H](NC(=O)[C@H](CO)NC(=O)[C@H]1COC(=N1)C1=CC=CC=C1O)C(=O)N[C@@H](CO)C(=O)N[C@H](CCCN(O)C=O)C(=O)N[C@@H]1CCCN(O)C1=O,amychelin,Streptomyces sp. AA4
+BGC0001569,CC[C@H](C)[C@@H]3NC(=O)[C@@H](CC(C)C)NC(=O)[C@@H](C(C)C)NC(=O)[C@H](Cc1c[nH]c2ccccc12)NC(=O)C(C(O)C(N)=O)NC(=O)[C@H](CCCN)NC3=O,dechlorocuracomycin,Streptomyces noursei ATCC 11455
+BGC0001469,[H][C@@]12CSC(=N1)C1=CSC(=N1)C1=CSC(=N1)C1=CSC(=N1)[C@@H](C)NC(=O)[C@@]([H])(NC(=O)[C@@H](CC1=CC=CC=C1)NC2=O)[C@@H](C)CC,marthiapeptide A,Brevibacillus sp. Leaf182
+BGC0000394,COC1=C(C)C(=O)C2=C(C(CO)N3C(O)C4CC5C6OCCN6C2C3C5N4C)C1=O,naphthyridinomycin,Streptomyces lusitanus
+BGC0001582,[H][C@]1(NC(=O)[C@@H](NC(=O)[C@H](CC2=CNC3=CC=CC(OC)=C23)N(C)C(=O)[C@H](C(C)C)N(C)C(=O)[C@@H](NC(=O)[C@H](CC(C)C)N(C)C(=O)[C@@H](NC(=O)[C@]([H])([C@@H](C)O)N(C)C(=O)[C@@H](NC(=O)[C@H]([C@H](C)CC)N(C)C(=O)[C@@H](NC(=O)[C@H](C(C)C)N(C)C)C(C)C)[C@@H](C)OC(=O)[C@@H](NC1=O)C(C)C)C(C)C)C(C)C)C(C)C)[C@H](O)C1=CC=CC=C1,ecumicin,Nonomuraea sp. MJM5123
+BGC0001135,N[C@@H](CCCNC(N)=N)C(N[C@H](CC(C)C)C(N[C@@H](CCCNC(N)=N)C(N[C@@H](CCCNC(N)=N)C(N[C@H](CCCNC(N)=N)C(NCCCCN)=O)=O)=O)=O)=O,bicornutin A1,Xenorhabdus budapestensis
+BGC0000425,O=C(N[C@@H]([C@@H](C)CC)C(N[C@@H](CCO)C(N[C@H](CCN)C(N[C@@H](CCCCN)C(O)=O)=O)=O)=O)[C@@H]([C@H](O)C)NC(/C(NC([C@@H](C(C)C)NC([C@H](CC(C)C)NC([C@@H](CCC(N)=O)NC([C@H](C(C)C)NC([C@@H](C(C)C)NC([C@@H](CC(C)C)NC([C@@H](CCC(N)=O)NC([C@@H](C(C)C)NC([C@@H](CC(C)C)NC([C@@H](CO)NC([C@]1(C(CC(O)CCCCC)=O)N(C(/C(N)=C/C)=O)CCC1)=O)=O)=O)=O)=O)=O)=O)=O)=O)=O)=O)=C\C)=O,sessilin A,Pseudomonas sp. CMR12a
+BGC0000951,O[C@@H]([C@H](N1C(NC(C=C1)=O)=O)O/2)CC2=C\NC([C@@H](NC([C@H](C)NC(N[C@@H](CC3=CNC4=C3C=CC=C4)C(O)=O)=O)=O)[C@@H](N(C)C([C@H](CC5=CC=CC(O)=C5)NC([C@@H](N)C)=O)=O)C)=O,pacidamycin 1,Streptomyces coeruleorubidus
+BGC0001207,CC[C@H](C)[C@H](NC(=O)[C@@H](CC1=CC=CC=C1)NC)C(=O)N[C@@H](CO)C(=O)N[C@H](CCC(N)=O)C(=O)N[C@H]([C@H](C)CC)C(=O)N[C@@H]([C@@H](C)CC)C(=O)N[C@@H](CO)C(=O)N[C@@H]1[C@H](C)OC(=O)[C@@H](NC(=O)[C@H](C[C@H]2CN=C(N)N2)NC(=O)[C@H](C)NC1=O)[C@@H](C)CC,teixobactin,Eleftheria terrae
+BGC0000328,CCC1CC1(NC(=O)C1=CC(CC)CC2C1CCC2=O)C(O)=O,coronatine,Pseudomonas savastanoi pv. glycinea
+BGC0000353,[H][C@]1(CC[C@@H](O)[C@@H](C1)OC)\C=C(/C)[C@@H]1OC(=O)[C@]2([H])CCCCN2C(=O)C(=O)[C@]2(O)O[C@@]([H])([C@H](C[C@H]2C)OC)[C@H](C[C@@H](C)C\C(C)=C\[C@@H](CC=C)C(=O)C[C@H](O)[C@H]1C)OC,tacrolimus,Streptomyces sp. MA6548
+BGC0000310,CCC(C)C1C(=O)NC(C(=O)NC(C(=O)NC(C(=O)NC(C(=O)NCCCCC(C(=O)NC(C(=O)N1)CCCN)NC(=O)C(C(C)CC)NC(=O)C(CCC(=O)O)NC(=O)C(CC(C)C)NC(=O)C2CSC(=N2)C(C(C)CC)N)CC(=O)N)CC(=O)O)CC3=CN=CN3)CC4=CC=CC=C4,bacitracin,Bacillus licheniformis
+BGC0000458,C1[C@@H](N=C(NC1[C@@H]2C(=O)NC[C@H](C(=O)N[C@@H](C(=O)N[C@H](C(=O)N/C(=C\NC(=O)N)/C(=O)N2)CO)CO)NC(=O)C[C@@H](CCCN)N)N)O.OS(=O)(=O)O,viomycin,Streptomyces vinaceus
+BGC0000333,CO[C@@H]([C@@H]1NC(=O)[C@H](C)NC(=O)[C@H](C[C@@H](C)CO)NC(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@H](CC(C)C)N(C)C(=O)[C@@H](NC1=O)C(C)C)[C@H](C)C=C(C)C)[C@H](O)C1=CN(C2=C1C=CC=C2)C(C)(C)C=C)C1=CC=CC=C1,cyclomarin D,Salinispora arenicola CNS-205
+BGC0000407,CCCCCCCCCCCCCC(CC(=O)NC(CCC(=O)O)C(=O)NC(CCCN)C(=O)NC1CC2=CC=C(C=C2)OC(=O)C(NC(=O)C(NC(=O)C(NC(=O)C3CCCN3C(=O)C(NC(=O)C(NC(=O)C(NC1=O)C(C)O)CCC(=O)O)C)CCC(=O)N)CC4=CC=C(C=C4)O)C(C)CC)O,plipastatin,Bacillus subtilis subsp. subtilis
+BGC0001652,[H][C@@]12CC(CC)=CN1C(=O)C1=CC=C(OC)C(O)=C1N=C2,limazepine C,Streptomyces sp. ICBB 8177
+BGC0000395,NC(CCOC1=CC=C(C=C1)C(=NO)C(=O)NC1CN(C(C(O)=O)C2=CC=C(O)C=C2)C1=O)C(O)=O,nocardicin A,Nocardia uniformis subsp. tsuyamanensis
+BGC0001561,CC[C@H](C)[C@@H]3NC(=O)[C@@H](CC(C)C)NC(=O)[C@@H](C(C)C)NC(=O)[C@H](Cc1c[nH]c2ccc(Cl)cc12)NC(=O)C(C(O)C(N)=O)NC(=O)[C@H](CCCN)NC3=O,curacomycin,Streptomyces curacoi
+BGC0000339,C[C@@H]1C(=O)N([C@H]2CSC([C@@H](C(=O)N([C@H](C(=O)OC[C@H](C(=O)N1)NC(=O)C3=NC4=CC=CC=C4N=C3)C(C)C)C)N(C(=O)[C@H](NC(=O)[C@@H](COC(=O)[C@@H](N(C2=O)C)C(C)C)NC(=O)C5=NC6=CC=CC=C6N=C5)C)C)SC)C,echinomycin,Streptomyces lasaliensis
+BGC0001312,CCCCCCCC(O)CC(=O)N[C@@H](CC(C)C)C(=O)N[C@H](CCC(O)=O)C(=O)N[C@@H]1C(C)OC(=O)[C@@H](NC(=O)[C@@H](CO)NC(=O)[C@H](CC(C)C)NC(=O)[C@@H](CO)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](NC1=O)C(C)C)[C@@H](C)CC,viscosin,Pseudomonas fluorescens SBW25
+BGC0001532,[H][C@](NC(=O)[C@@H](CCCN)NC(=O)C(CC(C)C)NC(=O)C(\NC(=O)[C@@H](O)[C@@H](C)CC)=C/C)([C@@H](C)CC)C(=O)N[C@@H](C(C)C)C(=O)N[C@@H](C(C)C)C(=O)NC(CCCCN)C(=O)N[C@@H](C(C)C)C(=O)NC(CC(C)C)C(=O)NC(CCCCN)C(=O)N[C@H](CC1=CC=C(O)C=C1)C(=O)NC(CC(C)C)C(=O)N[C@H](CO)C(C)C,bogorol A,Brevibacillus laterosporus
+BGC0001414,C[C@@H]1C[C@H]2C(=O)N[C@H](C(=O)N([C@H](C(=O)N3CCC[C@H]3C(=O)N([C@H](C(=O)NCC(=O)OC([C@@H](C(=O)N[C@H](C(=O)N2C1)CC(C)C)N(C)C(=O)[C@@H]4C[C@H](CN4C(=O)[C@H](C(C)C)N(C)C(=O)C)C)C)CC(C)C)C)C(C)C)C)CC(C)C,griselimycin,Streptomyces muensis
+BGC0000437,CCCCCCCCC[C@@H](CC(=O)N[C@H]1COC(=O)[C@@H](NC(=O)[C@@H](NC(=O)/C(=C/C)/NC(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@@H](NC(=O)[C@H](NC(=O)[C@H](NC1=O)CO)CCN)CCN)CCCN=C(N)N)CC2=CC=CC=C2)[C@@H](C(=O)O)O)[C@@H](CCl)O)O,syringomycin,Pseudomonas syringae pv. syringae B728a
+BGC0000398,CCCCCCCCCCCC(O)CC(=O)NC(CC(C)C)C(=O)NC(CCC(O)=O)C(=O)NC1C(C)OC(=O)C(NC(=O)C(CO)NC(=O)C(CC(C)C)NC(=O)C(CC(C)C)NC(=O)C(CO)NC(=O)C(CC(C)C)NC(=O)C(NC1=O)C(C)C)C(C)C,orfamide B,Pseudomonas sp. CMR12a
+BGC0001406,C[C@@H]1[C@@H](C(=O)N[C@H](C(=O)N[C@H](C(=O)NCC(=O)N2CC[C@@H]([C@H]2C(=O)N/C(=C/C3=CNC4=CC=CC=C43)/C(=O)N[C@H](C(=O)N[C@H](C(=O)N5CC[C@H]([C@H]5C(=O)O1)O)[C@H](C(C)C)O)[C@H](C)C6=CNC7=CC=CC=C76)O)C)[C@H](C)O)NC(=O)[C@H](CO)NC(=O)C[C@@H](C(=O)O)N,telomycin,Streptomyces canus
+BGC0000410,CC1ON(CCC2=CNC=N2)C(=O)C1NC(=O)C1=CC=CC=C1O,pseudomonine,Pseudomonas fluorescens
+BGC0000320,CC(C)C[C@H]1OC(=O)[C@@H](NC(=O)[C@@H](OC(=O)[C@@H](C)NC(=O)[C@@H](CC(C)C)OC(=O)[C@@H](NC(=O)[C@@H](OC(=O)[C@@H](C)NC(=O)[C@@H](CC(C)C)OC(=O)[C@@H](NC(=O)[C@@H](OC(=O)[C@@H](C)NC1=O)C(C)C)C(C)C)C(C)C)C(C)C)C(C)C)C(C)C,cereulide,Bacillus cereus
+BGC0000452,CC(C)C[C@H]1C(=O)N[C@@H](C(=O)N2CCC[C@H]2C(=O)N[C@H](C(=O)N[C@@H](C(=O)N[C@H](C(=O)N[C@H](C(=O)N[C@H](C(=O)N[C@H](C(=O)N[C@H](C(=O)N1)CCCN)C(C)C)CC3=CC=C(C=C3)O)CCC(=O)N)CC(=O)N)CC4=CC=CC=C4)CC5=CC=CC=C5)CC6=CC=CC=C6,tyrocidine,Brevibacillus brevis NBRC 100599
+BGC0000460,CC1OC(=NC1C(=O)NCCCN(CCCNC(=O)C1=CC=CC(O)=C1O)C(=O)C1N=C(OC1C)C1=CC=CC=C1O)C1=CC=CC=C1O,vulnibactin,Vibrio vulnificus CMCP6
+BGC0000421,CC1=C(C(=C2[C@H]3[C@@H]4CC5=C([C@@H](N4C[C@H](N3C)CC2=C1)CNC(=O)[C@H](C)N)C(=O)C(=C(C5=O)C)OC)O)OC,safracin A,Pseudomonas fluorescens
+BGC0000457,C[C@@H]1CC(=O)N(O)CCC[C@@H](NC(C)=O)C(=O)O[C@H](C)CC(=O)N(O)CCC[C@@H](NC(C)=O)C(=O)O[C@H](C)CC(=O)N(O)CCC[C@@H](NC(C)=O)C(=O)O1,vicibactin,Rhizobium etli CFN 42
+BGC0000302,C[C@H]1C(=O)N[C@H](C(=O)NCCCC[C@H](C(=O)N[C@H](C(=O)N([C@H](C(=O)N1C)CCC2=CC=C(C=C2)O)C)C(C)C)NC(=O)N[C@@H](CCCN=C(N)N)C(=O)O)CC3=CC=CC=C3,anabaenopeptin,Anabaena sp. 90
+BGC0000303,CC1=C(O)C2=C(C=C1)C(=O)N1C=C(CC1C(O)N2)\C=C\C(N)=O,anthramycin,Streptomyces refuineus subsp. thermotolerans
