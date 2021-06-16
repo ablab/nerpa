@@ -46,82 +46,70 @@ void matcher::MatcherBase::Match::print(std::ostream &out) {
     out << "SCORE: " << scr << "\n";
 
     out << "ALIGNMENT:\n";
-    out << "ORF_ID A_domain_Idx Prediction_DL-config Prediction_Residue Matched_Residue(Nerpa_score;start_rank-end_rank)";
-    out << " -> Monomer_Idx Monomer_Code Monomer_DL-config Monomer_Residue\n";
+    out
+            << "ORF_ID A_domain_Idx Prediction_DL-config Prediction_Top_Residue Prediction_Top_Score Prediction_Modifications";
+    out << " Matched_Residue Matched_Residue_Score Nerpa_Score";
+    out << " Monomer_Idx Monomer_Code Monomer_DL-config Monomer_Residue Monomer_Modifications\n";
+
+    auto _print_modifications = [&out](const std::vector<aminoacid::Modification> &mods) {
+        if (mods.empty()) {
+            out << "-";
+        }
+        for (auto &mod : mods) {
+            if (&mod != &mods[0]) {
+                out << "+";
+            }
+            out << aminoacid::ModificationInfo::NAMES[mod.getId()];
+        }
+    };
+
     for (auto it = alignment.rbegin(); it != alignment.rend(); ++it) {
         int nrp_pos, part_id, part_pos;
         std::tie(nrp_pos, part_id, part_pos) = *it;
 
         if (part_id == -1) {
-            out << "- - - - " << "none(" << scoreFun->InsertionScore() << ";-1--1)";
+            out << "- - - - - - - - " << scoreFun->InsertionScore();
         } else {
             nrpsprediction::AAdomainPrediction amn_pred = nrpParts[part_id].getAAdomainPrediction()[part_pos];
             nrpsprediction::AAdomainPrediction::AminoacidProb amprob;
-            aminoacid::Aminoacid aa = amn_pred.getAAPrediction()[0].aminoacid;
+            nrpsprediction::AAdomainPrediction::AminoacidProb top_amprob = amn_pred.getAAPrediction()[0];
             std::pair<int, int> pos;
             std::pair<double, aminoacid::Aminoacid> res;
+            double top_score = top_amprob.prob;
 
+            // ORF_ID A_domain_Idx
             out << nrpParts[part_id].get_orf_name() << " " << part_pos << " ";
-            out << aa.getConfiguration() << " " << aa;
-            for (auto &mod : amn_pred.get_modifications()) {
-                out << "+" << aminoacid::ModificationInfo::NAMES[mod.getId()];
-            }
+            // Prediction_DL-config Prediction_Top_Residue Prediction_Top_Score
+            out << top_amprob.aminoacid.getConfiguration() << " " << top_amprob.aminoacid << " " << top_score
+                << " ";
+            // Prediction_Modifications
+            _print_modifications(amn_pred.get_modifications());
             out << " ";
             if (nrp_pos == -1) {
-//                res = std::make_pair(0, amn_pred.getAAPrediction()[0].aminoacid);
-                out << "none(" << scoreFun->DeletionScore() << ";-1--1)";
+                out << "none none " << scoreFun->DeletionScore();
             } else {
                 aminoacid::Aminoacid nrp_aa = nrp->getAminoacid(nrp_pos);
                 res = scoreFun->getTheBestAAInPred(amn_pred, nrp_aa, amprob, pos);
-
-                out << res.second << "(" << res.first << ";"
-                    << pos.first << "-" << pos.second << ")";
+                // Matched_Residue Matched_Residue_Score Nerpa_Score
+                out << res.second << " " << amprob.prob << " " << scoreFun->aaScore(amn_pred, nrp_aa);
             }
         }
 
-        out << " -> ";
+        out << " ";
 
         if (nrp_pos == -1) {
-            out << "- - - -";
+            out << "- - - - -";
         } else {
             aminoacid::Aminoacid aa = nrp->getAminoacid(nrp_pos);
-            out << nrp_pos << " " << nrp->getFormula(nrp_pos) << " " << aa.getConfiguration() << " " << aa.get_name();
-            for (auto &mod : aa.getModifications()) {
-                out << "+" << aminoacid::ModificationInfo::NAMES[mod.getId()];
-            }
+            // Monomer_Idx Monomer_Code Monomer_DL-config Monomer_Residue
+            out << nrp_pos << " " << nrp->getFormula(nrp_pos) << " " << aa.getConfiguration() << " " << aa.get_name()
+                << " ";
+            // Monomer_Modifications
+            _print_modifications(aa.getModifications());
         }
 
         out << "\n";
     }
-
-    out << "GRAPH:\n";
-    std::vector<int> rp(parts_id.size());
-    for (int i = 0; i < rp.size(); ++i) {
-        rp[nrp->getInd(i)] = i;
-    }
-
-    out << "number of components : " << parts_id.size() << "\n";
-    for (int i = 0; i < parts_id.size(); ++i) {
-        int ri = rp[i];
-        std::string formula = nrp->getFormula(i);
-
-        out << i << " " << formula << " 0 -> ";
-
-        if (!isMatched(ri)) {
-            out << "-\n";
-        } else {
-            nrpsprediction::AAdomainPrediction amn_pred = nrpParts[parts_id[ri]].getAAdomainPrediction()[parts_pos[ri]];
-            nrpsprediction::AAdomainPrediction::AminoacidProb amprob;
-            std::pair<int, int> pos;
-            auto res = scoreFun->getTheBestAAInPred(amn_pred, nrp->getAminoacid(ri), amprob, pos);
-
-            out << res.second << "("  << res.first <<"; "
-                << pos.first << "-" << pos.second << ") "
-                << nrpParts[parts_id[ri]].get_orf_name() << " " << parts_pos[ri] << "\n";
-        }
-    }
-
-    out << nrp->getGraphInString();
     out << "\n\n\n";
 }
 
