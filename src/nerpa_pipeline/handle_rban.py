@@ -268,7 +268,7 @@ def generate_info_from_rban_output(path_to_rban_output, path_to_monomers_tsv, pa
 
 def generate_rban_input_from_smiles_strings(smiles, path_to_rban_input):
     with open(path_to_rban_input, 'w') as f:
-        json.dump([{'id': i, 'smiles': smi.strip()} for i, smi in enumerate(smiles)], f, indent=2)
+        json.dump([{'id': f'compound_{i:06d}', 'smiles': smi.strip()} for i, smi in enumerate(smiles)], f, indent=2)
 
 
 def generate_rban_input_from_smiles_tsv(path_to_csv, path_to_rban_input, sep='\t',
@@ -277,7 +277,7 @@ def generate_rban_input_from_smiles_tsv(path_to_csv, path_to_rban_input, sep='\t
     with open(path_to_csv, newline='') as f_in:
         reader = csv.DictReader(f_in, delimiter=sep, quoting=csv.QUOTE_NONE)
         for i, row in enumerate(reader, 1):
-            idx = str(i) if id_col_name is None else row[id_col_name]
+            idx = f'compound_{i:06d}' if id_col_name is None else row[id_col_name]
             smi = row[smi_col_name]
             result.append({'id': idx, 'smiles': smi.strip()})
 
