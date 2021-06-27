@@ -293,7 +293,7 @@ def run(args, log):
     # automatically remove old files from the temporary workspace
     shutil.copytree(input_configs_dir, current_configs_dir, copy_function=shutil.copy)
 
-    path_to_graphs = os.path.join(output_dir, 'path_to_graphs')
+    path_to_graphs = os.path.join(output_dir, 'structures.info')
     local_monomers_cfg = os.path.join(current_configs_dir, "monomers.tsv")
     path_to_rban = os.path.join(nerpa_init.external_tools_dir, 'rBAN', 'rBAN-1.0.jar')
     path_to_monomers_db = create_merged_monomers_db(
@@ -311,7 +311,7 @@ def run(args, log):
             process_hybrids=args.process_hybrids
         )
 
-    details_mol_dir = os.path.join(output_dir, 'details_mols')
+    details_mol_dir = os.path.join(output_dir, 'details')
     if not os.path.exists(details_mol_dir):
         os.makedirs(details_mol_dir)
 

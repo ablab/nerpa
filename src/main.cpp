@@ -73,7 +73,7 @@ std::string get_file_name(std::string cur_line) {
     return res;
 }
 
-std::vector<nrpsprediction::BgcPrediction>  save_predictions(const std::string& file_name) {
+std::vector<nrpsprediction::BgcPrediction>  load_predictions(const std::string& file_name) {
     std::vector<nrpsprediction::BgcPrediction> preds;
     std::ifstream in_predictions_files(file_name);
 
@@ -220,9 +220,9 @@ int main(int argc, char* argv[]) {
     }
 
     INFO("NRPs Matcher START");
-    INFO("Saving predictions");
-    std::vector<nrpsprediction::BgcPrediction> preds = save_predictions(options["predictions"].as<std::string>());
-    INFO("Saving NRPs structures");
+    INFO("Loading predictions");
+    std::vector<nrpsprediction::BgcPrediction> preds = load_predictions(options["predictions"].as<std::string>());
+    INFO("Loading NRPs structures");
     std::vector<std::shared_ptr<nrp::NRP>> mols = load_nrps_from_monomeric_info(options["structures"].as<std::string>());
 
     if (start_from == 0) {
@@ -240,7 +240,7 @@ int main(int argc, char* argv[]) {
 #   pragma omp parallel for
     for (int i = start_from; i < mols.size(); ++i) {
         INFO("NRP structure #" << i)
-        std::string output_filename = gen_filename(mols[i]->get_file_name(), "details_mols/");
+        std::string output_filename = gen_filename(mols[i]->get_file_name(), "details/");
 
         run_mol_predictions(preds, mols[i], output_filename);
     }
