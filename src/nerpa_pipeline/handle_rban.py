@@ -11,7 +11,7 @@ import nerpa_utils
 
 # TODO: move this section to some sort of config file
 # see rban.src.main.java.molecules.bond.BondType for the full list
-PNP_BONDS = ['AMINO', 'AMINO_TRANS', 'OXAZOLE_CYCLE', 'THIAZOLE_CYCLE', 'PYRIMIDINE_CYCLE']
+PNP_BONDS = ['AMINO', 'AMINO_TRANS', 'OXAZOLE_CYCLE', 'THIAZOLE_CYCLE', 'PYRIMIDINE_CYCLE', 'HETEROCYCLE']
 UNDEFINED_NAME = 'NA'
 
 
@@ -148,6 +148,8 @@ def process_single_record(log, rban_record, recognized_monomers, backbone_bond_t
         G.nodes[i]['isIdentified'] = True
     try:
         cycles, paths, _ = putative_backbones(G, min_nodes=2)
+        if not cycles and not paths:
+            raise
     except Exception as e:
         log.warning(f'Structure "{rban_record["id"]}": unable to determine backbone sequence. '
                     f'Skipping "{rban_record["id"]}".')
@@ -229,7 +231,7 @@ def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, path_to
     hybrid_monomers_dict = defaultdict(dict)
     new_monomers_processed = json.loads(open(new_rban_output).read())
     for rban_record in new_monomers_processed:
-        struct_id, monomer_id = map(int, rban_record['id'].split('_'))
+        struct_id, monomer_id = map(int, rban_record['id'].rsplit('_', 1))
         aa_smi = rban_record["isomericSmiles"]
         aa_code = rban_record["monomericGraph"]["monomericGraph"]['monomers'][0]['monomer']['monomer']['monomer']
         if not aa_code.startswith('X'):
