@@ -23,9 +23,9 @@ def handle_file(fname, align):
                     curl = lines[j].split(' ')
                     print(curl)
                     if curl[1] == "-":
-                        align.append([pr_id, "-", "-", "-", str_id, "STRUCTURE", curl[-4], curl[-3], curl[-2], curl[-1].strip()])
+                        align.append([pr_id, "-", "-", "-", "-", str_id, "STRUCTURE", curl[-4], curl[-3], curl[-2], curl[-1].strip()])
                     else:
-                        align.append([pr_id, curl[0].split("_")[0], curl[0].split("_")[1], "A" + str(int(curl[1]) + 1), str_id, "STRUCTURE", curl[-4], curl[-3], curl[-2], curl[-1].strip()])
+                        align.append([pr_id, curl[0].split("_")[0], curl[0].split("_")[1], "A" + str(int(curl[1]) + 1), curl[2] , str_id, "STRUCTURE", curl[-4], curl[-3], curl[-2], curl[-1].strip()])
                     j += 1
                 
                 while not lines[j].startswith("number of com"):
@@ -44,7 +44,7 @@ def handle_file(fname, align):
 
                 strst = gph.print_structure()
                 for g in range(stj, len(align)):
-                    align[g][5] = strst
+                    align[g][6] = strst
 
 
 def main():
@@ -56,7 +56,7 @@ def main():
         if os.path.isfile(os.path.join(dpath, fname)):
             handle_file(os.path.join(dpath, fname), align)
 
-    df = pd.DataFrame(align, columns=["BGC", "CONTIG", "ORF", "A-ID", "STRUCTURE ID", "rBan STRUCTURE", "rBan VERTEX", "rBan AA-ID", "rBan STRUCT_CONFIGURATION", "rBan AA"])
+    df = pd.DataFrame(align, columns=["BGC", "CONTIG", "ORF", "A-ID", "L-/D-", "STRUCTURE ID", "rBan STRUCTURE", "rBan VERTEX", "rBan AA-ID", "rBan STRUCT_CONFIGURATION", "rBan AA"])
     print(df.head())
     df.to_csv(os.path.join(res_folder, "correct_align.csv"), index=False)
 
