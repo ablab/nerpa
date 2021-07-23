@@ -11,7 +11,7 @@ import nerpa_utils
 
 # TODO: move this section to some sort of config file
 # see rban.src.main.java.molecules.bond.BondType for the full list
-PNP_BONDS = ['AMINO', 'AMINO_TRANS', 'OXAZOLE_CYCLE', 'THIAZOLE_CYCLE', 'PYRIMIDINE_CYCLE']
+PNP_BONDS = ['AMINO', 'AMINO_TRANS', 'OXAZOLE_CYCLE', 'THIAZOLE_CYCLE', 'PYRIMIDINE_CYCLE', 'HETEROCYCLE']
 UNDEFINED_NAME = 'NA'
 
 
@@ -148,6 +148,8 @@ def process_single_record(log, rban_record, recognized_monomers, backbone_bond_t
         G.nodes[i]['isIdentified'] = True
     try:
         cycles, paths, _ = putative_backbones(G, min_nodes=2)
+        if not cycles and not paths:
+            raise
     except Exception as e:
         log.warning(f'Structure "{rban_record["id"]}": unable to determine backbone sequence. '
                     f'Skipping "{rban_record["id"]}".')
@@ -229,7 +231,7 @@ def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, path_to
     hybrid_monomers_dict = defaultdict(dict)
     new_monomers_processed = json.loads(open(new_rban_output).read())
     for rban_record in new_monomers_processed:
-        struct_id, monomer_id = map(int, rban_record['id'].split('_'))
+        struct_id, monomer_id = map(int, rban_record['id'].rsplit('_', 1))
         aa_smi = rban_record["isomericSmiles"]
         aa_code = rban_record["monomericGraph"]["monomericGraph"]['monomers'][0]['monomer']['monomer']['monomer']
         if not aa_code.startswith('X'):
@@ -268,7 +270,7 @@ def generate_info_from_rban_output(path_to_rban_output, path_to_monomers_tsv, pa
 
 def generate_rban_input_from_smiles_strings(smiles, path_to_rban_input):
     with open(path_to_rban_input, 'w') as f:
-        json.dump([{'id': i, 'smiles': smi.strip()} for i, smi in enumerate(smiles)], f, indent=2)
+        json.dump([{'id': f'compound_{i:06d}', 'smiles': smi.strip()} for i, smi in enumerate(smiles)], f, indent=2)
 
 
 def generate_rban_input_from_smiles_tsv(path_to_csv, path_to_rban_input, sep='\t',
@@ -277,7 +279,7 @@ def generate_rban_input_from_smiles_tsv(path_to_csv, path_to_rban_input, sep='\t
     with open(path_to_csv, newline='') as f_in:
         reader = csv.DictReader(f_in, delimiter=sep, quoting=csv.QUOTE_NONE)
         for i, row in enumerate(reader, 1):
-            idx = str(i) if id_col_name is None else row[id_col_name]
+            idx = f'compound_{i:06d}' if id_col_name is None else row[id_col_name]
             smi = row[smi_col_name]
             result.append({'id': idx, 'smiles': smi.strip()})
 
