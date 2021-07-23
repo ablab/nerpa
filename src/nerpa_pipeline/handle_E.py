@@ -24,21 +24,24 @@ def get_D_AA(dirname, orfs_order):
 
     is_AA = lambda dlst : ("PKS" in dlst[2]) or ("AMP-binding" == dlst[2])
 
-    for orfds in domains:
-        cur_i = 0
-        has_d = False
+    has_d = False
+    cur_di = 0
+    cur_i = 0
+
+    for did in range(len(domains)):
+        orfds = domains[did]
         for i in range(len(orfds)):
             if is_AA(orfds[i]):
                 if has_d:
-                    D_AA_list.append(orfds[cur_i][0] + "_" + orfds[cur_i][1].split('_')[-1])
-
+                    D_AA_list.append(domains[cur_di][cur_i][0] + "_" + domains[cur_di][cur_i][1].split('_')[-1])
                 cur_i = i
+                cur_di = did
                 has_d = False
 
             if orfds[i][-1] == "Condensation_Dual" or orfds[i][-1] == "Epimerization":
                 has_d = True
 
-        if has_d:
-            D_AA_list.append(orfds[cur_i][0] + "_" + orfds[cur_i][1].split('_')[-1])
+    if has_d:
+        D_AA_list.append(domains[cur_di][cur_i][0] + "_" + domains[cur_di][cur_i][1].split('_')[-1])
 
     return D_AA_list
