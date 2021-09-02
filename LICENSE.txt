@@ -1,0 +1,59 @@
+Nerpa: a tool for discovering biosynthetic gene clusters of nonribosomal peptides
+Copyright (c) 2018-2021 Saint Petersburg State University
+
+Nerpa is dual-licensed and is available under GPLv3 or
+Creative Commons BY-NC-SA 4.0 licenses.
+
+Nerpa is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License, Version 3,
+dated June 2007, as published by the Free Software Foundation:
+https://www.gnu.org/licenses/gpl-3.0.en.html
+Nerpa is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.
+
+Nera is free software; you can redistribute it and/or modify
+it under the terms of Creative Commons BY-NC-SA 4.0 license.
+See https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode for
+more details.
+
+-------------------------------------------------------------------------------
+
+Nerpa
+Version: see VERSION
+
+Developed in Center for Algorithmic Biotechnology, Institute of Translational Biomedicine, St. Petersburg State University.
+
+Nerpa source code contributors:
+    Olga Kunyavskaya, 
+    Azat M. Tagirdzhanov,
+    Alexey Gurevich
+
+Installation instructions and manual can be found on the website:
+http://cab.spbu.ru/software/nerpa/
+
+Address for communication: aleksey.gurevich@spbu.ru
+
+Reference:
+
+Kunyavskaya, O., Tagirdzhanov, A.M., et al. 2021. Nerpa: a tool for discovering biosynthetic gene clusters of nonribosomal peptides. Submitted.
+
+-------------------------------------------------------------------------------
+
+The Nerpa pipeline may run the following third-party software:
+* rBAN v1
+The tool is provided in the Nerpa package (downloaded from https://bitbucket.org/sib-pig/rban/downloads/).
+rBAN is used if `--process-hybrids` is specified and/or if input structures are in the SMILES format. 
+See Ricart et al., 2019, for more information on rBAN.
+The rBAN web service is available at https://web.expasy.org/rban.
+rBAN is licensed under BY-NC-SA 4.0.
+
+* antiSMASH v5
+The tool should be pre-installed and added to PATH or the installation path provided via `--antismash-path`. See the installation instructions at https://docs.antismash.secondarymetabolites.org/install/.
+antiSMASH is used if input genomes are in the FASTA of GenBank formats.
+See Blin et al., 2019, for more information on antiSMASH v5.
+The antiSMASH web service is available at http://antismash.secondarymetabolites.org/.
+antiSMASH is licensed under the GNU Affero General Public License version 3.0.
+
+
