@@ -18,6 +18,7 @@ import predictions_preprocessor
 import nerpa_utils
 import handle_rban
 import logger
+import src.markov_probability_model.main
 
 # for detecting and processing antiSMASH v.5 output
 site.addsitedir(os.path.join(nerpa_init.python_modules_dir, 'NRPSPredictor_utils'))
@@ -58,6 +59,21 @@ def parse_args(log):
     advanced_input_group.add_argument("--configs_dir", help="custom directory with adjusted Nerpa configs", action="store", type=str)
     advanced_input_group.add_argument("--force-existing-outdir", dest="output_dir_reuse", action="store_true", default=False,
                                       help="don't crash if the output dir already exists")
+
+    alternative_model_group = parser.add_argument_group(
+        'Alternative model parameters',
+        'Additionally use Hidden Markov Model for calculating probabilities and compare results')
+    alternative_model_group.add_argument("--use_alternative_model", type=bool, default=False,
+                                         help="use additional model or not")
+    alternative_model_group.add_argument("--algo", nargs='+',
+                                         help="list of algorithms to use for alignment",
+                                         default=['viterbi', 'global_viterbi', 'maximum_accuracy', 'maximum_posterior_decoding'])
+    alternative_model_group.add_argument("--use_bw", type=bool, default=False,
+                                         help="use Baum-Welch for parameters estimation or not")
+    alternative_model_group.add_argument("--bw_iters", type=int, default=10,
+                                         help="number of Baum-Welch iterations")
+    alternative_model_group.add_argument("--topk", type=list, default=[1, 3, 5, 10],
+                                         help="k value for top-k-matching in computing results")
 
     # parser.add_argument("--insertion", help="insertion score [default=-2.8]", default=-2.8, action="store")
     # parser.add_argument("--deletion", help="deletion score [default=-5]", default=-5, action="store")
@@ -321,6 +337,13 @@ def run(args, log):
                "--threads", str(args.threads)]
     log.info("\n======= Nerpa matching")
     nerpa_utils.sys_call(command, log, cwd=output_dir)
+    if args.use_alternative_model:
+        src.markov_probability_model.main.run(
+            data_dir=output_dir, prob_gen_filepath=os.path.join(nerpa_init.configs_dir, 'prob_gen.cfg'),
+            results_dir=os.path.join(output_dir, 'markov_probability_model_results'),
+            mibig_path=os.path.join(nerpa_init.nerpa_root_dir, 'data', 'mibig.csv'),
+            pool_sz=args.threads,
+            algo=args.algo, use_bw=args.use_bw, bw_iters=args.bw_iters, topk=args.topk)
     log.info("RESULTS:")
     log.info("Main report is saved to " + os.path.join(output_dir, 'report.csv'), indent=1)
     log.info("Detailed reports are saved to " + output_dir, indent=1)
