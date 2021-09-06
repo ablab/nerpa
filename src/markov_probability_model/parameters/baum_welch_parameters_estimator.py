@@ -98,7 +98,7 @@ def _estimate_g(alphabet: List[str], seqs1: List[AminoacidSequence], seqs2: List
                                                                                                   seq2.symbols[s - 1])
                     ] + [my_log(PSEUDOCOUNT)]) -
         log_add_exp([
-                        2 * gam[t, s, [hmm.state_index(hmm.M)]]
+                        gam[t, s, [hmm.state_index(hmm.M)]] + my_log(2)
                         for seq1, seq2, gam in zip(seqs1, seqs2, gammas)
                         for t in range(1, len(seq1) + 1) for s in range(1, len(seq2) + 1)
                         if
@@ -113,7 +113,7 @@ def _estimate_f(alphabet: List[str], seqs1: List[AminoacidSequence], seqs2: List
                 condition: Callable[[Aminoacid, ScoredAminoacid], bool]) -> Dict[str, float]:
     return {a: my_exp(
         log_add_exp([
-                        gam[t, s, hmm.state_index(hmm.M)]
+                        gam[t, s, hmm.state_index(hmm.M)] + my_log(2)
                         for seq1, seq2, gam in zip(seqs1, seqs2, gammas)
                         for t in range(1, len(seq1) + 1) for s in range(1, len(seq2) + 1)
                         if seq2.symbols[s - 1].name == a and seq1.symbols[t - 1].name == a and condition(
@@ -121,7 +121,7 @@ def _estimate_f(alphabet: List[str], seqs1: List[AminoacidSequence], seqs2: List
                 seq2.symbols[s - 1])
                     ] + [my_log(PSEUDOCOUNT)]) -
         log_add_exp([
-                        gam[t, s, hmm.state_index(hmm.M)]
+                        gam[t, s, hmm.state_index(hmm.M)] + my_log(2)
                         for seq1, seq2, gam in zip(seqs1, seqs2, gammas)
                         for t in range(1, len(seq1) + 1) for s in range(1, len(seq2) + 1)
                         if
