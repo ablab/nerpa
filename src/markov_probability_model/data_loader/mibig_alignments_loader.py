@@ -33,7 +33,7 @@ class MibigAlignmentsLoader(AlignmentsLoader):
                     s2 = _choose_pred_symbol(pred_symbols, s1)
                     modification2: str = None if pandas.isna(e_domain) or e_domain == '-' else '@' + e_domain
                     methylation2: bool = False if pandas.isna(m_domain) or m_domain == '-' else (
-                            m_domain.lower() == 'true')
+                                m_domain.lower() == 'true')
                     prediction.append(ScoredAminoacid(s2, modification2, methylation2))
 
             outp.append(PairwiseAlignmentOutputWithLogs(

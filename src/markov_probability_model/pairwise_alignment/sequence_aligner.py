@@ -1,8 +1,7 @@
 import abc
 
 from src.markov_probability_model.base.sequence import AlignedAminoacidSequence, AlignedScoredAminoacidSequence, \
-    AminoacidSequence, \
-    ScoredAminoacidSequence
+    AminoacidSequence, ScoredAminoacidSequence
 from typing import TypeVar, Generic
 
 
@@ -11,6 +10,10 @@ class PairwiseAlignmentOutput:
                  aligned_sequence2: AlignedScoredAminoacidSequence):
         self.aligned_sequence1 = aligned_sequence1
         self.aligned_sequence2 = aligned_sequence2
+        assert len(self.aligned_sequence1) == len(self.aligned_sequence2)
+
+    def __len__(self):
+        return len(self.aligned_sequence1)
 
 
 class PairwiseAlignmentOutputWithLogs(PairwiseAlignmentOutput):

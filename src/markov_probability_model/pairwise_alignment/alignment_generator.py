@@ -1,10 +1,11 @@
 import abc
 
-from typing import List, TypeVar, Generic
+from typing import List, TypeVar, Generic, Optional
 from src.markov_probability_model.pairwise_alignment.sequence_aligner import PairwiseAlignmentOutputWithLogs, \
     PairwiseSequenceAligner
 from src.markov_probability_model.data_loader.data_loader import TwoSequenceListsData
 from src.markov_probability_model.base.sequence import AminoacidSequence
+from src.markov_probability_model.pairwise_alignment.logger import AlignmentsLogger
 from multiprocessing import Pool
 from tqdm import tqdm
 
@@ -20,9 +21,10 @@ O = TypeVar('O')
 
 class AllPairsAlignmentGenerator(AlignmentGenerator, Generic[O]):
     def __init__(self, data: TwoSequenceListsData, sequence_aligner: PairwiseSequenceAligner[O],
-                 pool_sz: int = 1):
+                 logger: Optional[AlignmentsLogger[O]] = None, pool_sz: int = 1):
         self._data = data
         self._sequence_aligner = sequence_aligner
+        self._logger = logger
         self._pool_sz = pool_sz
 
     def generate_alignments(self) -> List[O]:
@@ -36,4 +38,6 @@ class AllPairsAlignmentGenerator(AlignmentGenerator, Generic[O]):
         alignments: List[O] = []
         for seq2 in self._data.sequences2:
             alignments.append(self._sequence_aligner.align(seq1, seq2))
+            if self._logger is not None:
+                self._logger.log_alignment(alignments[-1])
         return alignments

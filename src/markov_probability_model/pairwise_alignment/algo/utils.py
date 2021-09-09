@@ -1,11 +1,12 @@
 import numpy as np
 
 from src.markov_probability_model.base.alphabet import Gap, AlignedAminoacid, AlignedScoredAminoacid
-from src.markov_probability_model.base.sequence import AminoacidSequence, ScoredAminoacidSequence
+from src.markov_probability_model.base.sequence import AminoacidSequence, ScoredAminoacidSequence, \
+    AlignedAminoacidSequence, AlignedScoredAminoacidSequence
 from src.markov_probability_model.base.utils import my_log, log_add_exp, my_exp
 from src.markov_probability_model.hmm.pairwise_alignment_hmm import PairwiseAlignmentHmm, \
     PairwiseAlignmentHmmObservation
-from typing import Tuple
+from typing import Tuple, Optional, List
 
 
 def _get_symbols(seq1: AminoacidSequence, seq2: ScoredAminoacidSequence, i: int, j: int, di: int, dj: int) -> \
@@ -85,3 +86,30 @@ def calculate_marginal_prob(seq1: AminoacidSequence, seq2: ScoredAminoacidSequen
     marginal_prob = np.array(
         [[[my_exp(log_marginal_prob[i, j, p]) for p in range(k)] for j in range(m)] for i in range(n)])
     return marginal_prob
+
+
+def _get_sequence_from_aligned(sequence):
+    return [a for a in sequence.symbols if a != Gap()]
+
+
+def log_marginal_prob_for_alignment(sequence1: AlignedAminoacidSequence, sequence2: AlignedScoredAminoacidSequence,
+                                    hmm: PairwiseAlignmentHmm,
+                                    marginal_prob: Optional[np.ndarray] = None) -> List[float]:
+    if marginal_prob is None:
+        seq1 = AminoacidSequence(sequence1.sequence_id, _get_sequence_from_aligned(sequence1))
+        seq2 = ScoredAminoacidSequence(sequence2.sequence_id, _get_sequence_from_aligned(sequence2))
+        alpha = calculate_log_alpha(seq1, seq2, hmm)
+        beta = calculate_log_beta(seq1, seq2, hmm)
+        marginal_prob = calculate_marginal_prob(seq1, seq2, hmm, alpha, beta)
+
+    d = {hmm.M: (1, 1), hmm.A: (1, 0), hmm.B: (0, 1)}
+    i, j = 0, 0
+    probs: List[float] = []
+    for k in range(len(sequence1)):
+        symb1: AlignedAminoacid = sequence1.symbols[k]
+        symb2: AlignedScoredAminoacid = sequence2.symbols[k]
+        state = hmm.A if symb2 == Gap() else hmm.B if symb1 == Gap() else hmm.M
+        i += d[state][0]
+        j += d[state][1]
+        probs.append(marginal_prob[i, j, hmm.state_index(state)])
+    return probs

@@ -72,6 +72,8 @@ def parse_args(log):
                                          help="use Baum-Welch for parameters estimation or not")
     alternative_model_group.add_argument("--bw_iters", type=int, default=10,
                                          help="number of Baum-Welch iterations")
+    alternative_model_group.add_argument("--log_alignments", type=bool, default=True,
+                                         help="pretty log alignments with marginal probabilities or not")
     alternative_model_group.add_argument("--topk", type=list, default=[1, 3, 5, 10],
                                          help="k value for top-k-matching in computing results")
 
@@ -342,8 +344,8 @@ def run(args, log):
             data_dir=output_dir, prob_gen_filepath=os.path.join(nerpa_init.configs_dir, 'prob_gen.cfg'),
             results_dir=os.path.join(output_dir, 'markov_probability_model_results'),
             mibig_path=os.path.join(nerpa_init.nerpa_root_dir, 'data', 'mibig.csv'),
-            pool_sz=args.threads,
-            algo=args.algo, use_bw=args.use_bw, bw_iters=args.bw_iters, topk=args.topk)
+            pool_sz=args.threads, algo=args.algo, use_bw=args.use_bw, bw_iters=args.bw_iters,
+            log_alignments=args.log_alignments, topk=args.topk)
     log.info("RESULTS:")
     log.info("Main report is saved to " + os.path.join(output_dir, 'report.csv'), indent=1)
     log.info("Detailed reports are saved to " + output_dir, indent=1)

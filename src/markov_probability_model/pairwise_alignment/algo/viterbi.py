@@ -11,14 +11,15 @@ from src.markov_probability_model.hmm.pairwise_alignment_hmm import PairwiseAlig
     PairwiseAlignmentHmmObservation, PairwiseAlignmentHmmState
 from src.markov_probability_model.pairwise_alignment.sequence_aligner import PairwiseSequenceAligner
 from src.markov_probability_model.pairwise_alignment.score_augmentations import ScoreAugmentator
+from src.markov_probability_model.pairwise_alignment.algo.utils import log_marginal_prob_for_alignment
 from src.markov_probability_model.base.utils import my_log
 from typing import List
 
 
 class ViterbiOutput(PairwiseAlignmentOutputWithLogs, ScoredPairwiseAlignmentOutput):
     def __init__(self, aligned_sequence1: AlignedAminoacidSequence, aligned_sequence2: AlignedScoredAminoacidSequence,
-                 viterbi_score: float, log: str):
-        super(ViterbiOutput, self).__init__(aligned_sequence1, aligned_sequence2, log)
+                 viterbi_score: float, logs: str):
+        super(ViterbiOutput, self).__init__(aligned_sequence1, aligned_sequence2, logs)
         self.viterbi_score = viterbi_score
 
     def score(self):
@@ -112,7 +113,10 @@ class Viterbi(PairwiseSequenceAligner[ViterbiOutput]):
             i += d[st][0]
             j += d[st][1]
 
-        return ViterbiOutput(AlignedAminoacidSequence(seq1.sequence_id, aligned1),
-                             AlignedScoredAminoacidSequence(seq2.sequence_id, aligned2),
+        aligned_seq1: AlignedAminoacidSequence = AlignedAminoacidSequence(seq1.sequence_id, aligned1)
+        aligned_seq2: AlignedScoredAminoacidSequence = AlignedScoredAminoacidSequence(seq2.sequence_id, aligned2)
+        logs.append('Marginal probs:')
+        logs.append(' '.join(map(str, log_marginal_prob_for_alignment(aligned_seq1, aligned_seq2, hmm))))
+        return ViterbiOutput(aligned_seq1, aligned_seq2,
                              self._sa.recalculate_score(best_score, seq1, seq2, hmm.parameters),
-                             log='\n'.join(logs))
+                             logs='\n'.join(logs))

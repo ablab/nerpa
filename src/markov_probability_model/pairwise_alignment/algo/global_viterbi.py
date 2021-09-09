@@ -13,8 +13,8 @@ from src.markov_probability_model.base.utils import log_add_exp
 
 class GlobalViterbiOutput(PairwiseAlignmentOutputWithLogs, ScoredPairwiseAlignmentOutput):
     def __init__(self, aligned_sequence1: AlignedAminoacidSequence, aligned_sequence2: AlignedScoredAminoacidSequence,
-                 global_viterbi_score: float, log: str = ''):
-        super(GlobalViterbiOutput, self).__init__(aligned_sequence1, aligned_sequence2, log)
+                 global_viterbi_score: float, logs: str = ''):
+        super(GlobalViterbiOutput, self).__init__(aligned_sequence1, aligned_sequence2, logs)
         self.global_viterbi_score = global_viterbi_score
 
     def score(self):
@@ -36,4 +36,5 @@ class GlobalViterbi(PairwiseSequenceAligner[GlobalViterbiOutput]):
         o: ViterbiOutput = self._viterbi.align(seq1, seq2)
 
         return GlobalViterbiOutput(o.aligned_sequence1, o.aligned_sequence2,
-                                   self._sa.recalculate_score(score, seq1, seq2, hmm.parameters))
+                                   self._sa.recalculate_score(score, seq1, seq2, hmm.parameters),
+                                   logs=o.logs)

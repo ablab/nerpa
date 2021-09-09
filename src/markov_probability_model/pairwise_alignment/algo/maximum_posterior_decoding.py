@@ -9,15 +9,15 @@ from src.markov_probability_model.hmm.pairwise_alignment_hmm import PairwiseAlig
 from src.markov_probability_model.pairwise_alignment.sequence_aligner import PairwiseSequenceAligner
 from src.markov_probability_model.pairwise_alignment.score_augmentations import ScoreAugmentator
 from src.markov_probability_model.pairwise_alignment.algo.utils import calculate_log_alpha, calculate_log_beta, \
-    calculate_marginal_prob
+    calculate_marginal_prob, log_marginal_prob_for_alignment
 from src.markov_probability_model.base.alphabet import AlignedAminoacid, AlignedScoredAminoacid, Gap
 from typing import List
 
 
 class MaximumPosteriorDecodingOutput(PairwiseAlignmentOutputWithLogs, ScoredPairwiseAlignmentOutput):
     def __init__(self, aligned_sequence1: AlignedAminoacidSequence, aligned_sequence2: AlignedScoredAminoacidSequence,
-                 mpd_score: float, log: str):
-        super(MaximumPosteriorDecodingOutput, self).__init__(aligned_sequence1, aligned_sequence2, log)
+                 mpd_score: float, logs: str):
+        super(MaximumPosteriorDecodingOutput, self).__init__(aligned_sequence1, aligned_sequence2, logs)
         self.mpd_score = mpd_score
 
     def score(self):
@@ -73,14 +73,14 @@ class MaximumPosteriorDecoding(PairwiseSequenceAligner[MaximumPosteriorDecodingO
                 v = tmp_v
                 max_score = max_accuracy[i, j, tmp_v]
         states = []
-        log_scores = []
+        logs = []
         while prev_state[i, j, v] is not None:
             states.append(v)
-            log_scores.append(log_calculate_score(v, i, j))
+            logs.append(log_calculate_score(v, i, j))
             di, dj = d[hmm.states[v]]
             prev = prev_state[i, j, v]
             v, i, j = prev, i - di, j - dj
-        log_scores.reverse()
+        logs.reverse()
         states.reverse()
         assert i == 0 and j == 0, 'Internal error'
 
@@ -93,7 +93,11 @@ class MaximumPosteriorDecoding(PairwiseSequenceAligner[MaximumPosteriorDecodingO
             i += di
             j += dj
 
+        aligned_seq1: AlignedAminoacidSequence = AlignedAminoacidSequence(seq1.sequence_id, aligned1)
+        aligned_seq2: AlignedScoredAminoacidSequence = AlignedScoredAminoacidSequence(seq2.sequence_id, aligned2)
+        logs.append('Marginal probs:')
+        logs.append(' '.join(map(str, log_marginal_prob_for_alignment(aligned_seq1, aligned_seq2, hmm, marginal_prob))))
         return MaximumPosteriorDecodingOutput(AlignedAminoacidSequence(seq1.sequence_id, aligned1),
                                               AlignedScoredAminoacidSequence(seq2.sequence_id, aligned2),
                                               self._sa.recalculate_score(max_score, seq1, seq2, hmm.parameters),
-                                              log='\n'.join(log_scores))
+                                              logs='\n'.join(logs))

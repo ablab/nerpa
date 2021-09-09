@@ -9,18 +9,16 @@ from src.markov_probability_model.base.alphabet import Gap, AminoacidAlphabet, S
 from src.markov_probability_model.base.sequence import AminoacidSequence, ScoredAminoacidSequence
 from src.markov_probability_model.base.utils import my_log, my_exp, log_add_exp
 from src.markov_probability_model.parameters.utils import estimate_p_with_modifications, parse_nerpa_config, \
-    estimate_qa_qb, array_to_dict, \
-    same_modifications_methylations
+    estimate_qa_qb, array_to_dict, same_modifications_methylations
 from src.markov_probability_model.pairwise_alignment.algo.utils import calculate_log_alpha, calculate_log_beta
 from src.markov_probability_model.parameters.utils import get_alphabets_from_data
 from src.markov_probability_model.hmm.pairwise_alignment_hmm import PairwiseAlignmentHmm, \
-    PairwiseAlignmentHmmObservation, \
-    PairwiseAlignmentHMMParameters
+    PairwiseAlignmentHmmObservation, PairwiseAlignmentHMMParameters
 from typing import List, Optional, Dict, Callable, Tuple
 from tqdm import tqdm
 from multiprocessing import Pool
 
-PSEUDOCOUNT = 1e-15
+PSEUDOCOUNT = 1e-7
 
 
 def _calculate_a(seqs1: List[AminoacidSequence], seqs2: List[ScoredAminoacidSequence],
@@ -184,7 +182,6 @@ class BaumWelchParametersEstimator(ParametersCalculator):
         return g, f
 
     def _calculate_parameters_on_iteration(self) -> PairwiseAlignmentHMMParameters:
-
         self._cur_iter += 1
 
         alignments: List[PairwiseAlignmentOutputWithLogs] = [a for a in self._alignments if
