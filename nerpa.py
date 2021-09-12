@@ -27,11 +27,12 @@ from NRPSPredictor_utils.main import main as convert_antiSMASH_v5
 
 def parse_args(log):
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
-    genomic_group = parser.add_argument_group('Genomic input', 'antiSMASH-processed genomes of NRP-producing organisms (i.e. BGC predictions)')
+    genomic_group = parser.add_argument_group('Genomic input', 'Genomes of NRP-producing organisms (i.e. BGC predictions)')
     genomic_group.add_argument("--antismash_output_list", dest="antismash_out",
                                help="file with list of paths to antiSMASH output directories", type=str)
     genomic_group.add_argument("--antismash", "-a", dest="antismash", action='append',
                                help="single antiSMASH output directory or directory with many antiSMASH outputs")
+    genomic_group.add_argument("--sequences", dest="seqs", help="GenBank/EMBL/FASTA file containing DNA sequences")
 
     struct_group = parser.add_argument_group('Chemical input', 'Structures of NRP molecules')
     struct_input_group = struct_group.add_mutually_exclusive_group()
@@ -65,6 +66,8 @@ def parse_args(log):
                         help='file with custom monomers in rBAN compatible format')
     parser.add_argument("--process-hybrids", dest="process_hybrids", action="store_true", default=False,
                         help="process NRP-PK hybrid monomers (requires use of rBAN)")
+    parser.add_argument('--antismash-path', dest='antismash_path', type=str, default=None,
+                        help='path to antismash source directory')
     parser.add_argument("--threads", default=1, type=int, help="number of threads for running Nerpa", action="store")
     parser.add_argument("--output_dir", "-o", help="output dir [default: nerpa_results/results_<datetime>]",
                         type=str, default=None)
@@ -95,12 +98,12 @@ def validate(expr, msg=''):
 
 def validate_arguments(args, parser, log):
     try:
-        if not (args.predictions or args.antismash or args.antismash_out):
+        if not (args.predictions or args.antismash or args.antismash_out or args.seqs):
             raise ValidationError(f'one of the arguments --predictions --antismash/-a --antismash_output_list '
-                                  f'is required')
-        if args.predictions and (args.antismash or args.antismash_out):
+                                  f'--sequences is required')
+        if args.predictions and (args.antismash or args.antismash_out or args.seqs):
             raise ValidationError(f'argument --predictions: not allowed with argument --antismash/-a '
-                                  f'or --antismash_output_list')
+                                  f'or --antismash_output_list or --sequences')
         if not (args.structures or args.smiles or args.smiles_tsv or args.rban_output):
             raise ValidationError(f'one of the arguments --rban-json --smiles-tsv --smiles --structures/-s'
                                   f'is required')
@@ -281,8 +284,26 @@ def run(args, log):
     if args.predictions is not None:
         path_predictions = copy_prediction_list(args, output_dir)
     else:
+        antismash_out_dirs = args.antismash if args.antismash is not None else []
+        if args.seqs:
+            cur_antismash_out = os.path.join(output_dir, 'antismash_output')
+            if args.antismash_path:
+                antismash_exe = nerpa_utils.get_path_to_program('run_antismash.py', dirpath=args.antismash_path, min_version='5.0')
+            else:
+                antismash_exe = nerpa_utils.get_path_to_program('antismash', min_version='5.0')
+            if antismash_exe is None:
+                log.error("Can't find antismash 5.x executable. Please make sure that you have antismash 5.x installed "
+                          "in your system or provide path to antismash source directory via --antismash-path option.")
+            command = [antismash_exe,
+                       '--genefinding-tool', 'prodigal',
+                       '--output-dir', cur_antismash_out,
+                       '--minimal', '--skip-zip-file', '--enable-nrps-pks',
+                       '--cpus', str(args.threads), args.seqs]
+            nerpa_utils.sys_call(command, log, cwd=output_dir)
+            antismash_out_dirs.append(cur_antismash_out)
+
         path_predictions = predictions_preprocessor.create_predictions_by_antiSAMSHout(get_antismash_v3_compatible_input_paths(
-                listing_fpath=args.antismash_out, list_of_paths=args.antismash,
+                listing_fpath=args.antismash_out, list_of_paths=antismash_out_dirs,
                 output_dir=output_dir, log=log), output_dir, log)
 
     input_configs_dir = args.configs_dir if args.configs_dir else nerpa_init.configs_dir
