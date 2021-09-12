@@ -210,14 +210,14 @@ int main(int argc, char* argv[]) {
     aminoacid::ModificationInfo::init(config::get().modification_cfg);
     aminoacid::MonomerInfo::init(config::get().monomer_cfg, config::get().monomer_logP_cfg, config::get().monomer_info_default_logp);
 
-    std::cout << config::get().modification_cfg << "\n";
-    for (int i = 0; i != aminoacid::ModificationInfo::MODIFICATION_CNT; ++i) {
-        std::cout << aminoacid::ModificationInfo::NAMES[i] << " ";
-        for (double x : aminoacid::ModificationInfo::COEFFICIENT[i]) {
-            std::cout << x << " ";
-        }
-        std::cout << std::endl;
-    }
+//    std::cout << config::get().modification_cfg << "\n";
+//    for (int i = 0; i != aminoacid::ModificationInfo::MODIFICATION_CNT; ++i) {
+//        std::cout << aminoacid::ModificationInfo::NAMES[i] << " ";
+//        for (double x : aminoacid::ModificationInfo::COEFFICIENT[i]) {
+//            std::cout << x << " ";
+//        }
+//        std::cout << std::endl;
+//    }
 
     INFO("NRPs Matcher START");
     INFO("Loading predictions");
