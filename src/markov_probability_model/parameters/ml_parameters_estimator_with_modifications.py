@@ -20,16 +20,18 @@ class MaxLikelihoodParametersEstimatorWithModifications(MaxLikelihoodParametersE
             for methylation1 in [True, False]:
                 for modification2 in ['None', '@L', '@D']:
                     for methylation2 in [True, False]:
-                        condition = lambda x, y: same_modifications_methylations(x, modification1, methylation1) and \
-                                                 same_modifications_methylations(y, modification2, methylation2)
+                        modif = lambda x, y: same_modifications_methylations(x, modification1, methylation1) and \
+                                             same_modifications_methylations(y, modification2, methylation2)
                         g[(modification1, methylation1, modification2, methylation2)] = \
                             estimate_p_on_condition(
                                 omega_a, omega_b, observations,
-                                condition=lambda x, y: x.name != y.name and condition(x, y))
+                                event=lambda x, y: x.name != y.name and modif(x, y),
+                                condition=lambda x, y: x.name != y.name)
                         f[(modification1, methylation1, modification2, methylation2)] = \
                             estimate_p_on_condition(
                                 omega_a, omega_b, observations,
-                                condition=lambda x, y: x.name == y.name and condition(x, y))
+                                event=lambda x, y: x.name == y.name and modif(x, y),
+                                condition=lambda x, y: x.name == y.name)
         # 3. Assign p
         p = estimate_p_with_modifications(omega_a, omega_b, self._nerpa_cfg, f, g)
         return p

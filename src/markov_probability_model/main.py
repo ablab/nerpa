@@ -53,7 +53,7 @@ def run(data_dir: str, prob_gen_filepath: str,
     if use_bw:
         parameters = BaumWelchParametersEstimator(ground_truth_alignments, data, prob_gen_filepath,
                                                   init_params=parameters, n_iterations=bw_iters,
-                                                  recalculate_transition_probs=True,
+                                                  recalculate_transition_probs=False,
                                                   log_dir=res_parameters_folder,
                                                   pool_sz=pool_sz).calculate_parameters()
 
@@ -110,7 +110,7 @@ if __name__ == '__main__':
                         default=['viterbi', 'global_viterbi', 'maximum_accuracy', 'maximum_posterior_decoding'])
     parser.add_argument('--use_bw', type=bool, default=False)
     parser.add_argument('--bw_iters', type=int, default=10)  # 10-15 is enough
-    parser.add_argument('--log_alignments', type=bool, default=True)
+    parser.add_argument('--log_alignments', type=bool, default=False)
 
     parser.add_argument('--topk', type=list, default=[1, 3, 5, 10])
 

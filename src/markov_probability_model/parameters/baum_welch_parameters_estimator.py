@@ -83,50 +83,25 @@ def _calculate_pi(gammas: List[np.ndarray], hmm: PairwiseAlignmentHmm):
     return pi
 
 
-def _estimate_g(alphabet: List[str], seqs1: List[AminoacidSequence], seqs2: List[ScoredAminoacidSequence],
-                gammas: List[np.ndarray], hmm: PairwiseAlignmentHmm,
-                condition: Callable[[Aminoacid, ScoredAminoacid], bool]) -> Dict[str, float]:
-    return {a: my_exp(
-        log_add_exp([
-                        gam[t, s, hmm.state_index(hmm.M)]
-                        for seq1, seq2, gam in zip(seqs1, seqs2, gammas)
-                        for t in range(1, len(seq1) + 1) for s in range(1, len(seq2) + 1)
-                        if seq1.symbols[t - 1].name != seq2.symbols[s - 1].name and (
-                    seq1.symbols[t - 1].name == a or seq2.symbols[s - 1].name == a) and condition(seq1.symbols[t - 1],
-                                                                                                  seq2.symbols[s - 1])
-                    ] + [my_log(PSEUDOCOUNT)]) -
-        log_add_exp([
-                        gam[t, s, [hmm.state_index(hmm.M)]] + my_log(2)
-                        for seq1, seq2, gam in zip(seqs1, seqs2, gammas)
-                        for t in range(1, len(seq1) + 1) for s in range(1, len(seq2) + 1)
-                        if
-                        seq1.symbols[t - 1].name != seq2.symbols[s - 1].name and condition(seq1.symbols[t - 1],
-                                                                                           seq2.symbols[s - 1])
-                    ] + [my_log(len(alphabet) * PSEUDOCOUNT)])
-    ) for a in alphabet}
-
-
-def _estimate_f(alphabet: List[str], seqs1: List[AminoacidSequence], seqs2: List[ScoredAminoacidSequence],
-                gammas: List[np.ndarray], hmm: PairwiseAlignmentHmm,
-                condition: Callable[[Aminoacid, ScoredAminoacid], bool]) -> Dict[str, float]:
-    return {a: my_exp(
-        log_add_exp([
-                        gam[t, s, hmm.state_index(hmm.M)] + my_log(2)
-                        for seq1, seq2, gam in zip(seqs1, seqs2, gammas)
-                        for t in range(1, len(seq1) + 1) for s in range(1, len(seq2) + 1)
-                        if seq2.symbols[s - 1].name == a and seq1.symbols[t - 1].name == a and condition(
-                seq1.symbols[t - 1],
-                seq2.symbols[s - 1])
-                    ] + [my_log(PSEUDOCOUNT)]) -
-        log_add_exp([
-                        gam[t, s, hmm.state_index(hmm.M)] + my_log(2)
-                        for seq1, seq2, gam in zip(seqs1, seqs2, gammas)
-                        for t in range(1, len(seq1) + 1) for s in range(1, len(seq2) + 1)
-                        if
-                        seq2.symbols[s - 1].name == seq1.symbols[t - 1].name and condition(seq1.symbols[t - 1],
-                                                                                           seq2.symbols[s - 1])
-                    ] + [my_log(len(alphabet) * PSEUDOCOUNT)])
-    ) for a in alphabet}
+def _estimate_p_on_condition(alphabet: List[str],
+                             seqs1: List[AminoacidSequence], seqs2: List[ScoredAminoacidSequence],
+                             gammas: List[np.ndarray], hmm: PairwiseAlignmentHmm,
+                             event: Callable[[Aminoacid, ScoredAminoacid], bool],
+                             condition: Callable[[Aminoacid, ScoredAminoacid], bool]) -> Dict[str, float]:
+    res: Dict[str, float] = {a: my_log(PSEUDOCOUNT) for a in alphabet}
+    div_term = my_log(len(alphabet) * PSEUDOCOUNT)
+    for seq1, seq2, gam in zip(seqs1, seqs2, gammas):
+        for t in range(1, len(seq1) + 1):
+            for s in range(1, len(seq2) + 1):
+                cur_gam = gam[t, s, hmm.state_index(hmm.M)]
+                if event(seq1.symbols[t - 1], seq2.symbols[s - 1]):
+                    res[seq1.symbols[t - 1].name] = log_add_exp([res[seq1.symbols[t - 1].name], cur_gam])
+                    res[seq2.symbols[s - 1].name] = log_add_exp([res[seq2.symbols[s - 1].name], cur_gam])
+                if condition(seq1.symbols[t - 1], seq2.symbols[s - 1]):
+                    div_term = log_add_exp([div_term, cur_gam])
+    for a in alphabet:
+        res[a] = my_exp(res[a] - div_term)
+    return res
 
 
 class BaumWelchParametersEstimator(ParametersCalculator):
@@ -177,8 +152,14 @@ class BaumWelchParametersEstimator(ParametersCalculator):
         modification1, methylation1, modification2, methylation2, seqs1, seqs2, gammas = case
         condition = lambda x, y: same_modifications_methylations(x, modification1, methylation1) and \
                                  same_modifications_methylations(y, modification2, methylation2)
-        g = _estimate_g(self._alphabet, seqs1, seqs2, gammas, self._hmm, condition)
-        f = _estimate_f(self._alphabet, seqs1, seqs2, gammas, self._hmm, condition)
+        modif = lambda x, y: same_modifications_methylations(x, modification1, methylation1) and \
+                             same_modifications_methylations(y, modification2, methylation2)
+        g = _estimate_p_on_condition(self._alphabet, seqs1, seqs2, gammas, self._hmm,
+                                     event=lambda x, y: x.name == y.name and modif(x, y),
+                                     condition=lambda x, y: x.name == y.name)
+        f = _estimate_p_on_condition(self._alphabet, seqs1, seqs2, gammas, self._hmm,
+                                     event=lambda x, y: x.name != y.name and modif(x, y),
+                                     condition=lambda x, y: x.name != y.name)
         return g, f
 
     def _calculate_parameters_on_iteration(self) -> PairwiseAlignmentHMMParameters:
@@ -197,8 +178,8 @@ class BaumWelchParametersEstimator(ParametersCalculator):
         else:
             mu, tau = self._cur_params.mu, self._cur_params.tau
 
-        # 1. Estimate g(a) = P(a | mismatch, mod1, meth1, mod2, meth2)
-        # 2. Estimate f(a) = P(a | match,    mod1, meth1, mod2, meth2)
+        # 1. Estimate g(a, mod1, meth1, mod2, meth2) = P(a, mod1, meth1, mod2, meth2 | mismatch)
+        # 2. Estimate f(a, mod1, meth1, mod2, meth2) = P(a, mod1, meth1, mod2, meth2 | match)
         f, g = {}, {}
         cases = [(modification1, methylation1, modification2, methylation2, seqs1, seqs2, gammas)
                  for modification1 in ['@D', '@L', 'None']

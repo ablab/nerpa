@@ -45,9 +45,11 @@ class MaxLikelihoodParametersEstimator(ParametersCalculator):
                         for i in range(len(alignment.aligned_sequence1))]
         # 1. Estimate g(a) = P(a | mismatch)
         g: Dict[str, float] = estimate_p_on_condition(omega_a, omega_b, observations,
+                                                      event=lambda x, y: x.name != y.name,
                                                       condition=lambda x, y: x.name != y.name)
         # 2. Estimate f(a) = P(a | match)
         f: Dict[str, float] = estimate_p_on_condition(omega_a, omega_b, observations,
+                                                      event=lambda x, y: x.name == y.name,
                                                       condition=lambda x, y: x.name == y.name)
         # 3. Assign p
         p = estimate_p(omega_a, omega_b, self._nerpa_cfg, f, g)
@@ -56,20 +58,24 @@ class MaxLikelihoodParametersEstimator(ParametersCalculator):
 
 def estimate_p_on_condition(omega_a: List[Aminoacid], omega_b: List[ScoredAminoacid],
                             observations: List[Tuple[AlignedAminoacid, AlignedScoredAminoacid]],
+                            event: Callable[[Aminoacid, ScoredAminoacid], bool],
                             condition: Callable[[Aminoacid, ScoredAminoacid], bool]) -> Dict[str, float]:
     alphabet: List[str] = [a.name for a in omega_a] + [b.name for b in omega_b]
     met = {a: 1 for a in alphabet}
+    div_term = len(alphabet)
     for s1, s2 in observations:
         if s1 == Gap() or s2 == Gap():
             continue
         if s1.name not in alphabet or s2.name not in alphabet:
             continue
-        if condition(s1, s2):
+        if event(s1, s2):
             met[s1.name] += 1
             met[s2.name] += 1
+        if condition(s1, s2):
+            div_term += 2
     g: Dict[str, float] = defaultdict(float)
     for a, met_a in met.items():
-        g[a] = met_a / sum([m for _, m in met.items()])
+        g[a] = met_a / div_term
     return g
 
 
