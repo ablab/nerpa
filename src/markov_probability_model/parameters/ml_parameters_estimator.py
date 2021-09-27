@@ -1,19 +1,19 @@
 import numpy as np
 import os
 
-from src.markov_probability_model.parameters.parameters_calculator import ParametersCalculator, \
-    PairwiseAlignmentHMMParameters
-from src.markov_probability_model.data_loader.alignments_loader import PairwiseAlignmentOutputWithLogs
+from src.markov_probability_model.base.alphabet import Aminoacid, ScoredAminoacid, AlignedAminoacid, \
+    AlignedScoredAminoacid, Gap
+from src.markov_probability_model.parameters.utils import same_modifications, estimate_p_with_modifications
+from src.markov_probability_model.pairwise_alignment.sequence_aligner import PairwiseAlignmentOutputWithLogs
 from src.markov_probability_model.data_loader.data_loader import TwoSequenceListsData
-from src.markov_probability_model.base.alphabet import Gap, Aminoacid, ScoredAminoacid, AlignedAminoacid, \
-    AlignedScoredAminoacid
-from src.markov_probability_model.parameters.utils import get_alphabets_from_data, parse_nerpa_config, estimate_p, \
-    estimate_qa_qb, array_to_dict
-from typing import List, Dict, Optional, Tuple, Callable
+from src.markov_probability_model.hmm.pairwise_alignment_hmm import PairwiseAlignmentHMMParameters
+from src.markov_probability_model.parameters.utils import parse_nerpa_config, get_alphabets_from_data, estimate_qa_qb, \
+    array_to_dict, get_names_alphabet, generate_p_score, generate_p_mods
+from typing import List, Optional, Tuple, Dict
 from collections import defaultdict
 
 
-class MaxLikelihoodParametersEstimator(ParametersCalculator):
+class MaxLikelihoodParametersEstimator:
     def __init__(self, alignments: List[PairwiseAlignmentOutputWithLogs],
                  data: TwoSequenceListsData, nerpa_cfg_path: str,
                  estimate_transition_probs: bool = False,
@@ -43,24 +43,29 @@ class MaxLikelihoodParametersEstimator(ParametersCalculator):
                          alignment.aligned_sequence2.symbols[i])
                         for alignment in self._alignments
                         for i in range(len(alignment.aligned_sequence1))]
-        # 1. Estimate g(a) = P(a | mismatch)
-        g: Dict[str, float] = estimate_p_on_condition(omega_a, omega_b, observations,
-                                                      event=lambda x, y: x.name != y.name,
-                                                      condition=lambda x, y: x.name != y.name)
-        # 2. Estimate f(a) = P(a | match)
-        f: Dict[str, float] = estimate_p_on_condition(omega_a, omega_b, observations,
-                                                      event=lambda x, y: x.name == y.name,
-                                                      condition=lambda x, y: x.name == y.name)
+        # 1. Estimate g(a, mod, meth) = P(a, mod, meth | match)
+        # 2. Estimate f(a, mod1, meth1, mod2, meth2) = P(a, mod1, meth1, mod2, meth2 | mismatch)
+        f, g = {}, {}
+        for modification1 in ['@L', '@D']:
+            for methylation1 in [True, False]:
+                g[(modification1, methylation1)] = \
+                    estimate_g(omega_a, omega_b, observations, modification1, methylation1)
+                for modification2 in ['@L', '@D']:
+                    for methylation2 in [True, False]:
+                        f[(modification1, methylation1, modification2, methylation2)] = \
+                            estimate_f(omega_a, omega_b, observations,
+                                       modification1, methylation1, modification2, methylation2)
         # 3. Assign p
-        p = estimate_p(omega_a, omega_b, self._nerpa_cfg, f, g)
+        p_score = generate_p_score(self._nerpa_cfg, self._data)
+        p_mods = generate_p_mods(self._data)
+        p = estimate_p_with_modifications(omega_a, omega_b, self._nerpa_cfg, f, g, p_score, p_mods)
         return p
 
 
-def estimate_p_on_condition(omega_a: List[Aminoacid], omega_b: List[ScoredAminoacid],
-                            observations: List[Tuple[AlignedAminoacid, AlignedScoredAminoacid]],
-                            event: Callable[[Aminoacid, ScoredAminoacid], bool],
-                            condition: Callable[[Aminoacid, ScoredAminoacid], bool]) -> Dict[str, float]:
-    alphabet: List[str] = [a.name for a in omega_a] + [b.name for b in omega_b]
+def estimate_f(omega_a: List[Aminoacid], omega_b: List[ScoredAminoacid],
+               observations: List[Tuple[AlignedAminoacid, AlignedScoredAminoacid]],
+               modification1, methylation1, modification2, methylation2) -> Dict[str, float]:
+    alphabet: List[str] = get_names_alphabet(omega_a, omega_b)
     met = {a: 1 for a in alphabet}
     div_term = len(alphabet)
     for s1, s2 in observations:
@@ -68,11 +73,35 @@ def estimate_p_on_condition(omega_a: List[Aminoacid], omega_b: List[ScoredAminoa
             continue
         if s1.name not in alphabet or s2.name not in alphabet:
             continue
-        if event(s1, s2):
+        if s1.name != s2.name:
+            continue
+        if same_modifications(s1, modification1, methylation1) and same_modifications(s2, modification2, methylation2):
             met[s1.name] += 1
+        div_term += 1
+    f: Dict[str, float] = defaultdict(float)
+    for a, met_a in met.items():
+        f[a] = met_a / div_term
+    return f
+
+
+def estimate_g(omega_a: List[Aminoacid], omega_b: List[ScoredAminoacid],
+               observations: List[Tuple[AlignedAminoacid, AlignedScoredAminoacid]],
+               modification, methylation) -> Dict[str, float]:
+    alphabet: List[str] = get_names_alphabet(omega_a, omega_b)
+    met = {a: 1 for a in alphabet}
+    div_term = len(alphabet)
+    for s1, s2 in observations:
+        if s1 == Gap() or s2 == Gap():
+            continue
+        if s1.name not in alphabet or s2.name not in alphabet:
+            continue
+        if s1.name == s2.name:
+            continue
+        if same_modifications(s1, modification, methylation):
+            met[s1.name] += 1
+        if same_modifications(s2, modification, methylation):
             met[s2.name] += 1
-        if condition(s1, s2):
-            div_term += 2
+        div_term += 1
     g: Dict[str, float] = defaultdict(float)
     for a, met_a in met.items():
         g[a] = met_a / div_term

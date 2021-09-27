@@ -1,8 +1,7 @@
 from src.markov_probability_model.pairwise_alignment.sequence_aligner import ScoredPairwiseAlignmentOutput, \
     PairwiseAlignmentOutputWithLogs
 from src.markov_probability_model.base.sequence import AminoacidSequence, ScoredAminoacidSequence, \
-    AlignedAminoacidSequence, \
-    AlignedScoredAminoacidSequence
+    AlignedAminoacidSequence, AlignedScoredAminoacidSequence
 from src.markov_probability_model.hmm.pairwise_alignment_hmm import PairwiseAlignmentHmm
 from src.markov_probability_model.pairwise_alignment.sequence_aligner import PairwiseSequenceAligner
 from src.markov_probability_model.pairwise_alignment.score_augmentations import ScoreAugmentator

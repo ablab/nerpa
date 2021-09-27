@@ -30,7 +30,7 @@ class PairwiseAlignmentHMMParameters:
             print(file=log)
             print('Tau: {}'.format(self.tau), file=log)
             print('Mu: {}'.format(self.mu), file=log)
-            print(file=log)
+            # print(file=log)
             # print('P example:', file=log)
             # for a in [Aminoacid('arg', '@L', False)]:
             #     for b in [ScoredAminoacid('arg(100.0)', '@L', False),
@@ -42,7 +42,7 @@ class PairwiseAlignmentHMMParameters:
             #               ScoredAminoacid('ala(70.0)', '@L', False),
             #               ScoredAminoacid('ala(60.0)', '@L', False)]:
             #         print(f'\tp[{a}][{b}] = {self.p[a][b]}', file=log)
-            # print(file=log)
+            print(file=log)
             print('p: {}'.format(self.p), file=log)
             print(file=log)
             print('q_a: {}'.format(self.q_a), file=log)

@@ -4,17 +4,16 @@ import os
 from src.markov_probability_model.parameters.parameters_calculator import ParametersCalculator
 from src.markov_probability_model.data_loader.alignments_loader import PairwiseAlignmentOutputWithLogs
 from src.markov_probability_model.data_loader.data_loader import TwoSequenceListsData
-from src.markov_probability_model.base.alphabet import Gap, AminoacidAlphabet, ScoredAminoacidAlphabet, Aminoacid, \
-    ScoredAminoacid
+from src.markov_probability_model.base.alphabet import Gap, AminoacidAlphabet, ScoredAminoacidAlphabet
 from src.markov_probability_model.base.sequence import AminoacidSequence, ScoredAminoacidSequence
 from src.markov_probability_model.base.utils import my_log, my_exp, log_add_exp
 from src.markov_probability_model.parameters.utils import estimate_p_with_modifications, parse_nerpa_config, \
-    estimate_qa_qb, array_to_dict, same_modifications_methylations
+    estimate_qa_qb, array_to_dict, same_modifications, generate_p_score, generate_p_mods
 from src.markov_probability_model.pairwise_alignment.algo.utils import calculate_log_alpha, calculate_log_beta
-from src.markov_probability_model.parameters.utils import get_alphabets_from_data
+from src.markov_probability_model.parameters.utils import get_alphabets_from_data, get_names_alphabet
 from src.markov_probability_model.hmm.pairwise_alignment_hmm import PairwiseAlignmentHmm, \
     PairwiseAlignmentHmmObservation, PairwiseAlignmentHMMParameters
-from typing import List, Optional, Dict, Callable, Tuple
+from typing import List, Optional, Dict, Tuple
 from tqdm import tqdm
 from multiprocessing import Pool
 
@@ -83,22 +82,44 @@ def _calculate_pi(gammas: List[np.ndarray], hmm: PairwiseAlignmentHmm):
     return pi
 
 
-def _estimate_p_on_condition(alphabet: List[str],
-                             seqs1: List[AminoacidSequence], seqs2: List[ScoredAminoacidSequence],
-                             gammas: List[np.ndarray], hmm: PairwiseAlignmentHmm,
-                             event: Callable[[Aminoacid, ScoredAminoacid], bool],
-                             condition: Callable[[Aminoacid, ScoredAminoacid], bool]) -> Dict[str, float]:
+def _estimate_f(alphabet: List[str],
+                seqs1: List[AminoacidSequence], seqs2: List[ScoredAminoacidSequence],
+                gammas: List[np.ndarray], hmm: PairwiseAlignmentHmm,
+                modification1, methylation1, modification2, methylation2) -> Dict[str, float]:
     res: Dict[str, float] = {a: my_log(PSEUDOCOUNT) for a in alphabet}
     div_term = my_log(len(alphabet) * PSEUDOCOUNT)
     for seq1, seq2, gam in zip(seqs1, seqs2, gammas):
         for t in range(1, len(seq1) + 1):
             for s in range(1, len(seq2) + 1):
                 cur_gam = gam[t, s, hmm.state_index(hmm.M)]
-                if event(seq1.symbols[t - 1], seq2.symbols[s - 1]):
+                if seq1.symbols[t - 1].name != seq2.symbols[s - 1]:
+                    continue
+                if same_modifications(seq1.symbols[t - 1], modification1, methylation1) and \
+                        same_modifications(seq2.symbols[s - 1], modification2, methylation2):
                     res[seq1.symbols[t - 1].name] = log_add_exp([res[seq1.symbols[t - 1].name], cur_gam])
+                div_term = log_add_exp([div_term, cur_gam])
+    for a in alphabet:
+        res[a] = my_exp(res[a] - div_term)
+    return res
+
+
+def _estimate_g(alphabet: List[str],
+                seqs1: List[AminoacidSequence], seqs2: List[ScoredAminoacidSequence],
+                gammas: List[np.ndarray], hmm: PairwiseAlignmentHmm,
+                modification, methylation) -> Dict[str, float]:
+    res: Dict[str, float] = {a: my_log(PSEUDOCOUNT) for a in alphabet}
+    div_term = my_log(len(alphabet) * PSEUDOCOUNT)
+    for seq1, seq2, gam in zip(seqs1, seqs2, gammas):
+        for t in range(1, len(seq1) + 1):
+            for s in range(1, len(seq2) + 1):
+                cur_gam = gam[t, s, hmm.state_index(hmm.M)]
+                if seq1.symbols[t - 1].name == seq2.symbols[s - 1].name:
+                    continue
+                if same_modifications(seq1.symbols[t - 1], modification, methylation):
+                    res[seq1.symbols[t - 1].name] = log_add_exp([res[seq1.symbols[t - 1].name], cur_gam])
+                if same_modifications(seq2.symbols[s - 1], modification, methylation):
                     res[seq2.symbols[s - 1].name] = log_add_exp([res[seq2.symbols[s - 1].name], cur_gam])
-                if condition(seq1.symbols[t - 1], seq2.symbols[s - 1]):
-                    div_term = log_add_exp([div_term, cur_gam])
+                div_term = log_add_exp([div_term, cur_gam])
     for a in alphabet:
         res[a] = my_exp(res[a] - div_term)
     return res
@@ -123,7 +144,7 @@ class BaumWelchParametersEstimator(ParametersCalculator):
         self._recalculate_transition_probs = recalculate_transition_probs
         self._log_dir = log_dir
         self._omega_a, self._omega_b = get_alphabets_from_data(self._data, self._alignments)
-        self._alphabet: List[str] = [a.name for a in self._omega_a] + [b.name for b in self._omega_b]
+        self._alphabet: List[str] = get_names_alphabet(self._omega_a, self._omega_b)
         self._pool_sz = pool_sz
         print('Will use Baum-Welch parameters estimator')
 
@@ -148,19 +169,14 @@ class BaumWelchParametersEstimator(ParametersCalculator):
         eps = _calculate_eps(seq1, seq2, self._hmm, alpha, beta)
         return seq1, seq2, alpha, beta, gamma, eps
 
-    def _calculate_g_f(self, case: Tuple[str, bool, str, bool, List, List, List[np.ndarray]]) -> Tuple:
+    def _calculate_f(self, case: Tuple[str, bool, str, bool, List, List, List[np.ndarray]]):
         modification1, methylation1, modification2, methylation2, seqs1, seqs2, gammas = case
-        condition = lambda x, y: same_modifications_methylations(x, modification1, methylation1) and \
-                                 same_modifications_methylations(y, modification2, methylation2)
-        modif = lambda x, y: same_modifications_methylations(x, modification1, methylation1) and \
-                             same_modifications_methylations(y, modification2, methylation2)
-        g = _estimate_p_on_condition(self._alphabet, seqs1, seqs2, gammas, self._hmm,
-                                     event=lambda x, y: x.name == y.name and modif(x, y),
-                                     condition=lambda x, y: x.name == y.name)
-        f = _estimate_p_on_condition(self._alphabet, seqs1, seqs2, gammas, self._hmm,
-                                     event=lambda x, y: x.name != y.name and modif(x, y),
-                                     condition=lambda x, y: x.name != y.name)
-        return g, f
+        return _estimate_f(self._alphabet, seqs1, seqs2, gammas, self._hmm,
+                           modification1, methylation1, modification2, methylation2)
+
+    def _calculate_g(self, case: Tuple[str, bool, List, List, List[np.ndarray]]):
+        modification, methylation, seqs1, seqs2, gammas = case
+        return _estimate_g(self._alphabet, seqs1, seqs2, gammas, self._hmm, modification, methylation)
 
     def _calculate_parameters_on_iteration(self) -> PairwiseAlignmentHMMParameters:
         self._cur_iter += 1
@@ -169,7 +185,8 @@ class BaumWelchParametersEstimator(ParametersCalculator):
                                                              _check_observation(a, self._omega_a, self._omega_b)]
         with Pool(self._pool_sz) as p:
             prob_data: List[Tuple] = list(
-                tqdm(p.imap(self._calculate_alpha_beta_gamma_eps, alignments), total=len(alignments)))
+                tqdm(p.imap(self._calculate_alpha_beta_gamma_eps, alignments),
+                     total=len(alignments), desc='Calculating marginal probs'))
 
         seqs1, seqs2, alphas, betas, gammas, epss = map(list, zip(*prob_data))
         if self._recalculate_transition_probs:
@@ -180,20 +197,33 @@ class BaumWelchParametersEstimator(ParametersCalculator):
 
         # 1. Estimate g(a, mod1, meth1, mod2, meth2) = P(a, mod1, meth1, mod2, meth2 | mismatch)
         # 2. Estimate f(a, mod1, meth1, mod2, meth2) = P(a, mod1, meth1, mod2, meth2 | match)
-        f, g = {}, {}
-        cases = [(modification1, methylation1, modification2, methylation2, seqs1, seqs2, gammas)
-                 for modification1 in ['@D', '@L', 'None']
-                 for methylation1 in [False, True]
-                 for modification2 in ['@D', '@L', 'None']
-                 for methylation2 in [False, True]]
+        f = {}
+        f_cases = [(modification1, methylation1, modification2, methylation2, seqs1, seqs2, gammas)
+                   for modification1 in ['@D', '@L']
+                   for methylation1 in [False, True]
+                   for modification2 in ['@D', '@L']
+                   for methylation2 in [False, True]]
         with Pool(self._pool_sz) as p:
-            prob_data: List[Tuple] = list(
-                tqdm(p.imap(self._calculate_g_f, cases), total=len(cases)))
-        for i, (modification1, methylation1, modification2, methylation2, _, _, _) in enumerate(cases):
-            g[(modification1, methylation1, modification2, methylation2)] = prob_data[i][0]
-            f[(modification1, methylation1, modification2, methylation2)] = prob_data[i][1]
+            f_data: List[Tuple] = list(
+                tqdm(p.imap(self._calculate_f, f_cases),
+                     total=len(f_cases), desc='Estimating f'))
+        for i, (modification1, methylation1, modification2, methylation2, _, _, _) in enumerate(f_cases):
+            f[(modification1, methylation1, modification2, methylation2)] = f_data[i]
 
-        p = estimate_p_with_modifications(self._omega_a, self._omega_b, self._nerpa_cfg, f, g)
+        g = {}
+        g_cases = [(modification, methylation, seqs1, seqs2, gammas)
+                   for modification in ['@D', '@L']
+                   for methylation in [False, True]]
+        with Pool(self._pool_sz) as p:
+            g_data: List[Tuple] = list(
+                tqdm(p.imap(self._calculate_g, g_cases),
+                     total=len(g_cases), desc='Estimating g'))
+        for i, (modification, methylation, _, _, _) in enumerate(g_cases):
+            g[(modification, methylation)] = g_data[i]
+
+        p_score = generate_p_score(self._nerpa_cfg, self._data)
+        p_mods = generate_p_mods(self._data)
+        p = estimate_p_with_modifications(self._omega_a, self._omega_b, self._nerpa_cfg, f, g, p_score, p_mods)
         q_a, q_b = estimate_qa_qb(p)
         p, q_a, q_b = array_to_dict(self._omega_a, self._omega_b, p, q_a, q_b)
         res = PairwiseAlignmentHMMParameters(self._omega_a, self._omega_b, mu=mu, tau=tau, p=p, q_a=q_a, q_b=q_b)

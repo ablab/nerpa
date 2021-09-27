@@ -4,16 +4,16 @@ import copy
 from src.markov_probability_model.pairwise_alignment.sequence_aligner import ScoredPairwiseAlignmentOutput, \
     PairwiseAlignmentOutputWithLogs
 from src.markov_probability_model.base.sequence import AminoacidSequence, ScoredAminoacidSequence, \
-    AlignedAminoacidSequence, \
-    AlignedScoredAminoacidSequence
+    AlignedAminoacidSequence, AlignedScoredAminoacidSequence
 from src.markov_probability_model.base.alphabet import Gap, Symbol, AlignedAminoacid, AlignedScoredAminoacid
 from src.markov_probability_model.hmm.pairwise_alignment_hmm import PairwiseAlignmentHmm, \
     PairwiseAlignmentHmmObservation, PairwiseAlignmentHmmState
 from src.markov_probability_model.pairwise_alignment.sequence_aligner import PairwiseSequenceAligner
 from src.markov_probability_model.pairwise_alignment.score_augmentations import ScoreAugmentator
-from src.markov_probability_model.pairwise_alignment.algo.utils import log_marginal_prob_for_alignment
-from src.markov_probability_model.base.utils import my_log
+from src.markov_probability_model.pairwise_alignment.algo.utils import log_marginal_prob_for_alignment, \
+    calculate_log_alpha
 from typing import List
+from src.markov_probability_model.base.utils import my_log, log_add_exp
 
 
 class ViterbiOutput(PairwiseAlignmentOutputWithLogs, ScoredPairwiseAlignmentOutput):
@@ -115,8 +115,13 @@ class Viterbi(PairwiseSequenceAligner[ViterbiOutput]):
 
         aligned_seq1: AlignedAminoacidSequence = AlignedAminoacidSequence(seq1.sequence_id, aligned1)
         aligned_seq2: AlignedScoredAminoacidSequence = AlignedScoredAminoacidSequence(seq2.sequence_id, aligned2)
-        logs.append('Marginal probs:')
-        logs.append(' '.join(map(str, log_marginal_prob_for_alignment(aligned_seq1, aligned_seq2, hmm))))
+
+        # alpha = calculate_log_alpha(seq1, seq2, hmm)
+        # score = log_add_exp([alpha[n, m, x] for x in range(k)])
+        # best_score -= score  # - P(Q)
+
+        # logs.append('Marginal probs:')
+        # logs.append(' '.join(map(str, log_marginal_prob_for_alignment(aligned_seq1, aligned_seq2, hmm))))
         return ViterbiOutput(aligned_seq1, aligned_seq2,
                              self._sa.recalculate_score(best_score, seq1, seq2, hmm.parameters),
                              logs='\n'.join(logs))

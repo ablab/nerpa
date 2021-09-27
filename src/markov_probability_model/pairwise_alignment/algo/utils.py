@@ -1,8 +1,8 @@
 import numpy as np
 
-from src.markov_probability_model.base.alphabet import Gap, AlignedAminoacid, AlignedScoredAminoacid
-from src.markov_probability_model.base.sequence import AminoacidSequence, ScoredAminoacidSequence, \
-    AlignedAminoacidSequence, AlignedScoredAminoacidSequence
+from src.markov_probability_model.base.alphabet import Gap
+from src.markov_probability_model.base.sequence import AminoacidSequence, ScoredAminoacidSequence, AlignedAminoacid, \
+    AlignedScoredAminoacid, AlignedAminoacidSequence, AlignedScoredAminoacidSequence
 from src.markov_probability_model.base.utils import my_log, log_add_exp, my_exp
 from src.markov_probability_model.hmm.pairwise_alignment_hmm import PairwiseAlignmentHmm, \
     PairwiseAlignmentHmmObservation

@@ -72,7 +72,7 @@ def parse_args(log):
                                          help="use Baum-Welch for parameters estimation or not")
     alternative_model_group.add_argument("--bw_iters", type=int, default=10,
                                          help="number of Baum-Welch iterations")
-    alternative_model_group.add_argument("--log_alignments", type=bool, default=True,
+    alternative_model_group.add_argument("--log_alignments", type=bool, default=False,
                                          help="pretty log alignments with marginal probabilities or not")
     alternative_model_group.add_argument("--topk", type=list, default=[1, 3, 5, 10],
                                          help="k value for top-k-matching in computing results")

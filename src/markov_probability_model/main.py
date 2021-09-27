@@ -6,8 +6,7 @@ from src.markov_probability_model.data_loader.mibig_alignments_loader import Mib
 from src.markov_probability_model.data_loader.data_loader import TwoSequenceListsData
 from src.markov_probability_model.data_loader.raw_data_parser import RawDataParser
 from src.markov_probability_model.data_loader.fdr_loader import FdrGeneratorFromReport
-from src.markov_probability_model.parameters.ml_parameters_estimator_with_modifications import \
-    MaxLikelihoodParametersEstimatorWithModifications
+from src.markov_probability_model.parameters.ml_parameters_estimator import MaxLikelihoodParametersEstimator
 from src.markov_probability_model.parameters.baum_welch_parameters_estimator import BaumWelchParametersEstimator
 from src.markov_probability_model.parameters.utils import get_alphabets_from_alignments
 from src.markov_probability_model.hmm.pairwise_alignment_hmm import PairwiseAlignmentHmm, PairwiseAlignmentHMMParameters
@@ -47,8 +46,8 @@ def run(data_dir: str, prob_gen_filepath: str,
 
     print(' Estimating parameters...')
     parameters: PairwiseAlignmentHMMParameters = \
-        MaxLikelihoodParametersEstimatorWithModifications(ground_truth_alignments, data, prob_gen_filepath,
-                                                          log_dir=res_parameters_folder).calculate_parameters()
+        MaxLikelihoodParametersEstimator(ground_truth_alignments, data, prob_gen_filepath,
+                                         log_dir=res_parameters_folder).calculate_parameters()
 
     if use_bw:
         parameters = BaumWelchParametersEstimator(ground_truth_alignments, data, prob_gen_filepath,
