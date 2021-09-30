@@ -132,7 +132,7 @@ def estimate_tau_mu(alignments: List[PairwiseAlignmentOutputWithLogs]) -> Tuple[
             tau[states[i - 1], states[i]] += 1
 
     tau = tau / tau.sum(axis=1)
-    mu = tau.mean(axis=0)
+    mu = mu / mu.sum()
     return tau, mu
 
 
