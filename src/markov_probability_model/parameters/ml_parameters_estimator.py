@@ -101,7 +101,7 @@ def estimate_g(omega_a: List[Aminoacid], omega_b: List[ScoredAminoacid],
             met[s1.name] += 1
         if same_modifications(s2, modification, methylation):
             met[s2.name] += 1
-        div_term += 1
+        div_term += 2
     g: Dict[str, float] = defaultdict(float)
     for a, met_a in met.items():
         g[a] = met_a / div_term
