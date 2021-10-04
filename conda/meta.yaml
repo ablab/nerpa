@@ -1,30 +1,53 @@
-{% set version = "0.1" %}
+{% set name = "Nerpa" %}
+{% set version = "1.0.0" %}
+{% set sha256 = "cbd506fe82370938255223bfd3c5c2631f3390e428a3ae0297a4db1bfc62c985" %}
 
-package: 
-    name: nerpa
+package:
+    name: {{ name|lower }}
     version: {{ version }}
-
-build: 
-    number: 0
-    skip: True  # [py27]
+    
 
 source:
-    url: https://github.com/olga24912/Nerpa/archive/v{{ version }}.zip
-    sha256: 386cf5b5374852f7f7a5ea8c38406ba0513c8338dc99c5110b8bf681c6f91bce
+    url: https://github.com/ablab/nerpa/releases/download/v{{ version }}/{{ name|lower }}-{{ version }}.tar.gz
+    sha256: {{ sha256 }}
     
+
+build:
+    number: 0
+
+
 requirements:
     build:
-        - {{ compiler('cxx') }}
+      - {{ compiler('cxx') }}
+      - cmake
+      - make
     host:
-        - python >=3
+      - python >=3.6
     run:
-        - python >=3
-about: 
-    home: https://github.com/olga24912/Nerpa
-    license: GPLv2
-    summary: Nerpa is a tool for automated discovery of biosynthetic gene clusters (BGC) for nonribosomal peptides (NRP)
+      - python >=3.6
+      - rdkit
+      - networkx
+      - openjdk
+
 
 test:
     commands:
-        - run_nrp_matcher.py --help > /dev/null
-        - run_nrp_matcher.py --predictions $PREFIX/share/nerpa/prediction.info -l $PREFIX/share/nerpa/library.info.streptomedb --predictor NRPSPREDICTOR2 -o $PREFIX/out > /dev/null 2> /dev/null
+      - nerpa.py --help
+      - nerpa.py -a $PREFIX/share/nerpa/test_data/MIBiG_subset/genome_predictions --smiles-tsv $PREFIX/share/nerpa/test_data/MIBiG_subset/structures_info.tsv -o nerpa_test_out && rm -rf nerpa_test_out
+
+    
+about:
+    home: https://cab.spbu.ru/software/nerpa/
+    dev_url: https://github.com/ablab/nerpa
+    doc_url: https://github.com/ablab/nerpa
+    license: Dual-licensed under GPLv3 or CC BY-NC-SA 4.0
+    license_file: LICENSE.txt
+    summary: A tool for discovering biosynthetic gene clusters of nonribosomal peptides
+    description: Nerpa is a tool for linking biosynthetic gene clusters (BGCs) to known nonribosomal peptides (NRPs). BGCs are predicted in genome sequences (FASTA or GBK) with antiSMASH (Medema et al, 2011). Known NRPs are accepted in the SMILES format and processed with rBAN (Ricart et al, 2019).
+
+
+extra:
+  recipe-maintainers:
+    - alexeigurevich
+  identifiers:
+    - biotools:nerpa
