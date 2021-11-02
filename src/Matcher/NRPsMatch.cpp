@@ -141,27 +141,6 @@ void matcher::MatcherBase::Match::print_csv(std::ofstream &out) {
         }
     }
     out << org << ",";
-    int len = parts_id.size();
-    int cntMatch = 0;
-    for (int i = 0; i < parts_id.size(); ++i) {
-        std::string formula = nrp->getFormula(i);
-        int wasN = 0;
-        for (int j = 0; j < formula.size(); ++j) {
-            if (formula[j] == 'N') {
-                wasN = 1;
-            }
-        }
-        if (wasN == 0) {
-            --len;
-        }
-        if (isMatched(i)) {
-            ++cntMatch;
-        }
-    }
-
-    out << len << ",";
-    out << cntMatch << ",";
-    out << (len==cntMatch) << ",";
     out << nrp->get_file_name() << ",";
     out << nrpParts[0].get_file_name() << "\n";
 }
