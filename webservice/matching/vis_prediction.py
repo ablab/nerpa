@@ -706,7 +706,7 @@ def ParseExtraInfo(s, nrpDB):
     if (nrpDB == DB_PNP):
         return ss[0], float(ss[1]), nrpDB, ss[-1]
     else:
-        return "", float(ss[0]), "", ""
+        return "",0,"",""#"", float(ss[0]), "", ""
 
 
 def ParseScore(s):
@@ -720,6 +720,7 @@ def isAA(s):
 
 
 def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G, g, nrpDB):
+    molName = molName.split('.')[0]
     cntAA = 0
     cntMatchAA = 0
     str_graph = ""
@@ -739,105 +740,105 @@ def parseGraph(detailMolFN, molName, genomeName, color, choosePred, usedOrfs,  G
         sub_name, mass, dbs, ref = ParseExtraInfo(lines[cur], nrpDB)
         score = ParseScore(lines[cur + 2])
         cur += 3  # cnt prefix line
-        n = int(lines[cur].split(' ')[-1])
-        str_graph += lines[cur]
-        cur += 1
-        vertInfo = []
-        nodecolor = [0] * n
-        node_size = [600] * n
-        labels = dict()
-        for i in range(n):
-            g.append([])
-            vertInfo.append(lines[cur].split(' '))
-            str_graph += lines[cur]
-            if (vertInfo[-1][-1] == '-\n'):
-                vertInfo[-1].append('-')
-                vertInfo[-1].append('-')
-                vertInfo[-1].append('-')
-            G.add_node(i)
-            nodecolor[i] = color[vertInfo[-1][-2]]
-            labels[i] = ""
-
-            if len(vertInfo[-1]) == 6:
-                vertInfo[-1] = ['-', '-'] + vertInfo[-1]
-
-            if (vertInfo[-1][4] != "-\n"):
-                labels[i] = (vertInfo[-1][4].split('(')[0])[:min(8, len(vertInfo[-1][4].split('(')[0]))] + "\n"
-            else:
-                node_size[i] = 400
-
-            if (vertInfo[-1][1] != "-"):
-                labels[i] += vertInfo[-1][1] + "\n"
-                if (isAA(vertInfo[-1][1])):
-                    cntAA += 1
-                else:
-                    node_size[i] = 60
-
-            if (vertInfo[-1][-2] != "-"):
-                labels[i] += "\n" + vertInfo[-1][-1] + "\n\n\n"
-                usedOrfs.add(vertInfo[-1][-2])
-                cntMatchAA += 1
-            else:
-                labels[i] += "\n\n\n\n"
-
-            if vertInfo[-1][4] != "-\n" and vertInfo[-1][0] != "-":
-                if (vertInfo[-1][-2] not in choosePred):
-                    choosePred[vertInfo[-1][-2]] = dict()
-                choosePred[vertInfo[-1][-2]][int(vertInfo[-1][-1])] = vertInfo[-1][4].split('(')[0].split('+')[0]
-
-            cur += 1
-
-        m = int(lines[cur].split(' ')[-1])
-        str_graph += lines[cur]
-        cur += 1
-        for i in range(m):
-            G.add_edge(int(lines[cur].split(' ')[0]), int(lines[cur].split(' ')[-1]))
-            str_graph += lines[cur]
-            g[int(lines[cur].split(' ')[0])].append(int(lines[cur].split(' ')[-1]))
-            g[int(lines[cur].split(' ')[-1])].append(int(lines[cur].split(' ')[0]))
-            cur += 1
-
-        circ, line = SplitGraph(g)
-        print(circ)
-        print(line)
-
-        pos = dict()
-        step = 60
-        cur = step
-        for i in range(len(line) - 1, -1, -1):
-            pos[line[i]] = (cur, 0)
-            cur += step
-
-        mxy = 0
-        if (len(circ) != 0):
-            anglStep = 2 * pi / len(circ)
-            curA = 0
-            R = len(circ) * 10
-            for i in range(len(circ)):
-                x = R * cos(curA) - R
-                y = R * sin(curA)
-                mxy = max(mxy, y)
-                pos[circ[i]] = (x, y)
-                curA += anglStep
-
-        G.add_node(n)
-        pos[n] = (cur - step + 10, mxy + 50)
-        labels[n] = ""
-        G.add_node(n + 1)
-        pos[n + 1] = (-2* len(circ) * 10 - 10, -mxy)
-        labels[n + 1] = ""
-        node_size.append(0)
-        node_size.append(0)
-        nodecolor.append("#000000")
-        nodecolor.append("#000000")
-
-        for i in range(n):
-            if i not in pos:
-                pos[i] = (-2* len(circ) * 10 - 10, -mxy)
-                node_size[i] = 0
-                labels[i] = ""
-
-        nx.draw(G, pos=pos, node_color=nodecolor, labels=labels, node_size=node_size, font_size=8)
+        # n = int(lines[cur].split(' ')[-1])
+        # str_graph += lines[cur]
+        # cur += 1
+        # vertInfo = []
+        # nodecolor = [0] * n
+        # node_size = [600] * n
+        # labels = dict()
+        # for i in range(n):
+        #     g.append([])
+        #     vertInfo.append(lines[cur].split(' '))
+        #     str_graph += lines[cur]
+        #     if (vertInfo[-1][-1] == '-\n'):
+        #         vertInfo[-1].append('-')
+        #         vertInfo[-1].append('-')
+        #         vertInfo[-1].append('-')
+        #     G.add_node(i)
+        #     nodecolor[i] = color[vertInfo[-1][-2]]
+        #     labels[i] = ""
+        #
+        #     if len(vertInfo[-1]) == 6:
+        #         vertInfo[-1] = ['-', '-'] + vertInfo[-1]
+        #
+        #     if (vertInfo[-1][4] != "-\n"):
+        #         labels[i] = (vertInfo[-1][4].split('(')[0])[:min(8, len(vertInfo[-1][4].split('(')[0]))] + "\n"
+        #     else:
+        #         node_size[i] = 400
+        #
+        #     if (vertInfo[-1][1] != "-"):
+        #         labels[i] += vertInfo[-1][1] + "\n"
+        #         if (isAA(vertInfo[-1][1])):
+        #             cntAA += 1
+        #         else:
+        #             node_size[i] = 60
+        #
+        #     if (vertInfo[-1][-2] != "-"):
+        #         labels[i] += "\n" + vertInfo[-1][-1] + "\n\n\n"
+        #         usedOrfs.add(vertInfo[-1][-2])
+        #         cntMatchAA += 1
+        #     else:
+        #         labels[i] += "\n\n\n\n"
+        #
+        #     if vertInfo[-1][4] != "-\n" and vertInfo[-1][0] != "-":
+        #         if (vertInfo[-1][-2] not in choosePred):
+        #             choosePred[vertInfo[-1][-2]] = dict()
+        #         choosePred[vertInfo[-1][-2]][int(vertInfo[-1][-1])] = vertInfo[-1][4].split('(')[0].split('+')[0]
+        #
+        #     cur += 1
+        #
+        # m = int(lines[cur].split(' ')[-1])
+        # str_graph += lines[cur]
+        # cur += 1
+        # for i in range(m):
+        #     G.add_edge(int(lines[cur].split(' ')[0]), int(lines[cur].split(' ')[-1]))
+        #     str_graph += lines[cur]
+        #     g[int(lines[cur].split(' ')[0])].append(int(lines[cur].split(' ')[-1]))
+        #     g[int(lines[cur].split(' ')[-1])].append(int(lines[cur].split(' ')[0]))
+        #     cur += 1
+        #
+        # circ, line = SplitGraph(g)
+        # print(circ)
+        # print(line)
+        #
+        # pos = dict()
+        # step = 60
+        # cur = step
+        # for i in range(len(line) - 1, -1, -1):
+        #     pos[line[i]] = (cur, 0)
+        #     cur += step
+        #
+        # mxy = 0
+        # if (len(circ) != 0):
+        #     anglStep = 2 * pi / len(circ)
+        #     curA = 0
+        #     R = len(circ) * 10
+        #     for i in range(len(circ)):
+        #         x = R * cos(curA) - R
+        #         y = R * sin(curA)
+        #         mxy = max(mxy, y)
+        #         pos[circ[i]] = (x, y)
+        #         curA += anglStep
+        #
+        # G.add_node(n)
+        # pos[n] = (cur - step + 10, mxy + 50)
+        # labels[n] = ""
+        # G.add_node(n + 1)
+        # pos[n + 1] = (-2* len(circ) * 10 - 10, -mxy)
+        # labels[n + 1] = ""
+        # node_size.append(0)
+        # node_size.append(0)
+        # nodecolor.append("#000000")
+        # nodecolor.append("#000000")
+        #
+        # for i in range(n):
+        #     if i not in pos:
+        #         pos[i] = (-2* len(circ) * 10 - 10, -mxy)
+        #         node_size[i] = 0
+        #         labels[i] = ""
+        #
+        # nx.draw(G, pos=pos, node_color=nodecolor, labels=labels, node_size=node_size, font_size=8)
         plt.savefig('tmp.png')
         plt.close()
 

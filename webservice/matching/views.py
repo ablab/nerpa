@@ -37,14 +37,6 @@ def get_or_create_session(request, page):
     user_session = UserSession.get_or_create(session_key)
     return user_session
 
-
-def readMOL(request, query):
-    f = request.FILES['inputFileNRP']
-    with open(query.nrp_file, "wb") as fw:
-        for chunk in f.chunks():
-            fw.write(chunk)
-
-
 def readGenome(request, query):
     f = request.FILES['inputFileGenome']
     with open(query.genome_file, "wb") as fw:
@@ -52,9 +44,9 @@ def readGenome(request, query):
             fw.write(chunk)
 
 
-def readSMILE(request, query):
+def readStructure(request, query):
     f = request.FILES['inputFileNRP']
-    with open(query.smile_file, "wb") as fw:
+    with open(query.nrp_file, "wb") as fw:
         for chunk in f.chunks():
             fw.write(chunk)
 
@@ -98,15 +90,8 @@ def handle_form(request, user_session):
             is_smile = False
             readGenome(request, query)
             nrpfilename = request.FILES['inputFileNRP'].name
-            if ('.' in nrpfilename and
-                    (nrpfilename.split('.')[-1] == 'smile' or
-                             nrpfilename.split('.')[-1] == 'sml' or nrpfilename.split('.')[-1] == 'SMILE')):
-                readSMILE(request, query)
-                is_smile = True
-            else:
-                readMOL(request, query)
-
-            task = handle_one.delay(query.request_id, request.FILES['inputFileGenome'].name, is_smile)
+            readStructure(request, query)
+            task = handle_one.delay(query.request_id, request.FILES['inputFileGenome'].name)
 
             req = Request(task_id=task.id, user_session=user_session, request_id=request_id, status=STATUS_PROGRESS,
                           search_mode=SEARCH_MODE_GN, genome_file=request.FILES['inputFileGenome'].name, nrp_file=nrpfilename)
