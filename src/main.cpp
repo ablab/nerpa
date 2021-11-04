@@ -140,7 +140,7 @@ matcher::MatcherBase* getMatcher() {
 
 
 void run_mol_predictions(std::vector<nrpsprediction::BgcPrediction> preds, std::shared_ptr<nrp::NRP> mol,
-                         std::string output_filename) {
+                         std::string output_filename, std::vector<matcher::MatcherBase::Match>& allMatches) {
     matcher::Score* score;
     getScoreFunction(score);
     std::vector<matcher::MatcherBase::Match> nrpsMatchs;
@@ -169,22 +169,19 @@ void run_mol_predictions(std::vector<nrpsprediction::BgcPrediction> preds, std::
 
 #pragma omp critical
     {
+        allMatches.insert(allMatches.end(), nrpsMatchs.begin(), nrpsMatchs.end());
         std::ofstream out_short("report_mols", std::ofstream::out | std::ofstream::app);
         std::ofstream out(output_filename);
-        std::ofstream out_csv("report.csv", std::ofstream::out | std::ofstream::app);
 
         out_short << mol->get_file_name() << ":  ";
         for (int i = 0; i < nrpsMatchs.size(); ++i) {
             nrpsMatchs[i].print(out);
-            nrpsMatchs[i].print_csv(out_csv);
             if (i < 3) {
                 nrpsMatchs[i].print_short_prediction(out_short);
             }
         }
         out_short << "\n";
-
         out_short.close();
-        out_csv.close();
         out.close();
     };
     delete(score);
@@ -236,14 +233,24 @@ int main(int argc, char* argv[]) {
 
     nerpa_set_omp_threads(config::get().threads);
 
+    std::vector<matcher::MatcherBase::Match> nrpsMatches;
+
     INFO("THREADS #" << config::get().threads);
 #   pragma omp parallel for
     for (int i = start_from; i < mols.size(); ++i) {
         INFO("NRP structure #" << i)
         std::string output_filename = gen_filename(mols[i]->get_file_name(), "details/");
 
-        run_mol_predictions(preds, mols[i], output_filename);
+        run_mol_predictions(preds, mols[i], output_filename, nrpsMatches);
     }
+
+    std::sort(nrpsMatches.begin(), nrpsMatches.end());
+    std::ofstream out_csv("report.csv", std::ofstream::out);
+    out_csv << "Score,ExtraInfo,StructureId,PredictionFileName\n";
+    for (int i = 0; i < nrpsMatches.size(); ++i) {
+        nrpsMatches[i].print_csv(out_csv);
+    }
+    out_csv.close();
 
     return 0;
 }
