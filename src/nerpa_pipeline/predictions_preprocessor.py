@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys
 import os
 import shutil
@@ -40,7 +40,7 @@ def gen_prediction_dict(orf_part, input_file_name, dirname):
 
 
 def gen_prediction_for_one_orfs_part(orf_part, input_file_name, output_prefix,
-                                     current_part, predictions_info_list, base_antismashout_name):
+                                     current_part, predictions_info_list, base_antismashout_name, origin_file):
     prediction_dict = gen_prediction_dict(orf_part, input_file_name, base_antismashout_name)
 
     output_str = ""
@@ -53,17 +53,18 @@ def gen_prediction_for_one_orfs_part(orf_part, input_file_name, output_prefix,
         with open(output_file, 'w') as wf:
             wf.write(output_str)
         current_part += 1
+        origin_file[output_file] = origin_file['/'.join(input_file_name.split('/')[:-2])]
         predictions_info_list.append(output_file)
 
     return current_part
 
 def gen_predictions(bgc_orfs_parts, input_file_name, output_prefix, current_part,
-                    predictions_info_list, base_antismashout_name):
+                    predictions_info_list, base_antismashout_name, origin_file):
     for orf_part in bgc_orfs_parts:
-        current_part = gen_prediction_for_one_orfs_part(orf_part, input_file_name, output_prefix, current_part, predictions_info_list, base_antismashout_name)
+        current_part = gen_prediction_for_one_orfs_part(orf_part, input_file_name, output_prefix, current_part, predictions_info_list, base_antismashout_name, origin_file)
     return current_part
 
-def create_predictions_by_antiSAMSHout(antismashouts, outdir, log):
+def create_predictions_by_antiSAMSHout(antismashouts, outdir, log, origin_file):
     log.info("Start create predictions by antiSMASH")
 
     dir_for_predictions = os.path.join(outdir, "predictions")
@@ -111,7 +112,7 @@ def create_predictions_by_antiSAMSHout(antismashouts, outdir, log):
                     #shutil.copyfile(os.path.join(nrpspred_dir, filename), os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name))
                     gen_predictions(parts, os.path.join(nrpspred_dir, filename),
                                     os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name)[:-4],
-                                    0, predictions_info_list, dirname)
+                                    0, predictions_info_list, dirname, origin_file)
 
     f = open(predictions_info_file, 'w')
     for line in predictions_info_list:

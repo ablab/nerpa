@@ -15,6 +15,7 @@ nerpa_init.init()
 site.addsitedir(nerpa_init.python_modules_dir)
 
 import predictions_preprocessor
+import postprocessing
 import nerpa_utils
 import handle_rban
 import logger
@@ -202,7 +203,7 @@ def copy_prediction_list(args, main_out_dir):
     return new_prediction_path
 
 
-def get_antismash_v3_compatible_input_paths(listing_fpath, list_of_paths, output_dir, log):
+def get_antismash_v3_compatible_input_paths(listing_fpath, list_of_paths, output_dir, log, origin_file):
     '''
     Parses all antiSMASH-related options,
     detects all relevant output dirs (either with .json [aS v.5] or with ./txt/ & ./nrpspks_predictions_txt [aS v.3],
@@ -270,7 +271,12 @@ def get_antismash_v3_compatible_input_paths(listing_fpath, list_of_paths, output
         converted_antiSMASH_v5_paths = convert_antiSMASH_v5(antiSMASHv5_paths +
                                                             ['-o', converted_antiSMASH_v5_outputs_dir, '-m', 'hybrid'])
         antiSMASHv3_paths += converted_antiSMASH_v5_paths
+        for (covant5, origin5) in zip(converted_antiSMASH_v5_paths, antiSMASHv5_paths):
+            origin_file[covant5] = origin_file[origin5] if origin5 in origin_file else origin5
         log.info("\n======= Done with Preprocessing antiSMASH v5 inputs")
+    for path3 in antiSMASHv3_paths:
+        if path3 not in origin_file:
+            origin_file[path3] = path3
 
     return antiSMASHv3_paths
 
@@ -280,6 +286,8 @@ def run(args, log):
                                                crash_if_exists=not args.output_dir_reuse, log=log)
     log.set_up_file_handler(output_dir)
     log.start()
+
+    origin_file = {}
 
     if args.predictions is not None:
         path_predictions = copy_prediction_list(args, output_dir)
@@ -301,10 +309,11 @@ def run(args, log):
                        '--cpus', str(args.threads), args.seqs]
             nerpa_utils.sys_call(command, log, cwd=output_dir)
             antismash_out_dirs.append(cur_antismash_out)
+            origin_file[cur_antismash_out] = args.seqs
 
         path_predictions = predictions_preprocessor.create_predictions_by_antiSAMSHout(get_antismash_v3_compatible_input_paths(
                 listing_fpath=args.antismash_out, list_of_paths=antismash_out_dirs,
-                output_dir=output_dir, log=log), output_dir, log)
+                output_dir=output_dir, log=log, origin_file=origin_file), output_dir, log, origin_file)
 
     input_configs_dir = args.configs_dir if args.configs_dir else nerpa_init.configs_dir
     current_configs_dir = os.path.join(output_dir, "configs")
@@ -345,6 +354,9 @@ def run(args, log):
     log.info("RESULTS:")
     log.info("Main report is saved to " + os.path.join(output_dir, 'report.csv'), indent=1)
     log.info("Detailed reports are saved to " + output_dir, indent=1)
+
+    postprocessing.postproccesing(output_dir, origin_file)
+
     log.finish()
 
 
