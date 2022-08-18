@@ -1,7 +1,7 @@
 import os
 import json
 import glob
-import re, sys
+import re
 from log_utils import error, info
 from codes_handler import get_prediction_from_signature
 
@@ -115,16 +115,14 @@ class NRPS_PKS_entry:
 
 def __parse_location(location):
     # e.g. 'location' = '[351:486](+)'
-    coords = location.split(']')[0][1:]
-    start, end = map(int, coords.split(':'))
-    if '(' in location:
-        strand = location.split('](')[1][0]
-    else:
-        strand = ''
+    match = re.match("\\[<?(?P<start>[0-9]+):>?(?P<end>[0-9]+)\\](\\((?P<strand>[+-])\\))?", location)
+    start = int(match.group("start"))
+    end = int(match.group("end"))
+    strand = match.group("strand") or ''
     return start, end, strand
 
 def __parse_amp_binding_domain(prediction):
-    match = re.match("nrpspksdomains_(?P<ctg_id>.*)_(?P<orf_idx>[^_]*)_AMP-binding\.(?P<a_idx>[0-9]+)$", prediction)
+    match = re.match("nrpspksdomains_(?P<ctg_id>.*)_(?P<orf_idx>[^_]*)_AMP-binding\\.(?P<a_idx>[0-9]+)$", prediction)
     return match.group("ctg_id"), match.group("orf_idx"), match.group("a_idx")
 
 def __parse_locus_tag(locus_tag):
@@ -161,7 +159,6 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
     info('Processing JSON %s, saving results to %s' % (main_json_path, output_dir), verbose=verbose)
     with open(main_json_path, 'r') as f:
         data = json.load(f)
-    print("foo", file=sys.stderr)
     for contig_data in data["records"]:
         orfs = [f['qualifiers']['locus_tag'][0] for f in contig_data['features'] if f['type'] == 'CDS']
         # TODO: process features as well and output them in antiSMASH v.3-compatible style in ./txt/ subdirectory
@@ -178,11 +175,10 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
                     if "AMP-binding" in prediction:
                         ctg_id, orf_idx, a_idx = __parse_amp_binding_domain(prediction)
                         stachelhaus_seq = domain_predictions[prediction]["NRPSPredictor2"]["stachelhaus_seq"].upper()
-                        parsed_predictions.append({"v5_name": prediction.replace("nrpspksdomains_", ""),
+                        parsed_predictions.append({"v5_name": "%s_%s_AMP-binding.%s" % (ctg_id, orf_idx, a_idx),
                                                    "orf": orf_idx, "A": int(a_idx),
                                                    "signature": stachelhaus_seq,
                                                    "svm": SVM_entry(domain_predictions[prediction]["NRPSPredictor2"])})
-
                         # example:
                         # {'nrpspksdomains_ctg1_5_AMP-binding.1':
                         #      {'NRPSPredictor2':
