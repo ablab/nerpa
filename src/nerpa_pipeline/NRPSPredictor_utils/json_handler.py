@@ -1,6 +1,7 @@
 import os
 import json
 import glob
+import re
 from log_utils import error, info
 from codes_handler import get_prediction_from_signature
 
@@ -114,14 +115,19 @@ class NRPS_PKS_entry:
 
 def __parse_location(location):
     # e.g. 'location' = '[351:486](+)'
-    coords = location.split(']')[0][1:]
-    start, end = map(int, coords.split(':'))
-    if '(' in location:
-        strand = location.split('](')[1][0]
-    else:
-        strand = ''
+    match = re.match("\\[<?(?P<start>[0-9]+):>?(?P<end>[0-9]+)\\](\\((?P<strand>[+-])\\))?", location)
+    start = int(match.group("start"))
+    end = int(match.group("end"))
+    strand = match.group("strand") or ''
     return start, end, strand
 
+def __parse_amp_binding_domain(prediction):
+    match = re.match("nrpspksdomains_(?P<ctg_id>.*)_(?P<orf_idx>[^_]*)_AMP-binding\\.(?P<a_idx>[0-9]+)$", prediction)
+    return match.group("ctg_id"), match.group("orf_idx"), match.group("a_idx")
+
+def __parse_locus_tag(locus_tag):
+    match = re.match("^(?P<ctg_id>.*)_(?P<orf_idx>[^_]*)$", locus_tag)
+    return match.group("ctg_id"), match.group("orf_idx")
 
 def get_main_json_fpath(dirpath):
     if not os.path.isdir(dirpath):
@@ -153,14 +159,12 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
     info('Processing JSON %s, saving results to %s' % (main_json_path, output_dir), verbose=verbose)
     with open(main_json_path, 'r') as f:
         data = json.load(f)
-
     for contig_data in data["records"]:
         # TODO: process features as well and output them in antiSMASH v.3-compatible style in ./txt/ subdirectory
         # example:
         # 'features' (list of len 658)
         #     000: {'location': '[0:40388]', 'type': 'protocluster', 'id': '<unknown id>', 'qualifiers': {'aStool': ['rule-based-clusters'], 'contig_edge': ['True'], 'core_location': ['[3484:20388]'], 'cutoff': ['20000'], 'detection_rule': ['(cds(Condensation and (AMP-binding or A-OX)) or (Condensation and AMP-binding))'], 'neighbourhood': ['20000'], 'product': ['NRPS'], 'protocluster_number': ['1'], 'tool': ['antismash']}}
         #     001: {'location': '[3484:20388]', 'type': 'proto_core', 'id': '<unknown id>', 'qualifiers': {'aStool': ['rule-based-clusters'], 'tool': ['antismash'], 'cutoff': ['20000'], 'detection_rule': ['(cds(Condensation and (AMP-binding or A-OX)) or (Condensation and AMP-binding))'], 'neighbourhood': ['20000'], 'product': ['NRPS'], 'protocluster_number': ['1']}}
-
         if "antismash.modules.nrps_pks" in contig_data["modules"]:
             # part 1: parsing domain predictions and writing _codes.txt and _svm.txt files
             parsed_predictions = []
@@ -168,14 +172,12 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
                 domain_predictions = contig_data["modules"]["antismash.modules.nrps_pks"]["domain_predictions"]
                 for prediction in domain_predictions.keys():
                     if "AMP-binding" in prediction:
-                        prefix, ctg_id, orf_idx, amp_binding = prediction.split('_')
-                        a_idx = amp_binding.split('.')[1]
+                        ctg_id, orf_idx, a_idx = __parse_amp_binding_domain(prediction)
                         stachelhaus_seq = domain_predictions[prediction]["NRPSPredictor2"]["stachelhaus_seq"].upper()
-                        parsed_predictions.append({"v5_name": prediction,
-                                                   "orf": int(orf_idx), "A": int(a_idx),
+                        parsed_predictions.append({"v5_name": "%s_%s_AMP-binding.%s" % (ctg_id, orf_idx, a_idx),
+                                                   "orf": orf_idx, "A": int(a_idx),
                                                    "signature": stachelhaus_seq,
                                                    "svm": SVM_entry(domain_predictions[prediction]["NRPSPredictor2"])})
-
                         # example:
                         # {'nrpspksdomains_ctg1_5_AMP-binding.1':
                         #      {'NRPSPredictor2':
@@ -250,12 +252,11 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
                             continue
 
                         locus_tag = feature['qualifiers']['locus_tag'][0]
-                        ctg_id, orf_idx = locus_tag.split('_')  # e.g. 'locus_tag' = ['ctg1_1']
+                        ctg_id, orf_idx = __parse_locus_tag(locus_tag)  # e.g. 'locus_tag' = ['ctg1_1']
                         orf_id = __get_entry_id(ctg_id, orf_idx) if naming_style == 'v3' else locus_tag
                         gene_f.write('\t'.join(map(str,
                                                    [orf_id, start, end, strand, '', orf_id, 'unannotated orf']))
                                      + '\n')
-
             with open(cur_contig_NRPS_PKS_output_fpath, 'w') as nrps_pks_f:
                 nrps_pks_f.write(NRPS_PKS_HEADER)
                 # features1 = contig_data['features'][:300]
@@ -280,10 +281,10 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
                             continue
 
                         locus_tag = feature['qualifiers']['locus_tag'][0]
-                        ctg_id, orf_idx = locus_tag.split('_')  # e.g. 'locus_tag' = ['ctg1_1']
+                        ctg_id, orf_idx = __parse_locus_tag(locus_tag)  # e.g. 'locus_tag' = ['ctg1_1']
                         entry = NRPS_PKS_entry()
                         entry.Cluster_ID = contig_data['id'] + '_c%d' % (cur_reg_idx + 1)
-                        entry.NRPSPKS_ID = __get_entry_id(ctg_id, orf_idx) if naming_style == 'v3' else locus_tag
+                        entry.NRPSPKS_ID = __get_entry_id(ctg_id, orf_idx) if naming_style == 'v3' else locus_tag#
                         if last_CDS_before_aSDomain is not None:
                             if 'qualifiers' in last_CDS_before_aSDomain and 'NRPS_PKS' in last_CDS_before_aSDomain['qualifiers']:
                                 NRPS_PKS_type = last_CDS_before_aSDomain['qualifiers']['NRPS_PKS'][-1]
@@ -311,7 +312,10 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
 
 
 def __get_entry_id(ctg_id, orf_idx, a_idx=None):
-    orf_id ="%s_orf%05d" % (str(ctg_id), int(orf_idx))
+    try:
+        orf_id ="%s_orf%05d" % (str(ctg_id), int(orf_idx))
+    except ValueError:
+        orf_id = "%s_%s" % (str(ctg_id), str(orf_idx))
     if a_idx is not None:
         return orf_id + "_A%d" % a_idx
     return orf_id
