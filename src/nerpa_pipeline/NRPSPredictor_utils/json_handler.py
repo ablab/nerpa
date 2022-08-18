@@ -160,7 +160,6 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
     with open(main_json_path, 'r') as f:
         data = json.load(f)
     for contig_data in data["records"]:
-        orfs = [f['qualifiers']['locus_tag'][0] for f in contig_data['features'] if f['type'] == 'CDS']
         # TODO: process features as well and output them in antiSMASH v.3-compatible style in ./txt/ subdirectory
         # example:
         # 'features' (list of len 658)
