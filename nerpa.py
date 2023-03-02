@@ -268,7 +268,7 @@ def get_antismash_v3_compatible_input_paths(listing_fpath, list_of_paths, output
         converted_antiSMASH_v5_outputs_dir = os.path.join(output_dir, "converted_antiSMASH_v5_outputs")
         log.info(f'results will be in {converted_antiSMASH_v5_outputs_dir}', indent=1)
         converted_antiSMASH_v5_paths = convert_antiSMASH_v5(antiSMASHv5_paths +
-                                                            ['-o', converted_antiSMASH_v5_outputs_dir, '-m', 'hybrid', "-n", "v5" ])
+                                                            ['-o', converted_antiSMASH_v5_outputs_dir, '-m', 'hybrid', "-n", "v3" ])
         antiSMASHv3_paths += converted_antiSMASH_v5_paths
         log.info("\n======= Done with Preprocessing antiSMASH v5 inputs")
 

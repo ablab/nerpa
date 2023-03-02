@@ -302,6 +302,8 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
                         elif entry.domain_type.endswith('MT'):
                             entry.subtype = entry.domain_type
                             entry.domain_type = 'MT'
+                        if 'domain_subtype' in feature['qualifiers']:  # for antiSMASH v.6 and (hopefully) newer
+                            entry.subtype = feature['qualifiers']['domain_subtype'][0]
                         entry.domain_start = start
                         entry.domain_end = end
                         # TODO: process the rest fields (KR_activity, etc for PK and NRPSPredictor2, etc for AMP-binding)
