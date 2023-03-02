@@ -121,13 +121,16 @@ def __parse_location(location):
     strand = match.group("strand") or ''
     return start, end, strand
 
+
 def __parse_amp_binding_domain(prediction):
-    match = re.match("nrpspksdomains_(?P<ctg_id>.*)_(?P<orf_idx>[^_]*)_AMP-binding\\.(?P<a_idx>[0-9]+)$", prediction)
-    return match.group("ctg_id"), match.group("orf_idx"), match.group("a_idx")
+    match = re.match("nrpspksdomains_(?P<orf_id>.*)_AMP-binding\\.(?P<a_idx>[0-9]+)$", prediction)
+    return match.group("orf_id"), match.group("a_idx")
+
 
 def __parse_locus_tag(locus_tag):
     match = re.match("^(?P<ctg_id>.*)_(?P<orf_idx>[^_]*)$", locus_tag)
     return match.group("ctg_id"), match.group("orf_idx")
+
 
 def get_main_json_fpath(dirpath):
     if not os.path.isdir(dirpath):
@@ -159,7 +162,8 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
     info('Processing JSON %s, saving results to %s' % (main_json_path, output_dir), verbose=verbose)
     with open(main_json_path, 'r') as f:
         data = json.load(f)
-    for contig_data in data["records"]:
+    for ctg_idx, contig_data in enumerate(data["records"]):
+        ctg_id = 'ctg%d' % (ctg_idx + 1)
         # TODO: process features as well and output them in antiSMASH v.3-compatible style in ./txt/ subdirectory
         # example:
         # 'features' (list of len 658)
@@ -172,10 +176,11 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
                 domain_predictions = contig_data["modules"]["antismash.modules.nrps_pks"]["domain_predictions"]
                 for prediction in domain_predictions.keys():
                     if "AMP-binding" in prediction:
-                        ctg_id, orf_idx, a_idx = __parse_amp_binding_domain(prediction)
+                        # ctg_id, orf_idx, a_idx = __parse_amp_binding_domain(prediction)
+                        orf_id, a_idx = __parse_amp_binding_domain(prediction)
                         stachelhaus_seq = domain_predictions[prediction]["NRPSPredictor2"]["stachelhaus_seq"].upper()
-                        parsed_predictions.append({"v5_name": "%s_%s_AMP-binding.%s" % (ctg_id, orf_idx, a_idx),
-                                                   "orf": orf_idx, "A": int(a_idx),
+                        parsed_predictions.append({"v5_name": "%s_AMP-binding.%s" % (orf_id, a_idx),
+                                                   "locus_tag": orf_id, "A": int(a_idx),
                                                    "signature": stachelhaus_seq,
                                                    "svm": SVM_entry(domain_predictions[prediction]["NRPSPredictor2"])})
                         # example:
@@ -200,7 +205,7 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
             if parsed_predictions:
                 seq_entry_id = contig_data['id']
                 info('\tprocessing contig (%s): %s' % (seq_entry_id, ctg_id), verbose=verbose)
-                parsed_predictions.sort(key=lambda x: (x["orf"], x["A"]))
+                parsed_predictions.sort(key=lambda x: (x["locus_tag"], x["A"]))  # FIXME: "locus_tag" could be unsortable, e.g., ctg1_19 vs ctg1_2; TODO: check whether we can use coordinates (what happens if multi-entry fasta is on input)
                 cur_contig_codes_output_fpath = __get_contig_output_fpath(output_dir,
                                                 seq_entry_id if naming_style == 'v5' else ctg_id, type='codes')
                 cur_contig_svm_output_fpath = __get_contig_output_fpath(output_dir,
@@ -209,7 +214,7 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
                     with open(cur_contig_svm_output_fpath, 'w') as svm_f:
                         svm_f.write(SVM_HEADER)
                         for prediction in parsed_predictions:
-                            entry_id = __get_entry_id(ctg_id, prediction["orf"], prediction["A"]) \
+                            entry_id = __get_entry_id(ctg_id, prediction["locus_tag"], prediction["A"]) \
                                 if naming_style == 'v3' else prediction["v5_name"]
                             main_aa_pred, aa_pred_list = get_prediction_from_signature(prediction["signature"],
                                                                                        known_codes, prediction["svm"],
@@ -217,7 +222,7 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
                             codes_f.write('\t'.join([entry_id, main_aa_pred, aa_pred_list]) + '\n')
                             svm_f.write('\t'.join([entry_id, str(prediction["svm"])]) + '\n')
                             info('\t\tprocessed (%s) ORF: %s, A-domain: %s, Stachelhaus code: %s' %
-                                 (prediction["v5_name"], prediction["orf"], prediction["A"], prediction["signature"]),
+                                 (prediction["v5_name"], prediction["locus_tag"], prediction["A"], prediction["signature"]),
                                  verbose=verbose)
 
             # part 2: parsing features and writing _genes.txt and _NRPS_PKS.txt files
@@ -237,6 +242,7 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
                     start, end, _ = __parse_location(feature['location'])
                     regions_of_interest.append((start, end))
 
+            num_genes_without_locus_tag = 0
             with open(cur_contig_gene_output_fpath, 'w') as gene_f:
                 gene_f.write(GENE_HEADER)
                 # content example: ctg1_orf00189	127377	128739	-		ctg1_orf00189	unannotated orf
@@ -251,9 +257,17 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
                         if end < regions_of_interest[cur_reg_idx][0]:
                             continue
 
-                        locus_tag = feature['qualifiers']['locus_tag'][0]
-                        ctg_id, orf_idx = __parse_locus_tag(locus_tag)  # e.g. 'locus_tag' = ['ctg1_1']
-                        orf_id = __get_entry_id(ctg_id, orf_idx) if naming_style == 'v3' else locus_tag
+                        if 'locus_tag' in feature['qualifiers']:  # antiSMASH v.5 and earlier
+                            locus_tag = feature['qualifiers']['locus_tag'][0]
+                        # antiSMASH v.6 and (hopefully) newer
+                        elif 'gene' in feature['qualifiers']:
+                            locus_tag = feature['qualifiers']['gene'][0]
+                        elif 'protein_id' in feature['qualifiers']:
+                            locus_tag = feature['qualifiers']['protein_id'][0]
+                        else:
+                            num_genes_without_locus_tag += 1
+                            locus_tag = 'None_%d' % num_genes_without_locus_tag
+                        orf_id = __get_entry_id(ctg_id, locus_tag) if naming_style == 'v3' else locus_tag
                         gene_f.write('\t'.join(map(str,
                                                    [orf_id, start, end, strand, '', orf_id, 'unannotated orf']))
                                      + '\n')
@@ -281,10 +295,9 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
                             continue
 
                         locus_tag = feature['qualifiers']['locus_tag'][0]
-                        ctg_id, orf_idx = __parse_locus_tag(locus_tag)  # e.g. 'locus_tag' = ['ctg1_1']
                         entry = NRPS_PKS_entry()
                         entry.Cluster_ID = contig_data['id'] + '_c%d' % (cur_reg_idx + 1)
-                        entry.NRPSPKS_ID = __get_entry_id(ctg_id, orf_idx) if naming_style == 'v3' else locus_tag#
+                        entry.NRPSPKS_ID = __get_entry_id(ctg_id, locus_tag) if naming_style == 'v3' else locus_tag
                         if last_CDS_before_aSDomain is not None:
                             if 'qualifiers' in last_CDS_before_aSDomain and 'NRPS_PKS' in last_CDS_before_aSDomain['qualifiers']:
                                 NRPS_PKS_type = last_CDS_before_aSDomain['qualifiers']['NRPS_PKS'][-1]
@@ -313,11 +326,16 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
     return output_dir
 
 
-def __get_entry_id(ctg_id, orf_idx, a_idx=None):
-    try:
-        orf_id ="%s_orf%05d" % (str(ctg_id), int(orf_idx))
-    except ValueError:
-        orf_id = "%s_%s" % (str(ctg_id), str(orf_idx))
+def __get_entry_id(ctg_id, locus_tag, a_idx=None):
+    if locus_tag.startswith(ctg_id):
+        orf_id = locus_tag
+    else:
+        orf_idx = locus_tag
+        # ctg_id, orf_idx = __parse_locus_tag(locus_tag)
+        try:
+            orf_id ="%s_orf%05d" % (str(ctg_id), int(orf_idx))
+        except ValueError:
+            orf_id = "%s_%s" % (str(ctg_id), str(orf_idx))
     if a_idx is not None:
         return orf_id + "_A%d" % a_idx
     return orf_id
