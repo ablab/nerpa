@@ -5,6 +5,12 @@
 #include <Logger/logger.hpp>
 #include "OrderedGenesMatcher.h"
 
+template <class T>
+std::vector<std::vector<std::vector<T>>> three_dim_vector(int d1, int d2, int d3, T value){
+  return std::vector<std::vector<std::vector<T>>> (d1, std::vector<std::vector<T>>(
+ 						   d2, std::vector<T>(
+						   d3, value)));
+}
 
 class NRP_iterator_skip_first : public matcher::OrderedGenesMatcher::NRP_iterator {
 public:
@@ -243,99 +249,117 @@ matcher::MatcherBase::Match matcher::OrderedGenesMatcher::getSimpleMatch(matcher
     auto nrplen = size_t(nrp_iterator->getLen());
 
     enum match_type {Match, Insertion, Deletion, NA};
-    //dp[nrp_pos][pred_pos] = score for prefix
-    std::vector< std::vector<double> > dp(std::vector<std::vector<double>>(nrplen + 1,
-            std::vector<double>(plen + 1,  score->minScore(nrplen))));
-    std::vector< std::vector<int> > px(std::vector<std::vector<int> >(nrplen + 1,
-            std::vector<int>(plen + 1,  0)));
-    std::vector< std::vector<int> > py(std::vector<std::vector<int> >(nrplen + 1,
-            std::vector<int>(plen + 1,  0)));
-    std::vector< std::vector<match_type> > pmtc(std::vector<std::vector<match_type> >(nrplen + 1,
-            std::vector<match_type>(plen + 1,  NA)));
 
-    dp[0][0] = 0;
-    for (int npos = 1; npos <= nrplen; ++npos) {
-        dp[npos][0] = dp[npos - 1][0] + score->InsertionScore();
-        px[npos][0] = npos - 1;
-        py[npos][0] = 0;
-        pmtc[npos][0] = Insertion;
-    }
+    const int max_number_aa_reps = 3;
+    const int max_number_orf_reps = 3;
 
-    for (int ppos = 1; ppos <= plen; ++ppos) {
-        dp[0][ppos] = dp[0][ppos - 1] + score->DeletionScore();
-        px[0][ppos] = 0;
-        py[0][ppos] = ppos - 1;
-        pmtc[0][ppos] = Deletion;
-    }
+										   
+    //dp[x][y][r] is score for aligning nrp[:x] with pred[:y] with the condition that the last orf was repeated r times
+    auto dp = three_dim_vector<double>(nrplen + 1, plen + 1, max_number_orf_reps + 1, score->minScore(nrplen));
+    //pp[x][y][r] is the ancestor of state (x, y, r) in the optimal route
+    auto pp = three_dim_vector<std::tuple<int, int, int, match_type>> (nrplen + 1, plen + 1, max_number_orf_reps + 1,
+								      std::make_tuple(0, 0, 0, NA));
+    auto recalc = [&](int curx, int cury, int curr,
+		      int ancx, int ancy, int ancr,
+		      double edge_weight, match_type mt){
+		    if (dp[curx][cury][curr] < dp[ancx][ancy][ancr] + edge_weight){
+		      dp[curx][cury][curr] = dp[ancx][ancy][ancr] + edge_weight;
+		      pp[curx][cury][curr] = std::make_tuple(ancx, ancy, ancr, mt);
+		    }
+		  };
+    
+    dp[0][0][0] = 0;
+    //in the initial version it was not checked that the new value of dp is greater than the old one. I hope, that is always the case.
+    for (int npos = 1; npos <= nrplen; ++npos) 
+      recalc(npos,     0, 0,
+	     npos - 1, 0, 0,
+	     score->InsertionScore(), Insertion);
+
+    //in the initial version it was not checked that the new value of dp is greater than the old one. I hope, that is always the case.
+    for (int ppos = 1; ppos <= plen; ++ppos) 
+      recalc(0, ppos,     0,
+	     0, ppos - 1, 0,
+	     score->DeletionScore(), Deletion);
 
     for (int npos = 1; npos <= nrplen; ++npos) {
         for (int ppos = 1; ppos <= plen; ++ppos) {
-            double match_score =  score->aaScore(get_aapred(ppos - 1), nrp_iterator->getAA(npos - 1));
-            dp[npos][ppos] = dp[npos - 1][ppos - 1] + match_score;
-            px[npos][ppos] = npos - 1;
-            py[npos][ppos] = ppos - 1;
-            pmtc[npos][ppos] = Match;
+	  double match_score =  score->aaScore(get_aapred(ppos - 1), nrp_iterator->getAA(npos - 1));
+	  bool new_orf = (ppos == 1) || (part_id[ppos - 1] != part_id[ppos - 2]); //current position in predicted nrp is the beginning of new orf
 
-            if (is_rep_aa(ppos - 1) &&
-                dp[npos - 1][ppos] + match_score > dp[npos][ppos]) {
-                dp[npos][ppos] = dp[npos - 1][ppos] + match_score;
-                px[npos][ppos] = npos - 1;
-                py[npos][ppos] = ppos;
-                pmtc[npos][ppos] = Match;
-            }
+	  for (int orf_reps = 0; orf_reps < max_number_orf_reps; ++orf_reps)
+	    recalc(npos, ppos, new_orf ? 0 : orf_reps,
+		   npos - 1, ppos - 1, orf_reps,
+		   match_score, Match);
 
-            if (is_rep_orf(ppos - 1) && pos_id[ppos - 1] == 0 &&
-            dp[npos - 1][ppos + orf_len(ppos - 1) - 1] + match_score > dp[npos][ppos]
-            ) {
-                dp[npos][ppos] = dp[npos - 1][ppos + orf_len(ppos - 1) - 1] + match_score;
-                px[npos][ppos] = npos - 1;
-                py[npos][ppos] = ppos + orf_len(ppos - 1) - 1 ;
-                pmtc[npos][ppos] = Match;
-            }
+            if (is_rep_aa(ppos - 1)){
+	      int max_reps = std::min(max_number_aa_reps, npos);
+	      std::vector <double> rep_score(max_reps + 1);
+	      rep_score[0] = 0;
+	      for (int nreps = 1; nreps <= max_reps; ++nreps)
+		rep_score[nreps] = rep_score[nreps - 1] + score->aaScore(get_aapred(ppos - 1),
+									 nrp_iterator->getAA(npos - nreps));
 
-            if (dp[npos][ppos - 1] + score->DeletionScore() > dp[npos][ppos]) {
-                dp[npos][ppos] = dp[npos][ppos - 1] + score->DeletionScore();
-                px[npos][ppos] = npos;
-                py[npos][ppos] = ppos - 1;
-                pmtc[npos][ppos] = Deletion;
-            }
+	      for(int nreps = 2; nreps <= max_reps; ++nreps)
+		for (int orf_reps = 0; orf_reps < max_number_orf_reps; ++orf_reps)
+		  recalc(npos, ppos, new_orf ? 0 : orf_reps,
+			 npos - nreps, ppos - 1, orf_reps,
+			 rep_score[nreps], Match);
+	    }
 
-            if (dp[npos - 1][ppos] + score->InsertionScore() > dp[npos][ppos]) {
-                dp[npos][ppos] = std::max(dp[npos - 1][ppos] + score->InsertionScore(), dp[npos][ppos]);
-                px[npos][ppos] = npos - 1;
-                py[npos][ppos] = ppos;
-                pmtc[npos][ppos] = Insertion;
-            }
-        }
+	    if (is_rep_orf(ppos - 1) && pos_id[ppos - 1] == 0 && orf_len(ppos - 1) > 1) //if orf_len == 1, pumping a single domain will do the same job
+	      for (int orf_reps = 1; orf_reps < max_number_orf_reps; ++orf_reps)
+		recalc(npos, ppos, orf_reps,
+		       npos - 1, ppos + orf_len(ppos - 1) - 1, orf_reps - 1,
+		       match_score, Match);
+
+	    for (int orf_reps = 0; orf_reps < max_number_orf_reps; ++orf_reps)
+	      recalc(npos, ppos, new_orf ? 0 : orf_reps,
+		     npos, ppos - 1, orf_reps,
+		     score->DeletionScore(), Deletion);
+
+	    for (int orf_reps = 0; orf_reps < max_number_orf_reps; ++orf_reps)
+              recalc(npos, ppos, orf_reps,
+		     npos - 1, ppos, orf_reps,
+                     score->InsertionScore(), Insertion);
+
+	}
     }
+    
+    std::vector<double>& dp_last = dp[nrplen][plen];
+    int reps_last = std::distance(dp_last.begin(),
+				   max_element(dp_last.begin(), dp_last.end()));
 
-    matcher::MatcherBase::Match nrPsMatch(nrp_iterator->getNRP(), nrp_parts, dp[nrplen][plen], score);
+    int curx = int(nrplen), cury = int(plen), curr = reps_last; 
+    //backtracking the optimal match
+    matcher::MatcherBase::Match nrPsMatch(nrp_iterator->getNRP(), nrp_parts, dp[curx][cury][curr], score);
 
 //    std::cout << nrp_iterator->getNRP()->get_file_name() << "\n";
-    int curx = int(nrplen), cury = int(plen);
 
     while (curx != 0 || cury != 0) {
-        if (pmtc[curx][cury] == Match) {
-            nrPsMatch.match_align(nrp_iterator->getID(curx - 1), part_id[cury - 1], pos_id[cury - 1]);
-            nrPsMatch.match(nrp_iterator->getID(curx - 1), part_id[cury - 1], pos_id[cury - 1]);
+      auto anc = pp[curx][cury][curr];
+      int ancx = std::get<0> (anc), ancy = std::get<1> (anc), ancr = std::get<2> (anc);
+      match_type cur_match = std::get<3>(anc);
+        if (cur_match == Match) {
+	  for (int xpos = curx - 1; xpos >= ancx; --xpos){
+	    nrPsMatch.match_align(nrp_iterator->getID(xpos), part_id[cury - 1], pos_id[cury - 1]);
+	    nrPsMatch.match(nrp_iterator->getID(xpos), part_id[cury - 1], pos_id[cury - 1]);
+	  }
 //            std::cout << "M " << curx << " " << nrp_iterator->getAA(curx - 1).get_name() << "  -- " << cury << " "
 //            << get_aapred(cury - 1).getAAPrediction()[0].aminoacid.get_name() << "\n";
-        } else if (pmtc[curx][cury] == Deletion) {
+        } else if (cur_match == Deletion) {
             nrPsMatch.match_align(-1, part_id[cury - 1], pos_id[cury - 1]);
 //            std::cout << "D " << curx << " none -- " << cury << " "
 //                                                    << get_aapred(cury - 1).getAAPrediction()[0].aminoacid.get_name() << "\n";
-        } else if (pmtc[curx][cury] == Insertion) {
+        } else if (cur_match == Insertion) {
             nrPsMatch.match_align(nrp_iterator->getID(curx - 1), -1, -1);
 //            std::cout << "I " << curx << " " << nrp_iterator->getAA(curx - 1).get_name() << "  -- " << cury << " none \n";
         }
 
-        int ocurx = curx;
-        int ocury = cury;
-        curx = px[ocurx][ocury];
-        cury = py[ocurx][ocury];
+	curx = ancx, cury = ancy, curr = ancr;
     }
 
 //    std::cout << "\n";
-    nrPsMatch.setScore(score->resultScore(dp[nrplen][plen], nrplen));
+    nrPsMatch.setScore(score->resultScore(dp[nrplen][plen][reps_last], nrplen));
     return nrPsMatch;
+    
 }
