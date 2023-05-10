@@ -189,21 +189,32 @@ def putative_backbones(G, min_nodes=2):
 
         raise NotImplementedError  # hamiltonian path not found
 
-    return cycles, paths, singular_nodes  # singular nodes are never used
+    return cycles, paths, singular_nodes  # singular nodes are never used!
 
 
-def write_initial_graph(G, struct_id, main_out_dir):
+def write_initial_graph(G, rban_record, struct_id, main_out_dir):
     '''
    Write a monomer graph in json format to the 'main_out_dir/initial_monomer_graphs' folder
     '''
     initial_graphs_dir = os.path.join(main_out_dir, 'initial_monomer_graphs')
     if not os.path.exists(initial_graphs_dir):
         os.mkdir(initial_graphs_dir)
-    out_file_path = os.path.join(initial_graphs_dir, struct_id + '.json')
-    with open(out_file_path, 'w') as out:
+    out_file_rban_postprocessed = os.path.join(initial_graphs_dir, struct_id + '.json')
+    with open(out_file_rban_postprocessed, 'w') as out:
         contents = {'nodes': G.nodes._nodes,
                     'edges': G.adj._atlas}
         json.dump(contents, out)
+
+
+def write_rban_record(rban_record, main_out_dir):
+    initial_graphs_dir = os.path.join(main_out_dir, 'initial_monomer_graphs')
+    if not os.path.exists(initial_graphs_dir):
+        os.mkdir(initial_graphs_dir)
+    struct_id = rban_record['id']
+    out_file_rban_initial = os.path.join(initial_graphs_dir, struct_id + '_rban.json')
+    with open(out_file_rban_initial, 'w') as out:
+        json.dump(rban_record, out)
+
 
 def process_single_record(log, rban_record, recognized_monomers, backbone_bond_types,
                           hybrid_monomers_dict, main_out_dir, na=UNDEFINED_NAME, min_recognized_nodes=2):
@@ -212,12 +223,6 @@ def process_single_record(log, rban_record, recognized_monomers, backbone_bond_t
     In doing so all edges which are not of backbone_bond_types are removed.
     Also, by default all edges incident to lipid monomers are removed
     '''
-    G = build_nx_graph(rban_record, backbone_bond_types, recognized_monomers)
-    '''
-    My version of build_nx_graph, which does not remove any edges and keeps some additional information in the nodes
-    '''
-    my_G = my_build_nx_graph(rban_record, recognized_monomers)
-    structure_id = rban_record['id']
 
     def add_chirality(graph):
         try:
@@ -239,16 +244,27 @@ def process_single_record(log, rban_record, recognized_monomers, backbone_bond_t
     add newly identified monomers from hybrid monomers
     '''
 
+    structure_id = rban_record['id']
+    print(f'Processing {structure_id}')
+    G = build_nx_graph(rban_record, backbone_bond_types, recognized_monomers)
     add_chirality(G)
     add_hybrid_monomers(G)
 
+    write_rban_record(rban_record, main_out_dir)  # output rban_record for Louis feature
     '''
-    I output the initial monomer graph in networkx format to use it later in Louis feature
+    # I used to need these nerpa processed monomer graphs at some point but now I work directly from rBAN output
+    # Nevertheless, sometime in the future I might need this newly identified monomers or chirality 
+    try:
+        # My version of build_nx_graph, which does not remove any edges and keeps some additional information in the nodes
+        my_G = my_build_nx_graph(rban_record, recognized_monomers)
+        add_chirality(my_G)
+        add_hybrid_monomers(my_G)
+        # I output the initial monomer graph in networkx format to use it later in Louis feature
+        write_initial_graph(my_G, rban_record, structure_id, main_out_dir)
+    except:
+        # sometimes Chem fails to parse individual monomers and calculate their weight
+        pass
     '''
-    add_chirality(my_G)
-    add_hybrid_monomers(my_G)
-    write_initial_graph(my_G, structure_id, main_out_dir)
-
     '''
     Split the graph into paths and simple cycles
     '''

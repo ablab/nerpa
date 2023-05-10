@@ -15,6 +15,7 @@ PREDICTIONS_TXT_DIR = 'nrpspks_predictions_txt'
 FEATURES_TXT_DIR = 'txt'
 
 
+'''
 def __get_svm_results(domain_prediction):
 
     return '\t'.join([domain_prediction['angstrom_code'],
@@ -28,6 +29,7 @@ def __get_svm_results(domain_prediction):
                       '0:0', '0.000000e+00'  # seems that these columns are always the same
                       ])
 
+'''
 
 class SVM_entry:
     '''
@@ -62,14 +64,35 @@ class SVM_entry:
 
         '''
 
-    def __init__(self, domain_prediction):
-        self.angstrom_code = domain_prediction['angstrom_code']
-        self.stachelhaus_seq = domain_prediction['stachelhaus_seq']
-        self.physicochemical_class = domain_prediction['physicochemical_class']
-        self.large_cluster_pred = domain_prediction['large_cluster_pred']
-        self.small_cluster_pred = domain_prediction['small_cluster_pred']
-        self.single_amino_pred = domain_prediction['single_amino_pred']
-        self.uncertain = domain_prediction['uncertain']
+    def __init__(self, domain_prediction, new_version=False):
+        if new_version:
+            try:
+                self.angstrom_code = domain_prediction['aa34']
+                self.stachelhaus_seq = domain_prediction['aa10']
+                self.physicochemical_class = domain_prediction['physiochemical_class']['name']
+                self.large_cluster_pred = [substrate['short'].lower()
+                                           for substrate in domain_prediction['large_cluster']['substrates']]
+                self.small_cluster_pred = [substrate['short'].lower()
+                                           for substrate in domain_prediction['small_cluster']['substrates']]
+                substrates = domain_prediction['single_amino']['substrates']
+                self.single_amino_pred = substrates[0]['short'].lower() if substrates else 'N/A'
+                if domain_prediction['stachelhaus_matches']:
+                    self.stachelhaus_match_count = max(int(stachelhaus_match['aa10_score'] * 10 + 0.1)  # +0.1 to avoid occasional rounding error
+                                                       for stachelhaus_match in domain_prediction['stachelhaus_matches'])
+                else:
+                    self.stachelhaus_match_count = 0
+                self.uncertain = self.stachelhaus_match_count < 7  # not so sure about this
+            except:
+                pass  # for testing
+                raise
+        else:
+            self.angstrom_code = domain_prediction['angstrom_code']
+            self.stachelhaus_seq = domain_prediction['stachelhaus_seq']
+            self.physicochemical_class = domain_prediction['physicochemical_class']
+            self.large_cluster_pred = domain_prediction['large_cluster_pred']
+            self.small_cluster_pred = domain_prediction['small_cluster_pred']
+            self.single_amino_pred = domain_prediction['single_amino_pred']
+            self.uncertain = domain_prediction['uncertain']
 
     def __str__(self):
         return '\t'.join([self.angstrom_code,
@@ -115,10 +138,25 @@ class NRPS_PKS_entry:
 
 def __parse_location(location):
     # e.g. 'location' = '[351:486](+)'
-    match = re.match("\\[<?(?P<start>[0-9]+):>?(?P<end>[0-9]+)\\](\\((?P<strand>[+-])\\))?", location)
-    start = int(match.group("start"))
-    end = int(match.group("end"))
-    strand = match.group("strand") or ''
+    def parsed_block(block):
+        match = re.match("\\[<?(?P<start>[0-9]+):>?(?P<end>[0-9]+)\\](\\((?P<strand>[+-])\\))?", block)
+        return {'start': int(match.group('start')),
+                'end': int(match.group('end')),
+                'strand': match.group("strand") or ''}
+
+    location_trimmed = location[len('join{') : -1] if location.startswith('join{') else location[:]
+
+    blocks = sorted([parsed_block(block.strip())
+                     for block in location_trimmed.split(',')],
+                    key=lambda block: block['start'])
+    assert all(block1['end'] + 1 == block2['start']
+               for block1, block2 in zip(blocks[:-1], blocks[1:]))  # for testing: blocks are contiguous
+    assert len(set(block['strand'] for block in blocks)) == 1  # for testing: all blocks are oriented in the same way
+
+    # merge all blocks (don't know whether it is what is supposed to do)
+    start = blocks[0]['start']
+    end = blocks[-1]['end']
+    strand = blocks[0]['strand']
     return start, end, strand
 
 
@@ -178,11 +216,18 @@ def handle_single_input(path, output_dir, is_root_outdir, naming_style, known_co
                     if "AMP-binding" in prediction:
                         # ctg_id, orf_idx, a_idx = __parse_amp_binding_domain(prediction)
                         orf_id, a_idx = __parse_amp_binding_domain(prediction)
-                        stachelhaus_seq = domain_predictions[prediction]["NRPSPredictor2"]["stachelhaus_seq"].upper()
+                        new_version = 'nrpys' in domain_predictions[prediction]  # for antismash7. TODO: rewrite all this to treat different versions more carefully
+                        if new_version:
+                            stachelhaus_seq = domain_predictions[prediction]["nrpys"]["aa10"].upper()
+                        else:
+                            stachelhaus_seq = domain_predictions[prediction]["NRPSPredictor2"]["stachelhaus_seq"].upper()
+
                         parsed_predictions.append({"v5_name": "%s_AMP-binding.%s" % (orf_id, a_idx),
                                                    "locus_tag": orf_id, "A": int(a_idx),
                                                    "signature": stachelhaus_seq,
-                                                   "svm": SVM_entry(domain_predictions[prediction]["NRPSPredictor2"])})
+                                                   "svm": SVM_entry(domain_predictions[prediction]['nrpys' if new_version else "NRPSPredictor2"],
+                                                                    new_version=new_version)})
+
                         # example:
                         # {'nrpspksdomains_ctg1_5_AMP-binding.1':
                         #      {'NRPSPredictor2':
@@ -350,7 +395,7 @@ def __get_contig_output_fpath(output_dir, ctg_id, type='codes'):
 
 
 def __create_output_dirs(base_output_dir):
-    # rather rare and trange case, but we should be ready to change the dir name if it is already occupied
+    # rather rare and strange case, but we should be ready to change the dir name if it is already occupied
     if os.path.isdir(base_output_dir):
         i = 2
         base_dirpath = base_output_dir
