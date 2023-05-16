@@ -68,37 +68,6 @@ def build_nx_graph(rban_record, backbone_bonds, recognized_monomers, cut_lipids=
             G.add_edge(e, s, type=bond_type)
 
     return G
-def my_build_nx_graph(rban_record, recognized_monomers):
-    '''
-    The same a build_nx_graph, but does not cut any edges
-    and keeps in nodes 'smiles' and 'mass'
-    '''
-    monomeric_graph = rban_record['monomericGraph']['monomericGraph']
-
-    nodes = []
-    for monomer in monomeric_graph['monomers']:
-        idx = monomer['monomer']['index']
-        name =  monomer['monomer']['monomer']['monomer']
-        # TODO this is mass of the WHOLE aminoacid, the mass of monomer can differ
-        mass = Descriptors.ExactMolWt(MolFromSmiles(monomer['monomer']['monomer']['smiles']))
-        attr = {
-            'name': name.replace('C10:0-NH2(2)-Ep(9)-oxo(8)', 'Aeo'),
-            'isIdentified': name in recognized_monomers,
-            'mass': mass,
-            'smiles': monomer['monomer']['monomer']['smiles']
-            # 'isIdentified': monomer['monomer']['monomer']['isIdentified']
-        }
-        nodes.append((idx, attr))
-
-    G = nx.DiGraph()
-    G.add_nodes_from(nodes)
-    for bond in monomeric_graph['bonds']:
-        # rBAN: N -> C
-        s, e = bond['bond']['monomers']
-        bond_type = bond['bond']['bondTypes'][0]
-        G.add_edge(e, s, type=bond_type)
-
-    return G
 
 def hamiltonian_path(G, s, skip=None):
     '''
@@ -107,7 +76,7 @@ def hamiltonian_path(G, s, skip=None):
     I feel that the same could be done with just a few lines of code...
     '''
     node_to_id = {n:i for i, n in enumerate(G.nodes())}
-    if skip is None:  # why not just set skip=[] be default? and why do we need skip in the first place?
+    if skip is None:  # https://stackoverflow.com/questions/366422/how-can-i-avoid-issues-caused-by-pythons-early-bound-default-parameters-e-g-m
         skip = []
     mask = [idx in skip for idx in G.nodes]
     path = []
@@ -156,7 +125,7 @@ def putative_backbones(G, min_nodes=2):
             pass
 
         '''
-        try to parse the component as a chupa-choops graph (a path attached to a simple cycle)
+        try to parse the component as a "lollipop" graph (a path attached to a simple cycle)
         '''
         sources = []
         sinks = []
@@ -166,13 +135,13 @@ def putative_backbones(G, min_nodes=2):
             elif Gs.in_degree(node) > 0 and Gs.out_degree(node) == 0:
                 sinks.append(node)
 
-        if len(sources) > 1 or len(sinks) > 1:  # graph is definitely not a chupa-choops
+        if len(sources) > 1 or len(sinks) > 1:  # graph is definitely not "lollipop"
             raise NotImplementedError
 
         '''try to traverse graph in forward direction'''
         if len(sources) == 1:
             '''
-            hamiltonan_path is a simple dfs. It works with chupa-choops graphs 
+            hamiltonan_path is a simple dfs. It works with "lollipop" graphs 
             and may accidentally work with some other graphs
             '''
             path = hamiltonian_path(Gs, sources[0])
@@ -191,19 +160,6 @@ def putative_backbones(G, min_nodes=2):
 
     return cycles, paths, singular_nodes  # singular nodes are never used!
 
-
-def write_initial_graph(G, rban_record, struct_id, main_out_dir):
-    '''
-   Write a monomer graph in json format to the 'main_out_dir/initial_monomer_graphs' folder
-    '''
-    initial_graphs_dir = os.path.join(main_out_dir, 'initial_monomer_graphs')
-    if not os.path.exists(initial_graphs_dir):
-        os.mkdir(initial_graphs_dir)
-    out_file_rban_postprocessed = os.path.join(initial_graphs_dir, struct_id + '.json')
-    with open(out_file_rban_postprocessed, 'w') as out:
-        contents = {'nodes': G.nodes._nodes,
-                    'edges': G.adj._atlas}
-        json.dump(contents, out)
 
 
 def write_rban_record(rban_record, main_out_dir):
@@ -250,21 +206,6 @@ def process_single_record(log, rban_record, recognized_monomers, backbone_bond_t
     add_chirality(G)
     add_hybrid_monomers(G)
 
-    write_rban_record(rban_record, main_out_dir)  # output rban_record for Louis feature
-    '''
-    # I used to need these nerpa processed monomer graphs at some point but now I work directly from rBAN output
-    # Nevertheless, sometime in the future I might need this newly identified monomers or chirality 
-    try:
-        # My version of build_nx_graph, which does not remove any edges and keeps some additional information in the nodes
-        my_G = my_build_nx_graph(rban_record, recognized_monomers)
-        add_chirality(my_G)
-        add_hybrid_monomers(my_G)
-        # I output the initial monomer graph in networkx format to use it later in Louis feature
-        write_initial_graph(my_G, rban_record, structure_id, main_out_dir)
-    except:
-        # sometimes Chem fails to parse individual monomers and calculate their weight
-        pass
-    '''
     '''
     Split the graph into paths and simple cycles
     '''
@@ -377,36 +318,6 @@ def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, path_to
 
     return hybrid_monomers_dict
 
-
-'''
-This was my function to retrieve monomer masses, but it is no longer needed
-
-def write_masses(rban_record, main_out_dir):
-    struct_id = rban_record['id']
-    out_dir = os.path.join(main_out_dir, 'structures_masses')
-    if not os.path.exists(out_dir):
-        os.mkdir(out_dir)
-    filename = os.path.join(out_dir, struct_id)
-    file_corrupted = False
-    with open(filename, 'w') as out:
-        records = ['index', 'monomer', 'smiles', 'mass_heavy_atoms', 'mass_full']
-        out.write(','.join(records) + '\n')
-        for monomer in rban_record['monomericGraph']['monomericGraph']['monomers']:
-            m = monomer['monomer']
-            try:
-                to_write = ','.join(map(str, [m['index'],
-                                              m['monomer']['monomer'],
-                                              m['monomer']['smiles'],
-                                              m['monomer']['mwHeavyAtoms'],
-                                              Descriptors.ExactMolWt(MolFromSmiles(m['monomer']['smiles']))]))
-            except:
-                file_corrupted = True
-                print(f'Exception while handling record: {rban_record}')
-            else:
-                out.write(to_write + '\n')
-    if file_corrupted:
-        os.remove(filename)
-'''
 
 def generate_info_from_rban_output(path_to_rban_output, path_to_monomers_tsv, path_to_graphs,
                                    main_out_dir, path_to_rban, path_to_monomers_db, log, process_hybrids=False):
