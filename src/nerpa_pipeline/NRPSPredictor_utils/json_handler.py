@@ -16,22 +16,6 @@ PREDICTIONS_TXT_DIR = 'nrpspks_predictions_txt'
 FEATURES_TXT_DIR = 'txt'
 
 
-'''
-def __get_svm_results(domain_prediction):
-
-    return '\t'.join([domain_prediction['angstrom_code'],
-                      domain_prediction['stachelhaus_seq'].upper(),
-                      domain_prediction['physicochemical_class'],
-                      ','.join(domain_prediction['large_cluster_pred']),
-                      ','.join(domain_prediction['small_cluster_pred']),
-                      domain_prediction['single_amino_pred'],
-                      'N/A', 'N/A', 'N/A',  # can't determine from antiSMASH v.5 output
-                      str(int(bool(domain_prediction['uncertain']))),
-                      '0:0', '0.000000e+00'  # seems that these columns are always the same
-                      ])
-
-'''
-
 class SVM_entry:
     '''
         # example1 (domain_prediction):
