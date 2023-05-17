@@ -139,14 +139,12 @@ def __parse_location(location):
                      for block in location_trimmed.split(',')],
                     key=lambda block: block['start'])
 
-    '''
-    if not all(block1['end'] + 1 == block2['start']
+    if not all(block1['end'] in range(block2['start'] - 10, block2['start'] + 10)
                for block1, block2 in zip(blocks[:-1], blocks[1:])):
         raise  # for testing: blocks are contiguous
 
     if not len(set(block['strand'] for block in blocks)) == 1:
         raise  # for testing: all blocks are oriented in the same way
-    '''
 
     # merge all blocks (don't know whether it is what is supposed to do)
     start = blocks[0]['start']
