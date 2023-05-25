@@ -139,14 +139,10 @@ def __parse_location(location):
                      for block in location_trimmed.split(',')],
                     key=lambda block: block['start'])
 
-    if not all(block1['end'] in range(block2['start'] - 10, block2['start'] + 10)
-               for block1, block2 in zip(blocks[:-1], blocks[1:])):
-        raise  # for testing: blocks are contiguous
-
     if not len(set(block['strand'] for block in blocks)) == 1:
         raise  # for testing: all blocks are oriented in the same way
 
-    # merge all blocks (don't know whether it is what is supposed to do)
+    # merge all blocks
     start = blocks[0]['start']
     end = blocks[-1]['end']
     strand = blocks[0]['strand']
@@ -291,6 +287,10 @@ def handle_single_input(antismash_results: Path,  # path to either the folder wi
         regions_of_interest = [__parse_location(feature['location'])[:-1]  # omit orientation
                                for feature in contig_data['features']
                                if feature['type'] == 'region']
+
+        features_iter = iter((feature, __parse_location(feature['location']))
+                             for feature in contig_data['features']
+                             if feature['type'] == 'CDS')
 
         num_genes_without_locus_tag = 0
         with open(cur_contig_gene_output_fpath, 'w') as gene_f:

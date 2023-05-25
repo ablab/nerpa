@@ -1,6 +1,6 @@
 import os
 import itertools
-from collections import Counter, OrderedDict
+from collections import Counter, OrderedDict, defaultdict
 from log_utils import error
 
 import config
@@ -32,9 +32,10 @@ def parse_known_codes(fpath):
             group_label = 'ser|thr'
         for label in group_label.split('|'):
             aa, mods, confs = __parse_aa_and_mod(label)
-            all_parsed_codes.append({'code': code, 'label': label,
-                                     'aa': aa, 'mods': mods, 'confs': confs,
-                                     'count': count})
+            if aa:
+                all_parsed_codes.append({'code': code, 'label': label,
+                                         'aa': aa, 'mods': mods, 'confs': confs,
+                                         'count': count})
     return all_parsed_codes
 
 
@@ -164,7 +165,7 @@ def __get_svm_score(aa, svm):
 
 def get_prediction_from_signature(signature, known_codes, svm_prediction, scoring_mode):
     # TODO: actually signature == svm_prediction['stachelhaus_seq'].upper() -- refactor out the excessive parameter
-    scores = dict()
+    scores = defaultdict(lambda: 0)
     aa_name_to_sorting_index = dict()  # to define some sorting order for amino acids with exactly the same score
     aa_name_to_raw_aa = dict()
 
@@ -176,10 +177,10 @@ def get_prediction_from_signature(signature, known_codes, svm_prediction, scorin
             aa_name_to_sorting_index[aa_name] = config.KNOWN_AA_SIGNATURES.index(code_metadata['aa'])
         if aa_name not in aa_name_to_raw_aa:
             aa_name_to_raw_aa[aa_name] = __get_aa_fullname(code_metadata, mode='raw')
+
         code = code_metadata['code']
         score = __get_stachelhaus_score(signature, code, mode='classic')
-        if aa_name not in scores or score > scores[aa_name]:  # FIXME: should we count how many times the top score per AA was reached?
-            scores[aa_name] = score
+        scores[aa_name] = max(scores[aa_name], score)  # FIXME: should we count how many times the top score per AA was reached?
 
     if scoring_mode == 'hybrid':
         for aa_name in scores.keys():
