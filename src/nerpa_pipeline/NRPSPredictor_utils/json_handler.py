@@ -51,27 +51,23 @@ class SVM_entry:
 
     def __init__(self, domain_prediction):
         if 'nrpys' in domain_prediction:  # antismash >=7
-            try:
-                prediction_data = domain_prediction['nrpys']
+            prediction_data = domain_prediction['nrpys']
 
-                self.angstrom_code = prediction_data['aa34']
-                self.stachelhaus_seq = prediction_data['aa10']
-                self.physicochemical_class = prediction_data['physiochemical_class']['name']
-                self.large_cluster_pred = [substrate['short'].lower()
-                                           for substrate in prediction_data['large_cluster']['substrates']]
-                self.small_cluster_pred = [substrate['short'].lower()
-                                           for substrate in prediction_data['small_cluster']['substrates']]
+            self.angstrom_code = prediction_data['aa34']
+            self.stachelhaus_seq = prediction_data['aa10']
+            self.physicochemical_class = prediction_data['physiochemical_class']['name']
+            self.large_cluster_pred = [substrate['short'].lower()
+                                       for substrate in prediction_data['large_cluster']['substrates']]
+            self.small_cluster_pred = [substrate['short'].lower()
+                                       for substrate in prediction_data['small_cluster']['substrates']]
 
-                substrates = prediction_data['single_amino']['substrates']
-                self.single_amino_pred = substrates[0]['short'].lower() if substrates else 'N/A'
+            substrates = prediction_data['single_amino']['substrates']
+            self.single_amino_pred = substrates[0]['short'].lower() if substrates else 'N/A'
 
-                stachelhaus_match_count = max([round(stachelhaus_match['aa10_score'] * 10)
-                                               for stachelhaus_match in prediction_data['stachelhaus_matches']],
-                                               default=0)
-                self.uncertain = stachelhaus_match_count < 7  # not so sure about this
-            except:
-                pass  # for testing
-                raise
+            stachelhaus_match_count = max([round(stachelhaus_match['aa10_score'] * 10)
+                                           for stachelhaus_match in prediction_data['stachelhaus_matches']],
+                                           default=0)
+            self.uncertain = stachelhaus_match_count < 7  # not so sure about this
         else:  # older version of antismash
             prediction_data = domain_prediction['NRPSPredictor2']
 
