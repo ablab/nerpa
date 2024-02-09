@@ -9,39 +9,39 @@ import handle_MT
 import handle_E
 import splitter
 import handle_helper
+from collections import defaultdict
 
-def gen_prediction_dict(orf_part, input_file_name, dirname):
-    double_orf, double_aa = handle_PCP2.get_double_orfs_and_AA(dirname, orf_part)
-    mt_aa = handle_MT.get_MT_AA(dirname, orf_part)
-    d_aa = handle_E.get_D_AA(dirname, orf_part)
+def gen_prediction_dict(orf_modules_names, input_file_name, dirname):
+    '''
+    dirname: converted_antiSMASH_v5_outputs
+    input_file_name: CONTIGNAME_nrpspredictor2_codes.txt
+    orf_part: list of the form ['ctg1_trsI_A1', 'ctg1_trsI_A2']
+    '''
+    double_orf, double_aa = handle_PCP2.get_double_orfs_and_AA(dirname, orf_modules_names)  # the lists of orfs and modules which can be duplicated
+    mt_aa = handle_MT.get_MT_AA(dirname, orf_modules_names)  # the list of modules with methylation
+    d_aa = handle_E.get_D_AA(dirname, orf_modules_names)  # the list of modules with epimerization
 
-    prediction_dict = {}
+    prediction_dict = defaultdict(lambda: '')
     with open(input_file_name, 'r') as rf:
         for line in rf:
-            ctgorf = '_'.join(line.split('_')[:2])
+            module_name, aa_prediction, scores = line.split('\t')
+            ctgorf, domain_id = module_name.rsplit('_', 1)
 
-            if line.split("\t")[0] in double_aa:
-                line = line.split("\t")[0] + "*\t" + '\t'.join(line.split("\t")[1:])
+            new_module_name = '_'.join([ctgorf + ('*' if ctgorf in double_orf else ''),  # indicate that orf can be duplicated
+                                        domain_id + ('*' if module_name in double_aa else '')])  # indicate that modules can be duplicated
 
-            if line.split("\t")[0] in mt_aa:
-                line = line.split("\t")[0] + "\t" + line.split("\t")[1] + "+MT\t"  + '\t'.join(line.split("\t")[2:])
+            new_aa_prediction = ''.join(['d-' if module_name in d_aa else '',  # label indicating chirality
+                                         aa_prediction,
+                                         '+MT' if module_name in mt_aa else ''])  # label indicating methylation
 
-            if line.split("\t")[0] in d_aa:
-                line = line.split("\t")[0] + "\td-" + line.split("\t")[1] + "\t"  + '\t'.join(line.split("\t")[2:])
+            prediction_dict[ctgorf] += '\t'.join([new_module_name, new_aa_prediction, scores])
 
-            if ctgorf in double_orf:
-                line = ctgorf + "*_" + '_'.join(line.split('_')[2:])
-
-            if (ctgorf in prediction_dict):
-                prediction_dict[ctgorf] += line
-            else:
-                prediction_dict[ctgorf] = line
     return prediction_dict
 
 
 def gen_prediction_for_one_orfs_part(orf_part, input_file_name, output_prefix,
-                                     current_part, predictions_info_list, base_antismashout_name):
-    prediction_dict = gen_prediction_dict(orf_part, input_file_name, base_antismashout_name)
+                                     current_part, predictions_info_list, base_antiSMASH_out_name):
+    prediction_dict = gen_prediction_dict(orf_part, input_file_name, base_antiSMASH_out_name)
 
     output_str = ""
     for current_orf in orf_part:
@@ -58,13 +58,17 @@ def gen_prediction_for_one_orfs_part(orf_part, input_file_name, output_prefix,
     return current_part
 
 def gen_predictions(bgc_orfs_parts, input_file_name, output_prefix, current_part,
-                    predictions_info_list, base_antismashout_name):
+                    predictions_info_list, base_antiSMASH_out_name):
     for orf_part in bgc_orfs_parts:
-        current_part = gen_prediction_for_one_orfs_part(orf_part, input_file_name, output_prefix, current_part, predictions_info_list, base_antismashout_name)
+        current_part = gen_prediction_for_one_orfs_part(orf_part, input_file_name, output_prefix, current_part, predictions_info_list, base_antiSMASH_out_name)
     return current_part
 
-def create_predictions_by_antiSAMSHout(antismashouts, outdir, log):
+def create_predictions_by_antiSMASH_out(antiSMASH_outs, outdir, log):
     log.info("Start create predictions by antiSMASH")
+
+    if not antiSMASH_outs:
+        log.info("Error: no antiSMASH results found")
+        raise ValueError("Could not find antiSMASH output")
 
     dir_for_predictions = os.path.join(outdir, "predictions")
     if not os.path.exists(dir_for_predictions):
@@ -72,7 +76,7 @@ def create_predictions_by_antiSAMSHout(antismashouts, outdir, log):
 
     predictions_info_file = os.path.join(outdir, "predictions.info")
     predictions_info_list = []
-    for dirname in antismashouts:
+    for dirname in antiSMASH_outs:
         if dirname[-1] == '\n':
             dirname = dirname[:-1]
 
@@ -105,12 +109,12 @@ def create_predictions_by_antiSAMSHout(antismashouts, outdir, log):
         if os.path.isdir(nrpspred_dir):
             for filename in os.listdir(nrpspred_dir):
                 if filename.endswith('nrpspredictor2_codes.txt'):
-                    base_antismashout_name = os.path.basename(dirname)
+                    base_antiSMASHout_name = os.path.basename(dirname)
                     base_pred_name = os.path.basename(filename)
-                    #predictions_info_list.append(os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name))
-                    #shutil.copyfile(os.path.join(nrpspred_dir, filename), os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name))
+                    #predictions_info_list.append(os.path.join(dir_for_predictions, base_antiSMASHout_name + "_" + base_pred_name))
+                    #shutil.copyfile(os.path.join(nrpspred_dir, filename), os.path.join(dir_for_predictions, base_antiSMASHout_name + "_" + base_pred_name))
                     gen_predictions(parts, os.path.join(nrpspred_dir, filename),
-                                    os.path.join(dir_for_predictions, base_antismashout_name + "_" + base_pred_name)[:-4],
+                                    os.path.join(dir_for_predictions, base_antiSMASHout_name + "_" + base_pred_name)[:-4],
                                     0, predictions_info_list, dirname)
 
     f = open(predictions_info_file, 'w')

@@ -10,13 +10,16 @@ namespace nrpsprediction {
 
     std::pair<std::string, int> PredictionBuilderBase::get_orf_name_and_order(std::string orf) {
         std::stringstream ss(orf);
-        std::string prefix;
-        std::string orfname;
-        std::string tail;
-        getline(ss, prefix, '_');
-        getline(ss, orfname, '_');
-        getline(ss, tail, '_');
 
+	std::string domain_full_name;
+	ss >> domain_full_name;
+	int end_of_prefix = domain_full_name.find('_');
+	int start_of_tail = domain_full_name.rfind('_');
+        std::string prefix = domain_full_name.substr(0, end_of_prefix);
+        std::string orfname = domain_full_name.substr(end_of_prefix + 1,
+						      start_of_tail - end_of_prefix - 1);
+        std::string tail = domain_full_name.substr(start_of_tail);
+	
         std::stringstream ss2(tail.substr(1));
         if (tail[0] != 'A' || !(tail[1] >= '0' && tail[1] <= '9')) {
             return std::make_pair(prefix + "_" + orfname, -1);

@@ -3,6 +3,7 @@
 import argparse
 import os
 import sys
+from pathlib import Path
 import json
 
 import config
@@ -99,7 +100,7 @@ def main(args):
     processed_output_dirs = []
     for input_path in args.inputs:
         processed_output_dirs.append(json_handler.handle_single_input(
-            input_path, args.output_dir, is_root_outdir, args.naming_style,
+            Path(input_path), args.output_dir, is_root_outdir, args.naming_style,
             known_codes, scoring_mode=args.mode, verbose=args.verbose))
     return processed_output_dirs
 
