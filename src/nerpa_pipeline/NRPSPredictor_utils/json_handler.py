@@ -363,14 +363,17 @@ def handle_single_input(antismash_results: Path,  # path to either the folder wi
                     entry.evalue = feature['qualifiers']['evalue'][0]
                     entry.domain_type = feature['qualifiers']['aSDomain'][0]
                     # processing special cases with subtypes
-                    if entry.domain_type.startswith('Condensation'):
-                        entry.subtype = entry.domain_type
-                        entry.domain_type = entry.domain_type.split('_')[0]
-                    elif entry.domain_type.endswith('MT'):
-                        entry.subtype = entry.domain_type
-                        entry.domain_type = 'MT'
-                    if 'domain_subtype' in feature['qualifiers']:  # for antiSMASH v.6 and (hopefully) newer
+                    if 'domain_subtypes' in feature['qualifiers']:  # for antiSMASH v.7 (and hopefully newer)
+                        entry.subtype = feature['qualifiers']['domain_subtypes'][0]
+                    elif 'domain_subtype' in feature['qualifiers']:  # for antiSMASH v.6
                         entry.subtype = feature['qualifiers']['domain_subtype'][0]
+                    else:  # manually for antiSMASH v.5 and older
+                        if entry.domain_type.startswith('Condensation'):
+                            entry.subtype = entry.domain_type
+                            entry.domain_type = entry.domain_type.split('_')[0]
+                        elif entry.domain_type.endswith('MT'):
+                            entry.subtype = entry.domain_type
+                            entry.domain_type = 'MT'
                     entry.domain_start = cds_start
                     entry.domain_end = cds_end
                     # TODO: process the rest fields (KR_activity, etc for PK and NRPSPredictor2, etc for AMP-binding)
