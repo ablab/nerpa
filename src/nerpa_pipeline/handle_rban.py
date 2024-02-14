@@ -1,3 +1,4 @@
+from typing import List, Union
 import os
 import json
 import csv
@@ -69,32 +70,28 @@ def build_nx_graph(rban_record, backbone_bonds, recognized_monomers, cut_lipids=
 
     return G
 
-def hamiltonian_path(G, s, skip=None):
-    '''
-    This function just tries a single traversal of the graph, beginning at s.
-    If it does not succeed, it reports a failure
-    I feel that the same could be done with just a few lines of code...
-    '''
-    node_to_id = {n:i for i, n in enumerate(G.nodes())}
-    if skip is None:  # https://stackoverflow.com/questions/366422/how-can-i-avoid-issues-caused-by-pythons-early-bound-default-parameters-e-g-m
-        skip = []
-    mask = [idx in skip for idx in G.nodes]
-    path = []
 
-    def dfs(G, v):
-        mask[node_to_id[v]] = True
-        path.append(v)
-        if all(mask):
-            return True
-        for u in G.successors(v):
-            if not mask[node_to_id[u]]:
-                if dfs(G, u):
-                    return True
-        del path[-1]
-        mask[node_to_id[v]] = False
+# finds a hamiltonian path in G starting at source in an exhaustive manner
+def hamiltonian_path(G: nx.DiGraph,
+                     source: int) -> Union[List[int], None]:
+    visited = set()
 
-    if dfs(G, s):
-        return path
+    def dfs(u: int) -> Union[List[int], None]:
+        visited.add(u)
+        if len(visited) == len(G.nodes()):
+            return [u]
+
+        for v in G.successors(u):
+            if v not in visited and (path := dfs(v)):
+                return path + [u]
+
+        visited.remove(u)
+        return None
+
+    if path := dfs(source):
+        return path[::-1]
+    else:
+        return None
 
 
 def putative_backbones(G, min_nodes=2):
