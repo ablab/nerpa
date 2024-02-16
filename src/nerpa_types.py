@@ -56,15 +56,15 @@ class BGC_Module_Prediction:
 
 @dataclass
 class BGC_variant:
-    predictions: List[BGC_Module_Prediction]
-    bgc_id: str
     genome_id: str
+    bgc_id: str
+    predictions: List[BGC_Module_Prediction]
 
 
 @dataclass
 class NRP_fragment:
     monomers: List[NRP_Monomer]
-    is_cycle: bool
+    is_cyclic: bool
     to_rban_indexes: List[int]
 
 
@@ -81,7 +81,7 @@ def main():
                                             NRP_Monomer(residue='leu',
                                                         ptms=(PTM.Unknown,),
                                                         chirality=Chirality.L)],
-                                  is_cycle=False,
+                                  is_cyclic=False,
                                   to_rban_indexes=[0,1]),
                      NRP_fragment(monomers=[NRP_Monomer(residue='ile',
                                                         ptms=(),
@@ -92,7 +92,7 @@ def main():
                                             NRP_Monomer(residue='val',
                                                         ptms=(PTM.Methylation,),
                                                         chirality=Chirality.D)],
-                                  is_cycle=True,
+                                  is_cyclic=True,
                                   to_rban_indexes=[3, 7, 2])]
     nrp_variants = [NRP_variant(fragments=[nrp_fragments[0]], nrp_name='terrific_nrp#42'),
                     NRP_variant(fragments=[nrp_fragments[1]], nrp_name='terrific_nrp#48')]
@@ -108,6 +108,9 @@ def main():
                                        iterative_gene=False,
                                        GeneId='gene1',
                                        ModuleIdx=1)]
+    bgc_variant = BGC_variant(predictions=bgc_preds,
+                              genome_id='genome#189',
+                              bgc_id='bgc#39')
 
     # dirty hack to erase information about types and make output less verbose
     # https://github.com/yaml/pyyaml/issues/408
@@ -117,7 +120,7 @@ def main():
     # https://stackoverflow.com/questions/13518819/avoid-references-in-pyyaml
     yaml.Dumper.ignore_aliases = lambda *args: True
     with open('test_bgc_predictions_output.yaml', 'w') as out:
-        yaml.dump(list(map(asdict, bgc_preds)), out,
+        yaml.dump(asdict(bgc_variant), out,
                   default_flow_style=None, sort_keys=False)
     with open('test_nrp_variants_output.yaml', 'w') as out:
         yaml.dump(list(map(asdict, nrp_variants)), out,
