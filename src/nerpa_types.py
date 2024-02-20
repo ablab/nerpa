@@ -18,7 +18,7 @@ def enum_representer(dumper, e: Enum):
 class Chirality(Enum):
     L = auto()
     D = auto()
-    UNKNOWN = auto()
+    Unknown = auto()
 
 yaml.add_representer(Chirality, enum_representer)
 
@@ -34,7 +34,8 @@ yaml.add_representer(PTM, enum_representer)
 class NRP_Monomer:
     residue: MonomerResidue
     ptms: Tuple[PTM, ...]
-    chirality: Chirality = Chirality.UNKNOWN
+    chirality: Chirality
+    rBAN_name: str
 
 
 class BGC_Module_Modification(Enum):
@@ -46,8 +47,8 @@ yaml.add_representer(BGC_Module_Modification, enum_representer)
 
 @dataclass
 class BGC_Module_Prediction:
-    GeneId: str
-    ModuleIdx: int
+    gene_id: str
+    module_idx: int
     residue_score: Dict[MonomerResidue, PredictionScore]
     modifications: Tuple[BGC_Module_Modification, ...]
     iterative_module: bool
@@ -76,22 +77,27 @@ class NRP_variant:
 
 def main():
     nrp_fragments = [NRP_fragment(monomers=[NRP_Monomer(residue='arg',
-                                                      ptms=(PTM.Methylation,),
-                                                      chirality=Chirality.UNKNOWN),
+                                                        ptms=(PTM.Methylation,),
+                                                        chirality=Chirality.Unknown,
+                                                        rBAN_name='Arg'),
                                             NRP_Monomer(residue='leu',
                                                         ptms=(PTM.Unknown,),
-                                                        chirality=Chirality.L)],
+                                                        chirality=Chirality.L,
+                                                        rBAN_name='Leu')],
                                   is_cyclic=False,
                                   to_rban_indexes=[0,1]),
                      NRP_fragment(monomers=[NRP_Monomer(residue='ile',
                                                         ptms=(),
-                                                        chirality=Chirality.UNKNOWN),
+                                                        chirality=Chirality.Unknown,
+                                                        rBAN_name='Ile'),
                                             NRP_Monomer(residue='pro',
                                                         ptms=(PTM.Unknown, PTM.Methylation),
-                                                        chirality=Chirality.L),
+                                                        chirality=Chirality.L,
+                                                        rBAN_name='Pro'),
                                             NRP_Monomer(residue='val',
                                                         ptms=(PTM.Methylation,),
-                                                        chirality=Chirality.D)],
+                                                        chirality=Chirality.D,
+                                                        rBAN_name='Val')],
                                   is_cyclic=True,
                                   to_rban_indexes=[3, 7, 2])]
     nrp_variants = [NRP_variant(fragments=[nrp_fragments[0]], nrp_name='terrific_nrp#42'),
@@ -100,14 +106,14 @@ def main():
                                        modifications=(),
                                        iterative_module=False,
                                        iterative_gene=False,
-                                       GeneId='gene1',
-                                       ModuleIdx=0),
+                                       gene_id='gene1',
+                                       module_idx=0),
                  BGC_Module_Prediction(residue_score={'trp': 0.8, 'phe': 0.7},
                                        modifications=(BGC_Module_Modification.Epimerization, BGC_Module_Modification.Methylation,),
                                        iterative_module=True,
                                        iterative_gene=False,
-                                       GeneId='gene1',
-                                       ModuleIdx=1)]
+                                       gene_id='gene1',
+                                       module_idx=1)]
     bgc_variant = BGC_variant(predictions=bgc_preds,
                               genome_id='genome#189',
                               bgc_id='bgc#39')
