@@ -7,7 +7,7 @@ from enum import auto, Enum
 import yaml
 from dataclasses import asdict, dataclass
 
-PredictionScore = float
+LProb = float  # logarithm of probability
 MonomerResidue = str
 
 
@@ -49,7 +49,7 @@ yaml.add_representer(BGC_Module_Modification, enum_representer)
 class BGC_Module_Prediction:
     gene_id: str
     module_idx: int
-    residue_score: Dict[MonomerResidue, PredictionScore]
+    residue_score: Dict[MonomerResidue, LProb]
     modifications: Tuple[BGC_Module_Modification, ...]
     iterative_module: bool
     iterative_gene: bool
