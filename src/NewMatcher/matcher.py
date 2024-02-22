@@ -5,17 +5,23 @@ from typing import (
     NamedTuple,
     Tuple)
 from src.data_types import (
+    BGC_Module_Modification,
     BGC_Module_Prediction,
     Chirality,
     LogProb,
     NRP_Monomer,
+    NRP_Monomer_Modification,
     BGC_Variant,
     NRP_Variant,
     NRP_Fragment,
 )
 from src.NewMatcher.dp_helper import DP_Helper
+from src.NewMatcher.dp_config import DP_Config, load_config
 from src.NewMatcher.alignment_types import Alignment, alignment_score, Match
 from src.NewMatcher.dp import get_alignment
+
+from collections import defaultdict
+from pathlib import Path
 
 
 def get_alignment_fragment(assembly_line: List[BGC_Module_Prediction],
@@ -60,3 +66,56 @@ def get_matches(bgc_variants: List[BGC_Variant],
                    for bgc_variant in bgc_variants
                    for nrp_variant in nrp_variants],
                   key=lambda match: match.score, reverse=True)
+
+def main():
+    nrp_fragments = [NRP_Fragment(monomers=[NRP_Monomer(residue='val',
+                                                        modifications=(NRP_Monomer_Modification.METHYLATION,),
+                                                        chirality=Chirality.UNKNOWN,
+                                                        rban_name='Val'),
+                                            NRP_Monomer(residue='leu',
+                                                        modifications=(NRP_Monomer_Modification.UNKNOWN,),
+                                                        chirality=Chirality.L,
+                                                        rban_name='Leu')],
+                                  is_cyclic=False,
+                                  rban_indexes=[0,1]),
+                     NRP_Fragment(monomers=[NRP_Monomer(residue='leu',
+                                                        modifications=(),
+                                                        chirality=Chirality.UNKNOWN,
+                                                        rban_name='Leu'),
+                                            NRP_Monomer(residue='leu',
+                                                        modifications=(NRP_Monomer_Modification.UNKNOWN, NRP_Monomer_Modification.METHYLATION),
+                                                        chirality=Chirality.L,
+                                                        rban_name='Leu'),
+                                            NRP_Monomer(residue='val',
+                                                        modifications=(NRP_Monomer_Modification.METHYLATION,),
+                                                        chirality=Chirality.D,
+                                                        rban_name='Val')],
+                                  is_cyclic=True,
+                                  rban_indexes=[3, 7, 2])]
+
+    nrp_variant = NRP_Variant(fragments=nrp_fragments, nrp_id='dragon_sneeze')
+
+    bgc_preds = [BGC_Module_Prediction(residue_score=defaultdict(lambda: -3, {'val': -1}),
+                                       modifications=(),
+                                       iterative_module=False,
+                                       iterative_gene=False,
+                                       gene_id='gene1',
+                                       module_idx=0),
+                 BGC_Module_Prediction(residue_score=defaultdict(lambda: -3, {'leu': -1}),
+                                       modifications=(BGC_Module_Modification.EPIMERIZATION, BGC_Module_Modification.METHYLATION,),
+                                       iterative_module=True,
+                                       iterative_gene=False,
+                                       gene_id='gene1',
+                                       module_idx=1)]
+    bgc_variant = BGC_Variant(tentative_assembly_line=bgc_preds,
+                              genome_id='genome#189',
+                              bgc_id='bgc#39')
+
+
+    dp_config = load_config(Path(__file__).parent / 'dp_config.yaml')
+    with open('test_matches_output.txt', 'w') as out:
+        for match in get_matches([bgc_variant], [nrp_variant], dp_config):
+            out.write(str(match) + '\n\n')
+
+if __name__ == "__main__":
+    main()
