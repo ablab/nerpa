@@ -39,5 +39,5 @@ class DP_Helper:
         return self.dp_config.null_hypothesis_residue_score[nrp_monomer.residue] \
             + self.dp_config.null_hypothesis_chirality_score[nrp_monomer.chirality] \
             + self.dp_config.null_hypothesis_mod_score[(NRP_Monomer_Modification.METHYLATION,
-                                                        NRP_Monomer_Modification.METHYLATION in nrp_monomer)]
+                                                        NRP_Monomer_Modification.METHYLATION in nrp_monomer.modifications)]
 

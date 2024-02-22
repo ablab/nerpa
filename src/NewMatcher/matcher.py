@@ -65,16 +65,16 @@ def get_matches(bgc_variants: List[BGC_Variant],
     return sorted([get_match(bgc_variant, nrp_variant, dp_helper)
                    for bgc_variant in bgc_variants
                    for nrp_variant in nrp_variants],
-                  key=lambda match: match.score, reverse=True)
+                  key=lambda match: match.normalised_score, reverse=True)
 
 def main():
     nrp_fragments = [NRP_Fragment(monomers=[NRP_Monomer(residue='val',
-                                                        modifications=(NRP_Monomer_Modification.METHYLATION,),
+                                                        modifications=(),#(NRP_Monomer_Modification.METHYLATION,),
                                                         chirality=Chirality.UNKNOWN,
                                                         rban_name='Val'),
                                             NRP_Monomer(residue='leu',
-                                                        modifications=(NRP_Monomer_Modification.UNKNOWN,),
-                                                        chirality=Chirality.L,
+                                                        modifications=(),#(NRP_Monomer_Modification.UNKNOWN,),
+                                                        chirality=Chirality.UNKNOWN,
                                                         rban_name='Leu')],
                                   is_cyclic=False,
                                   rban_indexes=[0,1]),
@@ -83,12 +83,12 @@ def main():
                                                         chirality=Chirality.UNKNOWN,
                                                         rban_name='Leu'),
                                             NRP_Monomer(residue='leu',
-                                                        modifications=(NRP_Monomer_Modification.UNKNOWN, NRP_Monomer_Modification.METHYLATION),
-                                                        chirality=Chirality.L,
+                                                        modifications=(),#(NRP_Monomer_Modification.UNKNOWN, NRP_Monomer_Modification.METHYLATION),
+                                                        chirality=Chirality.UNKNOWN,
                                                         rban_name='Leu'),
                                             NRP_Monomer(residue='val',
-                                                        modifications=(NRP_Monomer_Modification.METHYLATION,),
-                                                        chirality=Chirality.D,
+                                                        modifications=(),#(NRP_Monomer_Modification.METHYLATION,),
+                                                        chirality=Chirality.UNKNOWN,
                                                         rban_name='Val')],
                                   is_cyclic=True,
                                   rban_indexes=[3, 7, 2])]
@@ -102,8 +102,8 @@ def main():
                                        gene_id='gene1',
                                        module_idx=0),
                  BGC_Module_Prediction(residue_score=defaultdict(lambda: -3, {'leu': -1}),
-                                       modifications=(BGC_Module_Modification.EPIMERIZATION, BGC_Module_Modification.METHYLATION,),
-                                       iterative_module=True,
+                                       modifications=(), #(BGC_Module_Modification.EPIMERIZATION, BGC_Module_Modification.METHYLATION,),
+                                       iterative_module=False,
                                        iterative_gene=False,
                                        gene_id='gene1',
                                        module_idx=1)]
@@ -113,7 +113,7 @@ def main():
 
 
     dp_config = load_config(Path(__file__).parent / 'dp_config.yaml')
-    with open('test_matches_output.txt', 'w') as out:
+    with (Path(__file__).parent / Path('test_matches_output.txt')).open('w') as out:
         for match in get_matches([bgc_variant], [nrp_variant], dp_config):
             out.write(str(match) + '\n\n')
 
