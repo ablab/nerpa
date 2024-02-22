@@ -23,23 +23,23 @@ class Chirality(Enum):
 yaml.add_representer(Chirality, enum_representer)
 
 
-class PTM(Enum):  # post-translational modification
+class NRP_Monomer_Modification(Enum):  # post-translational modification
     METHYLATION = auto()
     UNKNOWN = auto()
 
-yaml.add_representer(PTM, enum_representer)
+yaml.add_representer(NRP_Monomer_Modification, enum_representer)
 
 
 @dataclass
 class NRP_Monomer:
     residue: MonomerResidue
-    ptms: Tuple[PTM, ...]
+    modifications: Tuple[NRP_Monomer_Modification, ...]
     chirality: Chirality
     rban_name: str
 
 
 class BGC_Module_Modification(Enum):
-    EPIMERISATION = auto()
+    EPIMERIZATION = auto()
     METHYLATION = auto()
 
 yaml.add_representer(BGC_Module_Modification, enum_representer)
