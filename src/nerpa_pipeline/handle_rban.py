@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Tuple, Union
 import os
 import json
 import csv
@@ -71,9 +71,11 @@ def build_nx_graph(rban_record, backbone_bonds, recognized_monomers, cut_lipids=
     return G
 
 
-# finds a hamiltonian path in G starting at source in an exhaustive manner
 def hamiltonian_path(G: nx.DiGraph,
                      source: int) -> Union[List[int], None]:
+    '''
+    finds a hamiltonian path in G starting at source in an exhaustive manner
+    '''
     visited = set()
 
     def dfs(u: int) -> Union[List[int], None]:
@@ -93,80 +95,40 @@ def hamiltonian_path(G: nx.DiGraph,
     else:
         return None
 
+    
+def parse_as_simple_cycle(G: nx.DiGraph) -> Union[List[int], None]:
+    try:
+        cycle_edges = nx.find_cycle(G) 
+        if len(cycle_edges) == len(G.edges()):  # since all edges are different, this implies the sets are equal as well
+            return [u for u, v in cycle_edges]
+    except nx.NetworkXNoCycle:
+        return None
 
-def putative_backbones(G, min_nodes=2):
+
+def putative_backbones(G: nx.DiGraph, min_nodes: int=2) -> Tuple[List[List[int]],
+                                                                 List[List[int]]]:
     '''
-    Split the given graph G into linear and cyclic fragments
+    Tries to parse each componenet of G either as a simple cycle or as a hamiltonian path
     '''
-    singular_nodes = []
-    cycles = []
-    paths = []
-    '''
-    The graph is, in general, not connected because of the removal non-backbone edges in the build_nx_graph function
-    '''
+    breakage_points = [node for node in G.nodes()
+                       if G.in_degree(node) == 0 and G.out_degree(node) > 1 \
+                       or G.in_degree(node) > 1 and G.out_degree(node) == 0]  # sinks and sources of degree > 1
+    G.remove_nodes_from(breakage_points)  # modifying an argument makes me anxious but the next TODO should help it
+    # TODO: perform removing high degree sinks and sources at the same time as removing other nodes and bonds
+    
+    cycles, paths = [], []
     for component in nx.connected_components(nx.Graph(G)):
         if len(component) < min_nodes:
-            singular_nodes.append(component)
             continue
 
         Gs = G.subgraph(component)
-        '''
-         try to parse the component as a single simple cycle
-        '''
-        try:
-            ced = nx.find_cycle(Gs)
-            if set(ced) == set(Gs.edges()):
-                cycles.append(list(nx.simple_cycles(Gs))[0])
-                continue
-        except:
-            pass
+        if cycle := parse_as_simple_cycle(Gs):
+            cycles.append(cycle)
+        else:
+            paths += [ham_path for u in Gs
+                      if (ham_path := hamiltonian_path(Gs, u))]
 
-        '''
-        try to parse the component as a "lollipop" graph (a path attached to a simple cycle)
-        '''
-        sources = []
-        sinks = []
-        for node in Gs.nodes():
-            if Gs.in_degree(node) == 0 and Gs.out_degree(node) > 0:
-                sources.append(node)
-            elif Gs.in_degree(node) > 0 and Gs.out_degree(node) == 0:
-                sinks.append(node)
-
-        if len(sources) > 1 or len(sinks) > 1:  # graph is definitely not "lollipop"
-            raise NotImplementedError
-
-        '''try to traverse graph in forward direction'''
-        if len(sources) == 1:
-            '''
-            hamiltonan_path is a simple dfs. It works with "lollipop" graphs 
-            and may accidentally work with some other graphs
-            '''
-            path = hamiltonian_path(Gs, sources[0])
-            if path:
-                paths.append(path)
-                continue
-
-        '''try to traverse graph in reverse direction'''
-        if len(sinks) == 1:
-            path = hamiltonian_path(Gs.reverse(), sinks[0])
-            if path:
-                paths.append(path[::-1])
-                continue
-
-        raise NotImplementedError  # hamiltonian path not found
-
-    return cycles, paths, singular_nodes  # singular nodes are never used!
-
-
-
-def write_rban_record(rban_record, main_out_dir):
-    initial_graphs_dir = os.path.join(main_out_dir, 'initial_monomer_graphs')
-    if not os.path.exists(initial_graphs_dir):
-        os.mkdir(initial_graphs_dir)
-    struct_id = rban_record['id']
-    out_file_rban_initial = os.path.join(initial_graphs_dir, struct_id + '_rban.json')
-    with open(out_file_rban_initial, 'w') as out:
-        json.dump(rban_record, out)
+    return cycles, paths
 
 
 def process_single_record(log, rban_record, recognized_monomers, backbone_bond_types,
@@ -207,7 +169,7 @@ def process_single_record(log, rban_record, recognized_monomers, backbone_bond_t
     Split the graph into paths and simple cycles
     '''
     try:
-        cycles, paths, _ = putative_backbones(G, min_nodes=2)
+        cycles, paths = putative_backbones(G, min_nodes=2)
         if not cycles and not paths:
             raise
     except Exception as e:
