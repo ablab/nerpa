@@ -1,4 +1,4 @@
-from typing import Dict, NamedTuple, List
+from typing import Dict, NamedTuple, List, Union
 from src.data_types import (
     BGC_Module_Prediction,
     NRP_Monomer,
@@ -12,29 +12,23 @@ from io import StringIO
 
 
 class AlignmentStep(NamedTuple):
-    bgc_module_pos: int  # rank is a dubious name but I don't want to confuse them with actual indexes
-    nrp_monomer_pos: int
+    bgc_module: Union[BGC_Module_Prediction, None]
+    nrp_monomer: Union[NRP_Monomer, None]
     score: LogProb
     action: str
 
-    def to_dict(self,
-                bgc_predictions: List[BGC_Module_Prediction],
-                nrp_fragment: NRP_Fragment) -> Dict[str, str]:  # fragment is needed only to retrieve rban indexes
+    def to_dict(self) -> Dict[str, str]:  # fragment is needed only to retrieve rban indexes
         NA = '---'
-        bgc_module = bgc_predictions[self.bgc_module_pos] if self.bgc_module_pos is not None \
-            else None
-        nrp_monomer = nrp_fragment.monomers[self.nrp_monomer_pos] if self.nrp_monomer_pos is not None \
-        else None
-        return {'Gene': bgc_module.gene_id if bgc_module else NA,
-                'A-domain_idx': bgc_module.module_idx if bgc_module else NA,
-                'Modifications': ','.join(mod.name for mod in bgc_module.modifications)
-            if bgc_module and bgc_module.modifications else NA,
-                'NRP_residue': nrp_monomer.residue if nrp_monomer else NA,
-                'NRP_chirality': nrp_monomer.chirality.name if nrp_monomer else NA,
-                'NRP_modifications': ','.join(mod.name for mod in nrp_monomer.modifications)
-            if nrp_monomer and nrp_monomer.modifications else NA,
-                'rBAN_name': nrp_monomer.rban_name if nrp_monomer else NA,
-                'rBAN_idx': nrp_fragment.rban_indexes[self.nrp_monomer_pos] if nrp_monomer else NA,
+        return {'Gene': self.bgc_module.gene_id if self.bgc_module else NA,
+                'A-domain_idx': self.bgc_module.module_idx if self.bgc_module else NA,
+                'Modifications': ','.join(mod.name for mod in self.bgc_module.modifications)
+            if self.bgc_module and self.bgc_module.modifications else NA,
+                'NRP_residue': self.nrp_monomer.residue if self.nrp_monomer else NA,
+                'NRP_chirality': self.nrp_monomer.chirality.name if self.nrp_monomer else NA,
+                'NRP_modifications': ','.join(mod.name for mod in self.nrp_monomer.modifications)
+            if self.nrp_monomer and self.nrp_monomer.modifications else NA,
+                'rBAN_name': self.nrp_monomer.rban_name if self.nrp_monomer else NA,
+                'rBAN_idx': self.nrp_monomer.rban_idx if self.nrp_monomer else NA,
                 'Alignment_step': self.action,
                 'Score': self.score}
 
@@ -44,6 +38,14 @@ Alignment = List[AlignmentStep]
 def alignment_score(alignment: Alignment) -> LogProb:
     return sum(alignment_step.score for alignment_step in alignment)
 
+
+def show_alignment(alignment: Alignment) -> str:
+    rows = [alignment_step.to_dict()
+            for alignment_step in alignment]
+
+    t = PrettyTable(rows[0].keys(), align='l', border=False)
+    t.add_rows(row.values() for row in rows)
+    return str(t)
 
 @dataclass
 class Match:
@@ -67,13 +69,6 @@ class Match:
         for i, alignment in enumerate(self.alignments):
             if len(self.alignments) > 1:
                 out.write(f'Fragment_#{i}\n')
-            rows = [alignment_step.to_dict(self.bgc_variant.tentative_assembly_line,
-                                           self.nrp_variant.fragments[i])
-                    for alignment_step in alignment]
-
-            t = PrettyTable(rows[0].keys(), align='l', border=False)
-            t.add_rows(row.values() for row in rows)
-
-            out.write(str(t) + '\n')
+            out.write(show_alignment(alignment) + '\n')
 
         return out.getvalue()

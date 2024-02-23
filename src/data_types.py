@@ -36,6 +36,7 @@ class NRP_Monomer:
     modifications: Tuple[NRP_Monomer_Modification, ...]
     chirality: Chirality
     rban_name: str
+    rban_idx: int
 
 
 class BGC_Module_Modification(Enum):
@@ -66,7 +67,6 @@ class BGC_Variant:
 class NRP_Fragment:
     monomers: List[NRP_Monomer]
     is_cyclic: bool
-    rban_indexes: List[int]
 
 
 @dataclass
