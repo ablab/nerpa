@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Dict, NamedTuple, List, Union
 from src.data_types import (
     BGC_Module_Prediction,
@@ -17,7 +18,7 @@ class AlignmentStep(NamedTuple):
     score: LogProb
     action: str
 
-    def to_dict(self) -> Dict[str, str]:  # fragment is needed only to retrieve rban indexes
+    def to_dict(self) -> Dict[str, str]:
         NA = '---'
         return {'Gene': self.bgc_module.gene_id if self.bgc_module else NA,
                 'A-domain_idx': self.bgc_module.module_idx if self.bgc_module else NA,
@@ -31,6 +32,13 @@ class AlignmentStep(NamedTuple):
                 'rBAN_idx': self.nrp_monomer.rban_idx if self.nrp_monomer else NA,
                 'Alignment_step': self.action,
                 'Score': self.score}
+
+    @classmethod
+    def from_yaml_dict(cls, data: dict) -> AlignmentStep:
+        return cls(bgc_module=BGC_Module_Prediction.from_yaml_dict(data['bgc_module']) if data['bgc_module'] else None,
+                   nrp_monomer=NRP_Monomer.from_yaml_dict(data['nrp_monomer']) if data['nrp_monomer'] else None,
+                   score=data['score'],
+                   action=data['action'])
 
 
 Alignment = List[AlignmentStep]
@@ -72,3 +80,12 @@ class Match:
             out.write(show_alignment(alignment) + '\n')
 
         return out.getvalue()
+
+    @classmethod
+    def from_yaml_dict(cls, data: dict) -> Match:
+        return cls(bgc_variant=BGC_Variant.from_yaml_dict(data['bgc_variant']),
+                   nrp_variant=NRP_Variant.from_yaml_dict(data['nrp_variant']),
+                   alignments=[[AlignmentStep.from_yaml_dict(alignment_step_data)
+                                for alignment_step_data in alignment_data]
+                               for alignment_data in data['alignments']],
+                   normalised_score=data['normalised_score'])
