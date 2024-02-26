@@ -1,15 +1,22 @@
-from typing import List, Tuple, Union
+from typing import List, Tuple, Union, NamedTuple, Literal
 import os
 import json
 import csv
 from collections import defaultdict
-from itertools import permutations
+from itertools import chain, permutations
 from rdkit.Chem import Descriptors
 from rdkit.Chem import MolFromSmiles
 import networkx as nx
 
 import handle_monomers
 import nerpa_utils
+from src.data_types import (
+    NRP_Fragment,
+    NRP_Monomer,
+    NRP_Monomer_Modification,
+    Chirality,
+    NRP_Variant
+)
 
 
 # TODO: move this section to some sort of config file
@@ -73,9 +80,7 @@ def build_nx_graph(rban_record, backbone_bonds, recognized_monomers, cut_lipids=
 
 def hamiltonian_path(G: nx.DiGraph,
                      source: int) -> Union[List[int], None]:
-    '''
-    finds a hamiltonian path in G starting at source in an exhaustive manner
-    '''
+    ''' finds a hamiltonian path in G starting at source in an exhaustive manner '''
     visited = set()
 
     def dfs(u: int) -> Union[List[int], None]:
@@ -105,39 +110,42 @@ def parse_as_simple_cycle(G: nx.DiGraph) -> Union[List[int], None]:
         return None
 
 
-def putative_backbones(G: nx.DiGraph, min_nodes: int=2) -> Tuple[List[List[int]],
-                                                                 List[List[int]]]:
-    '''
-    Tries to parse each componenet of G either as a simple cycle or as a hamiltonian path
-    '''
+class BackboneSequence(NamedTuple):
+    type: Literal['PATH', 'CYCLE']
+    node_idxs: List[int]
+
+
+def putative_backbones(G: nx.DiGraph, min_nodes: int=2) -> List[BackboneSequence]:
+    ''' Tries to parse each component of G either as a simple cycle or as a hamiltonian path '''
     breakage_points = [node for node in G.nodes()
                        if G.in_degree(node) == 0 and G.out_degree(node) > 1 \
                        or G.in_degree(node) > 1 and G.out_degree(node) == 0]  # sinks and sources of degree > 1
     G.remove_nodes_from(breakage_points)  # modifying an argument makes me anxious but the next TODO should help it
     # TODO: perform removing high degree sinks and sources at the same time as removing other nodes and bonds
-    
-    cycles, paths = [], []
+
+    backbone_sequences = []
     for component in nx.connected_components(nx.Graph(G)):
         if len(component) < min_nodes:
             continue
 
         Gs = G.subgraph(component)
         if cycle := parse_as_simple_cycle(Gs):
-            cycles.append(cycle)
+            backbone_sequences.append(BackboneSequence(type='CYCLE',
+                                                       node_idxs=cycle))
         else:
-            paths += [ham_path for u in Gs
-                      if (ham_path := hamiltonian_path(Gs, u))]
+            backbone_sequences.extend(BackboneSequence(type='PATH',
+                                                       node_idxs=ham_path)
+                                      for u in Gs
+                                      if (ham_path := hamiltonian_path(Gs, u)))
 
-    return cycles, paths
+    return backbone_sequences
 
 
 def process_single_record(log, rban_record, recognized_monomers, backbone_bond_types,
                           hybrid_monomers_dict, main_out_dir, na=UNDEFINED_NAME, min_recognized_nodes=2):
-    '''
-    build_nx_graphs creates a networkx DiGraph from a monomer graph in rBAN format.
+    ''' build_nx_graphs creates a networkx DiGraph from a monomer graph in rBAN format.
     In doing so all edges which are not of backbone_bond_types are removed.
-    Also, by default all edges incident to lipid monomers are removed
-    '''
+    Also, by default all edges incident to lipid monomers are removed '''
 
     def add_chirality(graph):
         try:
@@ -154,10 +162,8 @@ def process_single_record(log, rban_record, recognized_monomers, backbone_bond_t
             G.nodes[i]['isPKHybrid'] = True
             G.nodes[i]['isIdentified'] = True
 
-    '''
-    Try to recognize monomers chirality and
-    add newly identified monomers from hybrid monomers
-    '''
+    # Try to recognize monomers chirality and
+    # add newly identified monomers from hybrid monomers
 
     structure_id = rban_record['id']
     print(f'Processing {structure_id}')
@@ -165,65 +171,44 @@ def process_single_record(log, rban_record, recognized_monomers, backbone_bond_t
     add_chirality(G)
     add_hybrid_monomers(G)
 
-    '''
-    Split the graph into paths and simple cycles
-    '''
-    try:
-        cycles, paths = putative_backbones(G, min_nodes=2)
-        if not cycles and not paths:
-            raise
-    except Exception as e:
+    # Split the graph into paths and simple cycles
+    backbone_sequences = putative_backbones(G, min_nodes=2)
+    if not backbone_sequences:
         log.warning(f'Structure "{rban_record["id"]}": unable to determine backbone sequence. '
                     f'Skipping "{rban_record["id"]}".')
         return []
 
-    def gen_nerpa_input(path, cyclic=False):
-        inp_nodes = []
-        for node in path:
-            attr = G.nodes[node]
-            name = attr['name']
-            # if not attr.get('isIdentified', False):
-            #     name = f'<{name}>'
-            is_d = attr.get('isD', None)
-            if is_d is not None:
-                name = f'@D-{name}' if is_d else f'@L-{name}'
-            if attr.get('isPKHybrid', False):
-                name = f'*{name}'
-            inp_nodes.append(name)
-        inp_edges = [f'{i},{i+1}' for i in range(len(inp_nodes)-1)]
-        if cyclic:
-            inp_edges.append(f'{len(inp_nodes)-1},{0}')
-        res = ','.join(inp_nodes)
-        res += ';'
-        res += ';'.join(inp_edges)
-        return res
+    def sufficiently_covered(sequence: BackboneSequence) -> bool:
+        return sum(G.nodes[node]['isIdentified'] for node in sequence.node_idxs) >= min_recognized_nodes
 
-    def sufficiently_covered(path):
-        n = sum(G.nodes[node]['isIdentified'] for node in path)
-        return n >= min_recognized_nodes
+    backbone_sequences = list(filter(sufficiently_covered, backbone_sequences))
 
-    '''create a dictionary with records of all fragments
-    structures.keys() are the str records of fragments in Nerpa format
-    structures.values() are these fragments in the original graph (as List[int])'''
-    structures = {}
-    for path in cycles:
-        if sufficiently_covered(path):  # path/cycle contains enough recognized monomers
-            gr = gen_nerpa_input(path, cyclic=True)
-            structures[gr] = path
-    for path in paths:
-        if sufficiently_covered(path):
-            gr = gen_nerpa_input(path)
-            structures[gr] = path
-    if 1 < len(paths) < 4:
-        # try to join linear fragments in all possible ways
-        for x in permutations(paths):
-            path = [node for comp in x for node in comp]
-            if sufficiently_covered(path):  # kind of strange to check it inside the cycle, as 'coverage' does not depend on the permutation, but here we are
-                gr = gen_nerpa_input(path)
-                structures[gr] = path
-    structures = [(f'{structure_id}_variant{i}', gr, structures[gr]) for i, gr in enumerate(sorted(structures.keys()))]
+    def build_fragment(backbone_sequence: BackboneSequence) -> NRP_Fragment:
+        return NRP_Fragment(is_cyclic=backbone_sequence.type == 'CYCLE',
+                            rban_indexes=backbone_sequence.node_idxs,
+                            monomers=[build_monomer(G.nodes[idx])
+                                      for idx in backbone_sequence.node_idxs])
 
-    return structures
+    fragments = [build_fragment(backbone_sequence)
+                 for backbone_sequence in backbone_sequences]
+
+    variants = [NRP_Variant(nrp_id=rban_record['id'],  # all fragments joined
+                            fragments=fragments)]
+
+    perm_fragments = []
+    if all(backbone_sequence.type == 'PATH' for backbone_sequence in backbone_sequences) and \
+            2 <= len(backbone_sequences) <= 3:
+        perm_fragments = [build_fragment(BackboneSequence(type='PATH',
+                                                          node_idxs=joined_idxs))
+                          for joined_idxs in chain(*permutations(backbone_sequence.node_idxs
+                                                                 for backbone_sequence in
+                                                                 backbone_sequences))]
+    if len(backbone_sequences) > 1:
+        variants.extend(NRP_Variant(nrp_id=rban_record['id'],  # all fragments separately
+                                    fragments=[fragment])
+                        for fragment in chain(fragments, perm_fragments))
+
+    return variants
 
 
 def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, path_to_monomers_db, log):
