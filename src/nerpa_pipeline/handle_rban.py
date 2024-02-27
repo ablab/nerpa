@@ -47,7 +47,7 @@ def build_nx_graph(rban_record, backbone_bonds, recognized_monomers, cut_lipids=
     nodes = []
     for monomer in monomeric_graph['monomers']:
         idx = monomer['monomer']['index']
-        name =  monomer['monomer']['monomer']['monomer']
+        name = monomer['monomer']['monomer']['monomer']
         attr = {
             'name': name.replace('C10:0-NH2(2)-Ep(9)-oxo(8)', 'Aeo'),
             'isIdentified': name in recognized_monomers
@@ -148,19 +148,28 @@ class GraphRecord:
     nodes: Dict[int, rBAN_Name]
     edges: List[Tuple[int, int]]
 
-    def __init__(self, G: nx.DiGraph, compound_id: str):
-        self.compound_id = compound_id
-        self.nodes = {idx: G.nodes[idx].name
-                      for idx in G.nodes}
-        self.edges = list(G.edges)
+    def __init__(self, G: nx.DiGraph, rban_record):
+        self.compound_id = rban_record['id']
+        self.nodes = {}
+        monomeric_graph = rban_record['monomericGraph']['monomericGraph']
+        for monomer in monomeric_graph['monomers']:
+            idx = monomer['monomer']['index']
+            rban_name = monomer['monomer']['monomer']['monomer']
+            self.nodes[idx] = G.nodes[idx]['name'] if idx in G.nodes else rban_name
+
+        self.edges = []
+        for bond in monomeric_graph['bonds']:
+            s, e = bond['bond']['monomers']
+            self.edges.append((e, s))
 
 
 def permuted_backbones(backbones: List[BackboneSequence]) -> List[BackboneSequence]:
     if 2 <= len(backbones) <= 3 and all(backbone.type == 'PATH' for backbone in backbones):
+        joined_paths = (list(chain(*(backbone.node_idxs for backbone in perm_backbones)))
+                        for perm_backbones in permutations(backbones))
         return [BackboneSequence(type='PATH',
                                  node_idxs=joined_idxs)
-                for joined_idxs in chain(*permutations(backbone.node_idxs
-                                                       for backbone in backbones))]
+                for joined_idxs in joined_paths]
     else:
         return []
 
@@ -196,6 +205,8 @@ def process_single_record(log, rban_record, recognized_monomers, backbone_bond_t
     Also, by default all edges incident to lipid monomers are removed '''
 
     def add_chirality(graph):
+        for node in graph.nodes():
+            graph.nodes[node]['isD'] = None
         try:
             chirality = handle_monomers.get_monomers_chirality(rban_record)
             for i, d in chirality.items():
@@ -219,7 +230,7 @@ def process_single_record(log, rban_record, recognized_monomers, backbone_bond_t
     add_chirality(G)
     add_hybrid_monomers(G)
 
-    graph_record = GraphRecord(G, rban_record['id'])
+    graph_record = GraphRecord(G, rban_record)
 
     def sufficiently_covered(sequence: BackboneSequence,
                              min_recognized_nodes=2) -> bool:
