@@ -1,9 +1,15 @@
-from typing import List, Tuple, Union, NamedTuple, Literal
+from typing import (
+    Dict,
+    List,
+    Tuple,
+    NamedTuple,
+    Literal,
+    Union
+)
 import os
 import json
 import csv
 from collections import defaultdict
-from itertools import chain, permutations
 from rdkit.Chem import Descriptors
 from rdkit.Chem import MolFromSmiles
 import networkx as nx
@@ -15,24 +21,19 @@ from src.data_types import (
     NRP_Monomer,
     NRP_Monomer_Modification,
     Chirality,
-    NRP_Variant
+    NRP_Variant,
+    rBAN_Name
 )
+from src.nerpa_pipeline.rban_names_helper import rBAN_Names_Helper
+from dataclasses import dataclass
+from functools import partial
+from itertools import chain, permutations
 
 
 # TODO: move this section to some sort of config file
 # see rban.src.main.java.molecules.bond.BondType for the full list
 PNP_BONDS = ['AMINO', 'AMINO_TRANS', 'OXAZOLE_CYCLE', 'THIAZOLE_CYCLE', 'PYRIMIDINE_CYCLE', 'HETEROCYCLE']
 UNDEFINED_NAME = 'NA'
-
-
-class NumNodesError(Exception):
-    def __init__(self, identifier, coverage):
-        self.identifier = identifier
-        self.coverage = coverage
-
-    def __str__(self):
-        return f'Poor monomer coverage for id="{self.identifier}": only {self.coverage} monomers identified. ' \
-               f'Skipping.'
 
 
 def build_nx_graph(rban_record, backbone_bonds, recognized_monomers, cut_lipids=True):
@@ -141,8 +142,55 @@ def putative_backbones(G: nx.DiGraph, min_nodes: int=2) -> List[BackboneSequence
     return backbone_sequences
 
 
+@dataclass
+class GraphRecord:
+    compound_id: str
+    nodes: Dict[int, rBAN_Name]
+    edges: List[Tuple[int, int]]
+
+    def __init__(self, G: nx.DiGraph, compound_id: str):
+        self.compound_id = compound_id
+        self.nodes = {idx: G.nodes[idx].name
+                      for idx in G.nodes}
+        self.edges = list(G.edges)
+
+
+def permuted_backbones(backbones: List[BackboneSequence]) -> List[BackboneSequence]:
+    if 2 <= len(backbones) <= 3 and all(backbone.type == 'PATH' for backbone in backbones):
+        return [BackboneSequence(type='PATH',
+                                 node_idxs=joined_idxs)
+                for joined_idxs in chain(*permutations(backbone.node_idxs
+                                                       for backbone in backbones))]
+    else:
+        return []
+
+
+def build_monomer(mon_idx: int, G: nx.DiGraph,
+                  names_helper: rBAN_Names_Helper) -> NRP_Monomer:
+    parsed_name = names_helper.parsed_rban_name[G.nodes[mon_idx]['name']]
+    match G.nodes[mon_idx]['isD']:
+        case True: chirality = Chirality.D
+        case False: chirality = Chirality.L
+        case None: chirality = Chirality.UNKNOWN
+
+    return NRP_Monomer(residue=parsed_name.residue,
+                       modifications=parsed_name.modifications,
+                       chirality=chirality,
+                       rban_name=G.nodes[mon_idx]['name'],
+                       rban_idx=mon_idx)
+
+
+def backbone_sequence_to_fragment(backbone_sequence: BackboneSequence, G: nx.DiGraph,
+                         names_helper: rBAN_Names_Helper) -> NRP_Fragment:
+    return NRP_Fragment(is_cyclic=backbone_sequence.type == 'CYCLE',
+                        monomers=[build_monomer(idx, G, names_helper=names_helper)
+                                  for idx in backbone_sequence.node_idxs])
+
+
 def process_single_record(log, rban_record, recognized_monomers, backbone_bond_types,
-                          hybrid_monomers_dict, main_out_dir, na=UNDEFINED_NAME, min_recognized_nodes=2):
+                          hybrid_monomers_dict, main_out_dir,
+                          rban_names_helper: rBAN_Names_Helper,
+                          min_recognized_nodes=2, na=UNDEFINED_NAME) -> Tuple[GraphRecord, List[NRP_Variant]]:
     ''' build_nx_graphs creates a networkx DiGraph from a monomer graph in rBAN format.
     In doing so all edges which are not of backbone_bond_types are removed.
     Also, by default all edges incident to lipid monomers are removed '''
@@ -171,44 +219,34 @@ def process_single_record(log, rban_record, recognized_monomers, backbone_bond_t
     add_chirality(G)
     add_hybrid_monomers(G)
 
-    # Split the graph into paths and simple cycles
-    backbone_sequences = putative_backbones(G, min_nodes=2)
-    if not backbone_sequences:
-        log.warning(f'Structure "{rban_record["id"]}": unable to determine backbone sequence. '
-                    f'Skipping "{rban_record["id"]}".')
-        return []
+    graph_record = GraphRecord(G, rban_record['id'])
 
-    def sufficiently_covered(sequence: BackboneSequence) -> bool:
+    def sufficiently_covered(sequence: BackboneSequence,
+                             min_recognized_nodes=2) -> bool:
         return sum(G.nodes[node]['isIdentified'] for node in sequence.node_idxs) >= min_recognized_nodes
 
-    backbone_sequences = list(filter(sufficiently_covered, backbone_sequences))
+    backbone_to_fragment = partial(backbone_sequence_to_fragment, G=G, names_helper=rban_names_helper)
 
-    def build_fragment(backbone_sequence: BackboneSequence) -> NRP_Fragment:
-        return NRP_Fragment(is_cyclic=backbone_sequence.type == 'CYCLE',
-                            rban_indexes=backbone_sequence.node_idxs,
-                            monomers=[build_monomer(G.nodes[idx])
-                                      for idx in backbone_sequence.node_idxs])
+    # Split the graph into paths and simple cycles
+    backbones = list(filter(sufficiently_covered, putative_backbones(G, min_nodes=2)))
+    if not backbones:
+        log.warning(f'Structure "{rban_record["id"]}": unable to determine backbone sequence. '
+                    f'Skipping "{rban_record["id"]}".')
+        return graph_record, []
 
-    fragments = [build_fragment(backbone_sequence)
-                 for backbone_sequence in backbone_sequences]
+    perm_backbones = permuted_backbones(backbones)
 
-    variants = [NRP_Variant(nrp_id=rban_record['id'],  # all fragments joined
-                            fragments=fragments)]
+    # all fragments individually
+    variants = [NRP_Variant(nrp_id=rban_record['id'],
+                            fragments=[backbone_to_fragment(backbone)])
+                for backbone in chain(backbones, perm_backbones)]
 
-    perm_fragments = []
-    if all(backbone_sequence.type == 'PATH' for backbone_sequence in backbone_sequences) and \
-            2 <= len(backbone_sequences) <= 3:
-        perm_fragments = [build_fragment(BackboneSequence(type='PATH',
-                                                          node_idxs=joined_idxs))
-                          for joined_idxs in chain(*permutations(backbone_sequence.node_idxs
-                                                                 for backbone_sequence in
-                                                                 backbone_sequences))]
-    if len(backbone_sequences) > 1:
-        variants.extend(NRP_Variant(nrp_id=rban_record['id'],  # all fragments separately
-                                    fragments=[fragment])
-                        for fragment in chain(fragments, perm_fragments))
+    # all fragments together
+    if len(backbones) > 1:
+        variants.append(NRP_Variant(nrp_id=rban_record['id'],
+                                    fragments=list(map(backbone_to_fragment, backbones))))
 
-    return variants
+    return graph_record, variants
 
 
 def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, path_to_monomers_db, log):
@@ -264,60 +302,41 @@ def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, path_to
 
 
 def generate_info_from_rban_output(path_to_rban_output, path_to_monomers_tsv, path_to_graphs,
-                                   main_out_dir, path_to_rban, path_to_monomers_db, log, process_hybrids=False):
-    """
-    path_to_rban_output --- output of the rBAN ('rban.output.json'). Used as the main argument for this function
+                                   main_out_dir, path_to_rban, path_to_monomers_db, log,
+                                   names_helper: rBAN_Names_Helper, process_hybrids=False) -> Tuple[List[GraphRecord], List[NRP_Variant]]:
+    """ path_to_rban_output --- output of the rBAN ('rban.output.json'). Used as the main argument for this function
     path_to_monomers_tsv --- the file with the list of monomers supported by Nerpa
     path_to_graphs --- output of this function (processed rBAN output) will be stored in this file ('structures.info')
     path_to_monomers_db --- path to the database of monomers (didn't yet quite understand this mess with monomer databases)
-"""
-    # takes rBAN output and 1. tries to annotate some unrecognized monomers, if process_hybrids=True 2. extracts monomer graphs from it, producing the file 'structures.info' (path_to_graphs)
+    takes rBAN output and
+    1. tries to annotate some unrecognized monomers, if process_hybrids=True
+    2. extracts monomer graphs from it, producing the file 'structures.info' (path_to_graphs)"""
+
     log.info('\n======= Processing rBAN output')
     log.info(f'results will be in {path_to_graphs}', indent=1)
     recognized_monomers = [x.split()[0] for x in open(path_to_monomers_tsv)]
     recognized_monomers = set(recognized_monomers[1:])  # reading the set of monomers supported by nerpa from the config file ([1:] because first row is annotations)
     hybrid_monomers_dict = defaultdict(dict)
     if process_hybrids:
-        '''
-        try to recognize some unidentified monomers by removing a lipid tail from them and then running rban again on the trimmed monomers
-        the initial rban results are unaffected (and used further), only the dictionary of newly recognized monomers is created
-        '''
+        # try to recognize some unidentified monomers by removing a lipid tail from them and then running rban again on the trimmed monomers
+        # the initial rban results are unaffected (and used further), only the dictionary of newly recognized monomers is created
         hybrid_monomers_dict = rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, path_to_monomers_db, log)
 
+    nrp_variants = []
+    graph_records = []
     with open(path_to_graphs, 'w') as f_out:
         with open(path_to_rban_output) as f_in:
             for i, rban_record in enumerate(json.load(f_in)):
-                try:
-                    '''
-                    process_single_record performs:
-                    1. Naming newly identified monomers from hybrid_monomer_dict
-                    2. Identifying chirality of each monomer (if possible)
-                    3. Splitting graph into linear (or simple-cyclic) fragments
-                    4. Translating each fragment into Nerpa format (in doing so original node indexes are lost)
-                    '''
-                    graphs = process_single_record(log, rban_record, recognized_monomers, PNP_BONDS, hybrid_monomers_dict[i],
-                                                   main_out_dir, na=UNDEFINED_NAME, min_recognized_nodes=2)  # these are not graphs! As I understood, these are different linear representations of the same structure
-                    '''
-                    Each element of graphs is of form i, gr, pt, where:
-                    'i' is the name of the fragment in the form structId_variantX
-                    'gr' is the representation of the fragment in Nerpa format
-                    'pt' is the fragment (path or cycle) in the original monomer graph (with original node indexes)
-                    '''
-
-                    '''
-                    All edges of the original monomer graph. I don't know why those are needed
-                    '''
-                    rban_graph_edges = [
-                        ','.join(map(str, b['bond']['monomers']))
-                        for b in rban_record['monomericGraph']['monomericGraph']['bonds']
-                    ]
-                    rban_graph_edges_str = ';'.join(rban_graph_edges)
-                    for i, gr, pt in graphs:
-                        pt_str = ','.join(map(str, pt))
-                        f_out.write(f'{i} {gr} {pt_str};{rban_graph_edges_str}\n')
-                except NumNodesError as e:
-                    log.warning(e)
+                # process_single_record performs:
+                # 1. Naming newly identified monomers from hybrid_monomer_dict
+                # 2. Identifying chirality of each monomer (if possible)
+                # 3. Splitting graph into linear (or simple-cyclic) fragments
+                graph_record, graph_variants = process_single_record(log, rban_record, recognized_monomers, PNP_BONDS, hybrid_monomers_dict[i],
+                                                                     main_out_dir, names_helper, na=UNDEFINED_NAME, min_recognized_nodes=2)
+                nrp_variants.extend(graph_variants)
+                graph_records.append(graph_record)
     log.info('\n======= Done with Processing rBAN output')
+    return graph_records, nrp_variants
 
 
 def generate_rban_input_from_smiles_strings(smiles, path_to_rban_input):

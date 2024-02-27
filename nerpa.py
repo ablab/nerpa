@@ -19,11 +19,13 @@ import nerpa_utils
 import handle_rban
 import logger
 
+from src.nerpa_pipeline.rban_names_helper import rBAN_Names_Helper
+from pathlib import Path
+
 # for detecting and processing antiSMASH v.5 output
 site.addsitedir(os.path.join(nerpa_init.python_modules_dir, 'NRPSPredictor_utils'))
 from NRPSPredictor_utils.json_handler import get_main_json_fpath
 from NRPSPredictor_utils.main import main as convert_antiSMASH_v5
-
 
 def parse_args(log):
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -319,16 +321,20 @@ def run(args, log):
     path_to_rban = os.path.join(nerpa_init.external_tools_dir, 'rBAN', 'rBAN-1.0.jar')
     path_to_monomers_db = create_merged_monomers_db(
         path_to_rban, os.path.join(current_configs_dir, "monomersdb_nerpa.json"), args.rban_monomers, output_dir)
+
     if args.structures:
-        shutil.copyfile(args.structures, path_to_graphs)
+        raise NotImplemented('Precomputed structures not supported yet')
+        # shutil.copyfile(args.structures, path_to_graphs)
     else:
         if args.rban_output:
             path_rban_output = args.rban_output
         else:
             path_rban_output = run_rban_on_smiles(args, output_dir, path_to_rban, path_to_monomers_db, log)
 
-        handle_rban.generate_info_from_rban_output(
+        rban_names_helper = rBAN_Names_Helper(Path(local_monomers_cfg))
+        graph_records, nrp_variants = handle_rban.generate_info_from_rban_output(
             path_rban_output, local_monomers_cfg, path_to_graphs, output_dir, path_to_rban, path_to_monomers_db, log,
+            names_helper=rban_names_helper,
             process_hybrids=args.process_hybrids
         )
 
