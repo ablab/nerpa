@@ -133,11 +133,9 @@ def putative_backbones(G: nx.DiGraph, min_nodes: int=2) -> List[BackboneSequence
         if cycle := parse_as_simple_cycle(Gs):
             backbone_sequences.append(BackboneSequence(type='CYCLE',
                                                        node_idxs=cycle))
-        else:
-            backbone_sequences.extend(BackboneSequence(type='PATH',
-                                                       node_idxs=ham_path)
-                                      for u in Gs
-                                      if (ham_path := hamiltonian_path(Gs, u)))
+        elif ham_path := next(filter(None, (hamiltonian_path(Gs, u) for u in Gs)), None):
+            backbone_sequences.append(BackboneSequence(type='PATH',
+                                                       node_idxs=ham_path))
 
     return backbone_sequences
 
@@ -146,7 +144,7 @@ def putative_backbones(G: nx.DiGraph, min_nodes: int=2) -> List[BackboneSequence
 class GraphRecord:
     compound_id: str
     nodes: Dict[int, rBAN_Name]
-    edges: List[Tuple[int, int]]
+    edges: List[Tuple[int, int, str]]
 
     def __init__(self, G: nx.DiGraph, rban_record):
         self.compound_id = rban_record['id']
@@ -160,7 +158,9 @@ class GraphRecord:
         self.edges = []
         for bond in monomeric_graph['bonds']:
             s, e = bond['bond']['monomers']
-            self.edges.append((e, s))
+            bond_type = bond['bond']['bondTypes'][0]
+            # I am not sure why direction is inverted, but it was that way in build_nx_graph
+            self.edges.append((e, s, bond_type))
 
 
 def permuted_backbones(backbones: List[BackboneSequence]) -> List[BackboneSequence]:
@@ -194,6 +194,24 @@ def backbone_sequence_to_fragment(backbone_sequence: BackboneSequence, G: nx.DiG
     return NRP_Fragment(is_cyclic=backbone_sequence.type == 'CYCLE',
                         monomers=[build_monomer(idx, G, names_helper=names_helper)
                                   for idx in backbone_sequence.node_idxs])
+
+
+def sufficiently_covered(sequence: BackboneSequence,
+                         G: nx.DiGraph,
+                         min_recognized_nodes=2) -> bool:
+    return sum(G.nodes[node]['isIdentified'] for node in sequence.node_idxs) >= min_recognized_nodes
+
+
+def trim_unrecognized_monomers(backbone: BackboneSequence, G: nx.DiGraph) -> BackboneSequence:
+    if backbone.type == 'CYCLE':
+        return backbone
+
+    left = next(i for i, idx in enumerate(backbone.node_idxs)
+                if not G.nodes[idx]['name'].startswith('X'))
+    right = next(i for i, idx in reversed(list(enumerate(backbone.node_idxs)))
+                if not G.nodes[idx]['name'].startswith('X'))
+    return BackboneSequence(type='PATH',
+                            node_idxs=backbone.node_idxs[left:right+1])
 
 
 def process_single_record(log, rban_record, recognized_monomers, backbone_bond_types,
@@ -232,14 +250,12 @@ def process_single_record(log, rban_record, recognized_monomers, backbone_bond_t
 
     graph_record = GraphRecord(G, rban_record)
 
-    def sufficiently_covered(sequence: BackboneSequence,
-                             min_recognized_nodes=2) -> bool:
-        return sum(G.nodes[node]['isIdentified'] for node in sequence.node_idxs) >= min_recognized_nodes
-
     backbone_to_fragment = partial(backbone_sequence_to_fragment, G=G, names_helper=rban_names_helper)
 
     # Split the graph into paths and simple cycles
-    backbones = list(filter(sufficiently_covered, putative_backbones(G, min_nodes=2)))
+    backbones = [trim_unrecognized_monomers(backbone, G)
+                 for backbone in putative_backbones(G, min_nodes=2)
+                 if sufficiently_covered(backbone, G)]
     if not backbones:
         log.warning(f'Structure "{rban_record["id"]}": unable to determine backbone sequence. '
                     f'Skipping "{rban_record["id"]}".')
@@ -263,7 +279,7 @@ def process_single_record(log, rban_record, recognized_monomers, backbone_bond_t
 def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, path_to_monomers_db, log):
     # check all unrecognized monomers for PK involvement
     '''
-    This function tries to remove a lipid tail from each of the unrecognized monomers and
+    This function tries to remove a polyketide chain from each of the unrecognized monomers and
     then runs rBAN on these individual trimmed monomers. If rBAN recognizes a trimmed monomer,
     this information is added to the hybrid_monomers_dict
     '''
