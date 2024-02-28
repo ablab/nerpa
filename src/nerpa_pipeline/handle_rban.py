@@ -345,7 +345,7 @@ def generate_info_from_rban_output(path_to_rban_output, path_to_monomers_tsv, pa
     recognized_monomers = set(recognized_monomers[1:])  # reading the set of monomers supported by nerpa from the config file ([1:] because first row is annotations)
     hybrid_monomers_dict = defaultdict(dict)
     if process_hybrids:
-        # try to recognize some unidentified monomers by removing a lipid tail from them and then running rban again on the trimmed monomers
+        # try to recognize some unidentified monomers by removing a polyketide chain from them and then running rban again on the trimmed monomers
         # the initial rban results are unaffected (and used further), only the dictionary of newly recognized monomers is created
         hybrid_monomers_dict = rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, path_to_monomers_db, log)
 
