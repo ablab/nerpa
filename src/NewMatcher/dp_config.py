@@ -14,10 +14,12 @@ class ChiralityMatch(NamedTuple):
     bgc_epim: bool
     nrp_chr: Chirality
 
+
 class ModMatch(NamedTuple):
     mod: NRP_Monomer_Modification
     bgc_mod: bool
     nrp_mod: bool
+
 
 @dataclass
 class DP_Config:
@@ -78,6 +80,6 @@ def load_config(path_to_config: Path) -> DP_Config:
                      null_hypothesis_residue_score=null_hypothesis_residue_score,
                      null_hypothesis_mod_score=null_hypothesis_mod_score,
                      null_hypothesis_chirality_score=null_hypothesis_chirality_score,
-                     max_gene_reps=cfg['max_gene_reps'],
-                     max_module_reps=cfg['max_module_reps'])
+                     max_gene_reps=cfg['max_gene_repetitions'],
+                     max_module_reps=cfg['max_module_repetitions'])
 

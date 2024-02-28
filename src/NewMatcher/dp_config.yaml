@@ -23,7 +23,7 @@ module_modification_frequency:
 
 module_epimerization_frequency: 0.2
 
-max_gene_reps: 3
-max_module_reps: 3
+max_gene_repetitions: 3
+max_module_repetitions: 3
 
 

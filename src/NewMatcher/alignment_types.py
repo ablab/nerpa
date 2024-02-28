@@ -22,7 +22,7 @@ class AlignmentStep(NamedTuple):
         NA = '---'
         return {'Gene': self.bgc_module.gene_id if self.bgc_module else NA,
                 'A-domain_idx': self.bgc_module.module_idx if self.bgc_module else NA,
-                'Modifications': ','.join(mod.name for mod in self.bgc_module.modifications)
+                'Modifying_domains': ','.join(mod.name for mod in self.bgc_module.modifications)
             if self.bgc_module and self.bgc_module.modifications else NA,
                 'NRP_residue': self.nrp_monomer.residue if self.nrp_monomer else NA,
                 'NRP_chirality': self.nrp_monomer.chirality.name if self.nrp_monomer else NA,

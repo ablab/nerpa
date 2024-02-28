@@ -5,20 +5,25 @@ from typing import (
     List,
     NamedTuple,
     Tuple,
-TypeVar,
+    TypeVar,
     Set,
-    Union)
+    Union
+)
 
 from src.data_types import (
     BGC_Module_Prediction,
+    BGC_Variant,
     Chirality,
     LogProb,
     NRP_Monomer,
+    NRP_Variant,
+    NRP_Fragment,
     MonomerResidue
 )
 from src.NewMatcher.dp import get_alignment
 from src.NewMatcher.dp_helper import DP_Helper
 from src.NewMatcher.dp_config import DP_Config, load_config
+from src.NewMatcher.matcher import get_matches
 
 from src.NewMatcher.alignment_types import AlignmentStep, Alignment, show_alignment
 from itertools import groupby, pairwise, chain
@@ -122,6 +127,7 @@ def parse_result_alignment(alignment: Alignment) -> TestAlignment:
            if trans.action not in ('iterate_module', 'iterate_gene')]
     return bgc, nrp
 
+
 def check(alignment: Alignment, correct_alignment: TestAlignment) -> bool:
     return parse_result_alignment(alignment) == correct_alignment
 
@@ -149,15 +155,7 @@ def run_tests(tests: Iterable[AlignmentTest]) -> bool:
     return True
 
 
-def main():
-    run_tests(load_tests())
-
-
-if __name__ == '__main__':
-    main()
-
-'''
-def main():
+def test_matcher():
     nrp_fragments = [NRP_Fragment(monomers=[NRP_Monomer(residue='val',
                                                         modifications=(),#(NRP_Monomer_Modification.METHYLATION,),
                                                         chirality=Chirality.UNKNOWN,
@@ -210,6 +208,10 @@ def main():
         for match in get_matches([bgc_variant], [nrp_variant], dp_config):
             out.write(str(match) + '\n\n')
 
-if __name__ == "__main__":
+
+def main():
+    run_tests(load_tests())
+
+
+if __name__ == '__main__':
     main()
-'''

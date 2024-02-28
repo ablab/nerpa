@@ -33,7 +33,7 @@ def build_report(matches: List[Match]) -> str:
 
 
 def write_matches_per_id(matches: List[Match], output_dir: Path,
-                         id_=Literal['BGC', 'NRP']):
+                         id_: Literal['BGC', 'NRP']):
     get_id = (lambda m: m.bgc_variant.bgc_id) if id_ == 'BGC' else \
         (lambda m: m.nrp_variant.nrp_id)
     matches_per_id = groupby(sorted(matches, key=get_id, reverse=True),
@@ -50,7 +50,7 @@ def write_results(matches: List[Match], output_dir: Path):
     write_yaml(matches, output_dir / Path('matches.yaml'))
 
     (output_dir / Path('details/per_BGC')).mkdir()
-    write_matches_per_id(matches, output_dir / Path('details/per_BGC'), id_=Literal['BGC'])
+    write_matches_per_id(matches, output_dir / Path('details/per_BGC'), id_='BGC')
 
     (output_dir / Path('details/per_NRP')).mkdir()
-    write_matches_per_id(matches, output_dir / Path('details/per_BGC'), id_=Literal['NRP'])
+    write_matches_per_id(matches, output_dir / Path('details/per_NRP'), id_='NRP')
