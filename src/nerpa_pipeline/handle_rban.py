@@ -335,17 +335,16 @@ def generate_info_from_rban_output(path_to_rban_output, path_to_monomers_tsv, pa
 
     nrp_variants = []
     graph_records = []
-    with open(path_to_graphs, 'w') as f_out:
-        with open(path_to_rban_output) as f_in:
-            for i, rban_record in enumerate(json.load(f_in)):
-                # process_single_record performs:
-                # 1. Naming newly identified monomers from hybrid_monomer_dict
-                # 2. Identifying chirality of each monomer (if possible)
-                # 3. Splitting graph into linear (or simple-cyclic) fragments
-                graph_record, graph_variants = process_single_record(log, rban_record, recognized_monomers, PNP_BONDS, hybrid_monomers_dict[i],
-                                                                     main_out_dir, names_helper, na=UNDEFINED_NAME, min_recognized_nodes=2)
-                nrp_variants.extend(graph_variants)
-                graph_records.append(graph_record)
+    with open(path_to_rban_output) as f_in:
+        for i, rban_record in enumerate(json.load(f_in)):
+            # process_single_record performs:
+            # 1. Naming newly identified monomers from hybrid_monomer_dict
+            # 2. Identifying chirality of each monomer (if possible)
+            # 3. Splitting graph into linear (or simple-cyclic) fragments
+            graph_record, graph_variants = process_single_record(log, rban_record, recognized_monomers, PNP_BONDS, hybrid_monomers_dict[i],
+                                                                 main_out_dir, names_helper, na=UNDEFINED_NAME, min_recognized_nodes=2)
+            nrp_variants.extend(graph_variants)
+            graph_records.append(graph_record)
     log.info('\n======= Done with Processing rBAN output')
     return graph_records, nrp_variants
 
