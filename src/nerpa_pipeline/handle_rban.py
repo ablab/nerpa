@@ -328,16 +328,16 @@ def rban_postprocessing(path_to_rban_output, main_out_dir, path_to_rban, path_to
     return hybrid_monomers_dict
 
 
-def generate_info_from_rban_output(path_to_rban_output, path_to_monomers_tsv, path_to_graphs,
-                                   main_out_dir, path_to_rban, path_to_monomers_db, log,
-                                   names_helper: rBAN_Names_Helper, process_hybrids=False) -> Tuple[List[GraphRecord], List[NRP_Variant]]:
+def parse_rban_output(path_to_rban_output, path_to_monomers_tsv, path_to_graphs,
+                      main_out_dir, path_to_rban, path_to_monomers_db, log,
+                      names_helper: rBAN_Names_Helper, process_hybrids=False) -> Tuple[List[GraphRecord], List[NRP_Variant]]:
     """ path_to_rban_output --- output of the rBAN ('rban.output.json'). Used as the main argument for this function
     path_to_monomers_tsv --- the file with the list of monomers supported by Nerpa
-    path_to_graphs --- output of this function (processed rBAN output) will be stored in this file ('structures.info')
     path_to_monomers_db --- path to the database of monomers (didn't yet quite understand this mess with monomer databases)
     takes rBAN output and
     1. tries to annotate some unrecognized monomers, if process_hybrids=True
-    2. extracts monomer graphs from it, producing the file 'structures.info' (path_to_graphs)"""
+    2. cuts monomer graphs into linear fragments and stores them in NRP_Variant classes
+    3. saves information about original graphs in GraphRecord classes to show them in the final output """
 
     log.info('\n======= Processing rBAN output')
     log.info(f'results will be in {path_to_graphs}', indent=1)

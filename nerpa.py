@@ -332,7 +332,7 @@ def run(args, log):
             path_rban_output = run_rban_on_smiles(args, output_dir, path_to_rban, path_to_monomers_db, log)
 
         rban_names_helper = rBAN_Names_Helper(Path(local_monomers_cfg))
-        graph_records, nrp_variants = handle_rban.generate_info_from_rban_output(
+        graph_records, nrp_variants = handle_rban.parse_rban_output(
             path_rban_output, local_monomers_cfg, path_to_graphs, output_dir, path_to_rban, path_to_monomers_db, log,
             names_helper=rban_names_helper,
             process_hybrids=args.process_hybrids
