@@ -49,15 +49,11 @@ def dp_recalc(dp_table: DP_Table,
                default=None)
 
 
-def compute_gene_lengths(bgc_predictions: List[BGC_Module_Prediction]) -> Dict[str, int]:
-    return {gene_id: len(list(modules))
-            for gene_id, modules in groupby(bgc_predictions, lambda module: module.gene_id)}
-
-
 def calculate_dp(assembly_line: List[BGC_Module_Prediction],
                  nrp_monomers: List[NRP_Monomer],
                  dp_helper: DP_Helper) -> DP_Table:  # functions computing scores and other parameters
-    gene_lengths = compute_gene_lengths(assembly_line)
+    gene_lengths = {gene_id: len(list(modules))
+                    for gene_id, modules in groupby(assembly_line, lambda module: module.gene_id)}
     max_gene_reps = dp_helper.dp_config.max_gene_reps if any(module.iterative_gene for module in assembly_line) \
         else 0
     max_module_reps = dp_helper.dp_config.max_module_reps if any(module.iterative_module for module in assembly_line) \
