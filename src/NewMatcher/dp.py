@@ -23,8 +23,8 @@ from functools import partial
 class DP_State(NamedTuple):
     module_pos: int
     monomer_pos: int
-    num_gene_reps: int
-    num_module_reps: int
+    gene_reps: int
+    module_reps: int
 
 
 class DP_Value(NamedTuple):
@@ -69,20 +69,21 @@ def calculate_dp(assembly_line: List[BGC_Module],
     recalc = partial(dp_recalc, dp_table)
     for gene_reps in range(max_gene_reps + 1):
         for module_reps in range(max_module_reps + 1):
-            for i, bgc_pred in enumerate([pred_dummy] + assembly_line):
+            for i, bgc_module in enumerate([pred_dummy] + assembly_line):
                 for j, nrp_mon in enumerate([mon_dummy] + nrp_monomers):
                     if i == 0 and j == 0:
                         continue
 
-                    transitions = [(DP_State(i - 1, j, gene_reps, module_reps), dp_helper.bgc_module_skip, (bgc_pred,)),
+                    transitions = [(DP_State(i - 1, j, gene_reps, module_reps), dp_helper.bgc_module_skip, (bgc_module,)),
                                    (DP_State(i, j - 1, gene_reps, module_reps), dp_helper.nrp_mon_skip, (nrp_mon,)),
-                                   (DP_State(i - 1, j - 1, gene_reps, module_reps), dp_helper.match, (bgc_pred, nrp_mon))]
+                                   (DP_State(i - 1, j - 1, gene_reps, module_reps), dp_helper.match, (bgc_module, nrp_mon))]
 
                     if i < len(assembly_line) and assembly_line[i].iterative_module:  # note that assembly_line[i] is right AFTER bgc_pred
                         transitions.append((DP_State(i + 1, j, gene_reps, module_reps - 1),
                                             dp_helper.iterate_module, ()))
 
-                    if i < len(assembly_line) and assembly_line[i].iterative_gene:
+                    if i < len(assembly_line) and assembly_line[i].iterative_gene \
+                        and assembly_line[i].gene_id != bgc_module.gene_id:
                         gene_len = gene_lengths[assembly_line[i].gene_id]
                         transitions.append((DP_State(i + gene_len, j, gene_reps - 1, module_reps),
                                             dp_helper.iterate_gene, ()))
