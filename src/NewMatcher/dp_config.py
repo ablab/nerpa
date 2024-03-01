@@ -3,7 +3,9 @@ from src.data_types import (
     Chirality,
     LogProb,
     MonomerResidue,
-    NRP_Monomer_Modification)
+    NRP_Monomer_Modification,
+    UNKNOWN_RESIDUE
+)
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
@@ -23,8 +25,8 @@ class ModMatch(NamedTuple):
 
 @dataclass
 class DP_Config:
-    bgc_module_remove_score: LogProb
-    nrp_mon_remove_score: Dict[MonomerResidue, LogProb]
+    bgc_module_skip_score: LogProb
+    nrp_mon_skip_score: Dict[MonomerResidue, LogProb]
     mod_score: Dict[ModMatch, LogProb]
     chirality_score: Dict[ChiralityMatch, LogProb]
 
@@ -50,10 +52,10 @@ def load_config(path_to_config: Path) -> DP_Config:
                        for bgc_epim in (False, True)
                        for nrp_chr in Chirality}
 
-    nrp_mon_remove_score = defaultdict(lambda: cfg['nrp_mon_remove_score']['unk'],
-                                       cfg['nrp_mon_remove_score'])
+    nrp_mon_remove_score = defaultdict(lambda: cfg['nrp_mon_skip_score']['unk'],
+                                       cfg['nrp_mon_skip_score'])
 
-    null_hypothesis_residue_score = defaultdict(lambda: cfg['null_hypothesis_residue_score']['unk'],
+    null_hypothesis_residue_score = defaultdict(lambda: cfg['null_hypothesis_residue_score'][UNKNOWN_RESIDUE],
                                                 cfg['null_hypothesis_residue_score'])
     def get_null_hyp_mod_score(mod: NRP_Monomer_Modification,
                                mod_in_nrp: bool) -> LogProb:
@@ -73,8 +75,8 @@ def load_config(path_to_config: Path) -> DP_Config:
 
     null_hypothesis_chirality_score = {chr: get_null_hyp_chr_score(chr)
                                        for chr in Chirality}
-    return DP_Config(bgc_module_remove_score=cfg['bgc_module_remove_score'],
-                     nrp_mon_remove_score=nrp_mon_remove_score,
+    return DP_Config(bgc_module_skip_score=cfg['bgc_module_skip_score'],
+                     nrp_mon_skip_score=nrp_mon_remove_score,
                      mod_score=mod_score,
                      chirality_score=chirality_score,
                      null_hypothesis_residue_score=null_hypothesis_residue_score,

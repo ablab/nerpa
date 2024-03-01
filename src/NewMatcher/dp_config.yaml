@@ -1,6 +1,6 @@
-bgc_module_remove_score: -3.0
+bgc_module_skip_score: -3.0
 
-nrp_mon_remove_score: {arg: -2.0, leu: -2.0, val: -2.0, unk: -3.0}
+nrp_mon_skip_score: {arg: -2.0, leu: -2.0, val: -2.0, unk: -3.0}
 
 modification_score:
   Mod_METHYLATION_BGC_False_NRP_False: 1.0

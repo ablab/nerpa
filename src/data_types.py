@@ -9,6 +9,7 @@ from dataclasses import asdict, dataclass
 
 LogProb = float
 MonomerResidue = str
+UNKNOWN_RESIDUE = 'unk'
 
 
 def enum_representer(dumper, e: Enum):
