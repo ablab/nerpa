@@ -74,8 +74,8 @@ def calculate_dp(assembly_line: List[BGC_Module],
                     if i == 0 and j == 0:
                         continue
 
-                    transitions = [(DP_State(i - 1, j, gene_reps, module_reps), dp_helper.bgc_module_remove, (bgc_pred,)),
-                                   (DP_State(i, j - 1, gene_reps, module_reps), dp_helper.nrp_mon_remove, (nrp_mon,)),
+                    transitions = [(DP_State(i - 1, j, gene_reps, module_reps), dp_helper.bgc_module_skip, (bgc_pred,)),
+                                   (DP_State(i, j - 1, gene_reps, module_reps), dp_helper.nrp_mon_skip, (nrp_mon,)),
                                    (DP_State(i - 1, j - 1, gene_reps, module_reps), dp_helper.match, (bgc_pred, nrp_mon))]
 
                     if i < len(assembly_line) and assembly_line[i].iterative_module:  # note that assembly_line[i] is right AFTER bgc_pred

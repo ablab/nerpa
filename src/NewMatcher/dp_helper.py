@@ -13,10 +13,10 @@ from enum import Enum, auto
 class DP_Helper:
     dp_config: DP_Config
 
-    def bgc_module_remove(self, bgc_pred: BGC_Module) -> LogProb:
+    def bgc_module_skip(self, bgc_pred: BGC_Module) -> LogProb:
         return self.dp_config.bgc_module_skip_score
 
-    def nrp_mon_remove(self, mon: NRP_Monomer) -> LogProb:
+    def nrp_mon_skip(self, mon: NRP_Monomer) -> LogProb:
         return self.dp_config.nrp_mon_skip_score[mon.residue]  # should we take into account methylation and chirality as well?
 
     def match(self, bgc_pred: BGC_Module,
