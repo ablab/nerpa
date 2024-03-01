@@ -1,6 +1,6 @@
 from typing import List
 from src.data_types import (
-    BGC_Module_Prediction,
+    BGC_Module,
     BGC_Variant,
     LogProb,
     NRP_Fragment,
@@ -12,7 +12,7 @@ from src.NewMatcher.alignment_types import Alignment, alignment_score, Match
 from src.NewMatcher.dp import get_alignment
 
 
-def get_alignment_fragment(assembly_line: List[BGC_Module_Prediction],
+def get_alignment_fragment(assembly_line: List[BGC_Module],
                            nrp_fragment: NRP_Fragment,
                            dp_helper: DP_Helper) -> Alignment:
 

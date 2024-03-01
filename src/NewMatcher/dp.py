@@ -7,7 +7,7 @@ from typing import (
     Union)
 
 from src.data_types import (
-    BGC_Module_Prediction,
+    BGC_Module,
     Chirality,
     LogProb,
     NRP_Monomer,
@@ -49,7 +49,7 @@ def dp_recalc(dp_table: DP_Table,
                default=None)
 
 
-def calculate_dp(assembly_line: List[BGC_Module_Prediction],
+def calculate_dp(assembly_line: List[BGC_Module],
                  nrp_monomers: List[NRP_Monomer],
                  dp_helper: DP_Helper) -> DP_Table:  # functions computing scores and other parameters
     gene_lengths = {gene_id: len(list(modules))
@@ -63,7 +63,7 @@ def calculate_dp(assembly_line: List[BGC_Module_Prediction],
                         dtype=DP_Value)
     dp_table[START_STATE] = DP_Value(0, START_STATE, '')
 
-    pred_dummy = BGC_Module_Prediction('', -1, {}, (), False, False)  # placeholders for more concise code
+    pred_dummy = BGC_Module('', -1, {}, (), False, False)  # placeholders for more concise code
     mon_dummy = NRP_Monomer('', (), Chirality.UNKNOWN, '', 0)  # dummies are not actually used in the alignment
 
     recalc = partial(dp_recalc, dp_table)
@@ -94,7 +94,7 @@ def calculate_dp(assembly_line: List[BGC_Module_Prediction],
 
 
 def retrieve_alignment(dp_table: DP_Table, state: DP_State,
-                       assembly_line: List[BGC_Module_Prediction],
+                       assembly_line: List[BGC_Module],
                        nrp_monomers: List[NRP_Monomer]) -> Alignment:
     if state == START_STATE:
         return []
@@ -110,7 +110,7 @@ def retrieve_alignment(dp_table: DP_Table, state: DP_State,
                              action=dp_table[state].action)])
 
 
-def get_alignment(assembly_line: List[BGC_Module_Prediction],
+def get_alignment(assembly_line: List[BGC_Module],
                   nrp_monomers: List[NRP_Monomer],
                   dp_helper: DP_Helper) -> Alignment:
     dp_table = calculate_dp(assembly_line, nrp_monomers, dp_helper)

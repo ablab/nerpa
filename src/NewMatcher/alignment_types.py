@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Dict, NamedTuple, List, Union
 from src.data_types import (
-    BGC_Module_Prediction,
+    BGC_Module,
     NRP_Monomer,
     BGC_Variant,
     LogProb,
@@ -13,7 +13,7 @@ from io import StringIO
 
 
 class AlignmentStep(NamedTuple):
-    bgc_module: Union[BGC_Module_Prediction, None]
+    bgc_module: Union[BGC_Module, None]
     nrp_monomer: Union[NRP_Monomer, None]
     score: LogProb
     action: str
@@ -35,7 +35,7 @@ class AlignmentStep(NamedTuple):
 
     @classmethod
     def from_yaml_dict(cls, data: dict) -> AlignmentStep:
-        return cls(bgc_module=BGC_Module_Prediction.from_yaml_dict(data['bgc_module']) if data['bgc_module'] else None,
+        return cls(bgc_module=BGC_Module.from_yaml_dict(data['bgc_module']) if data['bgc_module'] else None,
                    nrp_monomer=NRP_Monomer.from_yaml_dict(data['nrp_monomer']) if data['nrp_monomer'] else None,
                    score=data['score'],
                    action=data['action'])

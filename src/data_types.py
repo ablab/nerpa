@@ -57,7 +57,7 @@ yaml.add_representer(BGC_Module_Modification, enum_representer)
 
 
 @dataclass
-class BGC_Module_Prediction:
+class BGC_Module:
     gene_id: str
     module_idx: int
     residue_score: Dict[MonomerResidue, LogProb]
@@ -66,7 +66,7 @@ class BGC_Module_Prediction:
     iterative_gene: bool
 
     @classmethod
-    def from_yaml_dict(cls, data: dict) -> BGC_Module_Prediction:
+    def from_yaml_dict(cls, data: dict) -> BGC_Module:
         return cls(gene_id=data['gene_id'],
                    module_idx=data['module_idx'],
                    residue_score=data['residue_score'],
@@ -79,13 +79,13 @@ class BGC_Module_Prediction:
 class BGC_Variant:
     genome_id: str
     bgc_id: str
-    tentative_assembly_line: List[BGC_Module_Prediction]
+    tentative_assembly_line: List[BGC_Module]
 
     @classmethod
     def from_yaml_dict(cls, data: dict) -> BGC_Variant:
         return cls(genome_id=data['genome_id'],
                    bgc_id=data['bgc_id'],
-                   tentative_assembly_line=list(map(BGC_Module_Prediction.from_yaml_dict,
+                   tentative_assembly_line=list(map(BGC_Module.from_yaml_dict,
                                                     data['tentative_assembly_line'])))
 
 

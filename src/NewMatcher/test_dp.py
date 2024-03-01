@@ -11,7 +11,7 @@ from typing import (
 )
 
 from src.data_types import (
-    BGC_Module_Prediction,
+    BGC_Module,
     BGC_Variant,
     Chirality,
     LogProb,
@@ -52,19 +52,19 @@ def get_iterative(xs: list) -> Set[int]:
 
 def parse_contig(modules: List[str],
                  gene_id: str,
-                 iterative_gene: bool) -> List[BGC_Module_Prediction]:
+                 iterative_gene: bool) -> List[BGC_Module]:
     iterative = get_iterative(modules)
     modules = filter(lambda x: x != '*', modules)
-    return [BGC_Module_Prediction(residue_score=defaultdict(lambda: -10, {MonomerResidue(residue): 10}),
-                                  modifications=(),
-                                  gene_id=gene_id,
-                                  module_idx=i,
-                                  iterative_module=i in iterative,
-                                  iterative_gene=iterative_gene)
+    return [BGC_Module(residue_score=defaultdict(lambda: -10, {MonomerResidue(residue): 10}),
+                       modifications=(),
+                       gene_id=gene_id,
+                       module_idx=i,
+                       iterative_module=i in iterative,
+                       iterative_gene=iterative_gene)
             for i, residue in enumerate(modules)]
 
 
-def parse_contigs(pred_str: str) -> List[BGC_Module_Prediction]:
+def parse_contigs(pred_str: str) -> List[BGC_Module]:
     genes = eval(pred_str[len('BGC: '):])
     iterative = get_iterative(genes)
     genes = filter(lambda x: x != '*', genes)
@@ -90,7 +90,7 @@ def parse_alignment(alignment_str: str) -> TestAlignment:
 
 @dataclass
 class AlignmentTest:
-    predictions: List[BGC_Module_Prediction]
+    predictions: List[BGC_Module]
     nrp_monomers: List[NRP_Monomer]
     correct_alignment: TestAlignment
     num_mods: int
@@ -115,7 +115,7 @@ def load_tests() -> Iterable[AlignmentTest]:
 
 
 def parse_result_alignment(alignment: Alignment) -> TestAlignment:
-    def best_pred(bgc_module: BGC_Module_Prediction):
+    def best_pred(bgc_module: BGC_Module):
         return max(bgc_module.residue_score.keys(),
                    key=lambda res: bgc_module.residue_score[res])
 
@@ -186,18 +186,18 @@ def test_matcher():
 
     nrp_variant = NRP_Variant(fragments=nrp_fragments, nrp_id='dragon_sneeze')
 
-    bgc_preds = [BGC_Module_Prediction(residue_score=defaultdict(lambda: -3, {'val': -1}),
-                                       modifications=(),
-                                       iterative_module=False,
-                                       iterative_gene=False,
-                                       gene_id='gene1',
-                                       module_idx=0),
-                 BGC_Module_Prediction(residue_score=defaultdict(lambda: -3, {'leu': -1}),
-                                       modifications=(), #(BGC_Module_Modification.EPIMERIZATION, BGC_Module_Modification.METHYLATION,),
-                                       iterative_module=True,
-                                       iterative_gene=False,
-                                       gene_id='gene1',
-                                       module_idx=1)]
+    bgc_preds = [BGC_Module(residue_score=defaultdict(lambda: -3, {'val': -1}),
+                            modifications=(),
+                            iterative_module=False,
+                            iterative_gene=False,
+                            gene_id='gene1',
+                            module_idx=0),
+                 BGC_Module(residue_score=defaultdict(lambda: -3, {'leu': -1}),
+                            modifications=(),  #(BGC_Module_Modification.EPIMERIZATION, BGC_Module_Modification.METHYLATION,),
+                            iterative_module=True,
+                            iterative_gene=False,
+                            gene_id='gene1',
+                            module_idx=1)]
     bgc_variant = BGC_Variant(tentative_assembly_line=bgc_preds,
                               genome_id='genome#189',
                               bgc_id='bgc#39')
