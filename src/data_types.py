@@ -12,6 +12,7 @@ MonomerResidue = str
 UNKNOWN_RESIDUE = 'unk'
 rBAN_Name = str
 
+
 def enum_representer(dumper, e: Enum):
     return dumper.represent_scalar(f'!{e.__class__.__name__}', e.name)
 

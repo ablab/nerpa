@@ -1,0 +1,189 @@
+### Default alignment
+# Test Case 1
+Number of changes: 0
+BGC: [['arg', 'trp', 'val']]
+NRP: ['arg', 'trp']
+Alignment: [['arg', 'trp', 'val'], ['arg', 'trp', '-']]
+
+# Test Case 2
+Number of changes: 0
+BGC: [['arg', 'trp', 'val']]
+NRP: ['arg', 'val']
+Alignment: [['arg', 'trp', 'val'], ['arg', '-', 'val']]
+
+# Test Case 3
+Number of changes: 0
+BGC: [['arg', 'trp', 'val']]
+NRP: ['trp', 'val']
+Alignment: [['arg', 'trp', 'val'], ['-', 'trp', 'val']]
+
+# Test Case 4
+Number of changes: 0
+BGC: [['cys', 'gly']]
+NRP: ['cys', 'gly', 'asn']
+Alignment: [['cys', 'gly', '-'], ['cys', 'gly', 'asn']]
+
+# Test Case 5
+Number of changes: 0
+BGC: [['cys', 'asn']]
+NRP: ['cys', 'gly', 'asn']
+Alignment: [['cys', '-', 'asn'], ['cys', 'gly', 'asn']]
+
+# Test Case 6
+Number of changes: 0
+BGC: [['gly', 'asn']]
+NRP: ['cys', 'gly', 'asn']
+Alignment: [['-', 'gly', 'asn'], ['cys', 'gly', 'asn']]
+
+### Modification (insertion)
+# Test Case 7
+Number of changes: 1
+BGC: [['phe', 'ala', 'pro']]
+NRP: ['phe', 'ala']
+Alignment: [['phe', 'ala', 'pro'], ['phe', 'ala', 'pro']]
+
+# Test Case 8
+Number of changes: 1
+BGC: [['phe', 'ala', 'pro']]
+NRP: ['phe', 'pro']
+Alignment: [['phe', 'ala', 'pro'], ['phe', 'ala', 'pro']]
+
+# Test Case 9
+Number of changes: 1
+BGC: [['phe', 'ala', 'pro']]
+NRP: ['ala', 'pro']
+Alignment: [['phe', 'ala', 'pro'], ['phe', 'ala', 'pro']]
+
+### Modification (substitution)
+# Test Case 10
+Number of changes: 1
+BGC: [['asp', 'glu', 'his']]
+NRP: ['asp', 'glu', 'ala']
+Alignment: [['asp', 'glu', 'his'], ['asp', 'glu', 'his']]
+
+# Test Case 11
+Number of changes: 1
+BGC: [['asp', 'glu', 'his']]
+NRP: ['asp', 'ala', 'his']
+Alignment: [['asp', 'glu', 'his'], ['asp', 'glu', 'his']]
+
+# Test Case 12
+Number of changes: 1
+BGC: [['asp', 'glu', 'his']]
+NRP: ['ala', 'glu', 'his']
+Alignment: [['asp', 'glu', 'his'], ['asp', 'glu', 'his']]
+
+### Modification (deletion)
+# Test Case 13
+Number of changes: 1
+BGC: [['ile', 'ser']]
+NRP: ['ile', 'ser', 'thr']
+Alignment: [['ile', 'ser', '-'], ['ile', 'ser', '-']]
+
+# Test Case 14
+Number of changes: 1
+BGC: [['ser', 'thr']]
+NRP: ['ile', 'ser', 'thr']
+Alignment: [['-', 'ser', 'thr'], ['-', 'ser', 'thr']]
+
+# Test Case 15
+Number of changes: 1
+BGC: [['ile', 'thr']]
+NRP: ['ile', 'ser', 'thr']
+Alignment: [['ile', '-', 'thr'], ['ile', '-', 'thr']]
+
+### Modification (domain repetition)
+# Test Case 16
+Number of changes: 0
+BGC: [['leu', '*', 'lys', 'tyr']]
+NRP: ['leu', 'leu', 'lys', 'tyr']
+Alignment: [['leu', 'leu', 'lys', 'tyr'], ['leu', 'leu', 'lys', 'tyr']]
+
+# Test Case 17
+Number of changes: 0
+BGC: [['leu', 'lys', '*', 'tyr']]
+NRP: ['leu', 'lys', 'lys', 'tyr']
+Alignment: [['leu', 'lys', 'lys', 'tyr'], ['leu', 'lys', 'lys', 'tyr']]
+
+# Test Case 18
+Number of changes: 0
+BGC: [['leu', 'lys', 'tyr', '*']]
+NRP: ['leu', 'lys', 'tyr', 'tyr']
+Alignment: [['leu', 'lys', 'tyr', 'tyr'], ['leu', 'lys', 'tyr', 'tyr']]
+
+### Modification (contig repetition)
+# Test Case 19
+Number of changes: 0
+BGC: [['gln', 'lys'], '*', ['met', 'asp'], ['ala']]
+NRP: ['gln', 'lys', 'gln', 'lys', 'met', 'asp', 'ala']
+Alignment: [['gln', 'lys', 'gln', 'lys', 'met', 'asp', 'ala'], ['gln', 'lys', 'gln', 'lys', 'met', 'asp', 'ala']]
+
+# Test Case 20
+Number of changes: 0
+BGC: [['gln', 'lys'], ['met', 'asp'], '*', ['ala']]
+NRP: ['gln', 'lys', 'met', 'asp', 'met', 'asp', 'ala']
+Alignment: [['gln', 'lys', 'met', 'asp', 'met', 'asp', 'ala'], ['gln', 'lys', 'met', 'asp', 'met', 'asp', 'ala']]
+
+# Test Case 21
+Number of changes: 0
+BGC: [['gln', 'lys'], ['met', 'asp'], ['ala'], '*']
+NRP: ['gln', 'lys', 'met', 'asp', 'ala', 'ala']
+Alignment: [['gln', 'lys', 'met', 'asp', 'ala', 'ala'], ['gln', 'lys', 'met', 'asp', 'ala', 'ala']]
+
+
+
+### Modifications (SUB,SUB)
+# Test case 22
+Number of changes: 2
+BGC: [['trp', 'val', 'his', 'met', 'pro']]
+NRP: ['trp', 'gly', 'his', 'met', 'phe']
+Alignment: [['trp', 'val', 'his', 'met', 'pro'], ['trp', 'val', 'his', 'met', 'pro']]
+
+### Modifications (DEL,SUB)
+# Test case 23
+Number of changes: 2
+BGC: [['glu', 'met', 'ile']]
+NRP: ['ala', 'met', 'lys', 'ile']
+Alignment: [['glu', 'met', '-', 'ile'], ['glu', 'met', '-', 'ile']]
+
+### Modifications (INS,SUB)
+# Test case 24
+Number of changes: 2
+BGC: [['ala', 'val', 'tyr', 'asp']]
+NRP: ['cys', 'val', 'tyr']
+Alignment: [['ala', 'val', 'tyr', 'asp'], ['ala', 'val', 'tyr', 'asp']]
+
+### Modifications (DEL,DEL)
+# Test case 25
+Number of changes: 2
+BGC: [['arg', 'trp']]
+NRP: ['leu', 'arg', 'pro', 'trp']
+Alignment: [['-', 'arg', '-', 'trp'], ['-', 'arg', '-', 'trp']]
+
+### Modifications (DEL,INS)
+# Test case 26
+Number of changes: 2
+BGC: [['cys', 'met', 'trp']]
+NRP: ['pro', 'cys', 'met']
+Alignment: [['-', 'cys', 'met', 'trp'], ['-', 'cys', 'met', 'trp']]
+
+### Modifications (INS,INS)
+# Test case 27
+Number of changes: 2
+BGC: [['ala', 'phe', 'ile']]
+NRP: ['phe']
+Alignment: [['ala', 'phe', 'ile'], ['ala', 'phe', 'ile']]
+
+### Modifications (contig + domain repetition)
+# Test case 28
+Number of changes: 0
+BGC: [['lys', '*', 'ala', 'cys'], ['tyr', 'ser'], '*']
+NRP: ['lys', 'lys', 'ala', 'cys', 'tyr', 'ser', 'tyr', 'ser']
+Alignment: [['lys', 'lys', 'ala', 'cys', 'tyr', 'ser', 'tyr', 'ser'], ['lys', 'lys', 'ala', 'cys', 'tyr', 'ser', 'tyr', 'ser']]
+
+### Modifications (Ultimate)
+# Test case 29
+Number of changes: 3
+BGC: [['phe', 'tyr', '*', 'ala'], ['arg', 'met'], '*', ['cys']]
+NRP: ['asp', 'tyr', 'tyr', 'ala', 'ser', 'arg', 'met', 'arg', 'met']
+Alignment: [['phe', 'tyr', 'tyr', 'ala', '-', 'arg', 'met', 'arg', 'met', 'cys'], ['phe', 'tyr', 'tyr', 'ala', '-', 'arg', 'met', 'arg', 'met', 'cys']]

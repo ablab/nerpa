@@ -1,0 +1,29 @@
+bgc_module_skip_score: -3.0
+
+nrp_mon_skip_score: {arg: -2.0, leu: -2.0, val: -2.0, unk: -3.0}
+
+modification_score:
+  Mod_METHYLATION_BGC_False_NRP_False: 1.0
+  Mod_METHYLATION_BGC_False_NRP_True: 0.0
+  Mod_METHYLATION_BGC_True_NRP_False: -1.0
+  Mod_METHYLATION_BGC_True_NRP_True: 2.0
+
+chirality_score:
+  BGC_False_NRP_L: 1.0
+  BGC_False_NRP_D: 0.0
+  BGC_False_NRP_UNKNOWN: 0.0
+  BGC_True_NRP_L: -1.0
+  BGC_True_NRP_D: 2.0
+  BGC_True_NRP_UNKNOWN: 0.0
+
+null_hypothesis_residue_score: {unk: -3}
+
+module_modification_frequency:
+  METHYLATION: 0.2
+
+module_epimerization_frequency: 0.2
+
+max_gene_repetitions: 3
+max_module_repetitions: 3
+
+

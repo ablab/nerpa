@@ -1,0 +1,91 @@
+from __future__ import annotations
+from typing import Dict, NamedTuple, List, Union
+from src.data_types import (
+    BGC_Module,
+    NRP_Monomer,
+    BGC_Variant,
+    LogProb,
+    NRP_Variant,
+    NRP_Fragment)
+from dataclasses import dataclass
+from prettytable import PrettyTable
+from io import StringIO
+
+
+class AlignmentStep(NamedTuple):
+    bgc_module: Union[BGC_Module, None]
+    nrp_monomer: Union[NRP_Monomer, None]
+    score: LogProb
+    action: str
+
+    def to_dict(self) -> Dict[str, str]:
+        NA = '---'
+        return {'Gene': self.bgc_module.gene_id if self.bgc_module else NA,
+                'A-domain_idx': self.bgc_module.module_idx if self.bgc_module else NA,
+                'Modifying_domains': ','.join(mod.name for mod in self.bgc_module.modifications)
+            if self.bgc_module and self.bgc_module.modifications else NA,
+                'NRP_residue': self.nrp_monomer.residue if self.nrp_monomer else NA,
+                'NRP_chirality': self.nrp_monomer.chirality.name if self.nrp_monomer else NA,
+                'NRP_modifications': ','.join(mod.name for mod in self.nrp_monomer.modifications)
+            if self.nrp_monomer and self.nrp_monomer.modifications else NA,
+                'rBAN_name': self.nrp_monomer.rban_name if self.nrp_monomer else NA,
+                'rBAN_idx': self.nrp_monomer.rban_idx if self.nrp_monomer else NA,
+                'Alignment_step': self.action,
+                'Score': self.score}
+
+    @classmethod
+    def from_yaml_dict(cls, data: dict) -> AlignmentStep:
+        return cls(bgc_module=BGC_Module.from_yaml_dict(data['bgc_module']) if data['bgc_module'] else None,
+                   nrp_monomer=NRP_Monomer.from_yaml_dict(data['nrp_monomer']) if data['nrp_monomer'] else None,
+                   score=data['score'],
+                   action=data['action'])
+
+
+Alignment = List[AlignmentStep]
+
+def alignment_score(alignment: Alignment) -> LogProb:
+    return sum(alignment_step.score for alignment_step in alignment)
+
+
+def show_alignment(alignment: Alignment) -> str:
+    rows = [alignment_step.to_dict()
+            for alignment_step in alignment]
+
+    t = PrettyTable(rows[0].keys(), align='l', border=False)
+    t.add_rows(row.values() for row in rows)
+    return str(t)
+
+@dataclass
+class Match:
+    bgc_variant: BGC_Variant
+    nrp_variant: NRP_Variant
+    alignments: List[Alignment]  # alignments of each fragment
+    normalised_score: float
+
+    def raw_score(self) -> LogProb:
+        return sum(map(alignment_score, self.alignments))
+
+    def __str__(self):
+        out = StringIO()
+        out.write('\n'.join([f'Genome={self.bgc_variant.genome_id}',
+                             f'BGC={self.bgc_variant.bgc_id}',
+                             f'NRP={self.nrp_variant.nrp_id}',
+                             f'NormalisedScore={self.normalised_score}',
+                             f'Score={self.raw_score()}']))
+        out.write('\n')
+
+        for i, alignment in enumerate(self.alignments):
+            if len(self.alignments) > 1:
+                out.write(f'Fragment_#{i}\n')
+            out.write(show_alignment(alignment) + '\n')
+
+        return out.getvalue()
+
+    @classmethod
+    def from_yaml_dict(cls, data: dict) -> Match:
+        return cls(bgc_variant=BGC_Variant.from_yaml_dict(data['bgc_variant']),
+                   nrp_variant=NRP_Variant.from_yaml_dict(data['nrp_variant']),
+                   alignments=[[AlignmentStep.from_yaml_dict(alignment_step_data)
+                                for alignment_step_data in alignment_data]
+                               for alignment_data in data['alignments']],
+                   normalised_score=data['normalised_score'])
