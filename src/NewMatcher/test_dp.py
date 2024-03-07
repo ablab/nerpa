@@ -21,8 +21,8 @@ from src.data_types import (
     MonomerResidue
 )
 from src.NewMatcher.dp import get_alignment
-from src.NewMatcher.dp_helper import DP_Helper
-from src.NewMatcher.dp_config import DP_Config, load_config
+from src.NewMatcher.scoring_helper import ScoringHelper
+from src.NewMatcher.scoring_config import ScoringConfig, load_config
 from src.NewMatcher.matcher import get_matches
 
 from src.NewMatcher.alignment_types import AlignmentStep, Alignment, show_alignment
@@ -133,7 +133,7 @@ def check(alignment: Alignment, correct_alignment: TestAlignment) -> bool:
 
 
 def run_tests(tests: Iterable[AlignmentTest]) -> bool:
-    dp_helper = DP_Helper(load_config(Path(__file__).parent / 'dp_config.yaml'))
+    dp_helper = ScoringHelper(load_config(Path(__file__).parent / 'dp_config.yaml'))
     for i, test in enumerate(tests):
         if test.num_mods > 0:
             continue

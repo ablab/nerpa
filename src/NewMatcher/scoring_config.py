@@ -24,7 +24,7 @@ class ModMatch(NamedTuple):
 
 
 @dataclass
-class DP_Config:
+class ScoringConfig:
     bgc_module_skip_score: LogProb
     nrp_mon_skip_score: Dict[MonomerResidue, LogProb]
     mod_score: Dict[ModMatch, LogProb]
@@ -38,7 +38,7 @@ class DP_Config:
     max_module_reps: int
 
 
-def load_config(path_to_config: Path) -> DP_Config:
+def load_config(path_to_config: Path) -> ScoringConfig:
     cfg = yaml.safe_load(path_to_config.open('r'))
 
     mod_score = {ModMatch(mod=mod, bgc_mod=bgc_mod, nrp_mod=nrp_mod):
@@ -75,13 +75,13 @@ def load_config(path_to_config: Path) -> DP_Config:
 
     null_hypothesis_chirality_score = {chr: get_null_hyp_chr_score(chr)
                                        for chr in Chirality}
-    return DP_Config(bgc_module_skip_score=cfg['bgc_module_skip_score'],
-                     nrp_mon_skip_score=nrp_mon_remove_score,
-                     mod_score=mod_score,
-                     chirality_score=chirality_score,
-                     null_hypothesis_residue_score=null_hypothesis_residue_score,
-                     null_hypothesis_mod_score=null_hypothesis_mod_score,
-                     null_hypothesis_chirality_score=null_hypothesis_chirality_score,
-                     max_gene_reps=cfg['max_gene_repetitions'],
-                     max_module_reps=cfg['max_module_repetitions'])
+    return ScoringConfig(bgc_module_skip_score=cfg['bgc_module_skip_score'],
+                         nrp_mon_skip_score=nrp_mon_remove_score,
+                         mod_score=mod_score,
+                         chirality_score=chirality_score,
+                         null_hypothesis_residue_score=null_hypothesis_residue_score,
+                         null_hypothesis_mod_score=null_hypothesis_mod_score,
+                         null_hypothesis_chirality_score=null_hypothesis_chirality_score,
+                         max_gene_reps=cfg['max_gene_repetitions'],
+                         max_module_reps=cfg['max_module_repetitions'])
 

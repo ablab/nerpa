@@ -12,7 +12,7 @@ from src.data_types import (
     LogProb,
     NRP_Monomer,
 )
-from src.NewMatcher.dp_helper import DP_Helper
+from src.NewMatcher.scoring_helper import ScoringHelper
 from src.NewMatcher.alignment_types import AlignmentStep, Alignment
 import numpy as np
 import numpy.typing as npt
@@ -51,12 +51,12 @@ def dp_recalc(dp_table: DP_Table,
 
 def calculate_dp(assembly_line: List[BGC_Module],
                  nrp_monomers: List[NRP_Monomer],
-                 dp_helper: DP_Helper) -> DP_Table:  # functions computing scores and other parameters
+                 dp_helper: ScoringHelper) -> DP_Table:  # functions computing scores and other parameters
     gene_lengths = {gene_id: len(list(modules))
                     for gene_id, modules in groupby(assembly_line, lambda module: module.gene_id)}
-    max_gene_reps = dp_helper.dp_config.max_gene_reps if any(module.iterative_gene for module in assembly_line) \
+    max_gene_reps = dp_helper.scoring_config.max_gene_reps if any(module.iterative_gene for module in assembly_line) \
         else 0
-    max_module_reps = dp_helper.dp_config.max_module_reps if any(module.iterative_module for module in assembly_line) \
+    max_module_reps = dp_helper.scoring_config.max_module_reps if any(module.iterative_module for module in assembly_line) \
         else 0
 
     dp_table = np.empty((len(assembly_line)+1, len(nrp_monomers)+1, max_gene_reps+1, max_module_reps+1),
@@ -113,7 +113,7 @@ def retrieve_alignment(dp_table: DP_Table, state: DP_State,
 
 def get_alignment(assembly_line: List[BGC_Module],
                   nrp_monomers: List[NRP_Monomer],
-                  dp_helper: DP_Helper) -> Alignment:
+                  dp_helper: ScoringHelper) -> Alignment:
     dp_table = calculate_dp(assembly_line, nrp_monomers, dp_helper)
 
     def last_state(gene_reps: int, module_reps: int) -> DP_State:
