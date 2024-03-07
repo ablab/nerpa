@@ -284,7 +284,8 @@ def run(args, log):
     log.start()
 
     if args.predictions is not None:
-        path_predictions = copy_prediction_list(args, output_dir)
+        raise NotImplemented('Precomputed BGC predictions not supported yet')
+        # path_predictions = copy_prediction_list(args, output_dir)
     else:
         antismash_out_dirs = args.antismash if args.antismash is not None else []
         if args.seqs:
@@ -304,7 +305,7 @@ def run(args, log):
             nerpa_utils.sys_call(command, log, cwd=output_dir)
             antismash_out_dirs.append(cur_antismash_out)
 
-        path_predictions = predictions_preprocessor.create_predictions_by_antiSMASH_out(get_antismash_v3_compatible_input_paths(
+        bgc_variants = predictions_preprocessor.parse_antismash_output(get_antismash_v3_compatible_input_paths(
                 listing_fpath=args.antismash_out, list_of_paths=antismash_out_dirs,
                 output_dir=output_dir, log=log), output_dir, log)
 
@@ -342,8 +343,9 @@ def run(args, log):
     if not os.path.exists(details_mol_dir):
         os.makedirs(details_mol_dir)
 
+    # FIXME: the following command is not intended to work anymore
     command = [os.path.join(nerpa_init.bin_dir, "NRPsMatcher"),
-               path_predictions, path_to_graphs,
+               '', path_to_graphs,
                '--configs_dir', current_configs_dir,
                "--threads", str(args.threads)]
     log.info("\n======= Nerpa matching")
