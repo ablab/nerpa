@@ -22,7 +22,7 @@ from src.data_types import (
     NRP_Monomer_Modification,
     Chirality,
     NRP_Variant,
-    rBAN_Name
+    rBAN_Residue_Name
 )
 from src.nerpa_pipeline.rban_names_helper import rBAN_Names_Helper
 from dataclasses import dataclass
@@ -143,7 +143,7 @@ def putative_backbones(G: nx.DiGraph, min_nodes: int=2) -> List[BackboneSequence
 @dataclass
 class GraphRecord:
     compound_id: str
-    nodes: Dict[int, rBAN_Name]
+    nodes: Dict[int, rBAN_Residue_Name]
     edges: List[Tuple[int, int, str]]
 
     def __init__(self, G: nx.DiGraph, rban_record):
