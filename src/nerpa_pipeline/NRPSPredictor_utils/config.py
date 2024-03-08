@@ -5,7 +5,7 @@ from os.path import abspath, dirname, realpath, join
 root_dir = abspath(dirname(realpath(__file__)))
 
 DEFAULT_INPUT_CODES = join(root_dir, 'codes', 'nrpspredictor2_knowncodes.fasta')  # or 'nrpspredictor2_labeled_sigs.txt') or 'sandpuma_mibig_based.fna'
-DEFAULT_OUTPUT_CODES = join(root_dir, 'codes', 'parsed_codes.json')
+DEFAULT_OUTPUT_CODES = join(root_dir, 'codes', 'residue_signatures.yaml')
 STANDARD_STACHELHAUS_CODE_LENGTH = 10
 
 KNOWN_AA_SIGNATURES = [
@@ -100,3 +100,56 @@ SVM_LEVEL_TO_SCORE = {'single_amino_pred': 100.0,
                       'not_matched': 0.0}
 
 SVM_DETECTABLE_AA = set(itertools.chain.from_iterable(PHYSICOCHEMICAL_CLASSES.values()))
+
+ANTISMASH_TO_NERPA = {
+    # "easy" cases
+    "Cya": "cysa",
+    "Glyca": "glycolic-acid",
+    "Aol": "alaninol",
+    "bAla": "b-ala",
+    "bLys": "b-lys",
+    "D-Lya": "lyserg",
+    "Pgl": "phg",
+    "Piz": "piperazic",
+    "3clLeu": "tcl",
+    "Valol": "vol",
+    "pPro": "4ppro",
+    "2,3-dohBza": "dhb",
+    # nontrivial ones: CHECKME once again!
+    "Kiv": "2-oxo-isovaleric-acid",
+    "pyrAla": "33p-l-ala",
+    "R-ohTyr": "bht",
+    "ohTyr": "bht",
+    "dhAbu": "dht",
+    "3-ohVal": "hyv",
+    "me-clHic": "indole-3-carboxylic",
+    "D-pheLac": "phe-ac",
+    "n-epox-oxoDec": "aeo",
+    "2-oh-4-mePen": "HICA",
+
+    # CHECKME: nontrivial adjustment (but we ignore modifications anyway)
+    "ohOrn": "orn",
+    "aThr": "thr",
+    "aIle": "ile"
+
+    # special note for future reference:
+    # "LDAP --> ignore! Based on his "old" code (DAQDLAVVNK -- used in old Nerpa), it is just Dpr but we have such substrate already    ???": "aeo  --> n-epox-oxoDec
+}
+
+
+def antismash_substrate_to_nerpa_substrate(substrate: str) -> str:
+    return ANTISMASH_TO_NERPA.get(substrate, substrate).lower()
+
+
+SVM_LEVELS = ["single_amino", "small_cluster", "large_cluster", "physiochemical_class"]
+
+
+SVM_SUBSTRATES_ORIGINAL = ["Arg", "Asp", "Glu", "Asn", "Lys", "Gln", "Orn", "ohOrn", "Aad",
+                           "Ala", "Gly", "Val", "Leu", "Ile", "Abu", "Iva", "Ser", "Thr", "Hpg", "dHpg", "Cys", "Pro", "Pip",
+                           "Phe", "Tyr", "2,3-dohBza", "Pgl", "R-ohTyr"]
+
+SVM_SUBSTRATES = [antismash_substrate_to_nerpa_substrate(substrate) for substrate in SVM_SUBSTRATES_ORIGINAL]
+
+SCORING_TABLE_COLUMNS = ["substrate", "aa10_score", "aa34_score",
+                         "svm_single_amino_score", "svm_small_cluster_score",
+                         "svm_large_cluster_score", "svm_physiochemical_class_score"]
