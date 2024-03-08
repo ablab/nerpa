@@ -48,9 +48,8 @@ def get_match(bgc_variant: BGC_Variant,
 
 def get_matches(bgc_variants: List[BGC_Variant],
                 nrp_variants: List[NRP_Variant],
-                dp_config: ScoringConfig) -> List[Match]:
-    dp_helper = ScoringHelper(dp_config)
-    return sorted([get_match(bgc_variant, nrp_variant, dp_helper)
+                scoring_helper: ScoringHelper) -> List[Match]:
+    return sorted([get_match(bgc_variant, nrp_variant, scoring_helper)
                    for bgc_variant in bgc_variants
                    for nrp_variant in nrp_variants],
                   key=lambda match: match.normalised_score, reverse=True)

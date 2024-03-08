@@ -1,0 +1,44 @@
+bgc_module_skip_score: -3.19
+
+nrp_mon_skip_score: {2-oxo-isovaleric-acid: -9.031818267709898, 33p-l-ala: -9.031818267709898,
+                     4ppro: -9.031818267709898, HICA: -9.031818267709898, LDAP: -9.031818267709898, aad: -9.031818267709898,
+                     abu: -6.198604923653681, aeo: -9.031818267709898, ala: -5.566082364910171, alaninol: -9.031818267709898,
+                     arg: -7.240058798481843, asn: -6.834593690373677, asp: -5.505457743093736, b-ala: -9.031818267709898,
+                     b-lys: -9.031818267709898, bht: -9.031818267709898, bmt: -9.031818267709898, cap: -9.031818267709898,
+                     cys: -7.085908118654584, cysa: -9.031818267709898, dab: -5.987295829986474, dhb: -9.031818267709898,
+                     dhpg: -7.422380355275797, dht: -9.031818267709898, dpr: -9.031818267709898, gln: -5.987295829986474,
+                     glu: -6.259229545470117, gly: -5.735981401705568, glycolic-acid: -9.031818267709898,
+                     his: -7.933205979041787, hiv: -6.952376726030061, hpg: -7.240058798481843, hse: -7.933205979041787,
+                     hty: -9.031818267709898, hyv: -9.031818267709898, ile: -5.535310706243417, indole-3-carboxylic: -9.031818267709898,
+                     iva: -9.031818267709898, kyn: -9.031818267709898, leu: -4.55448145323169, lys: -7.085908118654584,
+                     lyserg: -9.031818267709898, met: -9.031818267709898, orn: -6.392760938094639, phe: -6.036085994155906,
+                     phe-ac: -9.031818267709898, phg: -9.031818267709898, pip: -8.338671087149951, piperazic: -9.031818267709898,
+                     pro: -6.141446509813733, sal: -9.031818267709898, ser: -5.368256621580251, tcl: -9.031818267709898,
+                     thr: -5.160617256802006, trp: -6.392760938094639, tyr: -6.729233174715851, val: -4.797711763112638,
+                     vol: -9.031818267709898, unk: -9.031818267709898}
+
+num_unknown_residues: 100
+
+modification_score:
+  Mod_METHYLATION_BGC_False_NRP_False: -0.195  # old Nerpa score 0.073
+  Mod_METHYLATION_BGC_False_NRP_True: -1.729  # old Nerpa score -1.461
+  Mod_METHYLATION_BGC_True_NRP_False: -6.008  # old Nerpa score -3.621
+  Mod_METHYLATION_BGC_True_NRP_True: -0.002  # old Nerpa score 2.385
+
+chirality_score:
+  BGC_False_NRP_L: -0.187  # old 0.257
+  BGC_False_NRP_D: -1.77  # old -1.326
+  BGC_False_NRP_UNKNOWN: -0.412  # calculated based on frequencies of L and D among rban monomers
+  BGC_True_NRP_L: -1.998  # -0.928
+  BGC_True_NRP_D: -0.146  # 0.924
+  BGC_True_NRP_UNKNOWN: -1.137  # calculated based on frequencies of L and D among rban monomers
+
+null_hypothesis_residue_score: {unk: -3}
+
+module_modification_frequency:
+  METHYLATION: 0.17
+
+module_epimerization_frequency: 0.243
+
+max_gene_repetitions: 3
+max_module_repetitions: 3

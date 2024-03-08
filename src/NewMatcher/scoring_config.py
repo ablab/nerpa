@@ -27,6 +27,7 @@ class ModMatch(NamedTuple):
 class ScoringConfig:
     bgc_module_skip_score: LogProb
     nrp_mon_skip_score: Dict[MonomerResidue, LogProb]
+    num_unknown_residues: int
     mod_score: Dict[ModMatch, LogProb]
     chirality_score: Dict[ChiralityMatch, LogProb]
 
@@ -77,6 +78,7 @@ def load_config(path_to_config: Path) -> ScoringConfig:
                                        for chr in Chirality}
     return ScoringConfig(bgc_module_skip_score=cfg['bgc_module_skip_score'],
                          nrp_mon_skip_score=nrp_mon_remove_score,
+                         num_unknown_residues=cfg['num_unknown_residues'],
                          mod_score=mod_score,
                          chirality_score=chirality_score,
                          null_hypothesis_residue_score=null_hypothesis_residue_score,
