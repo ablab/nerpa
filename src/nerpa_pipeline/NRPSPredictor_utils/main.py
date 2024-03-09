@@ -94,7 +94,6 @@ def main(args):
         known_codes = yaml.load(yaml_file, Loader=yaml.Loader)
     # TODO: check that content was loaded properly
 
-    # TODO: Azat: load scoring model parameters/etc here. It will be used in codes_handler.get_prediction_from_signature()
     scoring_model = ModelWrapper(config.SCORING_MODEL)
 
     # codes_ftype = codes_handler.get_codes_file_type(args.codes)

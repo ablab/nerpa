@@ -9,7 +9,7 @@ class ModelWrapper(object):
     def __init__(self, 
                  model_dump: Path, 
                  lookup_score: str = "aa34_score",
-                 lookup_threshold=1e-3):
+                 lookup_threshold: float = 1e-3):
         """Wrapper over sklearn.ensemble.RandomForestClassifier that combines lookup with the prediction of log_probs
 
         Parameters
@@ -30,10 +30,10 @@ class ModelWrapper(object):
         scores = pd.Series(0, index=scoring_table.index, dtype=float)
         
         # Filter rows with no match in the lookup table
-        apply_model_mask = (1 - scoring_table[self.lookup_col]).abs() > self.lookup_threshold
+        mask_predict = (1 - scoring_table[self.lookup_col]).abs() > self.lookup_threshold
 
         # Get predictions from the model keeping only the pos class prediction
-        scores.loc[apply_model_mask] = self.model.predict_log_proba(scoring_table.loc[apply_model_mask])[:,1]
+        scores.loc[mask_predict] = self.model.predict_log_proba(scoring_table.loc[mask_predict])[:,1]
 
         # Convert to ResidueScores=Dict[str, float] and return
         return scores.to_dict()

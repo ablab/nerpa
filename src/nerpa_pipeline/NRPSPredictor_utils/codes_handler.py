@@ -156,7 +156,7 @@ def __get_svm_score(residue: str, svm_prediction: Tuple[float, List[MonomerResid
     return -1.0
 
 
-def dummy_model(scoring_table: pd.DataFrame, model_params=None) -> ResidueScores:
+def dummy_model(scoring_table: pd.DataFrame) -> ResidueScores:
     result: ResidueScores = OrderedDict()
 
     # Extracting and processing data
@@ -173,12 +173,12 @@ def dummy_model(scoring_table: pd.DataFrame, model_params=None) -> ResidueScores
 
 
 def get_prediction_from_signature(nrpys_prediction: dict, known_codes_dict: ResidueSignaturesDict,
-                                  model=None, model_params=None) -> Tuple[str, str]:
+                                  model=None) -> Tuple[str, str]:
     '''
 
     :param nrpys_prediction: includes aa10/34 and four level SVM predictions
     :param known_codes_dict: known aa10/34 signatures for all Nerpa-supported monomers (sorted!)
-    :param model: stub for Azat's classifier, if None/not specified a dummy model will be used
+    :param model: prediction classifier, if None/not specified a dummy model will be used
     :return: in the future: ResidueScores (with the default dummy model it is just log from aa10 score)
              right now (for legacy reasons): the most probably residue name and
                                              the sorted list of all residues with their log probs in '()', separated by ';'
@@ -209,7 +209,7 @@ def get_prediction_from_signature(nrpys_prediction: dict, known_codes_dict: Resi
 
         scoring_table.loc[residue] = scoring_table_row
 
-    residue_log_probs: ResidueScores = model(scoring_table, model_params)
+    residue_log_probs: ResidueScores = model(scoring_table)
 
     residue_with_highest_prob = max(residue_log_probs, key=residue_log_probs.get)  # for legacy reasons and just for debug, never used in practice
     residue_log_probs_string = ";".join(f"{key}({value})" for key, value in residue_log_probs.items())
