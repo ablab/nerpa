@@ -173,16 +173,18 @@ def dummy_model(scoring_table: pd.DataFrame, model_params=None) -> ResidueScores
 
 
 def get_prediction_from_signature(nrpys_prediction: dict, known_codes_dict: ResidueSignaturesDict,
-                                  model=dummy_model, model_params=None) -> Tuple[str, str]:
+                                  model=None, model_params=None) -> Tuple[str, str]:
     '''
 
     :param nrpys_prediction: includes aa10/34 and four level SVM predictions
     :param known_codes_dict: known aa10/34 signatures for all Nerpa-supported monomers (sorted!)
-    :param model: stub for Azat's classifier
+    :param model: stub for Azat's classifier, if None/not specified a dummy model will be used
     :return: in the future: ResidueScores (with the default dummy model it is just log from aa10 score)
              right now (for legacy reasons): the most probably residue name and
                                              the sorted list of all residues with their log probs in '()', separated by ';'
     '''
+    if model is None:
+        model = dummy_model
 
     aa10_code = nrpys_prediction["aa10"]
     aa34_code = nrpys_prediction["aa34"]
