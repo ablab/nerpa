@@ -88,7 +88,7 @@ def build_bgc_assembly_line(orf_modules_names, genome_residue_scores: Dict[GeneI
     return bgc_assembly_line
 
 
-def parse_antismash_output(antiSMASH_outs, outdir, log) -> List[BGC_Variant]:
+def parse_antismash_output(antiSMASH_outs, outdir, debug: bool, log) -> List[BGC_Variant]:
     log.info("Start create predictions by antiSMASH")
 
     if not antiSMASH_outs:
@@ -145,7 +145,7 @@ def parse_antismash_output(antiSMASH_outs, outdir, log) -> List[BGC_Variant]:
                     bgc_variant_idx += 1
                     all_bgc_variants.append(bgc_variant)
 
-    if True:  # TODO: add the debug mode and update this to 'if debug:'
+    if debug:  # TODO: add the debug mode and update this to 'if debug:'
         dump_bgc_variants(os.path.join(outdir, "BGC_variants"), all_bgc_variants)
 
     return all_bgc_variants

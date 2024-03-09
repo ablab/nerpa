@@ -71,6 +71,8 @@ def parse_args(log):
     parser.add_argument('--antismash-path', dest='antismash_path', type=str, default=None,
                         help='path to antismash source directory')
     parser.add_argument("--threads", default=1, type=int, help="number of threads for running Nerpa", action="store")
+    parser.add_argument("--debug", action="store_true", default=False,
+                        help="run in the debug mode (keep intermediate files)")
     parser.add_argument("--output_dir", "-o", help="output dir [default: nerpa_results/results_<datetime>]",
                         type=str, default=None)
 
@@ -307,7 +309,7 @@ def run(args, log):
 
         bgc_variants = predictions_preprocessor.parse_antismash_output(get_antismash_v3_compatible_input_paths(
                 listing_fpath=args.antismash_out, list_of_paths=antismash_out_dirs,
-                output_dir=output_dir, log=log), output_dir, log)
+                output_dir=output_dir, log=log), output_dir, args.debug, log)
 
     input_configs_dir = args.configs_dir if args.configs_dir else nerpa_init.configs_dir
     current_configs_dir = os.path.join(output_dir, "configs")
