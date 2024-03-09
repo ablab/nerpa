@@ -160,7 +160,7 @@ def dummy_model(scoring_table: pd.DataFrame, model_params=None) -> ResidueScores
     result: ResidueScores = OrderedDict()
 
     # Extracting and processing data
-    substrates = scoring_table["substrate"]
+    substrates = scoring_table.index
     aa10_scores = scoring_table["aa10_score"].apply(lambda x: float(x))
 
     # Computing logarithm and populating results
@@ -197,16 +197,15 @@ def get_prediction_from_signature(nrpys_prediction: dict, known_codes_dict: Resi
         substrate_nerpa_names = [config.antismash_substrate_to_nerpa_substrate(substrate) for substrate in substrate_short_names]
         svm_prediction[level] = (score, substrate_nerpa_names)
 
-    scoring_table = pd.DataFrame([], columns=config.SCORING_TABLE_COLUMNS)
+    scoring_table = pd.DataFrame([], columns=config.SCORING_TABLE_COLUMNS).set_index(config.SCORING_TABLE_INDEX)
     for residue, (known_aa10_codes, known_aa34_codes) in known_codes_dict.items():
-        scoring_table_row = [residue,
-                             __get_aa_score(aa10_code, known_aa10_codes),
+        scoring_table_row = [__get_aa_score(aa10_code, known_aa10_codes),
                              __get_aa_score(aa34_code, known_aa34_codes)]
 
         for level in config.SVM_LEVELS:
             scoring_table_row.append(__get_svm_score(residue, svm_prediction[level]))
 
-        scoring_table.loc[len(scoring_table)] = scoring_table_row
+        scoring_table.loc[residue] = scoring_table_row
 
     residue_log_probs: ResidueScores = model(scoring_table, model_params)
 

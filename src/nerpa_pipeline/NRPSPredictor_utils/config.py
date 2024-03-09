@@ -8,6 +8,8 @@ DEFAULT_INPUT_CODES = join(root_dir, 'codes', 'nrpspredictor2_knowncodes.fasta')
 DEFAULT_OUTPUT_CODES = join(root_dir, 'codes', 'residue_signatures.yaml')
 STANDARD_STACHELHAUS_CODE_LENGTH = 10
 
+SCORING_MODEL = join(root_dir, 'codes', 'specificity-scoring-model.joblib')
+
 KNOWN_AA_SIGNATURES = [
     # 20 standard amino acids
     'ala', 'arg', 'asn', 'asp', 'cys', 'gln', 'glu', 'gly', 'his', 'ile',
@@ -150,6 +152,7 @@ SVM_SUBSTRATES_ORIGINAL = ["Arg", "Asp", "Glu", "Asn", "Lys", "Gln", "Orn", "ohO
 
 SVM_SUBSTRATES = [antismash_substrate_to_nerpa_substrate(substrate) for substrate in SVM_SUBSTRATES_ORIGINAL]
 
+SCORING_TABLE_INDEX = "substrate"
 SCORING_TABLE_COLUMNS = ["substrate", "aa10_score", "aa34_score",
                          "svm_single_amino_score", "svm_small_cluster_score",
                          "svm_large_cluster_score", "svm_physiochemical_class_score"]

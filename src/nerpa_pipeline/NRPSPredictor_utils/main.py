@@ -14,6 +14,7 @@ from codes_handler import (
 import config
 import codes_handler
 import json_handler
+from model import ModelWrapper
 from log_utils import error, info
 
 
@@ -94,7 +95,7 @@ def main(args):
     # TODO: check that content was loaded properly
 
     # TODO: Azat: load scoring model parameters/etc here. It will be used in codes_handler.get_prediction_from_signature()
-    scoring_model = None
+    scoring_model = ModelWrapper(config.SCORING_MODEL)
 
     # codes_ftype = codes_handler.get_codes_file_type(args.codes)
     # if codes_ftype == 'known':

@@ -265,7 +265,7 @@ def handle_single_input(antismash_results: Path,  # path to either the folder wi
                     entry_id = __get_entry_id(ctg_id, prediction["locus_tag"], prediction["A"]) \
                         if naming_style == 'v3' else prediction["v5_name"]
                     main_aa_pred, aa_pred_list = get_prediction_from_signature(prediction["nrpys"],
-                                                                               known_codes, model_params=scoring_model)
+                                                                               known_codes, model=scoring_model, model_params=scoring_model)
                     codes_f.write('\t'.join([entry_id, main_aa_pred, aa_pred_list]) + '\n')
                     svm_f.write('\t'.join([entry_id, str(prediction["svm"])]) + '\n')
                     info('\t\tprocessed (%s) ORF: %s, A-domain: %s, Stachelhaus code: %s' %
