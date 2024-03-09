@@ -26,7 +26,7 @@ class ModelWrapper(object):
         self.lookup_col = lookup_score
         self.lookup_threshold = lookup_threshold
 
-    def __call__(self, scoring_table: pd.DataFrame, model_params=None) -> ResidueScores:
+    def __call__(self, scoring_table: pd.DataFrame) -> ResidueScores:
         scores = pd.Series(0, index=scoring_table.index, dtype=float)
         
         # Filter rows with no match in the lookup table
