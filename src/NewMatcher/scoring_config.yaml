@@ -33,7 +33,7 @@ chirality_score:
   BGC_True_NRP_D: -0.146  # 0.924
   BGC_True_NRP_UNKNOWN: -1.137  # calculated based on frequencies of L and D among rban monomers
 
-null_hypothesis_residue_score: {unk: -3}
+null_hypothesis_residue_score: {2-oxo-isovaleric-acid: 0.146926, 33p-l-ala: 0.159918, 4ppro: 0.154459, HICA: 0.144599, LDAP: 0.144599, aad: 0.180617, abu: 0.287565, aeo: 0.144599, ala: 0.467764, alaninol: 0.166544, arg: 0.294337, asn: 0.234109, asp: 0.283428, b-ala: 0.185136, b-lys: 0.149695, bht: 0.210806, bmt: 0.21655, cap: 0.151766, cys: 0.285248, cysa: 0.160308, dab: 0.243933, dhb: 0.198341, dhpg: 0.249553, dht: 0.197362, dpr: 0.188239, gln: 0.351236, glu: 0.273068, gly: 0.416894, glycolic-acid: 0.144679, his: 0.206962, hiv: 0.14973, hpg: 0.287979, hse: 0.15548, hty: 0.172447, hyv: 0.177578, ile: 0.422319, indole-3-carboxylic: 0.147105, iva: 0.265109, kyn: 0.159461, leu: 0.544225, lys: 0.248242, lyserg: 0.151322, met: 0.192494, orn: 0.280193, phe: 0.308349, phe-ac: 0.14832, phg: 0.175497, pip: 0.224323, piperazic: 0.210396, pro: 0.319293, sal: 0.152494, ser: 0.43207, tcl: 0.14875, thr: 0.368572, trp: 0.280212, tyr: 0.371021, unk: 0.421974, val: 0.461092, vol: 0.14668}
 
 module_modification_frequency:
   METHYLATION: 0.17
