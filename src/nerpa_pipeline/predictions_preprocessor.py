@@ -105,6 +105,9 @@ def create_predictions_by_antiSMASH_out(antiSMASH_outs, outdir, log):
             parts = splitter.split_and_reorder(parts, orf_ori, orf_pos, orf_domains)
             handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
 
+            if len(parts) > 100:
+                raise RuntimeError(f'Too many parts: {len(parts)}')
+
 
             nrpspred_dir = os.path.join(dirname, "nrpspks_predictions_txt")
             if os.path.isdir(nrpspred_dir):
