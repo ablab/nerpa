@@ -69,7 +69,9 @@ class Match:
         out = StringIO()
         out.write('\n'.join([f'Genome={self.bgc_variant.genome_id}',
                              f'BGC={self.bgc_variant.bgc_id}',
+                             f'BGC_variant={self.bgc_variant.variant_idx}',
                              f'NRP={self.nrp_variant.nrp_id}',
+                             f'NRP_variant={self.nrp_variant.variant_idx}',
                              f'NormalisedScore={self.normalized_score}',
                              f'Score={self.raw_score()}']))
         out.write('\n')
