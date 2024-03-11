@@ -70,6 +70,10 @@ def write_results(bgc_variants: List[BGC_Variant],
 
     write_yaml(rban_graphs, output_dir / Path('rban_graphs.yaml'))
 
+    (output_dir / Path('BGC_variants')).mkdir()
+    for bgc_id, bgc_id_variants in sort_groupby(bgc_variants, key=lambda bgc_variant: bgc_variant.bgc_id):
+        write_yaml(bgc_variants, output_dir / Path(f'BGC_variants/{bgc_id}.yaml'))
+
     (output_dir / Path('NRP_variants')).mkdir()
     for nrp_id, nrp_id_variants in sort_groupby(nrp_variants, key=lambda nrp_variant: nrp_variant.nrp_id):
         write_yaml(nrp_variants, output_dir / Path(f'NRP_variants/{nrp_id}.yaml'))
