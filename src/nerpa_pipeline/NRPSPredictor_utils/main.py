@@ -115,9 +115,15 @@ def main(args):
     is_root_outdir = True if (args.output_dir is not None and len(args.inputs) > 1) else False
     processed_output_dirs = []
     for input_path in args.inputs:
-        processed_output_dirs.append(json_handler.handle_single_input(
-            Path(input_path), args.output_dir, is_root_outdir, args.naming_style,
-            known_codes, scoring_model=scoring_model, verbose=args.verbose))
+        try:
+            processed_output_dirs.append(json_handler.handle_single_input(
+                Path(input_path), args.output_dir, is_root_outdir, args.naming_style,
+                known_codes, scoring_model=scoring_model, verbose=args.verbose))
+        except KeyboardInterrupt as e:
+            raise e
+        except Exception as e:
+            info(f'ERROR: Unable to parse the input at "{input_path}": {type(e).__name__}: {e}')
+
     return processed_output_dirs
 
 
