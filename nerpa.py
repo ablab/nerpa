@@ -349,7 +349,8 @@ def run(args, log):
     scoring_helper = ScoringHelper(scoring_config)
 
     log.info("\n======= Nerpa matching")
-    matches = get_matches(bgc_variants, nrp_variants, scoring_helper)
+    matches = get_matches(bgc_variants, nrp_variants, scoring_helper,
+                          num_threads=args.threads)
 
     write_results(bgc_variants,
                   nrp_variants,
