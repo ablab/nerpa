@@ -48,7 +48,7 @@ def build_report(matches: List[Match]) -> str:
     csv_writer.writerows({'Score': match.normalized_score,
                           'NRP_ID': match.nrp_variant.nrp_id,
                           'NRP_Variant_Idx': match.nrp_variant.variant_idx,
-                          'BGC_ID': match.bgc_variant.bgc_id,
+                          'BGC_ID': f'{match.bgc_variant.genome_id}_{match.bgc_variant.bgc_id}',
                           'BGC_Variant_Idx': match.bgc_variant.variant_idx}
                          for match in matches)
     return result.getvalue()
@@ -71,8 +71,8 @@ def write_results(bgc_variants: List[BGC_Variant],
     write_yaml(rban_graphs, output_dir / Path('rban_graphs.yaml'))
 
     (output_dir / Path('BGC_variants')).mkdir()
-    for bgc_id, bgc_id_variants in sort_groupby(bgc_variants, key=lambda bgc_variant: bgc_variant.bgc_id):
-        write_yaml(bgc_variants, output_dir / Path(f'BGC_variants/{bgc_id}.yaml'))
+    for (genome_id, bgc_id), bgc_id_variants in sort_groupby(bgc_variants, key=lambda bgc_variant: (bgc_variant.genome_id, bgc_variant.bgc_id)):
+        write_yaml(bgc_variants, output_dir / Path(f'BGC_variants/{genome_id}_{bgc_id}.yaml'))
 
     (output_dir / Path('NRP_variants')).mkdir()
     for nrp_id, nrp_id_variants in sort_groupby(nrp_variants, key=lambda nrp_variant: nrp_variant.nrp_id):
