@@ -25,6 +25,10 @@ from src.data_types import (
 )
 
 
+# TODO: move the magic constant into the config
+MAX_NUM_PARTS = 100
+
+
 def parse_residue_scores_from_str(scores_line: str) -> ResidueScores:
     residue_scores = {}
 
@@ -137,7 +141,10 @@ def parse_antismash_output(antiSMASH_outs, outdir, debug: bool, log) -> List[BGC
                         genome_residue_scores.update(parse_contig_residue_scores(
                             os.path.join(nrpspred_dir, filename)))
 
-                for orf_part in parts:
+                if len(parts) > MAX_NUM_PARTS:
+                    print(f'WARNING: Too many parts: {len(parts)}. Keeping first {MAX_NUM_PARTS} of them.')
+                    
+                for orf_part in parts[:MAX_NUM_PARTS]:
                     bgc_line = build_bgc_assembly_line(orf_part, genome_residue_scores, dirname)
                     if bgc_line:  # TODO: could it be empty in principle?
                         bgc_variant = BGC_Variant(tentative_assembly_line=bgc_line,
