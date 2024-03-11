@@ -60,7 +60,7 @@ class Match:
     bgc_variant: BGC_Variant
     nrp_variant: NRP_Variant
     alignments: List[Alignment]  # alignments of each fragment
-    normalised_score: float
+    normalized_score: float
 
     def raw_score(self) -> LogProb:
         return sum(map(alignment_score, self.alignments))
@@ -70,7 +70,7 @@ class Match:
         out.write('\n'.join([f'Genome={self.bgc_variant.genome_id}',
                              f'BGC={self.bgc_variant.bgc_id}',
                              f'NRP={self.nrp_variant.nrp_id}',
-                             f'NormalisedScore={self.normalised_score}',
+                             f'NormalisedScore={self.normalized_score}',
                              f'Score={self.raw_score()}']))
         out.write('\n')
 
@@ -88,4 +88,4 @@ class Match:
                    alignments=[[AlignmentStep.from_yaml_dict(alignment_step_data)
                                 for alignment_step_data in alignment_data]
                                for alignment_data in data['alignments']],
-                   normalised_score=data['normalised_score'])
+                   normalized_score=data['normalised_score'])
