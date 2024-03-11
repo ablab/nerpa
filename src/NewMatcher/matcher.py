@@ -1,4 +1,4 @@
-from typing import List
+from typing import Iterable, List
 from src.data_types import (
     BGC_Module,
     BGC_Variant,
@@ -10,6 +10,9 @@ from src.NewMatcher.scoring_helper import ScoringHelper
 from src.NewMatcher.scoring_config import ScoringConfig
 from src.NewMatcher.alignment_types import Alignment, alignment_score, Match
 from src.NewMatcher.dp import get_alignment
+
+from itertools import chain
+from joblib import delayed, Parallel
 
 
 def get_alignment_fragment(assembly_line: List[BGC_Module],
@@ -46,11 +49,23 @@ def get_match(bgc_variant: BGC_Variant,
                  final_score)
 
 
+def get_matches_for_bgc_variant(bgc_variant: BGC_Variant,
+                                nrp_variants: List[NRP_Variant],
+                                scoring_helper: ScoringHelper,
+                                min_score: float=0) -> Iterable[Match]:
+    return filter(lambda m: m.normalized_score > min_score,
+                  (get_match(bgc_variant, nrp_variant, scoring_helper)
+                   for nrp_variant in nrp_variants))
+
+
 def get_matches(bgc_variants: List[BGC_Variant],
                 nrp_variants: List[NRP_Variant],
-                dp_config: ScoringConfig) -> List[Match]:
-    dp_helper = ScoringHelper(dp_config)
-    return sorted([get_match(bgc_variant, nrp_variant, dp_helper)
-                   for bgc_variant in bgc_variants
-                   for nrp_variant in nrp_variants],
-                  key=lambda match: match.normalised_score, reverse=True)
+                scoring_helper: ScoringHelper,
+                min_score: float=0,
+                num_threads: int=1) -> List[Match]:
+    matches = chain(*Parallel(n_jobs=num_threads)(delayed(get_matches_for_bgc_variant)(bgc_variant,
+                                                                                       nrp_variants,
+                                                                                       scoring_helper,
+                                                                                       min_score)
+                                                  for bgc_variant in bgc_variants))
+    return sorted(matches, key=lambda m: m.normalized_score, reverse=True)

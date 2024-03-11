@@ -3,7 +3,9 @@ from src.data_types import (
     BGC_Module_Modification,
     NRP_Monomer,
     LogProb,
-    NRP_Monomer_Modification)
+    NRP_Monomer_Modification,
+    UNKNOWN_RESIDUE
+)
 from src.NewMatcher.scoring_config import ScoringConfig, ModMatch, ChiralityMatch
 from dataclasses import dataclass
 from enum import Enum, auto
@@ -21,8 +23,10 @@ class ScoringHelper:
 
     def match(self, bgc_pred: BGC_Module,
               nrp_mon: NRP_Monomer) -> LogProb:
-
-        return bgc_pred.residue_score[nrp_mon.residue] \
+        residue_score = bgc_pred.residue_score[nrp_mon.residue]
+        if nrp_mon.residue == UNKNOWN_RESIDUE:
+            residue_score /= self.scoring_config.num_unknown_residues
+        return residue_score \
             + self.scoring_config.mod_score[ModMatch(mod=NRP_Monomer_Modification.METHYLATION,
                                                      bgc_mod=BGC_Module_Modification.METHYLATION in bgc_pred.modifications,
                                                      nrp_mod=NRP_Monomer_Modification.METHYLATION in nrp_mon.modifications)] \

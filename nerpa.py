@@ -7,6 +7,7 @@ import csv
 import site
 import shutil
 import json
+import math
 
 import nerpa_init
 nerpa_init.init()
@@ -26,6 +27,11 @@ from pathlib import Path
 site.addsitedir(os.path.join(nerpa_init.python_modules_dir, 'NRPSPredictor_utils'))
 from NRPSPredictor_utils.json_handler import get_main_json_fpath
 from NRPSPredictor_utils.main import main as convert_antiSMASH_v5
+from src.NewMatcher.scoring_helper import ScoringHelper
+from src.NewMatcher.scoring_config import load_config as load_scoring_config
+from src.NewMatcher.matcher import get_matches
+from src.data_types import UNKNOWN_RESIDUE
+from src.write_results import write_results
 
 def parse_args(log):
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -341,20 +347,21 @@ def run(args, log):
             process_hybrids=args.process_hybrids
         )
 
-    details_mol_dir = os.path.join(output_dir, 'details')
-    if not os.path.exists(details_mol_dir):
-        os.makedirs(details_mol_dir)
+    scoring_config = load_scoring_config(Path(__file__).parent / Path('src/NewMatcher/scoring_config.yaml'))  # TODO: this is ugly
+    scoring_helper = ScoringHelper(scoring_config)
 
-    # FIXME: the following command is not intended to work anymore
-    command = [os.path.join(nerpa_init.bin_dir, "NRPsMatcher"),
-               '', path_to_graphs,
-               '--configs_dir', current_configs_dir,
-               "--threads", str(args.threads)]
     log.info("\n======= Nerpa matching")
-    nerpa_utils.sys_call(command, log, cwd=output_dir)
+    matches = get_matches(bgc_variants, nrp_variants, scoring_helper,
+                          num_threads=args.threads)
+
+    write_results(bgc_variants,
+                  nrp_variants,
+                  matches,
+                  graph_records,
+                  output_dir)
     log.info("RESULTS:")
-    log.info("Main report is saved to " + os.path.join(output_dir, 'report.csv'), indent=1)
-    log.info("Detailed reports are saved to " + output_dir, indent=1)
+    log.info("Main report is saved to " + str(output_dir / Path('report.tsv')), indent=1)
+    log.info("Detailed reports are saved to " + str(output_dir / Path('details')), indent=1)
     log.finish()
 
 

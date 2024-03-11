@@ -12,7 +12,7 @@ LogProb = float
 MonomerResidue = str
 ResidueScores = Dict[MonomerResidue, LogProb]
 GeneId = str
-UNKNOWN_RESIDUE = 'unk'
+UNKNOWN_RESIDUE = 'UNKNOWN'
 rBAN_Residue_Name = str
 
 
@@ -48,7 +48,7 @@ class NRP_Monomer:
         return cls(residue=MonomerResidue(data['residue']),
                    modifications=tuple(NRP_Monomer_Modification[mod]
                                        for mod in data['modifications']),
-                   chirality=Chirality(data['chirality']),
+                   chirality=Chirality[data['chirality']],
                    rban_name=data['rban_name'],
                    rban_idx=data['rban_idx'])
 
