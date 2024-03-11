@@ -81,13 +81,15 @@ class BGC_Module:
 
 @dataclass
 class BGC_Variant:
+    variant_idx: int
     genome_id: str
     bgc_id: str
     tentative_assembly_line: List[BGC_Module]
 
     @classmethod
     def from_yaml_dict(cls, data: dict) -> BGC_Variant:
-        return cls(genome_id=data['genome_id'],
+        return cls(variant_idx=data['variant_idx'],
+                   genome_id=data['genome_id'],
                    bgc_id=data['bgc_id'],
                    tentative_assembly_line=list(map(BGC_Module.from_yaml_dict,
                                                     data['tentative_assembly_line'])))
@@ -106,12 +108,14 @@ class NRP_Fragment:
 
 @dataclass
 class NRP_Variant:
+    variant_idx: int
     nrp_id: str
     fragments: List[NRP_Fragment]
 
     @classmethod
     def from_yaml_dict(cls, data: dict) -> NRP_Variant:
-        return cls(nrp_id=data['nrp_id'],
+        return cls(variant_idx=data['variant_idx'],
+                   nrp_id=data['nrp_id'],
                    fragments=list(map(NRP_Fragment.from_yaml_dict, data['fragments'])))
 
 
