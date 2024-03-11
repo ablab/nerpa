@@ -97,53 +97,59 @@ def parse_antismash_output(antiSMASH_outs, outdir, debug: bool, log) -> List[BGC
 
     all_bgc_variants: List[BGC_Variant] = []
     for dirname in antiSMASH_outs:
-        if dirname[-1] == '\n':
-            dirname = dirname[:-1]
+        try:
+            if dirname[-1] == '\n':
+                dirname = dirname[:-1]
 
-        orf_pos = handle_helper.get_orf_position(dirname)
-        orf_ori = handle_helper.get_orf_orientation(dirname)
-        orf_domains = handle_helper.get_orf_domain_list(dirname)
+            orf_pos = handle_helper.get_orf_position(dirname)
+            orf_ori = handle_helper.get_orf_orientation(dirname)
+            orf_domains = handle_helper.get_orf_domain_list(dirname)
 
-        print("====PARTS BEFORE: ")
-        parts = handle_helper.get_parts(dirname)
-        handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
+            print("====PARTS BEFORE: ")
+            parts = handle_helper.get_parts(dirname)
+            handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
 
-        #print("====SPLIT BY DIST:")
-        parts = splitter.split_by_dist(parts, orf_pos)
-        #handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
+            #print("====SPLIT BY DIST:")
+            parts = splitter.split_by_dist(parts, orf_pos)
+            #handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
 
-        #print("====SPLIT BY SINGLE ORF WITH Starter-TE")
-        parts = splitter.split_by_one_orf_Starter_TE(parts, orf_ori, orf_domains)
-        #handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
+            #print("====SPLIT BY SINGLE ORF WITH Starter-TE")
+            parts = splitter.split_by_one_orf_Starter_TE(parts, orf_ori, orf_domains)
+            #handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
 
-        #print("====REMOVE SINGLE DOMAINs ORFS")
-        parts = splitter.split_by_single_domain_orf(parts, orf_ori, orf_domains)
-        #handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
+            #print("====REMOVE SINGLE DOMAINs ORFS")
+            parts = splitter.split_by_single_domain_orf(parts, orf_ori, orf_domains)
+            #handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
 
-        print("====SPLIT AND REORDER")
-        parts = splitter.split_and_reorder(parts, orf_ori, orf_pos, orf_domains)
-        handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
+            print("====SPLIT AND REORDER")
+            parts = splitter.split_and_reorder(parts, orf_ori, orf_pos, orf_domains)
+            handle_helper.debug_print_parts(dirname, parts, orf_domains, orf_ori, orf_pos)
 
-        nrpspred_dir = os.path.join(dirname, "nrpspks_predictions_txt")
-        if os.path.isdir(nrpspred_dir):
-            bgc_variant_idx = 0
-            base_antiSMASHout_name = os.path.basename(dirname)
+            nrpspred_dir = os.path.join(dirname, "nrpspks_predictions_txt")
+            if os.path.isdir(nrpspred_dir):
+                bgc_variant_idx = 0
+                base_antiSMASHout_name = os.path.basename(dirname)
 
-            # reading predicted residue scores for every contig, every gene inside and every A domain inside the gene
-            genome_residue_scores: Dict[GeneId, List[ResidueScores]] = defaultdict(list)
-            for filename in os.listdir(nrpspred_dir):
-                if filename.endswith('nrpspredictor2_codes.txt'):
-                    genome_residue_scores.update(parse_contig_residue_scores(
-                        os.path.join(nrpspred_dir, filename)))
+                # reading predicted residue scores for every contig, every gene inside and every A domain inside the gene
+                genome_residue_scores: Dict[GeneId, List[ResidueScores]] = defaultdict(list)
+                for filename in os.listdir(nrpspred_dir):
+                    if filename.endswith('nrpspredictor2_codes.txt'):
+                        genome_residue_scores.update(parse_contig_residue_scores(
+                            os.path.join(nrpspred_dir, filename)))
 
-            for orf_part in parts:
-                bgc_line = build_bgc_assembly_line(orf_part, genome_residue_scores, dirname)
-                if bgc_line:  # TODO: could it be empty in principle?
-                    bgc_variant = BGC_Variant(tentative_assembly_line=bgc_line,
-                                              genome_id=base_antiSMASHout_name,  # TODO: use proper genome ID from the upstream info
-                                              bgc_id=f"bgc#{bgc_variant_idx}")   # TODO: use proper BGC ID from the upstream info, maybe still include the variant idx
-                    bgc_variant_idx += 1
-                    all_bgc_variants.append(bgc_variant)
+                for orf_part in parts:
+                    bgc_line = build_bgc_assembly_line(orf_part, genome_residue_scores, dirname)
+                    if bgc_line:  # TODO: could it be empty in principle?
+                        bgc_variant = BGC_Variant(tentative_assembly_line=bgc_line,
+                                                genome_id=base_antiSMASHout_name,  # TODO: use proper genome ID from the upstream info
+                                                bgc_id=f"bgc#{bgc_variant_idx}")   # TODO: use proper BGC ID from the upstream info, maybe still include the variant idx
+                        bgc_variant_idx += 1
+                        all_bgc_variants.append(bgc_variant)
+        except KeyboardInterrupt as e:
+            raise e
+        except Exception as e:
+            print(f'ERROR: {type(e).__name__}: {e}')
+            print(f'Skipping {dirname}') 
 
     if debug:  # TODO: add the debug mode and update this to 'if debug:'
         dump_bgc_variants(os.path.join(outdir, "BGC_variants"), all_bgc_variants)
