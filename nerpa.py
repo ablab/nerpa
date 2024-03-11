@@ -30,6 +30,7 @@ from NRPSPredictor_utils.main import main as convert_antiSMASH_v5
 from src.NewMatcher.scoring_helper import ScoringHelper
 from src.NewMatcher.scoring_config import load_config as load_scoring_config
 from src.NewMatcher.matcher import get_matches
+from src.data_types import UNKNOWN_RESIDUE
 from src.write_results import write_results
 
 def parse_args(log):
@@ -343,12 +344,6 @@ def run(args, log):
             names_helper=rban_names_helper,
             process_hybrids=args.process_hybrids
         )
-
-    # this is to transfer 0..100 scores to log probs. Remove this code when a proper scoring model is there
-    for bgc_variant in bgc_variants:
-        for module in bgc_variant.tentative_assembly_line:
-            module.residue_score = {residue: math.log(score / 100)
-                                    for residue, score in module.residue_score.items()}
 
     scoring_config = load_scoring_config(Path(__file__).parent / Path('src/NewMatcher/scoring_config.yaml'))  # TODO: this is ugly
     scoring_helper = ScoringHelper(scoring_config)
