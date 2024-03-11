@@ -52,7 +52,10 @@ def get_match(bgc_variant: BGC_Variant,
 def get_matches_for_bgc_variant(bgc_variant: BGC_Variant,
                                 nrp_variants: List[NRP_Variant],
                                 scoring_helper: ScoringHelper,
-                                min_score: float=0) -> Iterable[Match]:
+                                min_score: float=0,
+                                log=None) -> Iterable[Match]:
+    if log is not None:
+        log.info(f'Processing BGC variant {bgc_variant.variant_idx}')
     return filter(lambda m: m.normalized_score > min_score,
                   (get_match(bgc_variant, nrp_variant, scoring_helper)
                    for nrp_variant in nrp_variants))
@@ -62,10 +65,13 @@ def get_matches(bgc_variants: List[BGC_Variant],
                 nrp_variants: List[NRP_Variant],
                 scoring_helper: ScoringHelper,
                 min_score: float=0,
-                num_threads: int=1) -> List[Match]:
-    matches = chain(*Parallel(n_jobs=num_threads)(delayed(get_matches_for_bgc_variant)(bgc_variant,
-                                                                                       nrp_variants,
+                num_threads: int=1,
+                log=None) -> List[Match]:
+    if log is not None:
+        log.info(f'Matching {len(bgc_variants)} BGC variants against {len(nrp_variants)} NRP variants')
+    matches = chain(*Parallel(n_jobs=num_threads)(delayed(get_matches_for_bgc_variant)(bgc_variant, nrp_variants,
                                                                                        scoring_helper,
-                                                                                       min_score)
+                                                                                       min_score,
+                                                                                       log)
                                                   for bgc_variant in bgc_variants))
     return sorted(matches, key=lambda m: m.normalized_score, reverse=True)

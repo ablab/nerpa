@@ -352,16 +352,15 @@ def run(args, log):
 
     log.info("\n======= Nerpa matching")
     matches = get_matches(bgc_variants, nrp_variants, scoring_helper,
-                          num_threads=args.threads)
+                          num_threads=args.threads,
+                          log=log)
 
-    write_results(bgc_variants,
-                  nrp_variants,
-                  matches,
-                  graph_records,
+    write_results(bgc_variants, nrp_variants,
+                  matches, graph_records,
                   output_dir)
     log.info("RESULTS:")
     log.info("Main report is saved to " + str(output_dir / Path('report.tsv')), indent=1)
-    log.info("Detailed reports are saved to " + str(output_dir / Path('details')), indent=1)
+    log.info("Detailed reports are saved to " + str(output_dir / Path('matches_details')), indent=1)
     log.finish()
 
 

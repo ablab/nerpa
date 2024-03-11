@@ -27,7 +27,11 @@ from src.data_types import (
 from src.nerpa_pipeline.rban_names_helper import rBAN_Names_Helper
 from dataclasses import dataclass
 from functools import partial
-from itertools import chain, permutations
+from itertools import (
+    chain,
+    count,
+    permutations
+)
 
 
 # TODO: move this section to some sort of config file
@@ -263,14 +267,18 @@ def process_single_record(log, rban_record, recognized_monomers, backbone_bond_t
 
     perm_backbones = permuted_backbones(backbones)
 
+    variant_idx_counter = count()
+
     # all fragments individually
-    variants = [NRP_Variant(nrp_id=rban_record['id'],
+    variants = [NRP_Variant(variant_idx=next(variant_idx_counter),
+                            nrp_id=rban_record['id'],
                             fragments=[backbone_to_fragment(backbone)])
                 for backbone in chain(backbones, perm_backbones)]
 
     # all fragments together
     if len(backbones) > 1:
-        variants.append(NRP_Variant(nrp_id=rban_record['id'],
+        variants.append(NRP_Variant(variant_idx=next(variant_idx_counter),
+                                    nrp_id=rban_record['id'],
                                     fragments=list(map(backbone_to_fragment, backbones))))
 
     return graph_record, variants

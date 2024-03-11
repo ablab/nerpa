@@ -74,7 +74,7 @@ def write_results(bgc_variants: List[BGC_Variant],
     for nrp_id, nrp_id_variants in sort_groupby(nrp_variants, key=lambda nrp_variant: nrp_variant.nrp_id):
         write_yaml(nrp_variants, output_dir / Path(f'NRP_variants/{nrp_id}.yaml'))
 
-    (output_dir / Path('matches_details/per_BGC')).mkdir()
+    (output_dir / Path('matches_details/per_BGC')).mkdir(parents=True)
     write_records_per_id(matches, output_dir / Path('matches_details/per_BGC'),
                          get_id=lambda match: match.bgc_variant.bgc_id)
 
