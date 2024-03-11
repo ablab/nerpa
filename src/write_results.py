@@ -47,7 +47,7 @@ def build_report(matches: List[Match]) -> str:
     csv_writer.writeheader()
     csv_writer.writerows({'Score': match.normalized_score,
                           'NRP_ID': match.nrp_variant.nrp_id,
-                          'NRP_Variant_Idx': match.nrp_variant.variant_idx
+                          'NRP_Variant_Idx': match.nrp_variant.variant_idx,
                           'BGC_ID': match.bgc_variant.bgc_id,
                           'BGC_Variant_Idx': match.bgc_variant.variant_idx}
                          for match in matches)
