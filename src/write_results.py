@@ -41,11 +41,15 @@ def write_yaml(data, out_file: Path,
 
 def build_report(matches: List[Match]) -> str:
     result = StringIO()
-    csv_writer = csv.DictWriter(result, fieldnames=('Score', 'NRP_ID', 'BGC_ID'), delimiter='\t')
+    csv_writer = csv.DictWriter(result,
+                                fieldnames=('Score', 'NRP_ID', 'NRP_Variant_Idx', 'BGC_ID', 'BGC_Variant_Idx'),
+                                delimiter='\t')
     csv_writer.writeheader()
     csv_writer.writerows({'Score': match.normalized_score,
                           'NRP_ID': match.nrp_variant.nrp_id,
-                          'BGC_ID': match.bgc_variant.bgc_id}
+                          'NRP_Variant_Idx': match.nrp_variant.variant_idx,
+                          'BGC_ID': match.bgc_variant.bgc_id,
+                          'BGC_Variant_Idx': match.bgc_variant.variant_idx}
                          for match in matches)
     return result.getvalue()
 
@@ -69,10 +73,6 @@ def write_results(bgc_variants: List[BGC_Variant],
     (output_dir / Path('NRP_variants')).mkdir()
     for nrp_id, nrp_id_variants in sort_groupby(nrp_variants, key=lambda nrp_variant: nrp_variant.nrp_id):
         write_yaml(nrp_variants, output_dir / Path(f'NRP_variants/{nrp_id}.yaml'))
-
-    (output_dir / Path('matches_details')).mkdir()
-    write_yaml(matches, output_dir / Path('matches_details/matches.yaml'),
-               compress=True)
 
     (output_dir / Path('matches_details/per_BGC')).mkdir()
     write_records_per_id(matches, output_dir / Path('matches_details/per_BGC'),

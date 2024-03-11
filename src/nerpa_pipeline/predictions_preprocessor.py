@@ -143,13 +143,14 @@ def parse_antismash_output(antiSMASH_outs, outdir, debug: bool, log) -> List[BGC
 
                 if len(parts) > MAX_NUM_PARTS:
                     print(f'WARNING: Too many parts: {len(parts)}. Keeping first {MAX_NUM_PARTS} of them.')
-                    
+                        
                 for orf_part in parts[:MAX_NUM_PARTS]:
                     bgc_line = build_bgc_assembly_line(orf_part, genome_residue_scores, dirname)
                     if bgc_line:  # TODO: could it be empty in principle?
                         bgc_variant = BGC_Variant(tentative_assembly_line=bgc_line,
+                                                variant_idx=bgc_variant_idx,
                                                 genome_id=base_antiSMASHout_name,  # TODO: use proper genome ID from the upstream info
-                                                bgc_id=f"bgc#{bgc_variant_idx}")   # TODO: use proper BGC ID from the upstream info, maybe still include the variant idx
+                                                bgc_id=f"bgc#{bgc_variant_idx}")   # TODO: use proper BGC ID from the upstream info (it could be the same for many variants!)
                         bgc_variant_idx += 1
                         all_bgc_variants.append(bgc_variant)
         except KeyboardInterrupt as e:
@@ -158,7 +159,7 @@ def parse_antismash_output(antiSMASH_outs, outdir, debug: bool, log) -> List[BGC
             print(f'ERROR: {type(e).__name__}: {e}')
             print(f'Skipping {dirname}') 
 
-    if debug:  # TODO: add the debug mode and update this to 'if debug:'
+    if debug:
         dump_bgc_variants(os.path.join(outdir, "BGC_variants"), all_bgc_variants)
 
     return all_bgc_variants
