@@ -83,6 +83,18 @@ class Match:
 
         return out.getvalue()
 
+    def to_dict_light(self) -> dict:  # because full Match is too big to write
+        return {'Genome': self.bgc_variant.genome_id,
+                'BGC': self.bgc_variant.bgc_id,
+                'BGC_variant': self.bgc_variant.variant_idx,
+                'NRP': self.nrp_variant.nrp_id,
+                'NRP_variant': self.nrp_variant.variant_idx,
+                'NormalisedScore': self.normalized_score,
+                'Score': self.raw_score(),
+                'Alignments': [[alignment_step.to_dict()
+                                for alignment_step in alignment]
+                               for alignment in self.alignments]}
+
     @classmethod
     def from_yaml_dict(cls, data: dict) -> Match:
         return cls(bgc_variant=BGC_Variant.from_yaml_dict(data['bgc_variant']),
