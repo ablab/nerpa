@@ -53,7 +53,7 @@ def load_config(path_to_config: Path) -> ScoringConfig:
                        for bgc_epim in (False, True)
                        for nrp_chr in Chirality}
 
-    nrp_mon_remove_score = defaultdict(lambda: cfg['nrp_mon_skip_score']['unk'],
+    nrp_mon_remove_score = defaultdict(lambda: cfg['nrp_mon_skip_score'][UNKNOWN_RESIDUE],
                                        cfg['nrp_mon_skip_score'])
 
     null_hypothesis_residue_score = defaultdict(lambda: cfg['null_hypothesis_residue_score'][UNKNOWN_RESIDUE],

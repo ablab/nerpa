@@ -15,7 +15,7 @@ nrp_mon_skip_score: {2-oxo-isovaleric-acid: -9.031818267709898, 33p-l-ala: -9.03
                      phe-ac: -9.031818267709898, phg: -9.031818267709898, pip: -8.338671087149951, piperazic: -9.031818267709898,
                      pro: -6.141446509813733, sal: -9.031818267709898, ser: -5.368256621580251, tcl: -9.031818267709898,
                      thr: -5.160617256802006, trp: -6.392760938094639, tyr: -6.729233174715851, val: -4.797711763112638,
-                     vol: -9.031818267709898, UNKNOWN: -9.031818267709898}
+                     vol: -9.031818267709898, unknown: -9.031818267709898}
 
 num_unknown_residues: 100
 
@@ -48,7 +48,7 @@ null_hypothesis_residue_score: {2-oxo-isovaleric-acid: 0.146926, 33p-l-ala: 0.15
                                 phe-ac: 0.14832, phg: 0.175497, pip: 0.224323, piperazic: 0.210396,
                                 pro: 0.319293, sal: 0.152494, ser: 0.43207, tcl: 0.14875,
                                 thr: 0.368572, trp: 0.280212, tyr: 0.371021, val: 0.461092,
-                                vol: 0.14668, UNKNOWN: 0.421974,}
+                                vol: 0.14668, unknown: 0.421974,}
 
 module_modification_frequency:
   METHYLATION: 0.17

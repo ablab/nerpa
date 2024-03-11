@@ -12,7 +12,7 @@ LogProb = float
 MonomerResidue = str
 ResidueScores = Dict[MonomerResidue, LogProb]
 GeneId = str
-UNKNOWN_RESIDUE = 'UNKNOWN'
+UNKNOWN_RESIDUE = 'unknown'
 rBAN_Residue_Name = str
 
 
