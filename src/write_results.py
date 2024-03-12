@@ -59,7 +59,8 @@ def write_records_per_id(matches: List[T],
                          output_dir: Path,
                          get_id: Callable[[T], str]):
     for id_, id_matches in sort_groupby(matches, get_id):  # python sort is stable so groups will be sorted by score
-        (output_dir / Path(id_)).write_text('\n\n'.join(map(str, matches)))
+        filename = '_'.join(id_) if type(id_) is tuple else id_
+        (output_dir / Path(filename)).write_text('\n\n'.join(map(str, id_matches)))
 
 
 def write_results(bgc_variants: List[BGC_Variant],
@@ -85,7 +86,7 @@ def write_results(bgc_variants: List[BGC_Variant],
 
     (output_dir / Path('matches_details/per_BGC')).mkdir()
     write_records_per_id(matches, output_dir / Path('matches_details/per_BGC'),
-                         get_id=lambda match: match.bgc_variant.bgc_id)
+                         get_id=lambda match: (match.bgc_variant.genome_id, match.bgc_variant.bgc_id))
 
     (output_dir / Path('matches_details/per_NRP')).mkdir()
     write_records_per_id(matches, output_dir / Path('matches_details/per_NRP'),
