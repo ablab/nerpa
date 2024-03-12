@@ -63,22 +63,27 @@ def write_records_per_id(matches: List[T],
         (output_dir / Path(filename)).write_text('\n\n'.join(map(str, id_matches)))
 
 
-def write_results(bgc_variants: List[BGC_Variant],
-                  nrp_variants: List[NRP_Variant],
-                  matches: List[Match],
-                  rban_graphs: List[GraphRecord],
-                  output_dir: Path):
-    (output_dir / Path('report.tsv')).write_text(build_report(matches))
-
+def write_nrp_variants(nrp_variants: List[NRP_Variant],
+                       rban_graphs: List[GraphRecord],
+                       output_dir: Path):
     write_yaml(rban_graphs, output_dir / Path('rban_graphs.yaml'))
-
-    (output_dir / Path('BGC_variants')).mkdir()
-    for (genome_id, bgc_id), bgc_id_variants in sort_groupby(bgc_variants, key=lambda bgc_variant: (bgc_variant.genome_id, bgc_variant.bgc_id)):
-        write_yaml(list(bgc_id_variants), output_dir / Path(f'BGC_variants/{genome_id}_{bgc_id}.yaml'))
 
     (output_dir / Path('NRP_variants')).mkdir()
     for nrp_id, nrp_id_variants in sort_groupby(nrp_variants, key=lambda nrp_variant: nrp_variant.nrp_id):
         write_yaml(list(nrp_id_variants), output_dir / Path(f'NRP_variants/{nrp_id}.yaml'))
+
+
+def write_bgc_variants(bgc_variants: List[BGC_Variant],
+                       output_dir: Path):
+    (output_dir / Path('BGC_variants')).mkdir()
+    for (genome_id, bgc_id), bgc_id_variants in sort_groupby(bgc_variants, key=lambda bgc_variant: (bgc_variant.genome_id, bgc_variant.bgc_id)):
+        write_yaml(list(bgc_id_variants), output_dir / Path(f'BGC_variants/{genome_id}_{bgc_id}.yaml'))
+
+
+
+def write_results(matches: List[Match],
+                  output_dir: Path):
+    (output_dir / Path('report.tsv')).write_text(build_report(matches))
 
     (output_dir / Path('matches_details')).mkdir()
     write_yaml([match.to_dict_light() for match in matches],
