@@ -72,11 +72,11 @@ def write_results(bgc_variants: List[BGC_Variant],
 
     (output_dir / Path('BGC_variants')).mkdir()
     for (genome_id, bgc_id), bgc_id_variants in sort_groupby(bgc_variants, key=lambda bgc_variant: (bgc_variant.genome_id, bgc_variant.bgc_id)):
-        write_yaml(bgc_variants, output_dir / Path(f'BGC_variants/{genome_id}_{bgc_id}.yaml'))
+        write_yaml(list(bgc_id_variants), output_dir / Path(f'BGC_variants/{genome_id}_{bgc_id}.yaml'))
 
     (output_dir / Path('NRP_variants')).mkdir()
     for nrp_id, nrp_id_variants in sort_groupby(nrp_variants, key=lambda nrp_variant: nrp_variant.nrp_id):
-        write_yaml(nrp_variants, output_dir / Path(f'NRP_variants/{nrp_id}.yaml'))
+        write_yaml(list(nrp_id_variants), output_dir / Path(f'NRP_variants/{nrp_id}.yaml'))
 
     (output_dir / Path('matches_details')).mkdir()
     write_yaml([match.to_dict_light() for match in matches],
