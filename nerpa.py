@@ -7,7 +7,7 @@ import csv
 import site
 import shutil
 import json
-import math
+import yaml
 
 import nerpa_init
 nerpa_init.init()
@@ -30,8 +30,15 @@ from NRPSPredictor_utils.main import main as convert_antiSMASH_v5
 from src.NewMatcher.scoring_helper import ScoringHelper
 from src.NewMatcher.scoring_config import load_config as load_scoring_config
 from src.NewMatcher.matcher import get_matches
-from src.data_types import UNKNOWN_RESIDUE
+
+from src.data_types import (
+    BGC_Variant,
+    NRP_Variant,
+    UNKNOWN_RESIDUE
+)
+
 from src.write_results import write_results, write_nrp_variants, write_bgc_variants
+
 
 def parse_args(log):
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -292,8 +299,12 @@ def run(args, log):
     log.start()
 
     if args.predictions is not None:
-        raise NotImplemented('Precomputed BGC predictions not supported yet')
-        # path_predictions = copy_prediction_list(args, output_dir)
+            bgc_variants = []
+            for path_to_predictions in args.predictions:
+                for file_with_bgc_variants in filter(lambda f: f.suffix in ('yml', 'yaml'),
+                                                     Path(path_to_predictions).iterdir()):
+                    bgc_variants.extend(BGC_Variant.from_yaml_dict(yaml_record)
+                                        for yaml_record in yaml.safe_load(file_with_bgc_variants))
     else:
         antismash_out_dirs = args.antismash if args.antismash is not None else []
         if args.seqs:
@@ -333,9 +344,13 @@ def run(args, log):
     path_to_monomers_db = create_merged_monomers_db(
         path_to_rban, os.path.join(current_configs_dir, "monomersdb_nerpa.json"), args.rban_monomers, output_dir)
 
-    if args.structures:
-        raise NotImplemented('Precomputed structures not supported yet')
-        # shutil.copyfile(args.structures, path_to_graphs)
+    if args.structures is not None:
+        nrp_variants = []
+        for file_with_nrp_variants in filter(lambda f: f.suffix in ('yml', 'yaml'),
+                                             Path(args.structures).iterdir()):
+            nrp_variants.extend(NRP_Variant.from_yaml_dict(yaml_record)
+                                for yaml_record in yaml.safe_load(file_with_nrp_variants))
+        graph_records = []  # TODO: should we load them as well?
     else:
         if args.rban_output:
             path_rban_output = args.rban_output
