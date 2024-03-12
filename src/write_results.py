@@ -42,13 +42,14 @@ def write_yaml(data, out_file: Path,
 def build_report(matches: List[Match]) -> str:
     result = StringIO()
     csv_writer = csv.DictWriter(result,
-                                fieldnames=('Score', 'NRP_ID', 'NRP_Variant_Idx', 'BGC_ID', 'BGC_Variant_Idx'),
+                                fieldnames=('Score', 'NRP_ID', 'NRP_Variant_Idx', 'Genome_ID', 'BGC_ID', 'BGC_Variant_Idx'),
                                 delimiter='\t')
     csv_writer.writeheader()
     csv_writer.writerows({'Score': match.normalized_score,
                           'NRP_ID': match.nrp_variant.nrp_id,
                           'NRP_Variant_Idx': match.nrp_variant.variant_idx,
-                          'BGC_ID': f'{match.bgc_variant.genome_id}_{match.bgc_variant.bgc_id}',
+                          'Genome_ID': match.bgc_variant.genome_id,
+                          'BGC_ID': match.bgc_variant.bgc_id,
                           'BGC_Variant_Idx': match.bgc_variant.variant_idx}
                          for match in matches)
     return result.getvalue()
