@@ -301,10 +301,10 @@ def run(args, log):
     if args.predictions is not None:
             bgc_variants = []
             for path_to_predictions in args.predictions:
-                for file_with_bgc_variants in filter(lambda f: f.suffix in ('yml', 'yaml'),
+                for file_with_bgc_variants in filter(lambda f: f.suffix in ('.yml', '.yaml'),
                                                      Path(path_to_predictions).iterdir()):
                     bgc_variants.extend(BGC_Variant.from_yaml_dict(yaml_record)
-                                        for yaml_record in yaml.safe_load(file_with_bgc_variants))
+                                        for yaml_record in yaml.safe_load(file_with_bgc_variants.read_text()))
     else:
         antismash_out_dirs = args.antismash if args.antismash is not None else []
         if args.seqs:
@@ -346,10 +346,10 @@ def run(args, log):
 
     if args.structures is not None:
         nrp_variants = []
-        for file_with_nrp_variants in filter(lambda f: f.suffix in ('yml', 'yaml'),
+        for file_with_nrp_variants in filter(lambda f: f.suffix in ('.yml', '.yaml'),
                                              Path(args.structures).iterdir()):
             nrp_variants.extend(NRP_Variant.from_yaml_dict(yaml_record)
-                                for yaml_record in yaml.safe_load(file_with_nrp_variants))
+                                for yaml_record in yaml.safe_load(file_with_nrp_variants.read_text()))
         graph_records = []  # TODO: should we load them as well?
     else:
         if args.rban_output:

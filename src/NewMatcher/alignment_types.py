@@ -86,9 +86,9 @@ class Match:
     def to_dict_light(self) -> dict:  # because full Match is too big to write
         return {'Genome': self.bgc_variant.genome_id,
                 'BGC': self.bgc_variant.bgc_id,
-                'BGC_variant': self.bgc_variant.variant_idx,
+                'BGC_variant_idx': self.bgc_variant.variant_idx,
                 'NRP': self.nrp_variant.nrp_id,
-                'NRP_variant': self.nrp_variant.variant_idx,
+                'NRP_variant_idx': self.nrp_variant.variant_idx,
                 'NormalisedScore': self.normalized_score,
                 'Score': self.raw_score(),
                 'Alignments': [[alignment_step.to_dict()
