@@ -30,12 +30,15 @@ from NRPSPredictor_utils.main import main as convert_antiSMASH_v5
 from src.NewMatcher.scoring_helper import ScoringHelper
 from src.NewMatcher.scoring_config import load_config as load_scoring_config
 from src.NewMatcher.matcher import get_matches
+
 from src.data_types import (
     BGC_Variant,
     NRP_Variant,
     UNKNOWN_RESIDUE
 )
-from src.write_results import write_results
+
+from src.write_results import write_results, write_nrp_variants, write_bgc_variants
+
 
 def parse_args(log):
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -324,6 +327,8 @@ def run(args, log):
         bgc_variants = predictions_preprocessor.parse_antismash_output(get_antismash_v3_compatible_input_paths(
                 listing_fpath=args.antismash_out, list_of_paths=antismash_out_dirs,
                 output_dir=output_dir, log=log), output_dir, args.debug, log)
+        if not args.debug: # in the debug mode all the variants are written during generation
+            write_bgc_variants(bgc_variants, output_dir)
 
     input_configs_dir = args.configs_dir if args.configs_dir else nerpa_init.configs_dir
     current_configs_dir = os.path.join(output_dir, "configs")
@@ -358,6 +363,7 @@ def run(args, log):
             names_helper=rban_names_helper,
             process_hybrids=args.process_hybrids
         )
+        write_nrp_variants(nrp_variants, graph_records, output_dir)
 
     scoring_config = load_scoring_config(Path(__file__).parent / Path('src/NewMatcher/scoring_config.yaml'))  # TODO: this is ugly
     scoring_helper = ScoringHelper(scoring_config)
@@ -367,9 +373,7 @@ def run(args, log):
                           num_threads=args.threads,
                           log=log)
 
-    write_results(bgc_variants, nrp_variants,
-                  matches, graph_records,
-                  output_dir)
+    write_results(matches, output_dir)
     log.info("RESULTS:")
     log.info("Main report is saved to " + str(output_dir / Path('report.tsv')), indent=1)
     log.info("Detailed reports are saved to " + str(output_dir / Path('matches_details')), indent=1)
