@@ -84,6 +84,8 @@ def parse_args(log):
     parser.add_argument('--antismash-path', dest='antismash_path', type=str, default=None,
                         help='path to antismash source directory')
     parser.add_argument("--threads", default=1, type=int, help="number of threads for running Nerpa", action="store")
+    parser.add_argument("--min-score", default=0, type=float, help="minimum score to report a match", action="store")
+    parser.add_argument("--num-matches", default=None, type=int, help="maximum number of matches to report", action="store")
     parser.add_argument("--debug", action="store_true", default=False,
                         help="run in the debug mode (keep intermediate files)")
     parser.add_argument("--output_dir", "-o", help="output dir [default: nerpa_results/results_<datetime>]",
@@ -370,6 +372,8 @@ def run(args, log):
 
     log.info("\n======= Nerpa matching")
     matches = get_matches(bgc_variants, nrp_variants, scoring_helper,
+                          min_score=args.min_score,
+                          max_num_matches=args.num_matches,
                           num_threads=args.threads,
                           log=log)
 
