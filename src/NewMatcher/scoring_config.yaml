@@ -20,18 +20,18 @@ nrp_mon_skip_score: {2-oxo-isovaleric-acid: -9.031818267709898, 33p-l-ala: -9.03
 num_unknown_residues: 100
 
 modification_score:
-  Mod_METHYLATION_BGC_False_NRP_False: -0.195  # old Nerpa score 0.073
-  Mod_METHYLATION_BGC_False_NRP_True: -1.729  # old Nerpa score -1.461
-  Mod_METHYLATION_BGC_True_NRP_False: -6.008  # old Nerpa score -3.621
-  Mod_METHYLATION_BGC_True_NRP_True: -0.002  # old Nerpa score 2.385
+  Mod_METHYLATION_BGC_False_NRP_False: -0.015
+  Mod_METHYLATION_BGC_False_NRP_True: -4.182
+  Mod_METHYLATION_BGC_True_NRP_False: -2.648
+  Mod_METHYLATION_BGC_True_NRP_True: -0.073
 
 chirality_score:
-  BGC_False_NRP_L: -0.187  # old 0.257
-  BGC_False_NRP_D: -1.77  # old -1.326
-  BGC_False_NRP_UNKNOWN: -0.412  # calculated based on frequencies of L and D among rban monomers
-  BGC_True_NRP_L: -1.998  # -0.928
-  BGC_True_NRP_D: -0.146  # 0.924
-  BGC_True_NRP_UNKNOWN: -1.137  # calculated based on frequencies of L and D among rban monomers
+  BGC_False_NRP_L: -0.222
+  BGC_False_NRP_D: -1.614
+  BGC_False_NRP_UNKNOWN: -0.499  # weighted average of L and D scores
+  BGC_True_NRP_L: -2.156
+  BGC_True_NRP_D: -0.123
+  BGC_True_NRP_UNKNOWN: -0.358  # weighted average of L and D scores
 
 null_hypothesis_residue_score: {2-oxo-isovaleric-acid: -1.9178262203129488, 33p-l-ala: -1.8330940951213228,
                                 4ppro: -1.8678265900300461, HICA: -1.933790884910708, aad: -1.71137651175374,
