@@ -53,8 +53,10 @@ def load_config(path_to_config: Path) -> ScoringConfig:
                        for bgc_epim in (False, True)
                        for nrp_chr in Chirality}
 
-    nrp_mon_remove_score = defaultdict(lambda: cfg['nrp_mon_skip_score'][UNKNOWN_RESIDUE],
-                                       cfg['nrp_mon_skip_score'])
+    nrp_mon_default_skip_score = cfg['nrp_monomer_default_skip_score']
+    nrp_mon_skip_score = defaultdict(lambda: nrp_mon_default_skip_score + cfg['nrp_monomer_frequencies'][UNKNOWN_RESIDUE],
+                                     {residue: nrp_mon_default_skip_score + residue_frequency
+                                      for residue, residue_frequency in cfg['nrp_monomer_frequencies'].items()})
 
     null_hypothesis_residue_score = defaultdict(lambda: cfg['null_hypothesis_residue_score'][UNKNOWN_RESIDUE],
                                                 cfg['null_hypothesis_residue_score'])
@@ -77,7 +79,7 @@ def load_config(path_to_config: Path) -> ScoringConfig:
     null_hypothesis_chirality_score = {chr: get_null_hyp_chr_score(chr)
                                        for chr in Chirality}
     return ScoringConfig(bgc_module_skip_score=cfg['bgc_module_skip_score'],
-                         nrp_mon_skip_score=nrp_mon_remove_score,
+                         nrp_mon_skip_score=nrp_mon_skip_score,
                          num_unknown_residues=cfg['num_unknown_residues'],
                          mod_score=mod_score,
                          chirality_score=chirality_score,

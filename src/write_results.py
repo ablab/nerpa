@@ -19,8 +19,9 @@ T = TypeVar('T')
 U = TypeVar('U')
 
 def sort_groupby(items: Iterable[T],
-                 key: Callable[[T], U]) -> Iterable[Tuple[U, Iterable[T]]]:
-    return groupby(sorted(items, key=key, reverse=True), key=key)
+                 key: Callable[[T], U],
+                 reverse: bool=False) -> Iterable[Tuple[U, Iterable[T]]]:
+    return groupby(sorted(items, key=key, reverse=reverse), key=key)
 
 
 def write_yaml(data, out_file: Path,
