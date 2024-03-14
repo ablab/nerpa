@@ -365,7 +365,7 @@ def run(args, log):
             names_helper=rban_names_helper,
             process_hybrids=args.process_hybrids
         )
-        write_nrp_variants(nrp_variants, graph_records, output_dir)
+        write_nrp_variants(nrp_variants, output_dir, graph_records)
 
     scoring_config = load_scoring_config(Path(__file__).parent / Path('src/NewMatcher/scoring_config.yaml'))  # TODO: this is ugly
     scoring_helper = ScoringHelper(scoring_config)
