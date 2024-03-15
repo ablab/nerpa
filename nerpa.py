@@ -7,6 +7,7 @@ import csv
 import site
 import shutil
 import json
+import yaml
 
 import nerpa_init
 nerpa_init.init()
@@ -26,6 +27,18 @@ from pathlib import Path
 site.addsitedir(os.path.join(nerpa_init.python_modules_dir, 'NRPSPredictor_utils'))
 from NRPSPredictor_utils.json_handler import get_main_json_fpath
 from NRPSPredictor_utils.main import main as convert_antiSMASH_v5
+from src.NewMatcher.scoring_helper import ScoringHelper
+from src.NewMatcher.scoring_config import load_config as load_scoring_config
+from src.NewMatcher.matcher import get_matches
+
+from src.data_types import (
+    BGC_Variant,
+    NRP_Variant,
+    UNKNOWN_RESIDUE
+)
+
+from src.write_results import write_results, write_nrp_variants, write_bgc_variants
+
 
 def parse_args(log):
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -71,6 +84,10 @@ def parse_args(log):
     parser.add_argument('--antismash-path', dest='antismash_path', type=str, default=None,
                         help='path to antismash source directory')
     parser.add_argument("--threads", default=1, type=int, help="number of threads for running Nerpa", action="store")
+    parser.add_argument("--min-score", default=0, type=float, help="minimum score to report a match", action="store")
+    parser.add_argument("--num-matches", default=None, type=int, help="maximum number of matches to report", action="store")
+    parser.add_argument("--debug", action="store_true", default=False,
+                        help="run in the debug mode (keep intermediate files)")
     parser.add_argument("--output_dir", "-o", help="output dir [default: nerpa_results/results_<datetime>]",
                         type=str, default=None)
 
@@ -284,7 +301,12 @@ def run(args, log):
     log.start()
 
     if args.predictions is not None:
-        path_predictions = copy_prediction_list(args, output_dir)
+            bgc_variants = []
+            for path_to_predictions in args.predictions:
+                for file_with_bgc_variants in filter(lambda f: f.suffix in ('.yml', '.yaml'),
+                                                     Path(path_to_predictions).iterdir()):
+                    bgc_variants.extend(BGC_Variant.from_yaml_dict(yaml_record)
+                                        for yaml_record in yaml.safe_load(file_with_bgc_variants.read_text()))
     else:
         antismash_out_dirs = args.antismash if args.antismash is not None else []
         if args.seqs:
@@ -304,9 +326,11 @@ def run(args, log):
             nerpa_utils.sys_call(command, log, cwd=output_dir)
             antismash_out_dirs.append(cur_antismash_out)
 
-        path_predictions = predictions_preprocessor.create_predictions_by_antiSMASH_out(get_antismash_v3_compatible_input_paths(
+        bgc_variants = predictions_preprocessor.parse_antismash_output(get_antismash_v3_compatible_input_paths(
                 listing_fpath=args.antismash_out, list_of_paths=antismash_out_dirs,
-                output_dir=output_dir, log=log), output_dir, log)
+                output_dir=output_dir, log=log), output_dir, args.debug, log)
+        if not args.debug: # in the debug mode all the variants are written during generation
+            write_bgc_variants(bgc_variants, output_dir)
 
     input_configs_dir = args.configs_dir if args.configs_dir else nerpa_init.configs_dir
     current_configs_dir = os.path.join(output_dir, "configs")
@@ -322,9 +346,13 @@ def run(args, log):
     path_to_monomers_db = create_merged_monomers_db(
         path_to_rban, os.path.join(current_configs_dir, "monomersdb_nerpa.json"), args.rban_monomers, output_dir)
 
-    if args.structures:
-        raise NotImplemented('Precomputed structures not supported yet')
-        # shutil.copyfile(args.structures, path_to_graphs)
+    if args.structures is not None:
+        nrp_variants = []
+        for file_with_nrp_variants in filter(lambda f: f.suffix in ('.yml', '.yaml'),
+                                             Path(args.structures).iterdir()):
+            nrp_variants.extend(NRP_Variant.from_yaml_dict(yaml_record)
+                                for yaml_record in yaml.safe_load(file_with_nrp_variants.read_text()))
+        graph_records = []  # TODO: should we load them as well?
     else:
         if args.rban_output:
             path_rban_output = args.rban_output
@@ -337,20 +365,22 @@ def run(args, log):
             names_helper=rban_names_helper,
             process_hybrids=args.process_hybrids
         )
+        write_nrp_variants(nrp_variants, output_dir, graph_records)
 
-    details_mol_dir = os.path.join(output_dir, 'details')
-    if not os.path.exists(details_mol_dir):
-        os.makedirs(details_mol_dir)
+    scoring_config = load_scoring_config(Path(__file__).parent / Path('src/NewMatcher/scoring_config.yaml'))  # TODO: this is ugly
+    scoring_helper = ScoringHelper(scoring_config)
 
-    command = [os.path.join(nerpa_init.bin_dir, "NRPsMatcher"),
-               path_predictions, path_to_graphs,
-               '--configs_dir', current_configs_dir,
-               "--threads", str(args.threads)]
     log.info("\n======= Nerpa matching")
-    nerpa_utils.sys_call(command, log, cwd=output_dir)
+    matches = get_matches(bgc_variants, nrp_variants, scoring_helper,
+                          min_score=args.min_score,
+                          max_num_matches=args.num_matches,
+                          num_threads=args.threads,
+                          log=log)
+
+    write_results(matches, output_dir)
     log.info("RESULTS:")
-    log.info("Main report is saved to " + os.path.join(output_dir, 'report.csv'), indent=1)
-    log.info("Detailed reports are saved to " + output_dir, indent=1)
+    log.info("Main report is saved to " + str(output_dir / Path('report.tsv')), indent=1)
+    log.info("Detailed reports are saved to " + str(output_dir / Path('matches_details')), indent=1)
     log.finish()
 
 

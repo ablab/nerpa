@@ -1,9 +1,18 @@
 import os
-import itertools
+import math
+import pandas as pd
 from collections import Counter, OrderedDict, defaultdict
 from log_utils import error
 
+from typing import Dict, List, Tuple
+from src.data_types import (
+    MonomerResidue,
+    ResidueScores,
+)
 import config
+
+ResidueSignatures = List[str]
+ResidueSignaturesDict = Dict[MonomerResidue, Tuple[ResidueSignatures, ResidueSignatures]]
 
 
 def get_codes_file_type(fpath):
@@ -130,148 +139,79 @@ def __get_aa_fullname(code_metadata, mode='classic'):
         error('Internal bug: not defined mode (%s) for aa fullname pretty print!' % mode, exit=True)
 
 
-def __get_stachelhaus_score(signature, code, mode='classic'):
-    if mode == 'classic':
-        score = 0  # always making +1 for the last 'K' in 10aa code
-        num_chars = min(len(signature), len(code))
-        for i in range(num_chars):
-            score += int(signature[i] == code[i])
-        # special case: sometimes code (or signature) has 9 chars instead of the default length 10.
-        # in this case, we assume the last char is 'K' and it always matches.
-        if num_chars == config.STANDARD_STACHELHAUS_CODE_LENGTH - 1:
-            score += 1
-        score *= 10
-    else:
-        error('Internal bug: score mode %s is not supported yet!' % mode, exit=True)
-        score = None
-    return float(score)
+def __get_aa_score(code: str, known_codes: ResidueSignatures) -> float:
+    if len(known_codes):
+        assert len(code) == len(next(iter(known_codes)))
+    max_matched_letters = 0
+    for c in known_codes:
+        max_matched_letters = max(max_matched_letters, sum(code[i] == c[i] for i in range(len(c))))
+    return float(max_matched_letters) / len(code)
 
 
-def __get_svm_score(aa, svm):
-    # TODO -- check the 'aa' is always in proper format, e.g. just 'cys' not '@Lcys+me+h'
-    if aa not in config.SVM_DETECTABLE_AA:
-        return None
-    if aa == svm.single_amino_pred:
-        return config.SVM_LEVEL_TO_SCORE['single_amino_pred']
-    elif aa in svm.small_cluster_pred:
-        return config.SVM_LEVEL_TO_SCORE['small_cluster_pred']
-    elif aa in svm.large_cluster_pred:
-        return config.SVM_LEVEL_TO_SCORE['large_cluster_pred']
-    elif svm.physicochemical_class in config.PHYSICOCHEMICAL_CLASSES and \
-            aa in config.PHYSICOCHEMICAL_CLASSES[svm.physicochemical_class]:
-        return config.SVM_LEVEL_TO_SCORE['physicochemical_class']
-    return config.SVM_LEVEL_TO_SCORE['not_matched']
+def __get_svm_score(residue: str, svm_prediction: Tuple[float, List[MonomerResidue]]) -> float:
+    if residue in config.SVM_SUBSTRATES:
+        if residue in svm_prediction[1]:
+            return svm_prediction[0]
+        return 0.0
+    return -1.0
 
 
-def get_prediction_from_signature(signature, known_codes, svm_prediction, scoring_mode):
-    # TODO: actually signature == svm_prediction['stachelhaus_seq'].upper() -- refactor out the excessive parameter
-    scores = defaultdict(lambda: 0)
-    aa_name_to_sorting_index = dict()  # to define some sorting order for amino acids with exactly the same score
-    aa_name_to_raw_aa = dict()
+def dummy_model(scoring_table: pd.DataFrame) -> ResidueScores:
+    result: ResidueScores = OrderedDict()
 
-    for code_metadata in known_codes:
-        aa_name = __get_aa_fullname(code_metadata, mode='classic')
-        if aa_name in config.FORBIDDEN_AA_SIGNATURES:
-            continue
-        if aa_name not in aa_name_to_sorting_index:
-            aa_name_to_sorting_index[aa_name] = config.KNOWN_AA_SIGNATURES.index(code_metadata['aa'])
-        if aa_name not in aa_name_to_raw_aa:
-            aa_name_to_raw_aa[aa_name] = __get_aa_fullname(code_metadata, mode='raw')
+    # Extracting and processing data
+    substrates = scoring_table.index
+    aa10_scores = scoring_table["aa10_score"].apply(lambda x: float(x))
 
-        code = code_metadata['code']
-        score = __get_stachelhaus_score(signature, code, mode='classic')
-        scores[aa_name] = max(scores[aa_name], score)  # FIXME: should we count how many times the top score per AA was reached?
+    # Computing logarithm and populating results
+    for substrate, aa10_score in zip(substrates, aa10_scores):
+        if aa10_score is not None and aa10_score > 0:
+            log_aa10_score = round(math.log(aa10_score), 4)
+            result[substrate] = log_aa10_score
 
-    if scoring_mode == 'hybrid':
-        for aa_name in scores.keys():
-            stachelhaus_score = scores[aa_name]
-            svm_score = __get_svm_score(aa_name_to_raw_aa[aa_name], svm_prediction)
-            if svm_score is not None:
-                hybrid_score = (stachelhaus_score + svm_score) / 2.0
-            else:
-                hybrid_score = stachelhaus_score  # TODO: think of it: shouldn't we penalize the score in this case?
-            scores[aa_name] = hybrid_score
+    return result
 
-    # TODO sort scores appropriately
-    sorted_scores = OrderedDict(sorted(scores.items(),
-                                       key=lambda x: (-x[1], aa_name_to_sorting_index[x[0]])))  # x = (aa_name, score)
-    first_prediction = next(iter(sorted_scores.items()))
-    if first_prediction[1] > config.MIN_SCORE_TO_REPORT:
-        main_aa_pred = first_prediction[0]
-    else:
-        main_aa_pred = 'N/A'
-    aa_pred_list = ';'.join(map(lambda x: '%s(%.1f)' % (x[0], x[1]), sorted_scores.items()))  # x = (aa_name, score)
-    return main_aa_pred, aa_pred_list
 
-    # how it works in antiSMASH v.5
-    #     parts = line.split("\t")
-    #     # EXAMPLE: ctg1_orf00006_A1        L--SFDASTLEGWLLTGGDTNGYGPTENTTFTTT      DALWLGGTFK      hydrophobic-aliphatic   gly,ala,val,leu,ile,abu,iva     val,leu,ile,abu,iva     val     N/A     orn,lys,arg     orn,horn        0       0:0     0.000000e+00
-    #     # 0: sequence-id
-    #     # 1: 8A-signature
-    #     # 2: stachelhaus-code:
-    #     # 3: 3class-pred
-    #     # 4: large-class-pred
-    #     # 5: small-class-pred
-    #     # 6: single-class-pred
-    #     # 7: nearest stachelhaus code
-    #     # 8: NRPS1pred-large-class-pred
-    #     # 9: NRPS2pred-large-class-pred
-    #     # 10: outside applicability domain (1 or 0)
-    #     # 11: coords
-    #     # 12: pfam-score
-    #     if not len(parts) == 13:
-    #         raise ValueError("Invalid SVM result line: %s" % line)
-    #     query_stach = parts[2]
-    #     pred_from_stach = parts[7]
-    #     best_stach_match = query_stach.lower()
-    #     stach_count = 0
-    #     for possible_hit in KNOWN_STACH_CODES[pred_from_stach]:
-    #         # the datafile sometimes has - for the trailing char, but not all the time
-    #         matches = [int(a == b) for a, b in list(zip(query_stach, possible_hit))[:9]] + [1]
-    #         count = sum(matches)
-    #         if count > stach_count:
-    #             stach_count = count
-    #             best_stach_match = "".join(c if match else c.lower() for (c, match) in zip(query_stach, matches))
-    #
-    # how it works in antiSMASH v.3
-    # #Compare NRPS signature with database of signatures and write output to txt file
-    # for k in querysignames:
-    #   querysigseq = querysigseqs[querysignames.index(k)]
-    #   scoredict = {}
-    #   for i in signaturenames:
-    #     sigseq = signatureseqs[signaturenames.index(i)]
-    #     positions  = range(len(querysigseq))
-    #     score = 0
-    #     for j in positions:
-    #       if querysigseq[j] == sigseq[j]:
-    #         score += 1
-    #     score = ((float(score) / 10) * 100)
-    #     scoredict[i] = score
-    #   sortedhits = sortdictkeysbyvalues(scoredict)
-    #   sortedhits = sortedhits
-    #   sortedscores = []
-    #   sortedhits2 = []
-    #   for i in sortedhits:
-    #     score = scoredict[i]
-    #     if score > 40:
-    #       score = "%.0f"%(score)
-    #       sortedscores.append(score)
-    #       sortedhits2.append(i)
-    #   allsortedhits = sortedhits
-    #   sortedhits = sortedhits2
-    #   #Find all other scores after best score
-    #   nextbesthitsdict = {}
-    #   nextbesthits = []
-    #   for hit in allsortedhits:
-    #     aa = hit.split("__")[-1]
-    #     score = scoredict[hit]
-    #     if not nextbesthitsdict.has_key(aa) and aa != "xxx":
-    #       nextbesthitsdict[aa] = score
-    #       nextbesthits.append(aa)
-    #   #Write output to txt file
-    #   outfile1.write(querysig34codes[querysignames.index(k)] + "\t" + k + "\n")
-    #   if len(sortedhits) > 0:
-    #     outfile2.write(k + "\t" + sortedhits[0].split("__")[-1] + "\t")
-    #   else:
-    #     outfile2.write(k + "\t" + "N/A" + "\t")
-    #   outfile2.write(";".join(["%s(%s)" % (aa, nextbesthitsdict[aa]) for aa in nextbesthits]) + "\n")
+def get_prediction_from_signature(nrpys_prediction: dict, known_codes_dict: ResidueSignaturesDict,
+                                  model=None) -> Tuple[str, str]:
+    '''
+
+    :param nrpys_prediction: includes aa10/34 and four level SVM predictions
+    :param known_codes_dict: known aa10/34 signatures for all Nerpa-supported monomers (sorted!)
+    :param model: prediction classifier, if None/not specified a dummy model will be used
+    :return: in the future: ResidueScores (with the default dummy model it is just log from aa10 score)
+             right now (for legacy reasons): the most probably residue name and
+                                             the sorted list of all residues with their log probs in '()', separated by ';'
+    '''
+    if model is None:
+        model = dummy_model
+
+    aa10_code = nrpys_prediction["aa10"]
+    aa34_code = nrpys_prediction["aa34"]
+
+    # parsing SVM prediction
+    Level = str
+    SvmScore = float
+    svm_prediction: Dict[Level, Tuple[SvmScore, List[MonomerResidue]]] = dict()
+    for level in config.SVM_LEVELS:
+        score = nrpys_prediction[level]['score']
+        substrate_short_names = [substrate['short'] for substrate in nrpys_prediction[level]['substrates']]
+        substrate_nerpa_names = [config.antismash_substrate_to_nerpa_substrate(substrate) for substrate in substrate_short_names]
+        svm_prediction[level] = (score, substrate_nerpa_names)
+
+    scoring_table = pd.DataFrame([], columns=config.SCORING_TABLE_COLUMNS).set_index(config.SCORING_TABLE_INDEX)
+    for residue, (known_aa10_codes, known_aa34_codes) in known_codes_dict.items():
+        scoring_table_row = [__get_aa_score(aa10_code, known_aa10_codes),
+                             __get_aa_score(aa34_code, known_aa34_codes)]
+
+        for level in config.SVM_LEVELS:
+            scoring_table_row.append(__get_svm_score(residue, svm_prediction[level]))
+
+        scoring_table.loc[residue] = scoring_table_row
+
+    residue_log_probs: ResidueScores = model(scoring_table)
+
+    residue_with_highest_prob = max(residue_log_probs, key=residue_log_probs.get)  # for legacy reasons and just for debug, never used in practice
+    residue_log_probs_string = ";".join(f"{key}({value})" for key, value in residue_log_probs.items())
+
+    return residue_with_highest_prob, residue_log_probs_string

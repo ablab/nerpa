@@ -34,7 +34,7 @@ class rBAN_Names_Helper:
 
 
     def __init__(self, names_data_file: Path):  # receives contents of file monomers.tsv
-        self.parsed_rban_name = defaultdict(lambda: Parsed_rBAN_Name(residue=UNKNOWN_MONOMER,
+        self.parsed_rban_name = defaultdict(lambda: Parsed_rBAN_Name(residue=UNKNOWN_RESIDUE,
                                                                      modifications=()))
         for row in csv.DictReader(names_data_file.open('r'), delimiter='\t'):
             self.parsed_rban_name[row['Code']] = Parsed_rBAN_Name(residue=row['NameID'],

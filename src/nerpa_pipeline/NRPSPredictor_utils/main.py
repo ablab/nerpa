@@ -5,10 +5,16 @@ import os
 import sys
 from pathlib import Path
 import json
+from collections import OrderedDict
+import yaml
+from codes_handler import (
+    ResidueSignaturesDict
+)
 
 import config
 import codes_handler
 import json_handler
+from model import ModelWrapper
 from log_utils import error, info
 
 
@@ -37,7 +43,7 @@ def main(args):
         metavar='FILE',
         type=str,
         default=None,
-        help='Path to either a file with preprocessed codes (custom JSON format) '
+        help='Path to either a file with preprocessed codes (custom YAML format) '
              'or to a file with raw known codes (TXT or FASTA format). '
              'Default: %s (if exists) or %s (otherwise)' % (config.DEFAULT_OUTPUT_CODES, config.DEFAULT_INPUT_CODES)
     )
@@ -78,30 +84,46 @@ def main(args):
         if os.path.exists(config.DEFAULT_OUTPUT_CODES):
             args.codes = config.DEFAULT_OUTPUT_CODES
         else:  # elif os.path.exists(config.DEFAULT_INPUT_CODES):
-            args.codes = config.DEFAULT_INPUT_CODES
+            raise NotImplemented('Not precomputed residue signatures (aa10/aa34 codes) are not supported')
+            # args.codes = config.DEFAULT_INPUT_CODES
 
-    codes_ftype = codes_handler.get_codes_file_type(args.codes)
-    if codes_ftype == 'known':
-        info('Preprocessing known codes into a custom format', verbose=args.verbose)
-        known_codes = codes_handler.parse_known_codes(args.codes)
-        if args.preprocess is not None:
-            preprocessed_fpath = args.preprocess if args.preprocess != 'default' else config.DEFAULT_OUTPUT_CODES
-            info('Saving the preprocessed codes into ' + preprocessed_fpath, verbose=args.verbose)
-            with open(preprocessed_fpath, 'w') as f:
-                json.dump(known_codes, f)
-    elif codes_ftype == 'preprocessed':
-        info('Reusing already preprocessing known codes', verbose=args.verbose)
-        with open(args.codes) as f:
-            known_codes = json.load(f)
-    else:
-        error('File with codes (--code) does not exist or its format cannot be recognized. Aborting..', exit=True)
+    # Loading known signatures
+    info('Reusing already preprocessing known codes (aa10/34 signatures)', verbose=args.verbose)
+    known_codes: ResidueSignaturesDict = OrderedDict()
+    with open(args.codes, 'r') as yaml_file:
+        known_codes = yaml.load(yaml_file, Loader=yaml.Loader)
+    # TODO: check that content was loaded properly
+
+    scoring_model = ModelWrapper(config.SCORING_MODEL)
+
+    # codes_ftype = codes_handler.get_codes_file_type(args.codes)
+    # if codes_ftype == 'known':
+    #     info('Preprocessing known codes into a custom format', verbose=args.verbose)
+    #     known_codes = codes_handler.parse_known_codes(args.codes)
+    #     if args.preprocess is not None:
+    #         preprocessed_fpath = args.preprocess if args.preprocess != 'default' else config.DEFAULT_OUTPUT_CODES
+    #         info('Saving the preprocessed codes into ' + preprocessed_fpath, verbose=args.verbose)
+    #         with open(preprocessed_fpath, 'w') as f:
+    #             json.dump(known_codes, f)
+    # elif codes_ftype == 'preprocessed':
+    #     info('Reusing already preprocessing known codes', verbose=args.verbose)
+    #     with open(args.codes) as f:
+    #         known_codes = json.load(f)
+    # else:
+    #     error('File with codes (--code) does not exist or its format cannot be recognized. Aborting..', exit=True)
 
     is_root_outdir = True if (args.output_dir is not None and len(args.inputs) > 1) else False
     processed_output_dirs = []
     for input_path in args.inputs:
-        processed_output_dirs.append(json_handler.handle_single_input(
-            Path(input_path), args.output_dir, is_root_outdir, args.naming_style,
-            known_codes, scoring_mode=args.mode, verbose=args.verbose))
+        try:
+            processed_output_dirs.append(json_handler.handle_single_input(
+                Path(input_path), args.output_dir, is_root_outdir, args.naming_style,
+                known_codes, scoring_model=scoring_model, verbose=args.verbose))
+        except KeyboardInterrupt as e:
+            raise e
+        except Exception as e:
+            info(f'ERROR: Unable to parse the input at "{input_path}": {type(e).__name__}: {e}')
+
     return processed_output_dirs
 
 

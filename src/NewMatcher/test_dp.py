@@ -133,7 +133,7 @@ def check(alignment: Alignment, correct_alignment: TestAlignment) -> bool:
 
 
 def run_tests(tests: Iterable[AlignmentTest]) -> bool:
-    dp_helper = ScoringHelper(load_config(Path(__file__).parent / 'dp_config.yaml'))
+    dp_helper = ScoringHelper(load_config(Path(__file__).parent / 'scoring_config.yaml'))
     for i, test in enumerate(tests):
         if test.num_mods > 0:
             continue
@@ -203,7 +203,7 @@ def test_matcher():
                               bgc_id='bgc#39')
 
 
-    dp_config = load_config(Path(__file__).parent / 'dp_config.yaml')
+    dp_config = load_config(Path(__file__).parent / 'scoring_config.yaml')
     with (Path(__file__).parent / Path('test_matches_output.txt')).open('w') as out:
         for match in get_matches([bgc_variant], [nrp_variant], dp_config):
             out.write(str(match) + '\n\n')

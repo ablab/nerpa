@@ -5,11 +5,14 @@ from typing import (
     Tuple)
 from enum import auto, Enum
 import yaml
+import os
 from dataclasses import asdict, dataclass
 
 LogProb = float
 MonomerResidue = str
-UNKNOWN_RESIDUE = 'unk'
+ResidueScores = Dict[MonomerResidue, LogProb]
+GeneId = str
+UNKNOWN_RESIDUE = 'unknown'
 rBAN_Residue_Name = str
 
 
@@ -45,7 +48,7 @@ class NRP_Monomer:
         return cls(residue=MonomerResidue(data['residue']),
                    modifications=tuple(NRP_Monomer_Modification[mod]
                                        for mod in data['modifications']),
-                   chirality=Chirality(data['chirality']),
+                   chirality=Chirality[data['chirality']],
                    rban_name=data['rban_name'],
                    rban_idx=data['rban_idx'])
 
@@ -59,9 +62,9 @@ yaml.add_representer(BGC_Module_Modification, enum_representer)
 
 @dataclass
 class BGC_Module:
-    gene_id: str
+    gene_id: GeneId
     module_idx: int
-    residue_score: Dict[MonomerResidue, LogProb]
+    residue_score: ResidueScores
     modifications: Tuple[BGC_Module_Modification, ...]
     iterative_module: bool
     iterative_gene: bool
@@ -78,13 +81,15 @@ class BGC_Module:
 
 @dataclass
 class BGC_Variant:
+    variant_idx: int
     genome_id: str
     bgc_id: str
     tentative_assembly_line: List[BGC_Module]
 
     @classmethod
     def from_yaml_dict(cls, data: dict) -> BGC_Variant:
-        return cls(genome_id=data['genome_id'],
+        return cls(variant_idx=data['variant_idx'],
+                   genome_id=data['genome_id'],
                    bgc_id=data['bgc_id'],
                    tentative_assembly_line=list(map(BGC_Module.from_yaml_dict,
                                                     data['tentative_assembly_line'])))
@@ -103,10 +108,29 @@ class NRP_Fragment:
 
 @dataclass
 class NRP_Variant:
+    variant_idx: int
     nrp_id: str
     fragments: List[NRP_Fragment]
 
     @classmethod
     def from_yaml_dict(cls, data: dict) -> NRP_Variant:
-        return cls(nrp_id=data['nrp_id'],
+        return cls(variant_idx=data['variant_idx'],
+                   nrp_id=data['nrp_id'],
                    fragments=list(map(NRP_Fragment.from_yaml_dict, data['fragments'])))
+
+
+def dump_bgc_variants(output_dir: str, bgc_variants: List[BGC_Variant]):
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    # dirty hack to erase information about types and make output less verbose
+    # https://github.com/yaml/pyyaml/issues/408
+    yaml.emitter.Emitter.prepare_tag = lambda self, tag: ''
+
+    # another hack (albeit less dirty) to forbid yaml creating references
+    # https://stackoverflow.com/questions/13518819/avoid-references-in-pyyaml
+    yaml.Dumper.ignore_aliases = lambda *args: True
+    for variant in bgc_variants:
+        output_fpath = os.path.join(output_dir, f"{variant.genome_id}_{variant.bgc_id}.yaml")
+        with open(output_fpath, 'w') as out:
+            yaml.dump(asdict(variant), out, default_flow_style=None, sort_keys=False)
