@@ -68,7 +68,7 @@ class SVM_entry:
                                            for stachelhaus_match in prediction_data['stachelhaus_matches']],
                                            default=0)
             self.uncertain = stachelhaus_match_count < 7  # not so sure about this
-        else:  # older version of antismash
+        elif 'NRPSPredictor2' in domain_prediction:  # older version of antismash
             prediction_data = domain_prediction['NRPSPredictor2']
 
             self.angstrom_code = prediction_data['angstrom_code']
@@ -78,6 +78,8 @@ class SVM_entry:
             self.small_cluster_pred = prediction_data['small_cluster_pred']
             self.single_amino_pred = prediction_data['single_amino_pred']
             self.uncertain = prediction_data['uncertain']
+        else:
+            raise RuntimeError('Neither "nrpys" nor "NRPSPredictor2" in domain prediction.') 
 
     def __str__(self):
         return '\t'.join([self.angstrom_code,
