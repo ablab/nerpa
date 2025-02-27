@@ -103,8 +103,12 @@ def main(args):
             processed_output_dirs.append(json_handler.handle_single_input(
                 Path(input_path), args.output_dir, is_root_outdir, args.naming_style,
                 known_codes, scoring_mode=args.mode, verbose=args.verbose))
+        except KeyboardInterrupt as e:
+            raise e
         except RuntimeError as e:
             info(f'ERROR: Unable to parse the input at "{input_path}": {e}')
+        except Exception as e:
+            info(f'ERROR: Unmanaged Exception while parsing the input at "{input_path}": {e}')    
     return processed_output_dirs
 
 
