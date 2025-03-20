@@ -1,3 +1,11 @@
+## 🚨 This repository is deprecated
+**The latest development and releases of Nerpa are now maintained at:  
+👉 [https://github.com/gurevichlab/nerpa](https://github.com/gurevichlab/nerpa)**
+
+**Please update your bookmarks and refer to the new repository for the most recent updates and issues!**
+
+
+
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/ablab/nerpa)](https://github.com/ablab/nerpa/releases/)
 [![BioConda](https://anaconda.org/bioconda/nerpa/badges/installer/conda.svg)](https://anaconda.org/bioconda/nerpa)
 [![License](https://img.shields.io/badge/licence-GPLv3-blue)](https://www.gnu.org/licenses/old-licenses/gpl-3.0)
