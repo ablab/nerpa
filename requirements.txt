@@ -1,0 +1,6 @@
+pandas
+typing
+numpy
+prettytable
+tqdm
+matplotlib
